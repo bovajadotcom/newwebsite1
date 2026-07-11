@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/i18n";
 const links = [
   { labelKey: "nav.home", href: "/" },
   { labelKey: "nav.inventory", href: "/inventory" },
+  { labelKey: "nav.popular", href: "/inventory#popular" },
   { labelKey: "nav.services", href: "/services" },
   { labelKey: "nav.pricing", href: "/pricing" },
   { labelKey: "nav.calculator", href: "/calculator" },

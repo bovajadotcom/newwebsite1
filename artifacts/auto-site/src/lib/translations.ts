@@ -3,13 +3,14 @@ export const translations = {
     // Nav
     "nav.home": "Home",
     "nav.inventory": "Inventory",
+    "nav.popular": "Popular Cars",
     "nav.services": "Services",
     "nav.pricing": "Pricing",
     "nav.calculator": "Calculator",
     "nav.business": "Business",
     "nav.about": "About",
     "nav.contact": "Contact",
-    "nav.getQuote": "Get Quote",
+    "nav.getQuote": "Free Consultation",
     // Home hero
     "home.hero.badge": "Global Vehicle Sourcing",
     "home.hero.headline1": "Your Gateway to",
@@ -126,13 +127,14 @@ export const translations = {
     // Nav
     "nav.home": "Strona Główna",
     "nav.inventory": "Auta",
+    "nav.popular": "Popularne Auta",
     "nav.services": "Usługi",
     "nav.pricing": "Cennik",
     "nav.calculator": "Kalkulator",
     "nav.business": "Biznes",
     "nav.about": "O Nas",
     "nav.contact": "Kontakt",
-    "nav.getQuote": "Zapytaj o Wycenę",
+    "nav.getQuote": "Bezpłatna Konsultacja",
     // Home hero
     "home.hero.badge": "Globalny Import Pojazdów",
     "home.hero.headline1": "Twoja Brama do",
@@ -248,14 +250,15 @@ export const translations = {
   ru: {
     // Nav
     "nav.home": "Главная",
-    "nav.inventory": "Авто",
+    "nav.inventory": "Авто в Наличии",
+    "nav.popular": "Самые Популярные",
     "nav.services": "Услуги",
     "nav.pricing": "Цены",
     "nav.calculator": "Калькулятор",
-    "nav.business": "Бизнес",
+    "nav.business": "Для Бизнеса",
     "nav.about": "О Нас",
     "nav.contact": "Контакты",
-    "nav.getQuote": "Запрос Цены",
+    "nav.getQuote": "Бесплатная Консультация",
     // Home hero
     "home.hero.badge": "Глобальный Импорт Автомобилей",
     "home.hero.headline1": "Ваш путь к",
