@@ -82,8 +82,8 @@ export const translations = {
     "calc.sub": "Estimate the total cost of importing your vehicle",
     "calc.country": "Country of Origin",
     "calc.auction": "Auction",
-    "calc.vehiclePrice": "Vehicle Price (USD)",
-    "calc.shipping": "Estimated Shipping (USD)",
+    "calc.vehiclePrice": "Vehicle Price (EUR)",
+    "calc.shipping": "Estimated Shipping",
     "calc.customs": "Customs Rate (%)",
     "calc.total": "Total Estimated Cost",
     // About
@@ -205,8 +205,8 @@ export const translations = {
     "calc.sub": "Oszacuj całkowity koszt importu pojazdu",
     "calc.country": "Kraj Pochodzenia",
     "calc.auction": "Aukcja",
-    "calc.vehiclePrice": "Cena Pojazdu (USD)",
-    "calc.shipping": "Szac. Wysyłka (USD)",
+    "calc.vehiclePrice": "Cena Pojazdu (EUR)",
+    "calc.shipping": "Szac. Wysyłka",
     "calc.customs": "Stawka Celna (%)",
     "calc.total": "Szacowany Koszt Całkowity",
     // About
@@ -328,8 +328,8 @@ export const translations = {
     "calc.sub": "Рассчитайте общую стоимость импорта автомобиля",
     "calc.country": "Страна Происхождения",
     "calc.auction": "Аукцион",
-    "calc.vehiclePrice": "Цена Автомобиля (USD)",
-    "calc.shipping": "Оценка Доставки (USD)",
+    "calc.vehiclePrice": "Цена Автомобиля (EUR)",
+    "calc.shipping": "Оценка Доставки",
     "calc.customs": "Таможенная Ставка (%)",
     "calc.total": "Общая Расчётная Стоимость",
     // About

@@ -216,7 +216,7 @@ export default function Calculator() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.vehiclePrice")} (EUR)</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.vehiclePrice")}</label>
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
                       <input type="number" value={form.vehiclePrice} onChange={(e) => update("vehiclePrice", Number(e.target.value) || 0)}
