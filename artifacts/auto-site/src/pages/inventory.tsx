@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { 
@@ -6,10 +6,91 @@ import {
   Settings2, X, ArrowRight, MessageSquare, Calculator
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
-import { stockVehicles, soldVehicles, popularVehicles } from "@/data/inventory";
+import {
+  stockVehicles as staticStock,
+  soldVehicles as staticSold,
+  popularVehicles as staticPopular,
+} from "@/data/inventory";
+
+// Normalised shape used by the render layer
+interface DisplayVehicle {
+  id: string | number;
+  make: string; model: string; year: number;
+  engine: string; fuel: string; transmission: string;
+  mileage: number; location: string; price: number;
+  description: string; status: string;
+  image: string; badge?: string | null;
+}
+interface DisplaySold {
+  id: string | number;
+  make: string; model: string; year: number;
+  purchaseCountry: string; deliveryDate?: string | null;
+  image: string;
+}
+interface DisplayPopular {
+  id: string | number;
+  make: string; model: string;
+  priceRange: string; estimatedDelivery: string;
+  description: string; image: string;
+}
+
+// Resolve an imageUrl from the DB (may be a path like /images/x.jpg)
+// to a local public asset, or keep as-is if it's a full URL.
+const FALLBACKS = ["vehicle-1.png","vehicle-2.png","vehicle-3.png","vehicle-4.png"];
+function resolveImage(url: string | null | undefined, idx: number): string {
+  if (!url) return `${import.meta.env.BASE_URL}${FALLBACKS[idx % 4]}`;
+  if (url.startsWith("http")) return url;
+  // e.g. "vehicle-2.png" → use with BASE_URL
+  if (!url.startsWith("/")) return `${import.meta.env.BASE_URL}${url}`;
+  // Paths like /images/bmw-x5.jpg that aren't served — fallback
+  return `${import.meta.env.BASE_URL}${FALLBACKS[idx % 4]}`;
+}
 
 export default function Inventory() {
   const { t } = useLanguage();
+
+  const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>([]);
+  const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>([]);
+  const [popularVehicles, setPopularVehicles] = useState<DisplayPopular[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/vehicles").then(r => r.ok ? r.json() : []),
+      fetch("/api/sold-vehicles").then(r => r.ok ? r.json() : []),
+      fetch("/api/popular-vehicles").then(r => r.ok ? r.json() : []),
+    ]).then(([dbStock, dbSold, dbPopular]) => {
+      // Use DB data if it has entries, otherwise fall back to static
+      if (dbStock.length > 0) {
+        setStockVehicles(dbStock.map((v: any, i: number) => ({
+          ...v, image: resolveImage(v.imageUrl, i),
+        })));
+      } else {
+        setStockVehicles(staticStock as DisplayVehicle[]);
+      }
+
+      if (dbSold.length > 0) {
+        setSoldVehicles(dbSold.map((v: any, i: number) => ({
+          ...v, image: resolveImage(v.imageUrl, i),
+        })));
+      } else {
+        setSoldVehicles(staticSold.map(v => ({ ...v })) as DisplaySold[]);
+      }
+
+      if (dbPopular.length > 0) {
+        setPopularVehicles(dbPopular.map((v: any, i: number) => ({
+          ...v, image: resolveImage(v.imageUrl, i),
+        })));
+      } else {
+        setPopularVehicles(staticPopular.map(v => ({ ...v })) as DisplayPopular[]);
+      }
+    }).catch(() => {
+      // On any network error, keep static data
+      setStockVehicles(staticStock as DisplayVehicle[]);
+      setSoldVehicles(staticSold.map(v => ({ ...v })) as DisplaySold[]);
+      setPopularVehicles(staticPopular.map(v => ({ ...v })) as DisplayPopular[]);
+    }).finally(() => setLoading(false));
+  }, []);
 
   // Filter state
   const [search, setSearch] = useState("");
@@ -19,7 +100,7 @@ export default function Inventory() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPrice, setFilterPrice] = useState("all"); 
 
-  const brands = useMemo(() => ["all", ...Array.from(new Set(stockVehicles.map(v => v.make)))], []);
+  const brands = useMemo(() => ["all", ...Array.from(new Set(stockVehicles.map(v => v.make)))], [stockVehicles]);
   
   const filtered = useMemo(() => stockVehicles.filter(v => {
     if (search && !(`${v.make} ${v.model}`.toLowerCase().includes(search.toLowerCase()))) return false;
@@ -31,7 +112,7 @@ export default function Inventory() {
     if (filterPrice === "50-100" && (v.price < 50000 || v.price >= 100000)) return false;
     if (filterPrice === "100+" && v.price < 100000) return false;
     return true;
-  }), [search, filterBrand, filterFuel, filterTransmission, filterStatus, filterPrice]);
+  }), [stockVehicles, search, filterBrand, filterFuel, filterTransmission, filterStatus, filterPrice]);
 
   const clearFilters = () => {
     setSearch("");
@@ -191,7 +272,7 @@ export default function Inventory() {
                   >
                     <div className="aspect-video relative overflow-hidden bg-slate-100">
                       <img 
-                        src={`${import.meta.env.BASE_URL}${car.image}`} 
+                        src={car.image} 
                         alt={`${car.make} ${car.model}`}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
