@@ -1,0 +1,62 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "waHfGqIYVxdkcfIP3Uk2f"
+uri = "file://artifacts/auto-site/public/hero-car.png"
+type = "image"
+title = "Hero background luxury car"
+
+[[generated]]
+id = "z5Smy_8Gkliyg0RF_J8P1"
+uri = "file://artifacts/auto-site/public/port-night.png"
+type = "image"
+title = "About hero port night"
+
+[[generated]]
+id = "V8DPSp7mbp79jg2aEpiKv"
+uri = "file://artifacts/auto-site/public/team-1.png"
+type = "image"
+title = "Team member 1 male"
+
+[[generated]]
+id = "hgnQenX2gAQgi1fj6csmi"
+uri = "file://artifacts/auto-site/public/team-2.png"
+type = "image"
+title = "Team member 2 female"
+
+[[generated]]
+id = "weivEtdyKa-KStmNiSCNP"
+uri = "file://artifacts/auto-site/public/team-3.png"
+type = "image"
+title = "Team member 3 male"
+
+[[generated]]
+id = "mKZEtIP_rwF227gDR4TER"
+uri = "file://artifacts/auto-site/public/team-4.png"
+type = "image"
+title = "Team member 4 female"
+
+[[generated]]
+id = "f5clEQk-78G_t-k4y0-GY"
+uri = "file://artifacts/auto-site/public/vehicle-1.png"
+type = "image"
+title = "Porsche 911 featured"
+
+[[generated]]
+id = "ul_b7xrCZmqZXdSyogcKR"
+uri = "file://artifacts/auto-site/public/vehicle-2.png"
+type = "image"
+title = "BMW M5 featured"
+
+[[generated]]
+id = "RCN2RORQWXqWoQtbo9_Wg"
+uri = "file://artifacts/auto-site/public/vehicle-3.png"
+type = "image"
+title = "Mercedes GLE featured"
+
+[[generated]]
+id = "RWIjQWf8HHmCaqWgXIcK6"
+uri = "file://artifacts/auto-site/public/vehicle-4.png"
+type = "image"
+title = "Toyota Land Cruiser featured"
