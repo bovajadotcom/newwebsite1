@@ -114,7 +114,7 @@ export const translations = {
     "calc.customs": "Customs Rate (%)",
     "calc.total": "Total Estimated Cost",
     // About
-    "about.title": "About AutoImport",
+    "about.title": "About BOVAJA",
     "about.mission": "Our Mission",
     "about.values": "Our Values",
     "about.team": "Our Team",

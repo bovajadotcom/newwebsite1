@@ -28,16 +28,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 shadow-md">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 14l4-8 3 5 2-3 5 6H3z" fill="white" strokeLinejoin="round"/>
-                </svg>
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-white font-bold text-base tracking-tight">AutoImport</span>
-                <span className="text-blue-400 text-[10px] font-medium tracking-widest uppercase">Global</span>
-              </div>
+            <Link href="/" className="flex items-center gap-2 group">
+              <img
+                src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
+                alt="BOVAJA"
+                className="h-8 w-auto brightness-0 invert"
+              />
             </Link>
 
             {/* Desktop Nav */}
@@ -123,16 +119,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="col-span-1 md:col-span-1">
-              <Link href="/" className="flex items-center gap-3 mb-6">
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600 shadow-md">
-                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                    <path d="M3 14l4-8 3 5 2-3 5 6H3z" fill="white" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <div className="flex flex-col leading-none">
-                  <span className="text-white font-bold text-base tracking-tight">AutoImport</span>
-                  <span className="text-blue-400 text-[10px] font-medium tracking-widest uppercase">Global</span>
-                </div>
+              <Link href="/" className="flex items-center gap-2 mb-6">
+                <img
+                  src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
+                  alt="BOVAJA"
+                  className="h-7 w-auto brightness-0 invert"
+                />
               </Link>
               <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                 {t("footer.tagline")}
@@ -171,7 +163,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           
           <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-muted-foreground text-sm">
-              &copy; {new Date().getFullYear()} AutoImport Global. {t("footer.rights")}
+              &copy; {new Date().getFullYear()} BOVAJA. {t("footer.rights")}
             </p>
             <div className="flex gap-6">
               <a href="#" className="text-muted-foreground hover:text-white text-sm">{t("footer.privacy")}</a>
