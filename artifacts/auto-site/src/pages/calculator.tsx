@@ -27,6 +27,7 @@ const SOURCE_COUNTRIES = [
   { code: "PL", name: "Польша",   flag: "🇵🇱", region: "eastern" },
   { code: "LV", name: "Латвия",   flag: "🇱🇻", region: "eastern" },
   { code: "LT", name: "Литва",    flag: "🇱🇹", region: "eastern" },
+  { code: "XX", name: "Не знаю", flag: "🤷", region: "unknown" },
 ];
 
 const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric"];
@@ -140,7 +141,7 @@ function calculateStandardResult(form: FormState, settings: { key: string; value
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
   const source = SOURCE_COUNTRIES.find((c) => c.code === form.sourceCountry);
-  const delivery = source?.region === "western" ? westernDelivery : easternDelivery;
+  const delivery = source?.region === "western" ? westernDelivery : source?.region === "eastern" ? easternDelivery : Math.round((westernDelivery + easternDelivery) / 2);
   const vatKey: Record<string, string> = { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" };
   const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
   const vatRate = getSettingValue(settings, vatKey[form.countryCode] ?? "", fallbacks[form.countryCode] ?? 21);
@@ -281,7 +282,7 @@ export default function Calculator() {
                             ${form.sourceCountry === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
                           <span className="text-xl">{c.flag}</span>
                           <span className="text-xs font-medium leading-tight text-center">{c.name}</span>
-                          <span className="text-xs opacity-60">{c.region === "western" ? "€800" : "€600"}</span>
+                          <span className="text-xs opacity-60">{c.region === "western" ? "€800" : c.region === "eastern" ? "€600" : "€600–800"}</span>
                         </button>
                       ))}
                     </div>
@@ -352,7 +353,7 @@ export default function Calculator() {
                     {[
                       { label: "Стоимость автомобиля", value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
-                      { label: `Доставка (${selectedCountry?.region === "western" ? "Западная" : "Восточная"} Европа)`, value: fmt(standardResult.delivery) },
+                      { label: form.sourceCountry === "XX" ? "Доставка (зависит от страны)" : `Доставка (${selectedCountry?.region === "western" ? "Западная" : "Восточная"} Европа)`, value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
                       { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) },
                     ].map((row) => (
                       <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
@@ -559,7 +560,7 @@ export default function Calculator() {
                     {[
                       { label: "Стоимость авто",    value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
-                      { label: "Доставка",           value: fmt(standardResult.delivery) },
+                      { label: "Доставка",           value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
                       { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) },
                     ].map((row) => (
                       <div key={row.label} className="flex justify-between">
