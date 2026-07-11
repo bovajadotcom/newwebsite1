@@ -146,13 +146,18 @@ export default function Home() {
             {/* ── RIGHT: car image ── */}
             <div className="relative hidden lg:block overflow-hidden">
               <motion.img
-                src={`${import.meta.env.BASE_URL}hero-bmw.jpg`}
-                alt="BMW"
-                initial={{ opacity: 0, x: 40, scale: 1.05 }}
+                src={`${import.meta.env.BASE_URL}hero-car2.jpg`}
+                alt="Car"
+                initial={{ opacity: 0, x: 40, scale: 1.08 }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
                 transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                style={{ maskImage: "linear-gradient(to right, transparent 0%, black 28%)" }}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  objectPosition: "20% center",
+                  maskImage: "linear-gradient(to right, transparent 0%, black 22%)",
+                  transform: "scale(1.18)",
+                  transformOrigin: "30% center",
+                }}
               />
               {/* Blue underglow */}
               <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
