@@ -1,23 +1,29 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calculator as CalcIcon, ChevronRight, ChevronLeft, Send, CheckCircle, Car, MapPin, BarChart3 } from "lucide-react";
+import {
+  Calculator as CalcIcon, ChevronRight, ChevronLeft, Send,
+  CheckCircle, Car, MapPin, BarChart3, AlertTriangle,
+} from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useGetSiteSettings } from "@workspace/api-client-react";
+import belarusConfig from "@/config/customs-belarus.json";
 
 const COUNTRIES = [
-  { code: "PL", name: "Poland", flag: "🇵🇱", region: "eastern" },
-  { code: "LT", name: "Lithuania", flag: "🇱🇹", region: "eastern" },
-  { code: "LV", name: "Latvia", flag: "🇱🇻", region: "eastern" },
-  { code: "EE", name: "Estonia", flag: "🇪🇪", region: "eastern" },
-  { code: "DE", name: "Germany", flag: "🇩🇪", region: "western" },
+  { code: "PL", name: "Poland",         flag: "🇵🇱", region: "eastern" },
+  { code: "LT", name: "Lithuania",      flag: "🇱🇹", region: "eastern" },
+  { code: "LV", name: "Latvia",         flag: "🇱🇻", region: "eastern" },
+  { code: "EE", name: "Estonia",        flag: "🇪🇪", region: "eastern" },
+  { code: "DE", name: "Germany",        flag: "🇩🇪", region: "western" },
   { code: "CZ", name: "Czech Republic", flag: "🇨🇿", region: "eastern" },
-  { code: "BY", name: "Belarus", flag: "🇧🇾", region: "belarus" },
+  { code: "BY", name: "Беларусь",       flag: "🇧🇾", region: "belarus" },
 ];
 
 const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric"];
 const TRANSMISSION_TYPES = ["Automatic", "Manual"];
+const BY_BENEFIT_TYPES = ["Инвалидность", "Многодетная семья", "Ветеран", "Другая льгота"];
 
 type Step = 1 | 2 | 3 | 4;
+type ByPersonType = "individual" | "benefit" | "company" | "";
 
 interface FormState {
   vehiclePrice: number;
@@ -26,20 +32,33 @@ interface FormState {
   year: number;
   fuel: string;
   transmission: string;
+  engineVolume: number;
   countryCode: string;
+  byPersonType: ByPersonType;
+  byBenefitType: string;
+  byHasDocument: boolean;
   name: string;
   phone: string;
   email: string;
 }
 
-interface CalcResult {
+interface StandardResult {
   vehiclePrice: number;
   vatOrCustoms: number;
   vatOrCustomsLabel: string;
   delivery: number;
-  registrationDocs: number;
   serviceFee: number;
   total: number;
+}
+
+interface ByResult {
+  customsDuty: number;
+  discountedDuty: number;
+  utilizationFee: number;
+  processingFee: number;
+  vat: number;
+  total: number;
+  ageLabel: string;
 }
 
 function getSettingValue(settings: { key: string; value: string }[], key: string, fallback: number): number {
@@ -47,44 +66,90 @@ function getSettingValue(settings: { key: string; value: string }[], key: string
   return s ? Number(s.value) || fallback : fallback;
 }
 
-function calculateCost(form: FormState, settings: { key: string; value: string }[]): CalcResult {
+function getCarAgeCategory(year: number): "under3" | "3to5" | "over5" {
+  const age = new Date().getFullYear() - year;
+  if (age < 3) return "under3";
+  if (age <= 5) return "3to5";
+  return "over5";
+}
+
+function calcByDutyIndividual(price: number, engineVolume: number, ageCategory: "under3" | "3to5" | "over5"): number {
+  if (ageCategory === "under3") {
+    const tiers = belarusConfig.individual.age_under_3.tiers;
+    const tier = tiers.find((t) => t.max_price === null || price <= t.max_price)!;
+    const byPercent = Math.round(price * tier.percent / 100);
+    const byVolume = Math.round(engineVolume * tier.rate_per_cc);
+    return Math.max(byPercent, byVolume);
+  }
+  const tiers = ageCategory === "3to5"
+    ? belarusConfig.individual.age_3_to_5.volume_tiers
+    : belarusConfig.individual.age_over_5.volume_tiers;
+  const tier = tiers.find((t) => t.max_cc === null || engineVolume <= t.max_cc)!;
+  return Math.round(engineVolume * tier.rate_per_cc);
+}
+
+function calculateBelarusResult(form: FormState): ByResult {
+  const ageCategory = getCarAgeCategory(form.year);
+  const isUnder3 = ageCategory === "under3";
+  const utilizationFee = isUnder3
+    ? belarusConfig.utilization_fee.under_3_years
+    : belarusConfig.utilization_fee.over_3_years;
+  const processingFee = belarusConfig.customs_processing_fee;
+
+  let rawDuty = calcByDutyIndividual(form.vehiclePrice, form.engineVolume, ageCategory);
+  let discountedDuty = rawDuty;
+  let vat = 0;
+
+  if (form.byPersonType === "benefit") {
+    const discount = belarusConfig.discount_percent;
+    discountedDuty = Math.round(rawDuty * (1 - discount / 100));
+  } else if (form.byPersonType === "company") {
+    const dutyPercent = belarusConfig.company.customs_duty_percent;
+    rawDuty = Math.round(form.vehiclePrice * dutyPercent / 100);
+    discountedDuty = rawDuty;
+    vat = Math.round((form.vehiclePrice + rawDuty) * belarusConfig.company.vat_percent / 100);
+  }
+
+  const ageLabels: Record<string, string> = {
+    under3: "до 3 лет",
+    "3to5": "от 3 до 5 лет",
+    over5: "старше 5 лет",
+  };
+
+  const total = discountedDuty + utilizationFee + processingFee + vat;
+  return { customsDuty: rawDuty, discountedDuty, utilizationFee, processingFee, vat, total, ageLabel: ageLabels[ageCategory] };
+}
+
+function calculateStandardResult(form: FormState, settings: { key: string; value: string }[]): StandardResult {
   const serviceFee = getSettingValue(settings, "calculator.service_fee", 500);
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
-
   const country = COUNTRIES.find((c) => c.code === form.countryCode);
   const delivery = country?.region === "western" ? westernDelivery : easternDelivery;
 
-  let vatOrCustoms = 0;
-  let vatOrCustomsLabel = "VAT";
-  let registrationDocs = 0;
+  const vatKey: Record<string, string> = {
+    PL: "calculator.vat.poland", LT: "calculator.vat.lithuania",
+    LV: "calculator.vat.latvia", EE: "calculator.vat.estonia",
+    DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic",
+  };
+  const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
+  const vatRate = getSettingValue(settings, vatKey[form.countryCode] ?? "", fallbacks[form.countryCode] ?? 21);
+  const vatOrCustoms = Math.round(form.vehiclePrice * vatRate / 100);
 
-  if (form.countryCode === "BY") {
-    const customsRate = getSettingValue(settings, "calculator.belarus.customs_rate", 15);
-    const exciseRate = getSettingValue(settings, "calculator.belarus.excise_rate", 5);
-    vatOrCustoms = Math.round(form.vehiclePrice * (customsRate + exciseRate) / 100);
-    vatOrCustomsLabel = "Customs & Excise";
-    registrationDocs = getSettingValue(settings, "calculator.belarus.registration_docs", 150);
-  } else {
-    const vatKey: Record<string, string> = {
-      PL: "calculator.vat.poland",
-      LT: "calculator.vat.lithuania",
-      LV: "calculator.vat.latvia",
-      EE: "calculator.vat.estonia",
-      DE: "calculator.vat.germany",
-      CZ: "calculator.vat.czech_republic",
-    };
-    const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
-    const vatRate = getSettingValue(settings, vatKey[form.countryCode] ?? "", fallbacks[form.countryCode] ?? 21);
-    vatOrCustoms = Math.round(form.vehiclePrice * vatRate / 100);
-    vatOrCustomsLabel = `VAT (${vatRate}%)`;
-  }
-
-  const total = form.vehiclePrice + vatOrCustoms + delivery + registrationDocs + serviceFee;
-  return { vehiclePrice: form.vehiclePrice, vatOrCustoms, vatOrCustomsLabel, delivery, registrationDocs, serviceFee, total };
+  return {
+    vehiclePrice: form.vehiclePrice,
+    vatOrCustoms,
+    vatOrCustomsLabel: `VAT (${vatRate}%)`,
+    delivery,
+    serviceFee,
+    total: form.vehiclePrice + vatOrCustoms + delivery + serviceFee,
+  };
 }
 
 const fmt = (n: number) => `€${n.toLocaleString("en-EU")}`;
+
+const INPUT_CLS = "w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors";
+const SELECT_CLS = "w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors";
 
 export default function Calculator() {
   const { t } = useLanguage();
@@ -92,48 +157,63 @@ export default function Calculator() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormState>({
     vehiclePrice: 25000,
-    make: "",
-    model: "",
+    make: "", model: "",
     year: new Date().getFullYear() - 2,
     fuel: "Petrol",
     transmission: "Automatic",
+    engineVolume: 1500,
     countryCode: "PL",
-    name: "",
-    phone: "",
-    email: "",
+    byPersonType: "",
+    byBenefitType: BY_BENEFIT_TYPES[0],
+    byHasDocument: true,
+    name: "", phone: "", email: "",
   });
 
   const { data: rawSettings } = useGetSiteSettings();
   const settings = rawSettings ?? [];
 
-  const result = useMemo(() => calculateCost(form, settings), [form, settings]);
+  const isBelarus = form.countryCode === "BY";
   const selectedCountry = COUNTRIES.find((c) => c.code === form.countryCode);
 
-  const update = (key: keyof FormState, value: string | number) =>
+  const standardResult = useMemo(
+    () => (!isBelarus ? calculateStandardResult(form, settings) : null),
+    [form, settings, isBelarus],
+  );
+
+  const byResult = useMemo(
+    () => (isBelarus && form.byPersonType ? calculateBelarusResult(form) : null),
+    [form, isBelarus],
+  );
+
+  const update = (key: keyof FormState, value: string | number | boolean) =>
     setForm((f) => ({ ...f, [key]: value }));
 
   const steps = [
-    { icon: Car, label: "Vehicle" },
-    { icon: MapPin, label: "Destination" },
-    { icon: BarChart3, label: "Calculation" },
-    { icon: Send, label: "Get Quote" },
+    { icon: Car, label: "Автомобиль" },
+    { icon: MapPin, label: "Направление" },
+    { icon: BarChart3, label: "Расчёт" },
+    { icon: Send, label: "Заявка" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const totalStr = isBelarus && byResult ? fmt(byResult.total) : standardResult ? fmt(standardResult.total) : "";
     fetch("/api/contact", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({
-        name: form.name,
-        phone: form.phone,
-        email: form.email,
-        message: `Calculator quote request for ${form.make} ${form.model} (${form.year}) — ${selectedCountry?.name}. Estimated total: ${fmt(result.total)}`,
+        name: form.name, phone: form.phone, email: form.email,
+        message: `Запрос расчёта: ${form.make} ${form.model} (${form.year}), ${selectedCountry?.name}. Итог: ${totalStr}`,
         service: "calculator-quote",
       }),
     }).catch(() => {});
     setSubmitted(true);
+  };
+
+  const resetForm = () => {
+    setStep(1); setSubmitted(false);
+    setForm({ vehiclePrice: 25000, make: "", model: "", year: new Date().getFullYear() - 2, fuel: "Petrol", transmission: "Automatic", engineVolume: 1500, countryCode: "PL", byPersonType: "", byBenefitType: BY_BENEFIT_TYPES[0], byHasDocument: true, name: "", phone: "", email: "" });
   };
 
   return (
@@ -148,12 +228,12 @@ export default function Calculator() {
           <p className="text-xl text-muted-foreground max-w-2xl">{t("calc.sub")}</p>
         </motion.div>
 
-        {/* Progress Steps */}
+        {/* Progress */}
         <div className="flex items-center gap-2 mb-10">
           {steps.map((s, i) => {
-            const stepNum = (i + 1) as Step;
-            const active = step === stepNum;
-            const done = step > stepNum;
+            const num = (i + 1) as Step;
+            const active = step === num;
+            const done = step > num;
             const Icon = s.icon;
             return (
               <div key={i} className="flex items-center gap-2 flex-1 last:flex-none">
@@ -164,52 +244,59 @@ export default function Calculator() {
                   </div>
                   <span className="hidden sm:block text-sm font-medium">{s.label}</span>
                 </div>
-                {i < steps.length - 1 && <div className={`flex-1 h-px mx-2 transition-all ${done ? "bg-green-400/50" : "bg-border/30"}`} />}
+                {i < steps.length - 1 && (
+                  <div className={`flex-1 h-px mx-2 transition-all ${done ? "bg-green-400/50" : "bg-border/30"}`} />
+                )}
               </div>
             );
           })}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Panel — Form Steps */}
+          {/* Left — Steps */}
           <div className="lg:col-span-7">
             <AnimatePresence mode="wait">
-              {/* Step 1 — Vehicle Details */}
+
+              {/* ── STEP 1: Vehicle + Price ── */}
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
-                  className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Vehicle Details</h3>
+                  className="p-8 rounded-xl bg-card border border-border/50 space-y-5">
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Данные автомобиля и стоимость</h3>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Make</label>
-                      <input value={form.make} onChange={(e) => update("make", e.target.value)} placeholder="e.g. BMW"
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Марка <span className="text-xs opacity-50">(опционально)</span></label>
+                      <input value={form.make} onChange={(e) => update("make", e.target.value)} placeholder="например BMW" className={INPUT_CLS} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Model</label>
-                      <input value={form.model} onChange={(e) => update("model", e.target.value)} placeholder="e.g. X5"
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Модель <span className="text-xs opacity-50">(опционально)</span></label>
+                      <input value={form.model} onChange={(e) => update("model", e.target.value)} placeholder="например X5" className={INPUT_CLS} />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Year</label>
-                      <input type="number" value={form.year} onChange={(e) => update("year", Number(e.target.value))} min={2000} max={new Date().getFullYear()}
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Год выпуска</label>
+                      <input type="number" value={form.year} onChange={(e) => update("year", Number(e.target.value))}
+                        min={2000} max={new Date().getFullYear()} className={INPUT_CLS} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Fuel</label>
-                      <select value={form.fuel} onChange={(e) => update("fuel", e.target.value)}
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors">
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Тип топлива</label>
+                      <select value={form.fuel} onChange={(e) => update("fuel", e.target.value)} className={SELECT_CLS}>
                         {FUEL_TYPES.map((f) => <option key={f}>{f}</option>)}
                       </select>
                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Transmission</label>
-                      <select value={form.transmission} onChange={(e) => update("transmission", e.target.value)}
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors">
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Объём двигателя (см³)</label>
+                      <input type="number" value={form.engineVolume} onChange={(e) => update("engineVolume", Number(e.target.value) || 0)}
+                        min={0} max={9000} step={100} className={INPUT_CLS} />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Коробка передач</label>
+                      <select value={form.transmission} onChange={(e) => update("transmission", e.target.value)} className={SELECT_CLS}>
                         {TRANSMISSION_TYPES.map((t) => <option key={t}>{t}</option>)}
                       </select>
                     </div>
@@ -226,211 +313,348 @@ export default function Calculator() {
 
                   <button onClick={() => setStep(2)}
                     className="w-full py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
-                    Continue <ChevronRight size={18} />
+                    Далее <ChevronRight size={18} />
                   </button>
                 </motion.div>
               )}
 
-              {/* Step 2 — Destination Country */}
+              {/* ── STEP 2: Destination Country ── */}
               {step === 2 && (
                 <motion.div key="step2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Select Destination Country</h3>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Куда прибудет автомобиль?</h3>
 
                   <div className="grid grid-cols-2 gap-3">
-                    {COUNTRIES.map((c) => (
-                      <button key={c.code} onClick={() => update("countryCode", c.code)}
-                        className={`p-4 rounded-lg border-2 flex items-center gap-3 transition-all text-left
-                          ${form.countryCode === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
-                        <span className="text-2xl">{c.flag}</span>
-                        <div>
-                          <div className="font-semibold text-sm">{c.name}</div>
-                          <div className="text-xs opacity-70">
-                            {c.region === "belarus" ? "Customs & Excise" : `VAT ${getSettingValue(settings, { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" }[c.code] ?? "", { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 }[c.code] ?? 21)}%`}
+                    {COUNTRIES.map((c) => {
+                      const vatKey: Record<string, string> = { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" };
+                      const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
+                      const subtitle = c.region === "belarus"
+                        ? "Таможенный расчёт"
+                        : `НДС ${getSettingValue(settings, vatKey[c.code] ?? "", fallbacks[c.code] ?? 21)}%`;
+                      return (
+                        <button key={c.code} onClick={() => update("countryCode", c.code)}
+                          className={`p-4 rounded-lg border-2 flex items-center gap-3 transition-all text-left
+                            ${form.countryCode === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                          <span className="text-2xl">{c.flag}</span>
+                          <div>
+                            <div className="font-semibold text-sm">{c.name}</div>
+                            <div className="text-xs opacity-70">{subtitle}</div>
                           </div>
-                        </div>
-                      </button>
-                    ))}
+                        </button>
+                      );
+                    })}
                   </div>
-
-                  {form.countryCode === "BY" && (
-                    <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 text-sm text-amber-300">
-                      <strong>Belarus note:</strong> Calculation uses customs + excise duties instead of VAT. Registration document fee is included.
-                    </div>
-                  )}
 
                   <div className="flex gap-3">
                     <button onClick={() => setStep(1)}
                       className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
-                      <ChevronLeft size={18} /> Back
+                      <ChevronLeft size={18} /> Назад
                     </button>
-                    <button onClick={() => setStep(3)}
+                    <button onClick={() => { update("byPersonType", ""); setStep(3); }}
                       className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
-                      Calculate <ChevronRight size={18} />
+                      Рассчитать <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
               )}
 
-              {/* Step 3 — Results */}
-              {step === 3 && (
-                <motion.div key="step3" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
+              {/* ── STEP 3A: Standard Calculation (non-Belarus) ── */}
+              {step === 3 && !isBelarus && standardResult && (
+                <motion.div key="step3-std" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">
-                    Cost Breakdown {form.make && `— ${form.make} ${form.model}`}
+                    Расчёт стоимости {form.make && `— ${form.make} ${form.model}`}
                   </h3>
 
                   <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/20 border border-border/30">
                     <span className="text-3xl">{selectedCountry?.flag}</span>
                     <div>
-                      <div className="text-white font-semibold">Destination: {selectedCountry?.name}</div>
+                      <div className="text-white font-semibold">Назначение: {selectedCountry?.name}</div>
                       <div className="text-muted-foreground text-sm">
-                        {selectedCountry?.region === "western" ? "Western Europe delivery" : selectedCountry?.region === "belarus" ? "Customs & excise calculation" : "Eastern Europe delivery"}
+                        {selectedCountry?.region === "western" ? "Западная Европа" : "Восточная Европа"} — доставка {fmt(standardResult.delivery)}
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-3 text-sm">
                     {[
-                      { label: "Vehicle Price", value: fmt(result.vehiclePrice) },
-                      { label: result.vatOrCustomsLabel, value: fmt(result.vatOrCustoms) },
-                      { label: `Delivery (${selectedCountry?.region === "western" ? "Western" : "Eastern"} Europe)`, value: fmt(result.delivery) },
-                      ...(result.registrationDocs > 0 ? [{ label: "Registration Documents", value: fmt(result.registrationDocs) }] : []),
-                      { label: "Company Service Fee", value: fmt(result.serviceFee) },
+                      { label: "Стоимость автомобиля", value: fmt(standardResult.vehiclePrice) },
+                      { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
+                      { label: `Доставка (${selectedCountry?.region === "western" ? "Западная" : "Восточная"} Европа)`, value: fmt(standardResult.delivery) },
+                      { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) },
                     ].map((row) => (
                       <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
-                        <span className="text-muted-foreground">{row.label}</span>
-                        <span className="text-white font-medium">{row.value}</span>
+                        <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
+                        <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
                       </div>
                     ))}
                   </div>
 
                   <div className="pt-2 flex justify-between items-end">
                     <span className="text-lg font-bold text-white">{t("calc.total")}</span>
-                    <span className="text-4xl font-bold text-primary">{fmt(result.total)}</span>
+                    <span className="text-4xl font-bold text-primary">{fmt(standardResult.total)}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">*Estimate only. Final price may vary based on vehicle condition, current exchange rates, and local regulations.</p>
+                  <p className="text-xs text-muted-foreground">*Предварительный расчёт. Итоговая стоимость подтверждается после оформления заказа.</p>
 
                   <div className="flex gap-3">
                     <button onClick={() => setStep(2)}
                       className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
-                      <ChevronLeft size={18} /> Back
+                      <ChevronLeft size={18} /> Назад
                     </button>
                     <button onClick={() => setStep(4)}
                       className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                      Receive Detailed Calculation <ChevronRight size={18} />
+                      Получить расчёт <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
               )}
 
-              {/* Step 4 — Lead Form */}
+              {/* ── STEP 3B: Belarus Customs Calculator ── */}
+              {step === 3 && isBelarus && (
+                <motion.div key="step3-by" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
+                  className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">🇧🇾</span>
+                    <h3 className="text-xl font-bold text-white">Расчёт растаможки — Беларусь</h3>
+                  </div>
+
+                  {/* Person Type */}
+                  <div>
+                    <p className="text-sm font-medium text-muted-foreground mb-3">Кто ввозит автомобиль?</p>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { key: "individual" as ByPersonType, label: "Физическое лицо" },
+                        { key: "benefit"    as ByPersonType, label: "Льготная категория" },
+                        { key: "company"    as ByPersonType, label: "Юридическое лицо" },
+                      ].map((opt) => (
+                        <button key={opt.key} onClick={() => update("byPersonType", opt.key)}
+                          className={`py-3 px-2 rounded-lg border-2 text-sm font-medium transition-all text-center
+                            ${form.byPersonType === opt.key ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Benefit-specific fields */}
+                  {form.byPersonType === "benefit" && (
+                    <div className="space-y-4 p-4 rounded-lg bg-secondary/20 border border-border/30">
+                      <div>
+                        <label className="block text-sm font-medium text-muted-foreground mb-2">Тип льготы</label>
+                        <select value={form.byBenefitType} onChange={(e) => update("byBenefitType", e.target.value)} className={SELECT_CLS}>
+                          {BY_BENEFIT_TYPES.map((b) => <option key={b}>{b}</option>)}
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-muted-foreground mb-2">Документ подтверждения</label>
+                        <div className="flex gap-3">
+                          {[{ v: true, l: "Да" }, { v: false, l: "Нет" }].map(({ v, l }) => (
+                            <button key={l} onClick={() => update("byHasDocument", v)}
+                              className={`flex-1 py-2 rounded border-2 text-sm font-medium transition-all
+                                ${form.byHasDocument === v ? "border-primary bg-primary/15 text-white" : "border-border/50 text-muted-foreground hover:text-white"}`}>
+                              {l}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Calculation result */}
+                  {form.byPersonType && byResult && (
+                    <div className="space-y-3 text-sm pt-2">
+                      <div className="text-xs text-muted-foreground mb-1 font-medium uppercase tracking-wide">
+                        Возраст авто: {byResult.ageLabel}
+                      </div>
+
+                      {[
+                        { label: "Стоимость автомобиля", value: fmt(form.vehiclePrice) },
+                        form.byPersonType === "benefit" && byResult.customsDuty !== byResult.discountedDuty
+                          ? { label: `Таможенная пошлина (скидка ${belarusConfig.discount_percent}%)`, value: fmt(byResult.discountedDuty), accent: true }
+                          : { label: "Таможенная пошлина", value: fmt(byResult.discountedDuty), accent: true },
+                        form.byPersonType === "company"
+                          ? { label: `НДС ${belarusConfig.company.vat_percent}%`, value: fmt(byResult.vat) }
+                          : null,
+                        { label: "Утилизационный сбор", value: fmt(byResult.utilizationFee) },
+                        { label: "Таможенное оформление", value: fmt(byResult.processingFee) },
+                      ].filter(Boolean).map((row) => row && (
+                        <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
+                          <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
+                          <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
+                        </div>
+                      ))}
+
+                      <div className="pt-3 flex justify-between items-end">
+                        <span className="text-base font-bold text-white">Итого растаможка</span>
+                        <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
+                      </div>
+
+                      <div className="mt-4 flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                        <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
+                        <p className="text-xs text-amber-300 leading-relaxed">
+                          Расчет является предварительным. Итоговая сумма зависит от действующих ставок законодательства Республики Беларусь.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex gap-3">
+                    <button onClick={() => setStep(2)}
+                      className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                      <ChevronLeft size={18} /> Назад
+                    </button>
+                    <button onClick={() => setStep(4)} disabled={!form.byPersonType}
+                      className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] disabled:opacity-40 disabled:cursor-not-allowed">
+                      Получить расчёт <ChevronRight size={18} />
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* ── STEP 4: Lead Form ── */}
               {step === 4 && !submitted && (
                 <motion.div key="step4" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Receive Detailed Calculation</h3>
-                  <p className="text-muted-foreground text-sm">Leave your contact details and our specialist will send you a full cost breakdown with precise figures.</p>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Получить детальный расчёт</h3>
+                  <p className="text-muted-foreground text-sm">Оставьте контакты — наш специалист пришлёт подробный расчёт с точными цифрами.</p>
 
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Your Name *</label>
-                      <input value={form.name} onChange={(e) => update("name", e.target.value)} required placeholder="Full name"
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Имя *</label>
+                      <input value={form.name} onChange={(e) => update("name", e.target.value)} required placeholder="Ваше имя" className={INPUT_CLS} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Phone *</label>
-                      <input value={form.phone} onChange={(e) => update("phone", e.target.value)} required placeholder="+48 XXX XXX XXX"
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">Телефон *</label>
+                      <input value={form.phone} onChange={(e) => update("phone", e.target.value)} required placeholder="+375 XX XXX XX XX" className={INPUT_CLS} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Email *</label>
-                      <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="your@email.com"
-                        className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors" />
+                      <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="ваш@email.com" className={INPUT_CLS} />
                     </div>
 
                     <div className="flex gap-3 pt-2">
                       <button type="button" onClick={() => setStep(3)}
                         className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
-                        <ChevronLeft size={18} /> Back
+                        <ChevronLeft size={18} /> Назад
                       </button>
                       <button type="submit"
                         className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                        <Send size={18} /> Receive Detailed Calculation
+                        <Send size={18} /> Отправить заявку
                       </button>
                     </div>
                   </form>
                 </motion.div>
               )}
 
-              {/* Submitted */}
+              {/* ── Success ── */}
               {step === 4 && submitted && (
                 <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                   className="p-10 rounded-xl bg-card border border-green-500/30 text-center space-y-4">
                   <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
                     <CheckCircle className="text-green-400" size={32} />
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Request Sent!</h3>
-                  <p className="text-muted-foreground">Thank you, {form.name}. Our specialist will send you a detailed calculation within 2 hours during business hours.</p>
-                  <button onClick={() => { setStep(1); setSubmitted(false); setForm({ vehiclePrice: 25000, make: "", model: "", year: new Date().getFullYear() - 2, fuel: "Petrol", transmission: "Automatic", countryCode: "PL", name: "", phone: "", email: "" }); }}
+                  <h3 className="text-2xl font-bold text-white">Заявка отправлена!</h3>
+                  <p className="text-muted-foreground">Спасибо, {form.name}. Специалист свяжется с вами в течение 2 часов в рабочее время.</p>
+                  <button onClick={resetForm}
                     className="mt-4 px-6 py-3 bg-primary text-white rounded font-semibold hover:bg-primary/90 transition-all">
-                    New Calculation
+                    Новый расчёт
                   </button>
                 </motion.div>
               )}
+
             </AnimatePresence>
           </div>
 
-          {/* Right Panel — Live Results */}
+          {/* Right — Live Summary */}
           <div className="lg:col-span-5">
-            <div className="sticky top-28 p-8 rounded-xl bg-secondary/30 border border-primary/30 shadow-[0_0_30px_rgba(59,130,246,0.1)]">
-              <div className="flex items-center gap-2 mb-6">
+            <div className="sticky top-28 p-7 rounded-xl bg-secondary/30 border border-primary/30 shadow-[0_0_30px_rgba(59,130,246,0.1)]">
+              <div className="flex items-center gap-2 mb-5">
                 <span className="text-2xl">{selectedCountry?.flag}</span>
-                <h3 className="text-lg font-bold text-white">Live Estimate</h3>
+                <h3 className="text-lg font-bold text-white">
+                  {isBelarus ? "Растаможка" : "Предварительный расчёт"}
+                </h3>
                 {(form.make || form.model) && (
-                  <span className="ml-auto text-xs text-muted-foreground">{form.make} {form.model}</span>
+                  <span className="ml-auto text-xs text-muted-foreground truncate">{form.make} {form.model}</span>
                 )}
               </div>
 
-              <div className="space-y-3 text-sm mb-6">
-                {[
-                  { label: "Vehicle Price", value: fmt(result.vehiclePrice) },
-                  { label: result.vatOrCustomsLabel, value: fmt(result.vatOrCustoms), accent: true },
-                  { label: "Delivery", value: fmt(result.delivery) },
-                  ...(result.registrationDocs > 0 ? [{ label: "Reg. Documents", value: fmt(result.registrationDocs) }] : []),
-                  { label: "Service Fee", value: fmt(result.serviceFee) },
-                ].map((row) => (
-                  <div key={row.label} className="flex justify-between">
-                    <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
-                    <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
+              {!isBelarus && standardResult && (
+                <>
+                  <div className="space-y-3 text-sm mb-5">
+                    {[
+                      { label: "Стоимость авто", value: fmt(standardResult.vehiclePrice) },
+                      { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
+                      { label: "Доставка", value: fmt(standardResult.delivery) },
+                      { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) },
+                    ].map((row) => (
+                      <div key={row.label} className="flex justify-between">
+                        <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
+                        <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                  <div className="border-t border-border/50 pt-4">
+                    <div className="flex justify-between items-end">
+                      <span className="text-base font-bold text-white">Итого</span>
+                      <span className="text-3xl font-bold text-primary">{fmt(standardResult.total)}</span>
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">*Предварительный расчёт</p>
+                </>
+              )}
 
-              <div className="border-t border-border/50 pt-4 mb-2">
-                <div className="flex justify-between items-end">
-                  <span className="text-base font-bold text-white">Estimated Total</span>
-                  <span className="text-3xl font-bold text-primary">{fmt(result.total)}</span>
+              {isBelarus && (
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Стоимость авто</span>
+                    <span className="text-white font-medium">{fmt(form.vehiclePrice)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Год / объём</span>
+                    <span className="text-white font-medium">{form.year} / {form.engineVolume} см³</span>
+                  </div>
+                  {byResult && form.byPersonType && (
+                    <>
+                      <div className="border-t border-border/30 pt-3 flex justify-between">
+                        <span className="text-muted-foreground">Таможенная пошлина</span>
+                        <span className="text-amber-200 font-medium">{fmt(byResult.discountedDuty)}</span>
+                      </div>
+                      {byResult.vat > 0 && (
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">НДС</span>
+                          <span className="text-white font-medium">{fmt(byResult.vat)}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Утилизационный сбор</span>
+                        <span className="text-white font-medium">{fmt(byResult.utilizationFee)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Оформление</span>
+                        <span className="text-white font-medium">{fmt(byResult.processingFee)}</span>
+                      </div>
+                      <div className="border-t border-border/50 pt-3 flex justify-between items-end">
+                        <span className="text-base font-bold text-white">Итого</span>
+                        <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
+                      </div>
+                    </>
+                  )}
+                  {!form.byPersonType && (
+                    <p className="text-xs text-muted-foreground pt-2">Выберите тип импортёра для расчёта</p>
+                  )}
+                  <div className="mt-3 flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                    <AlertTriangle size={14} className="text-amber-400 mt-0.5 shrink-0" />
+                    <p className="text-xs text-amber-300 leading-relaxed">
+                      Расчет является предварительным. Итоговая сумма зависит от действующих ставок законодательства Республики Беларусь.
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <p className="text-xs text-muted-foreground mb-6">*Estimate only — final price confirmed after order</p>
+              )}
 
-              <div className="space-y-2">
-                {step < 3 && (
-                  <button onClick={() => setStep(step < 2 ? 2 : 3)}
-                    className="w-full py-3 bg-primary/20 text-primary border border-primary/30 font-semibold rounded text-sm hover:bg-primary/30 transition-all">
-                    Calculate Now
-                  </button>
-                )}
-                <button onClick={() => setStep(4)}
-                  className="w-full py-3 bg-primary text-white font-bold rounded text-sm hover:bg-primary/90 transition-all shadow-[0_0_10px_rgba(59,130,246,0.2)]">
-                  Receive Detailed Calculation
-                </button>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-border/30 text-xs text-muted-foreground space-y-1">
-                <p>✓ Transparent pricing — no hidden fees</p>
-                <p>✓ All taxes and duties included</p>
-                <p>✓ Free consultation with specialist</p>
+              <div className="mt-5 space-y-2 border-t border-border/30 pt-4">
+                <p className="text-xs text-muted-foreground">✓ Прозрачное ценообразование</p>
+                <p className="text-xs text-muted-foreground">✓ Все налоги включены в расчёт</p>
+                <p className="text-xs text-muted-foreground">✓ Бесплатная консультация специалиста</p>
               </div>
             </div>
           </div>

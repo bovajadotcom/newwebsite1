@@ -1,0 +1,44 @@
+{
+  "utilization_fee": {
+    "under_3_years": 1460,
+    "over_3_years": 5200
+  },
+  "customs_processing_fee": 150,
+  "discount_percent": 50,
+  "individual": {
+    "age_under_3": {
+      "tiers": [
+        { "max_price": 8500,   "percent": 54, "rate_per_cc": 2.5 },
+        { "max_price": 16700,  "percent": 48, "rate_per_cc": 3.5 },
+        { "max_price": 42300,  "percent": 48, "rate_per_cc": 5.5 },
+        { "max_price": 84500,  "percent": 48, "rate_per_cc": 7.5 },
+        { "max_price": 169000, "percent": 48, "rate_per_cc": 15  },
+        { "max_price": null,   "percent": 48, "rate_per_cc": 20  }
+      ]
+    },
+    "age_3_to_5": {
+      "volume_tiers": [
+        { "max_cc": 1000, "rate_per_cc": 1.5 },
+        { "max_cc": 1500, "rate_per_cc": 1.7 },
+        { "max_cc": 1800, "rate_per_cc": 2.5 },
+        { "max_cc": 2300, "rate_per_cc": 2.7 },
+        { "max_cc": 3000, "rate_per_cc": 3.0 },
+        { "max_cc": null, "rate_per_cc": 3.6 }
+      ]
+    },
+    "age_over_5": {
+      "volume_tiers": [
+        { "max_cc": 1000, "rate_per_cc": 3.0 },
+        { "max_cc": 1500, "rate_per_cc": 3.2 },
+        { "max_cc": 1800, "rate_per_cc": 3.5 },
+        { "max_cc": 2300, "rate_per_cc": 4.8 },
+        { "max_cc": 3000, "rate_per_cc": 5.0 },
+        { "max_cc": null, "rate_per_cc": 5.7 }
+      ]
+    }
+  },
+  "company": {
+    "customs_duty_percent": 15,
+    "vat_percent": 20
+  }
+}
