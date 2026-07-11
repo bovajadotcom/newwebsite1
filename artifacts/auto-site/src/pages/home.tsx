@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare } from "lucide-react";
+import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 
@@ -67,165 +67,124 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* HERO SECTION — luxury fullscreen */}
-      <section className="relative h-screen min-h-[640px] flex flex-col overflow-hidden bg-black">
-
-        {/* Background: subtle grain texture overlay */}
-        <div className="absolute inset-0 z-0 opacity-[0.04]"
-          style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E\")", backgroundSize: "200px 200px" }}
-        />
-
-        {/* Large BMW image — right-aligned, dramatic */}
+      {/* ══ HERO CARD — FleetAuto style ══ */}
+      <div className="px-3 pb-3">
         <motion.div
-          initial={{ opacity: 0, x: 80, scale: 1.04 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          className="absolute inset-0 z-0"
-        >
-          <img
-            src={`${import.meta.env.BASE_URL}hero-bmw.jpg`}
-            alt="BMW"
-            className="absolute right-0 top-0 h-full w-[72%] object-cover object-center"
-            style={{ maskImage: "linear-gradient(to left, black 55%, transparent 100%)" }}
-          />
-          {/* Blue glow under car */}
-          <div className="absolute bottom-0 right-[5%] w-[55%] h-40 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse at center, rgba(37,99,235,0.18) 0%, transparent 70%)" }}
-          />
-        </motion.div>
-
-        {/* Left gradient — separates text from image */}
-        <div className="absolute inset-0 z-10 pointer-events-none"
-          style={{ background: "linear-gradient(to right, #000 22%, rgba(0,0,0,0.72) 48%, rgba(0,0,0,0.18) 72%, transparent 88%)" }}
-        />
-
-        {/* Thin horizontal accent line */}
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 1.1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute top-[72px] left-0 right-0 h-px z-20 origin-left"
-          style={{ background: "linear-gradient(to right, transparent, rgba(37,99,235,0.5) 30%, rgba(37,99,235,0.15) 70%, transparent)" }}
-        />
-
-        {/* Content */}
-        <div className="relative z-20 flex flex-col justify-center h-full px-8 md:px-16 lg:px-24 pt-4">
-
-          {/* Label */}
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex items-center gap-3 mb-8"
-          >
-            <div className="w-6 h-px bg-blue-500" />
-            <span className="text-blue-400 text-xs font-semibold tracking-[0.25em] uppercase">{t("home.hero.badge")}</span>
-          </motion.div>
-
-          {/* Main heading */}
-          <div className="overflow-hidden mb-2">
-            <motion.h1
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.85, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[clamp(3rem,7vw,6.5rem)] font-black text-white leading-[0.95] tracking-[-0.03em]"
-            >
-              {t("home.hero.headline1")}
-            </motion.h1>
-          </div>
-          <div className="overflow-hidden mb-8">
-            <motion.h1
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.85, delay: 0.62, ease: [0.16, 1, 0.3, 1] }}
-              className="text-[clamp(3rem,7vw,6.5rem)] font-black leading-[0.95] tracking-[-0.03em]"
-              style={{ WebkitTextStroke: "1px rgba(255,255,255,0.25)", color: "transparent" }}
-            >
-              {t("home.hero.headline2")}
-            </motion.h1>
-          </div>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.8 }}
-            className="text-slate-400 text-base md:text-lg max-w-md leading-relaxed mb-10"
-          >
-            {t("home.hero.sub")}
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.95 }}
-            className="flex flex-col sm:flex-row gap-3"
-          >
-            <Link
-              href="/calculator"
-              className="group inline-flex items-center gap-3 px-7 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold tracking-wide uppercase transition-all duration-300 shadow-[0_0_24px_rgba(37,99,235,0.35)] hover:shadow-[0_0_36px_rgba(37,99,235,0.55)]"
-            >
-              {t("home.hero.cta1")}
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/inventory"
-              className="inline-flex items-center gap-3 px-7 py-4 border border-white/15 text-white text-sm font-semibold tracking-wide uppercase hover:border-white/35 hover:bg-white/5 transition-all duration-300"
-            >
-              {t("home.hero.cta2")}
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Bottom bar with stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 1.1 }}
-          className="relative z-20 mt-auto border-t border-white/8"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-3xl overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0B1830 0%, #0E2040 55%, #091528 100%)" }}
         >
-          <div className="px-8 md:px-16 lg:px-24 py-5 flex items-center gap-10 md:gap-16">
-            {[
-              { value: "500+", label: "Автомобилей доставлено" },
-              { value: "12", label: "Стран присутствия" },
-              { value: "8 лет", label: "На рынке" },
-              { value: "98%", label: "Довольных клиентов" },
-            ].map((s, i) => (
-              <div key={i} className="hidden sm:block">
-                <div className="text-white font-bold text-xl tracking-tight">{s.value}</div>
-                <div className="text-slate-500 text-xs tracking-wide mt-0.5">{s.label}</div>
-              </div>
-            ))}
-            {/* Scroll indicator */}
-            <div className="ml-auto flex items-center gap-2 text-slate-600 text-xs tracking-widest uppercase">
+          {/* subtle radial glow */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: "radial-gradient(ellipse 70% 80% at 70% 50%, rgba(37,99,235,0.12) 0%, transparent 70%)" }} />
+
+          <div className="relative flex flex-col lg:grid lg:grid-cols-[54%_46%] min-h-[480px] lg:min-h-[520px]">
+
+            {/* ── LEFT: text content ── */}
+            <div className="flex flex-col justify-center px-8 md:px-12 pt-10 pb-6 lg:py-12 z-10">
+
+              {/* Badge pill */}
               <motion.div
-                animate={{ y: [0, 5, 0] }}
-                transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25, duration: 0.5 }}
+                className="inline-flex items-center self-start mb-6"
               >
-                <ChevronDown size={14} />
+                <span className="px-3 py-1 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-wide">
+                  {t("home.hero.badge")}
+                </span>
               </motion.div>
-              Scroll
+
+              {/* Heading with blue highlight */}
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="text-3xl md:text-4xl lg:text-[2.6rem] xl:text-5xl font-black text-white leading-[1.12] tracking-tight mb-5"
+              >
+                {t("home.hero.headline1")}{" "}
+                <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug">
+                  {t("home.hero.headline2")}
+                </span>
+              </motion.h1>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.6 }}
+                className="text-slate-400 text-[15px] leading-relaxed max-w-sm mb-8"
+              >
+                {t("home.hero.sub")}
+              </motion.p>
+
+              {/* CTA buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.62, duration: 0.6 }}
+                className="flex flex-wrap gap-3"
+              >
+                <Link
+                  href="/calculator"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-2xl text-[14px] transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] flex items-center gap-2 group"
+                >
+                  {t("home.hero.cta1")}
+                  <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+                <Link
+                  href="/inventory"
+                  className="px-6 py-3 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.12] text-white font-semibold rounded-2xl text-[14px] transition-all"
+                >
+                  {t("home.hero.cta2")}
+                </Link>
+              </motion.div>
+            </div>
+
+            {/* ── RIGHT: car image ── */}
+            <div className="relative hidden lg:block overflow-hidden">
+              <motion.img
+                src={`${import.meta.env.BASE_URL}hero-bmw.jpg`}
+                alt="BMW"
+                initial={{ opacity: 0, x: 40, scale: 1.05 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0 w-full h-full object-cover object-center"
+                style={{ maskImage: "linear-gradient(to right, transparent 0%, black 28%)" }}
+              />
+              {/* Blue underglow */}
+              <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+                style={{ background: "linear-gradient(to top, rgba(9,21,40,0.9) 0%, transparent 100%)" }} />
             </div>
           </div>
-        </motion.div>
 
-        {/* Vertical model label — right edge */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.3 }}
-          className="absolute right-6 top-1/2 -translate-y-1/2 z-20 hidden lg:flex flex-col items-center gap-3"
-        >
-          <div className="w-px h-16 bg-gradient-to-b from-transparent to-white/20" />
-          <span className="text-white/20 text-[10px] tracking-[0.3em] uppercase font-medium"
-            style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}>
-            Premium Import
-          </span>
-          <div className="w-px h-16 bg-gradient-to-t from-transparent to-white/20" />
+          {/* ── FEATURES ROW ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+            className="border-t border-white/[0.08] px-8 md:px-12 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0"
+          >
+            {[
+              { icon: Award,       text: "Аукционная цена без наценок",          sub: "Прямой доступ к торгам" },
+              { icon: Truck,       text: "Доставка 30–60 дней под ключ",         sub: "США, Европа, Япония" },
+              { icon: BadgeCheck,  text: "Юридическая чистота",                   sub: "Проверка до покупки" },
+            ].map(({ icon: Icon, text, sub }, i) => (
+              <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
+                <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon size={16} className="text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-white text-[13px] font-semibold leading-tight">{text}</p>
+                  <p className="text-slate-500 text-[12px] mt-0.5">{sub}</p>
+                </div>
+              </div>
+            ))}
+          </motion.div>
         </motion.div>
-
-      </section>
+      </div>
 
       {/* AUCTION PARTNERS */}
       <section className="py-12 border-y border-slate-200 bg-slate-50 overflow-hidden">

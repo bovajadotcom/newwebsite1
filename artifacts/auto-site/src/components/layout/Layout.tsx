@@ -1,18 +1,19 @@
 import { Link, useLocation } from "wouter";
-import { Menu, X, ChevronRight, Phone, MapPin, Clock, Heart } from "lucide-react";
+import { Menu, X, ChevronRight, Heart } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n";
+import { Phone } from "lucide-react";
 
 const navLinks = [
-  { labelKey: "nav.home",      href: "/" },
-  { labelKey: "nav.inventory", href: "/inventory" },
-  { labelKey: "nav.popular",   href: "/popular" },
-  { labelKey: "nav.services",  href: "/services" },
-  { labelKey: "nav.pricing",   href: "/pricing" },
-  { labelKey: "nav.calculator",href: "/calculator" },
-  { labelKey: "nav.about",     href: "/about" },
-  { labelKey: "nav.contact",   href: "/contact" },
+  { labelKey: "nav.home",       href: "/" },
+  { labelKey: "nav.inventory",  href: "/inventory" },
+  { labelKey: "nav.popular",    href: "/popular" },
+  { labelKey: "nav.services",   href: "/services" },
+  { labelKey: "nav.pricing",    href: "/pricing" },
+  { labelKey: "nav.calculator", href: "/calculator" },
+  { labelKey: "nav.about",      href: "/about" },
+  { labelKey: "nav.contact",    href: "/contact" },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -21,158 +22,130 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const { lang, setLang, t } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-primary/30">
+    <div className="min-h-screen bg-[#07111E] text-foreground flex flex-col font-sans selection:bg-primary/30">
 
-      {/* ══════════════ FIXED TWO-TIER HEADER ══════════════ */}
-      <header className="fixed top-0 w-full z-50">
+      {/* ══ FLOATING HEADER CARD ══ */}
+      <header className="fixed top-3 left-3 right-3 z-50">
+        <div className="bg-[#0D1929] rounded-2xl h-[56px] flex items-center justify-between px-4 sm:px-5
+                        shadow-[0_4px_32px_rgba(0,0,0,0.6)] border border-white/[0.06]">
 
-        {/* ── TOP INFO BAR ── */}
-        <div className="bg-white border-b border-gray-100">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-[56px]">
+          {/* Logo */}
+          <Link href="/" className="flex items-center shrink-0 mr-6">
+            <img
+              src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
+              alt="BOVAJA"
+              className="h-8 w-auto brightness-0 invert"
+            />
+          </Link>
 
-              {/* Left: Logo + description */}
-              <div className="flex items-center gap-4">
-                <Link href="/" className="flex items-center shrink-0">
-                  <img
-                    src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
-                    alt="BOVAJA"
-                    className="h-9 w-auto"
-                  />
+          {/* Desktop nav — centered */}
+          <nav className="hidden xl:flex items-center gap-0.5 flex-1">
+            {navLinks.map((link) => {
+              const active = location === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`px-3 py-1.5 rounded-xl text-[13px] font-medium transition-all whitespace-nowrap ${
+                    active
+                      ? "text-white bg-white/10"
+                      : "text-slate-400 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {t(link.labelKey)}
                 </Link>
-                <div className="hidden sm:block border-l border-gray-200 pl-4">
-                  <p className="text-[13px] font-semibold text-gray-800 leading-tight">
-                    Импорт авто из США, Европы и Японии
-                  </p>
-                  <p className="text-[11px] text-gray-400 flex items-center gap-1 mt-0.5">
-                    <Clock size={10} className="text-gray-400" />
-                    Работаем ежедневно с 09:00 до 21:00
-                  </p>
-                </div>
-              </div>
+              );
+            })}
+          </nav>
 
-              {/* Right: Address hint + phone */}
-              <div className="flex items-center gap-6">
-                <div className="hidden lg:flex flex-col items-end">
-                  <span className="text-[10px] text-gray-400 uppercase tracking-wide flex items-center gap-1">
-                    <MapPin size={10} /> Онлайн-консультация
-                  </span>
-                  <a
-                    href="tel:+48000000000"
-                    className="flex items-center gap-2 text-gray-900 hover:text-blue-600 transition-colors group mt-0.5"
-                  >
-                    <span className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-700 transition-colors">
-                      <Phone size={11} className="text-white" />
-                    </span>
-                    <span className="font-bold text-[18px] tracking-tight">+48 000 000 000</span>
-                  </a>
-                </div>
-
-                {/* Language switcher */}
-                <div className="flex items-center gap-0.5 bg-gray-100 rounded-md p-0.5">
-                  {(['en','pl','ru'] as const).map(l => (
-                    <button
-                      key={l}
-                      onClick={() => setLang(l)}
-                      className={`px-2.5 py-1 rounded text-[11px] font-bold uppercase transition-all ${
-                        lang === l
-                          ? 'bg-blue-600 text-white shadow-sm'
-                          : 'text-gray-500 hover:text-gray-900'
-                      }`}
-                    >
-                      {l}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Mobile burger */}
+          {/* Right: lang + heart + CTA */}
+          <div className="flex items-center gap-2 ml-4">
+            {/* Language switcher */}
+            <div className="hidden sm:flex items-center gap-0.5 bg-white/[0.06] rounded-lg p-0.5">
+              {(["en", "pl", "ru"] as const).map((l) => (
                 <button
-                  className="xl:hidden p-1.5 text-gray-600 hover:text-gray-900 rounded"
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  aria-label="Menu"
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`px-2 py-1 rounded-md text-[11px] font-bold uppercase transition-all ${
+                    lang === l ? "bg-blue-600 text-white" : "text-slate-500 hover:text-white"
+                  }`}
                 >
-                  {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+                  {l}
                 </button>
-              </div>
+              ))}
             </div>
-          </div>
-        </div>
 
-        {/* ── BOTTOM NAV BAR ── */}
-        <div className="hidden xl:block bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)]">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-[52px]">
+            {/* Heart / wishlist */}
+            <Link
+              href="/inventory"
+              className="hidden sm:flex w-9 h-9 rounded-xl border border-white/10 items-center justify-center text-slate-500 hover:text-red-400 hover:border-red-400/30 transition-all"
+              title="Избранное"
+            >
+              <Heart size={15} />
+            </Link>
 
-              {/* Nav links */}
-              <nav className="flex items-center gap-1">
-                {navLinks.map((link) => {
-                  const active = location === link.href;
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`px-3.5 py-1.5 rounded-md text-[13.5px] font-medium transition-all whitespace-nowrap ${
-                        active
-                          ? "bg-blue-50 text-blue-600"
-                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                      }`}
-                    >
-                      {t(link.labelKey)}
-                    </Link>
-                  );
-                })}
-              </nav>
+            {/* CTA */}
+            <Link
+              href="/contact"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-[13px] font-semibold rounded-xl transition-all shadow-[0_0_16px_rgba(37,99,235,0.35)] hover:shadow-[0_0_24px_rgba(37,99,235,0.5)] whitespace-nowrap"
+            >
+              Заказать звонок
+            </Link>
 
-              {/* Right: wishlist + CTA */}
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/inventory"
-                  className="w-9 h-9 flex items-center justify-center rounded-full border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-200 transition-all"
-                  title="Избранное"
-                >
-                  <Heart size={16} />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[13px] font-semibold rounded-md transition-all shadow-sm whitespace-nowrap"
-                >
-                  Заказать звонок
-                </Link>
-              </div>
-            </div>
+            {/* Mobile burger */}
+            <button
+              className="xl:hidden p-2 text-slate-400 hover:text-white rounded-xl hover:bg-white/5 transition-all"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
       </header>
 
-      {/* ══════════════ MOBILE MENU ══════════════ */}
+      {/* ══ MOBILE MENU ══ */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            className="fixed inset-0 z-40 bg-white pt-[56px] px-6 xl:hidden overflow-y-auto"
+            className="fixed inset-0 z-40 bg-[#07111E]/98 backdrop-blur-xl pt-[80px] px-6 xl:hidden overflow-y-auto"
           >
-            <nav className="flex flex-col divide-y divide-gray-100 pb-24 mt-4">
+            <div className="flex items-center gap-1 bg-white/[0.06] rounded-xl p-1 mb-6">
+              {(["en", "pl", "ru"] as const).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`flex-1 py-2 rounded-lg text-sm font-bold uppercase transition-all ${
+                    lang === l ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  {l}
+                </button>
+              ))}
+            </div>
+
+            <nav className="flex flex-col divide-y divide-white/[0.06] pb-28">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between py-4 text-lg font-medium ${
-                    location === link.href ? "text-blue-600" : "text-gray-800"
+                  className={`flex items-center justify-between py-4 text-lg font-medium transition-colors ${
+                    location === link.href ? "text-blue-400" : "text-slate-200"
                   }`}
                 >
                   {t(link.labelKey)}
-                  <ChevronRight size={18} className="text-gray-400" />
+                  <ChevronRight size={18} className="text-slate-600" />
                 </Link>
               ))}
             </nav>
 
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-100">
+            <div className="fixed bottom-0 left-0 right-0 p-4 bg-[#07111E] border-t border-white/[0.06]">
               <a
                 href="tel:+48000000000"
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-blue-600 text-white font-semibold rounded-lg"
+                className="flex items-center justify-center gap-2 w-full py-4 bg-blue-600 text-white font-semibold rounded-2xl"
               >
                 <Phone size={16} /> +48 000 000 000
               </a>
@@ -181,16 +154,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         )}
       </AnimatePresence>
 
-      {/* ══════════════ MAIN CONTENT ══════════════ */}
-      <main className="flex-1 pt-[108px] flex flex-col">
+      {/* ══ MAIN CONTENT ══ */}
+      <main className="flex-1 pt-[80px] flex flex-col">
         {children}
       </main>
 
-      {/* ══════════════ FOOTER ══════════════ */}
-      <footer className="bg-[#050508] border-t border-border/50 py-16">
+      {/* ══ FOOTER ══ */}
+      <footer className="bg-[#050508] border-t border-white/[0.06] py-16 mt-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div className="col-span-1 md:col-span-1">
+            <div>
               <Link href="/" className="flex items-center gap-2 mb-6">
                 <img
                   src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
@@ -198,7 +171,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   className="h-7 w-auto brightness-0 invert"
                 />
               </Link>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 {t("footer.tagline")}
               </p>
             </div>
@@ -231,7 +204,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-border/30 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="mt-16 pt-8 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-muted-foreground text-sm">
               &copy; {new Date().getFullYear()} BOVAJA. {t("footer.rights")}
             </p>
