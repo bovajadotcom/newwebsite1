@@ -145,23 +145,36 @@ export default function Home() {
 
             {/* ── RIGHT: car image ── */}
             <div className="relative hidden lg:block overflow-hidden">
+
+              {/* Left-side fade → blends into card bg */}
+              <div className="absolute inset-0 z-10 pointer-events-none"
+                style={{ background: "linear-gradient(to right, #0C1B35 0%, rgba(12,27,53,0.3) 28%, transparent 55%)" }} />
+
+              {/* Car — no bg, large, right half bleeds off card edge */}
               <motion.img
-                src={`${import.meta.env.BASE_URL}hero-car2.jpg`}
+                src={`${import.meta.env.BASE_URL}hero-car-nobg.png`}
                 alt="Car"
-                initial={{ opacity: 0, x: 40, scale: 1.08 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ opacity: 0, x: 60 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
                 style={{
-                  objectPosition: "20% center",
-                  maskImage: "linear-gradient(to right, transparent 0%, black 22%)",
-                  transform: "scale(1.18)",
-                  transformOrigin: "30% center",
+                  position: "absolute",
+                  width: "210%",
+                  height: "auto",
+                  bottom: "-10%",
+                  left: "-10%",
+                  filter: "brightness(0.58) contrast(1.12) saturate(0.8)",
+                  pointerEvents: "none",
                 }}
               />
-              {/* Blue underglow */}
-              <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-                style={{ background: "linear-gradient(to top, rgba(9,21,40,0.9) 0%, transparent 100%)" }} />
+
+              {/* Bottom fade — solid zone reaches above the plate */}
+              <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
+                style={{
+                  height: "70%",
+                  background: "linear-gradient(to top, #091528 0%, #091528 50%, rgba(9,21,40,0.55) 72%, transparent 100%)",
+                }}
+              />
             </div>
           </div>
 
