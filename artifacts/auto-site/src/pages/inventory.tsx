@@ -72,7 +72,6 @@ export default function Inventory() {
           </motion.div>
         </div>
       </section>
-
       {/* Filters Sticky Bar */}
       <section className="sticky top-20 z-40 bg-slate-100 border-b border-slate-200 py-4 shadow-sm">
         <div className="container mx-auto px-4">
@@ -150,7 +149,6 @@ export default function Inventory() {
           </div>
         </div>
       </section>
-
       {/* In Stock Grid */}
       <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4">
@@ -208,11 +206,7 @@ export default function Inventory() {
                       </div>
                       
                       <div className="absolute top-4 right-4">
-                        <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md border ${
-                          car.status === 'available' ? 'bg-blue-600 border-blue-600 text-white' : 
-                          car.status === 'reserved' ? 'bg-amber-500 border-amber-500 text-white' : 
-                          'bg-slate-500 border-slate-500 text-white'
-                        }`}>
+                        <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md border bg-blue-600 border-blue-600 text-white border-t-[#8a8a8a] border-r-[#8a8a8a] border-b-[#8a8a8a] border-l-[#8a8a8a]">
                           {t(`inventory.status.${car.status}`)}
                         </span>
                       </div>
@@ -256,7 +250,6 @@ export default function Inventory() {
           </AnimatePresence>
         </div>
       </section>
-
       {/* Sold Gallery */}
       <section className="py-24 bg-card/30 border-y border-border/50 overflow-hidden">
         <div className="container mx-auto px-4">
@@ -306,7 +299,6 @@ export default function Inventory() {
           </div>
         </div>
       </section>
-
       {/* Popular Sourcing Models */}
       <section className="py-24">
         <div className="container mx-auto px-4">
@@ -362,7 +354,6 @@ export default function Inventory() {
           </div>
         </div>
       </section>
-
       {/* CTA */}
       <section className="py-16 bg-primary/10 border-t border-primary/20">
         <div className="container mx-auto px-4 text-center max-w-3xl">
