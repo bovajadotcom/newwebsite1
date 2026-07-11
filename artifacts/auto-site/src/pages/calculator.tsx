@@ -57,6 +57,7 @@ interface ByResult {
   utilizationFee: number;
   processingFee: number;
   vat: number;
+  customsTotal: number;
   total: number;
   ageLabel: string;
 }
@@ -112,7 +113,8 @@ function calculateBelarusResult(form: FormState): ByResult {
   const ageLabels: Record<string, string> = { under3: "до 3 лет", "3to5": "от 3 до 5 лет", over5: "старше 5 лет" };
   return {
     customsDuty: rawDuty, discountedDuty, utilizationFee, processingFee, vat,
-    total: discountedDuty + utilizationFee + processingFee + vat,
+    customsTotal: discountedDuty + utilizationFee + processingFee + vat,
+    total: form.vehiclePrice + discountedDuty + utilizationFee + processingFee + vat,
     ageLabel: ageLabels[ageCategory],
   };
 }
@@ -442,8 +444,12 @@ export default function Calculator() {
                           <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
                         </div>
                       ))}
-                      <div className="pt-3 flex justify-between items-end">
-                        <span className="text-base font-bold text-white">Итого растаможка</span>
+                      <div className="pt-3 flex justify-between items-center border-t border-border/30">
+                        <span className="text-sm text-muted-foreground">Итого растаможка</span>
+                        <span className="text-lg font-semibold text-amber-200">{fmt(byResult.customsTotal)}</span>
+                      </div>
+                      <div className="flex justify-between items-end pt-1">
+                        <span className="text-base font-bold text-white">Полная стоимость авто</span>
                         <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
                       </div>
                       <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
@@ -584,8 +590,12 @@ export default function Calculator() {
                           <span className="text-white font-medium">{fmt(byResult.processingFee)}</span>
                         </div>
                       </div>
-                      <div className="border-t border-border/50 pt-3 flex justify-between items-end">
-                        <span className="text-base font-bold text-white">Итого</span>
+                      <div className="border-t border-border/30 pt-2 flex justify-between">
+                        <span className="text-muted-foreground text-xs">Итого растаможка</span>
+                        <span className="text-amber-200 font-medium text-sm">{fmt(byResult.customsTotal)}</span>
+                      </div>
+                      <div className="border-t border-border/50 pt-2 flex justify-between items-end">
+                        <span className="text-base font-bold text-white">Полная стоимость</span>
                         <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
                       </div>
                     </>
