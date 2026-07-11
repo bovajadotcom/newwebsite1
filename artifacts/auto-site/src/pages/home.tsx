@@ -115,6 +115,123 @@ export default function Home() {
         </div>
       </section>
 
+      {/* EUROPEAN CARS */}
+      <section className="py-20 relative overflow-hidden" style={{ background: "linear-gradient(to bottom, #07080f 0%, #0c1525 50%, #07080f 100%)" }}>
+        <style>{`
+          @keyframes road-dash {
+            from { stroke-dashoffset: 0; }
+            to   { stroke-dashoffset: -80; }
+          }
+        `}</style>
+
+        {/* EU flag watermark */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" aria-hidden>
+          <svg width="700" height="700" viewBox="0 0 200 200" style={{ opacity: 0.04 }}>
+            {Array.from({ length: 12 }).map((_, i) => {
+              const a = (i * 30 - 90) * Math.PI / 180;
+              return (
+                <text key={i} x={100 + 76 * Math.cos(a)} y={100 + 76 * Math.sin(a)}
+                  textAnchor="middle" dominantBaseline="middle" fill="#FFD700" fontSize="14" fontFamily="serif">
+                  ★
+                </text>
+              );
+            })}
+          </svg>
+        </div>
+
+        {/* Animated road */}
+        <div className="absolute bottom-0 left-0 right-0 overflow-hidden" style={{ height: "3px" }}>
+          <svg width="100%" height="3" preserveAspectRatio="none">
+            <line x1="0" y1="1.5" x2="10000" y2="1.5" stroke="#1e3a5f" strokeWidth="1"
+              strokeDasharray="40 40" style={{ animation: "road-dash 1.2s linear infinite" }} />
+          </svg>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div {...fadeIn} className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-semibold tracking-wider uppercase mb-4">
+              <span className="text-base">🇪🇺</span> European Origin
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Direct from Europe</h2>
+            <p className="text-muted-foreground">Premium vehicles sourced from authorized dealers across the EU</p>
+          </motion.div>
+
+          <div className="space-y-5 max-w-4xl mx-auto">
+            {([
+              { brand: "Renault",    model: "Kadjar",    country: "🇫🇷 France",  origin: "Paris",    price: "€24,900" },
+              { brand: "Peugeot",   model: "508 SW",    country: "🇫🇷 France",  origin: "Lyon",     price: "€31,500" },
+              { brand: "Volvo",     model: "XC60",      country: "🇸🇪 Sweden",  origin: "Göteborg", price: "€48,200" },
+              { brand: "Volkswagen",model: "Tiguan",    country: "🇩🇪 Germany", origin: "Wolfsburg",price: "€38,700" },
+              { brand: "BMW",       model: "5 Series",  country: "🇩🇪 Germany", origin: "Munich",   price: "€55,400" },
+            ] as const).map((car, i) => (
+              <motion.div
+                key={i}
+                initial={{ x: 220, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.75, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                className="flex items-center gap-6 p-5 rounded-xl border border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-blue-500/20 transition-all duration-300 group"
+              >
+                {/* Car SVG silhouette */}
+                <div className="flex-shrink-0 w-40 md:w-52">
+                  <svg viewBox="0 0 220 85" fill="none" className="w-full">
+                    {/* Body */}
+                    <path
+                      d="M18 62 L18 47 Q20 36 38 28 L72 16 Q92 11 118 11 L148 11 Q170 11 185 22 L198 36 Q202 44 202 54 L202 62"
+                      stroke="#3b82f6" strokeWidth="1.8" fill="rgba(37,99,235,0.07)"
+                      className="group-hover:fill-[rgba(37,99,235,0.13)] transition-all duration-300"
+                    />
+                    {/* Windshield + roof windows */}
+                    <path
+                      d="M42 28 L68 14 L118 14 L148 14 L180 28"
+                      stroke="#60a5fa" strokeWidth="1.2" fill="rgba(96,165,250,0.1)"
+                    />
+                    <line x1="108" y1="13" x2="112" y2="28" stroke="#3b82f6" strokeWidth="0.8" opacity="0.5" />
+                    {/* Undercarriage */}
+                    <line x1="18" y1="62" x2="202" y2="62" stroke="#1e3a5f" strokeWidth="1.5" />
+                    {/* Front wheel */}
+                    <circle cx="60" cy="66" r="13" stroke="#3b82f6" strokeWidth="1.8" fill="#070c18" />
+                    <circle cx="60" cy="66" r="5" stroke="#60a5fa" strokeWidth="1" fill="#0d1628" />
+                    <circle cx="60" cy="66" r="1.5" fill="#3b82f6" />
+                    {/* Rear wheel */}
+                    <circle cx="162" cy="66" r="13" stroke="#3b82f6" strokeWidth="1.8" fill="#070c18" />
+                    <circle cx="162" cy="66" r="5" stroke="#60a5fa" strokeWidth="1" fill="#0d1628" />
+                    <circle cx="162" cy="66" r="1.5" fill="#3b82f6" />
+                    {/* Headlight */}
+                    <ellipse cx="200" cy="44" rx="4" ry="5" fill="rgba(147,197,253,0.25)" stroke="#93c5fd" strokeWidth="0.8" />
+                    {/* Speed lines */}
+                    <line x1="0" y1="45" x2="14" y2="45" stroke="#1e3a5f" strokeWidth="1" strokeDasharray="3 4" className="group-hover:opacity-100 opacity-0 transition-opacity duration-300" />
+                    <line x1="0" y1="53" x2="10" y2="53" stroke="#1e3a5f" strokeWidth="1" strokeDasharray="2 4" className="group-hover:opacity-100 opacity-0 transition-opacity duration-300" />
+                  </svg>
+                </div>
+
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-baseline gap-2 mb-1">
+                    <span className="text-white font-bold text-lg">{car.brand}</span>
+                    <span className="text-blue-400 font-medium">{car.model}</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                    <span>{car.country}</span>
+                    <span className="text-border">·</span>
+                    <span>{car.origin}</span>
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="flex-shrink-0 text-right">
+                  <div className="text-xs text-muted-foreground mb-0.5 uppercase tracking-wider">от</div>
+                  <div className="text-white font-bold text-lg">{car.price}</div>
+                </div>
+
+                {/* Arrow */}
+                <ArrowRight size={16} className="flex-shrink-0 text-muted-foreground group-hover:text-blue-400 group-hover:translate-x-1 transition-all duration-300" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* AUCTION PARTNERS */}
       <section className="py-12 border-y border-slate-200 bg-slate-50 overflow-hidden">
         <style>{`
