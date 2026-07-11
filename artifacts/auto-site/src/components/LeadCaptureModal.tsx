@@ -6,10 +6,10 @@ const STORAGE_KEY = "bovaja_subscribed";
 const DELAY_MS = 30_000;
 
 const CHANNELS = [
-  { id: "email",     label: "Email",     icon: Mail,          hint: "your@email.com" },
   { id: "telegram",  label: "Telegram",  icon: Send,          hint: "+7 999 000 00 00 или @username" },
-  { id: "instagram", label: "Instagram", icon: MessageCircle, hint: "@yourusername" },
-  { id: "sms",       label: "SMS",       icon: Phone,         hint: "+7 999 000 00 00" },
+  { id: "whatsapp",  label: "WhatsApp",  icon: MessageCircle, hint: "+7 999 000 00 00" },
+  { id: "viber",     label: "Viber",     icon: Phone,         hint: "+7 999 000 00 00" },
+  { id: "email",     label: "Email",     icon: Mail,          hint: "your@email.com" },
 ];
 
 interface LeadCaptureModalProps {
