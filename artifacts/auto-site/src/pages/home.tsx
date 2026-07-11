@@ -1,8 +1,38 @@
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
+
+function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
+  to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const duration = 1800;
+    const steps = 60;
+    const increment = to / steps;
+    let current = 0;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      current = Math.min(current + increment, to);
+      setCount(parseFloat(current.toFixed(decimals)));
+      if (step >= steps) clearInterval(timer);
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [isInView, to, decimals]);
+
+  const formatted = separator
+    ? Math.floor(count).toLocaleString("en-US")
+    : decimals > 0 ? count.toFixed(decimals) : Math.floor(count).toString();
+
+  return <span ref={ref}>{prefix}{formatted}{suffix}</span>;
+}
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -107,14 +137,16 @@ export default function Home() {
             className="grid grid-cols-2 md:grid-cols-5 gap-8 border-y border-border/50 py-16"
           >
             {[
-              { value: "5,000+", label: t("stats.delivered") },
-              { value: "98%", label: t("stats.clients") },
-              { value: "12", label: t("stats.experience") },
-              { value: "40+", label: t("stats.countries") },
-              { value: "$2.4B", label: t("stats.value") }
+              { to: 5000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered") },
+              { to: 98,   prefix: "", suffix: "%", separator: "",  decimals: 0, label: t("stats.clients") },
+              { to: 12,   prefix: "", suffix: "",  separator: "",  decimals: 0, label: t("stats.experience") },
+              { to: 40,   prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.countries") },
+              { to: 2.4,  prefix: "$", suffix: "B", separator: "", decimals: 1, label: t("stats.value") },
             ].map((stat, i) => (
               <motion.div key={i} variants={fadeIn} className="text-center">
-                <h3 className="text-4xl md:text-5xl font-bold text-white mb-2">{stat.value}</h3>
+                <h3 className="text-4xl md:text-5xl font-bold text-white mb-2">
+                  <CountUp to={stat.to} prefix={stat.prefix} suffix={stat.suffix} separator={stat.separator} decimals={stat.decimals} />
+                </h3>
                 <p className="text-sm text-muted-foreground uppercase tracking-wider">{stat.label}</p>
               </motion.div>
             ))}
