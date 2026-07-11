@@ -116,12 +116,31 @@ export default function Home() {
       </section>
 
       {/* AUCTION PARTNERS */}
-      <section className="py-12 border-y border-slate-200 bg-slate-50">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-slate-500 uppercase tracking-widest mb-8">{t("section.partners")}</p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 hover:opacity-100 transition-all duration-500">
-            {["Copart", "IAAI", "Manheim", "USS Tokyo", "TAA", "JU Group", "Adesa", "Autorola"].map(partner => (
-              <span key={partner} className="text-xl md:text-2xl font-bold tracking-tighter text-slate-800 hover:text-blue-600 transition-colors">{partner}</span>
+      <section className="py-12 border-y border-slate-200 bg-slate-50 overflow-hidden">
+        <style>{`
+          @keyframes marquee {
+            from { transform: translateX(0); }
+            to   { transform: translateX(-50%); }
+          }
+          .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 28s linear infinite;
+          }
+          .marquee-track:hover { animation-play-state: paused; }
+        `}</style>
+        <p className="text-center text-sm text-slate-500 uppercase tracking-widest mb-8">{t("section.partners")}</p>
+        <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+          <div className="marquee-track">
+            {[...["Copart","IAAI","Manheim","USS Tokyo","TAA","JU Group","Adesa","Autorola"],
+              ...["Copart","IAAI","Manheim","USS Tokyo","TAA","JU Group","Adesa","Autorola"]
+            ].map((partner, i) => (
+              <span
+                key={i}
+                className="text-xl md:text-2xl font-bold tracking-tighter text-slate-800 hover:text-blue-600 transition-colors cursor-default mx-10 md:mx-14 select-none"
+              >
+                {partner}
+              </span>
             ))}
           </div>
         </div>
