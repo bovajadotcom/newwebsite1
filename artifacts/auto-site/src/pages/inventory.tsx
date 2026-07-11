@@ -1,0 +1,393 @@
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
+import { 
+  Search, SlidersHorizontal, MapPin, Gauge, Fuel, 
+  Settings2, X, ArrowRight, MessageSquare, Calculator
+} from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
+import { stockVehicles, soldVehicles, popularVehicles } from "@/data/inventory";
+
+export default function Inventory() {
+  const { t } = useLanguage();
+
+  // Filter state
+  const [search, setSearch] = useState("");
+  const [filterBrand, setFilterBrand] = useState("all");
+  const [filterFuel, setFilterFuel] = useState("all");
+  const [filterTransmission, setFilterTransmission] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterPrice, setFilterPrice] = useState("all"); 
+
+  const brands = useMemo(() => ["all", ...Array.from(new Set(stockVehicles.map(v => v.make)))], []);
+  
+  const filtered = useMemo(() => stockVehicles.filter(v => {
+    if (search && !(`${v.make} ${v.model}`.toLowerCase().includes(search.toLowerCase()))) return false;
+    if (filterBrand !== "all" && v.make !== filterBrand) return false;
+    if (filterFuel !== "all" && v.fuel.toLowerCase() !== filterFuel.toLowerCase()) return false;
+    if (filterTransmission !== "all" && v.transmission.toLowerCase() !== filterTransmission.toLowerCase()) return false;
+    if (filterStatus !== "all" && v.status !== filterStatus) return false;
+    if (filterPrice === "0-50" && v.price >= 50000) return false;
+    if (filterPrice === "50-100" && (v.price < 50000 || v.price >= 100000)) return false;
+    if (filterPrice === "100+" && v.price < 100000) return false;
+    return true;
+  }), [search, filterBrand, filterFuel, filterTransmission, filterStatus, filterPrice]);
+
+  const clearFilters = () => {
+    setSearch("");
+    setFilterBrand("all");
+    setFilterFuel("all");
+    setFilterTransmission("all");
+    setFilterStatus("all");
+    setFilterPrice("all");
+  };
+
+  const hasActiveFilters = search || filterBrand !== "all" || filterFuel !== "all" || filterTransmission !== "all" || filterStatus !== "all" || filterPrice !== "all";
+
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+    transition: { duration: 0.5 }
+  };
+
+  return (
+    <div className="w-full pb-24">
+      {/* Hero */}
+      <section className="relative h-[40vh] flex items-center justify-center overflow-hidden bg-card">
+        <div className="absolute inset-0 z-0 opacity-20">
+          <img 
+            src={`${import.meta.env.BASE_URL}hero-car.png`} 
+            alt="Inventory" 
+            className="w-full h-full object-cover grayscale mix-blend-screen"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
+        </div>
+        <div className="container mx-auto px-4 relative z-10 text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{t("inventory.title")}</h1>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+              {t("home.hero.sub")}
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Filters Sticky Bar */}
+      <section className="sticky top-20 z-40 bg-background/95 backdrop-blur-xl border-b border-border/50 py-4 shadow-sm">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+              <input 
+                type="text" 
+                placeholder={t("inventory.filter.model") + "..."}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-input border border-border rounded-lg pl-10 pr-4 py-2.5 text-white focus:border-primary outline-none text-sm"
+              />
+            </div>
+            
+            <div className="flex flex-wrap lg:flex-nowrap gap-2 items-center">
+              <select 
+                value={filterBrand} 
+                onChange={(e) => setFilterBrand(e.target.value)}
+                className="bg-input border border-border rounded-lg px-3 py-2.5 text-white text-sm outline-none"
+              >
+                {brands.map(b => (
+                  <option key={b} value={b}>{b === "all" ? t("inventory.filter.brand") : b}</option>
+                ))}
+              </select>
+
+              <select 
+                value={filterFuel} 
+                onChange={(e) => setFilterFuel(e.target.value)}
+                className="bg-input border border-border rounded-lg px-3 py-2.5 text-white text-sm outline-none"
+              >
+                <option value="all">{t("inventory.filter.fuel")}</option>
+                <option value="petrol">Petrol</option>
+                <option value="diesel">Diesel</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="electric">Electric</option>
+              </select>
+
+              <select 
+                value={filterStatus} 
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="bg-input border border-border rounded-lg px-3 py-2.5 text-white text-sm outline-none"
+              >
+                <option value="all">{t("inventory.filter.status")}</option>
+                <option value="available">{t("inventory.filter.available")}</option>
+                <option value="sold">{t("inventory.filter.sold")}</option>
+                <option value="reserved">{t("inventory.status.reserved")}</option>
+              </select>
+
+              <div className="flex gap-1 bg-input rounded-lg p-1 border border-border">
+                {["all", "0-50", "50-100", "100+"].map(range => (
+                  <button
+                    key={range}
+                    onClick={() => setFilterPrice(range)}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                      filterPrice === range ? "bg-primary text-white" : "text-muted-foreground hover:text-white"
+                    }`}
+                  >
+                    {range === "all" ? t("inventory.filter.all") : 
+                     range === "0-50" ? "< $50k" : 
+                     range === "50-100" ? "$50k-$100k" : "$100k+"}
+                  </button>
+                ))}
+              </div>
+
+              {hasActiveFilters && (
+                <button 
+                  onClick={clearFilters}
+                  className="px-3 py-2.5 text-muted-foreground hover:text-white text-sm flex items-center gap-1 transition-colors"
+                >
+                  <X size={14} /> Clear
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* In Stock Grid */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-end mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-white mb-2">{t("inventory.inStock")}</h2>
+              <p className="text-muted-foreground">{filtered.length} vehicles found</p>
+            </div>
+          </div>
+
+          <AnimatePresence mode="popLayout">
+            {filtered.length === 0 ? (
+              <motion.div 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                exit={{ opacity: 0 }}
+                className="py-20 text-center border border-border/50 rounded-2xl bg-secondary/10"
+              >
+                <SlidersHorizontal className="mx-auto text-muted-foreground mb-4" size={48} />
+                <h3 className="text-xl font-bold text-white mb-2">No vehicles match your criteria</h3>
+                <p className="text-muted-foreground mb-6">Try adjusting your filters or search terms.</p>
+                <button 
+                  onClick={clearFilters}
+                  className="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+                >
+                  Clear All Filters
+                </button>
+              </motion.div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filtered.map((car) => (
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    key={car.id} 
+                    className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:border-primary/50 transition-all shadow-sm hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] hover:-translate-y-1"
+                  >
+                    <div className="aspect-video relative overflow-hidden bg-secondary">
+                      <img 
+                        src={`${import.meta.env.BASE_URL}${car.image}`} 
+                        alt={`${car.make} ${car.model}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      
+                      {/* Badges */}
+                      <div className="absolute top-4 left-4 flex flex-col gap-2">
+                        {car.badge && (
+                          <span className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded">
+                            {car.badge}
+                          </span>
+                        )}
+                      </div>
+                      
+                      <div className="absolute top-4 right-4">
+                        <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md border ${
+                          car.status === 'available' ? 'bg-primary/80 border-primary text-white' : 
+                          car.status === 'reserved' ? 'bg-amber-500/80 border-amber-500 text-white' : 
+                          'bg-zinc-500/80 border-zinc-500 text-white'
+                        }`}>
+                          {t(`inventory.status.${car.status}`)}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <p className="text-sm text-primary font-medium mb-1">{car.year}</p>
+                          <h3 className="text-xl font-bold text-white leading-tight">
+                            {car.make} <span className="font-light">{car.model}</span>
+                          </h3>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-white">${car.price.toLocaleString()}</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm text-muted-foreground mb-6 bg-secondary/30 p-4 rounded-xl border border-border/30">
+                        <div className="flex items-center gap-2"><Gauge size={14} className="text-primary/70" /> {car.mileage.toLocaleString()} km</div>
+                        <div className="flex items-center gap-2"><MapPin size={14} className="text-primary/70" /> {car.location}</div>
+                        <div className="flex items-center gap-2"><Fuel size={14} className="text-primary/70" /> {car.fuel}</div>
+                        <div className="flex items-center gap-2"><Settings2 size={14} className="text-primary/70" /> {car.transmission}</div>
+                      </div>
+
+                      <p className="text-sm text-muted-foreground/80 line-clamp-2 mb-6 h-10">
+                        {car.description}
+                      </p>
+
+                      <Link 
+                        href="/contact"
+                        className="w-full py-3 bg-secondary hover:bg-primary text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn"
+                      >
+                        {t("cta.requestInfo")} <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+
+      {/* Sold Gallery */}
+      <section className="py-24 bg-card/30 border-y border-border/50 overflow-hidden">
+        <div className="container mx-auto px-4">
+          <motion.div {...fadeIn} className="mb-12">
+            <h2 className="text-3xl font-bold text-white mb-2">{t("inventory.sold")}</h2>
+            <p className="text-muted-foreground">Successful deliveries from our global network.</p>
+          </motion.div>
+
+          <div className="flex overflow-x-auto pb-8 -mx-4 px-4 snap-x lg:grid lg:grid-cols-3 xl:grid-cols-6 lg:overflow-visible lg:pb-0 lg:px-0 lg:mx-0 gap-4 hide-scrollbar">
+            {soldVehicles.map((car, i) => (
+              <motion.div 
+                key={car.id} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="shrink-0 w-[280px] lg:w-auto snap-start group relative rounded-xl overflow-hidden border border-border/50"
+              >
+                <div className="aspect-[4/3] bg-secondary relative">
+                  <img 
+                    src={`${import.meta.env.BASE_URL}${car.image}`} 
+                    alt={`${car.make} ${car.model}`}
+                    className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                  />
+                  
+                  {/* SOLD Ribbon */}
+                  <div className="absolute top-4 -right-8 w-32 bg-red-600 text-white text-[10px] font-bold py-1 text-center rotate-45 shadow-lg">
+                    SOLD
+                  </div>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-90" />
+                  
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h4 className="text-white font-bold mb-1">{car.year} {car.make} {car.model}</h4>
+                    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <MapPin size={12} /> {car.purchaseCountry}
+                      </div>
+                      <div className="flex items-center gap-1 text-primary">
+                        <CheckSquare size={12} /> {car.deliveryDate}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Popular Sourcing Models */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <motion.div {...fadeIn} className="mb-12 text-center max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t("inventory.popular")}</h2>
+            <p className="text-muted-foreground">Vehicles we frequently source on demand. Prices are estimates based on recent market trends.</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {popularVehicles.map((car, i) => (
+              <motion.div 
+                key={car.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col"
+              >
+                <div className="h-48 overflow-hidden bg-secondary">
+                  <img 
+                    src={`${import.meta.env.BASE_URL}${car.image}`} 
+                    alt={`${car.make} ${car.model}`}
+                    className="w-full h-full object-cover opacity-80"
+                  />
+                </div>
+                <div className="p-6 flex-1 flex flex-col">
+                  <h3 className="text-xl font-bold text-white mb-2">{car.make} {car.model}</h3>
+                  
+                  <div className="flex justify-between items-center mb-4 py-3 border-y border-border/50">
+                    <div>
+                      <p className="text-xs text-muted-foreground uppercase">{t("inventory.priceRange")}</p>
+                      <p className="text-primary font-bold">{car.priceRange}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-muted-foreground uppercase">{t("inventory.estDelivery")}</p>
+                      <p className="text-white font-medium">{car.estimatedDelivery}</p>
+                    </div>
+                  </div>
+                  
+                  <p className="text-sm text-muted-foreground mb-8 flex-1">
+                    {car.description}
+                  </p>
+
+                  <Link 
+                    href="/calculator"
+                    className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Calculator size={16} /> {t("cta.calculate")}
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 bg-primary/10 border-t border-primary/20">
+        <div className="container mx-auto px-4 text-center max-w-3xl">
+          <MessageSquare className="mx-auto text-primary mb-6" size={48} />
+          <h2 className="text-3xl font-bold text-white mb-4">Don't see what you're looking for?</h2>
+          <p className="text-lg text-muted-foreground mb-8">
+            Our inventory is just a fraction of what we have access to. Tell us what you want, and our sourcing team will find it through our global dealer network.
+          </p>
+          <Link 
+            href="/contact"
+            className="inline-flex px-8 py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] items-center gap-2"
+          >
+            {t("cta.requestInfo")} <ArrowRight size={18} />
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function CheckSquare({ size, className }: { size?: number, className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinelinejoin="round" className={className}>
+      <polyline points="9 11 12 14 22 4"></polyline>
+      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+    </svg>
+  );
+}

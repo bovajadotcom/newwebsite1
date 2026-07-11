@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
-import { Building2, TrendingUp, ShieldCheck, Briefcase, FileSpreadsheet, ArrowRight, Truck } from "lucide-react";
+import { Building2, TrendingUp, ShieldCheck, Briefcase, ArrowRight } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Business() {
+  const { t } = useLanguage();
   const workflow = [
     { title: "Needs Assessment", desc: "We evaluate your inventory requirements, monthly volume, and target margins." },
     { title: "Account Setup", desc: "Establish your corporate account with credit terms, invoicing preferences, and dedicated account manager." },
@@ -17,9 +19,9 @@ export default function Business() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase mb-6 border border-primary/20">
               <Briefcase size={14} /> B2B Import Solutions
             </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Scale Your Inventory Globally</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("business.title")}</h1>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              We act as the invisible logistics arm for dealerships, fleet operators, and resellers. Source higher margin vehicles from international markets with zero operational friction.
+              {t("business.sub")}
             </p>
           </motion.div>
         </div>
@@ -144,11 +146,11 @@ export default function Business() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Phone</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
                   <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Email Address</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
                   <input type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                 </div>
               </div>

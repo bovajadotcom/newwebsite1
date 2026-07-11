@@ -2,9 +2,11 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare } from "lucide-react";
 import { useState } from "react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { t } = useLanguage();
 
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
@@ -54,29 +56,29 @@ export default function Home() {
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wider uppercase mb-6">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Global Vehicle Sourcing
+              {t("home.hero.badge")}
             </div>
             <h1 className="text-5xl md:text-7xl font-bold text-white tracking-tight leading-[1.1] mb-6">
-              Your Gateway to <br />
+              {t("home.hero.headline1")} <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">
-                Automotive Excellence
+                {t("home.hero.headline2")}
               </span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed">
-              We source, purchase, and deliver premium vehicles from international auctions to your doorstep. Uncompromising quality, total transparency, absolute precision.
+              {t("home.hero.sub")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link 
                 href="/calculator"
                 className="px-8 py-4 bg-primary text-white font-medium rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] hover:shadow-[0_0_30px_rgba(59,130,246,0.5)] flex items-center justify-center gap-2 group"
               >
-                Get a Quote <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                {t("home.hero.cta1")} <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link 
                 href="/services"
                 className="px-8 py-4 bg-white/5 border border-white/10 backdrop-blur-sm text-white font-medium rounded hover:bg-white/10 transition-all flex items-center justify-center"
               >
-                Explore Services
+                {t("home.hero.cta2")}
               </Link>
             </div>
           </motion.div>
@@ -86,7 +88,7 @@ export default function Home() {
       {/* AUCTION PARTNERS */}
       <section className="py-12 border-y border-border/50 bg-secondary/30">
         <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-8">Trusted Global Auction Partners</p>
+          <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-8">{t("section.partners")}</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
             {["Copart", "IAAI", "Manheim", "USS Tokyo", "TAA", "JU Group", "Adesa", "Autorola"].map(partner => (
               <span key={partner} className="text-xl md:text-2xl font-bold tracking-tighter hover:text-white transition-colors">{partner}</span>
@@ -105,11 +107,11 @@ export default function Home() {
             className="grid grid-cols-2 md:grid-cols-5 gap-8 border-y border-border/50 py-16"
           >
             {[
-              { value: "5,000+", label: "Cars Delivered" },
-              { value: "98%", label: "Satisfied Clients" },
-              { value: "12", label: "Years Experience" },
-              { value: "40+", label: "Countries Served" },
-              { value: "$2.4B", label: "Vehicle Value" }
+              { value: "5,000+", label: t("stats.delivered") },
+              { value: "98%", label: t("stats.clients") },
+              { value: "12", label: t("stats.experience") },
+              { value: "40+", label: t("stats.countries") },
+              { value: "$2.4B", label: t("stats.value") }
             ].map((stat, i) => (
               <motion.div key={i} variants={fadeIn} className="text-center">
                 <h3 className="text-4xl md:text-5xl font-bold text-white mb-2">{stat.value}</h3>
@@ -124,7 +126,7 @@ export default function Home() {
       <section className="py-24 bg-card/30">
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Choose AutoImport</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.advantages")}</h2>
             <p className="text-muted-foreground">The difference between a broker and a partner. We handle every detail so you can focus on the drive.</p>
           </motion.div>
 
@@ -162,7 +164,7 @@ export default function Home() {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="mb-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.process")}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">A streamlined, stress-free path to your perfect vehicle.</p>
           </motion.div>
 
@@ -198,7 +200,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Recently Sourced</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.vehicles")}</h2>
               <p className="text-muted-foreground">Exceptional vehicles secured for our clients this month.</p>
             </motion.div>
           </div>
@@ -243,7 +245,7 @@ export default function Home() {
       <section className="py-24">
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Client Experiences</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.testimonials")}</h2>
             <p className="text-muted-foreground">What our global clientele says about working with AutoImport.</p>
           </motion.div>
 
@@ -282,7 +284,7 @@ export default function Home() {
       <section className="py-24 bg-card/30 border-y border-border/50">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div {...fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.faq")}</h2>
             <p className="text-muted-foreground">Everything you need to know about the import process.</p>
           </motion.div>
 
@@ -321,8 +323,8 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             <motion.div {...fadeIn}>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Ready to Import Your Dream Car?</h2>
-              <p className="text-xl text-muted-foreground mb-10">Get a personalized quote and let our experts handle the rest. We respond to all inquiries within 24 hours.</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{t("section.cta")}</h2>
+              <p className="text-xl text-muted-foreground mb-10">{t("section.ctaSub")}</p>
               
               <div className="flex gap-4">
                 <div className="flex items-center gap-3">
@@ -346,33 +348,33 @@ export default function Home() {
               <form className="space-y-6" onSubmit={e => e.preventDefault()}>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Name</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.name")}</label>
                     <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Phone</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
                     <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Email</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
                     <input type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Country</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.country")}</label>
                     <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Message or Vehicle Request</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
                   <textarea rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none"></textarea>
                 </div>
 
                 <button className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2">
-                  Start Now <ArrowRight size={18} />
+                  {t("cta.startNow")} <ArrowRight size={18} />
                 </button>
               </form>
             </motion.div>

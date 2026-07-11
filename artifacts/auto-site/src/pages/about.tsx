@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { Target, Shield, Compass, CheckCircle2, Award, Zap } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function About() {
+  const { t } = useLanguage();
   const team = [
     { name: "James Sterling", title: "Founder & CEO", img: "team-1.png" },
     { name: "Elena Rostova", title: "Head of Global Logistics", img: "team-2.png" },
@@ -25,7 +27,7 @@ export default function About() {
         
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">Moving the Impossible</h1>
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">{t("about.title")}</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               We built AutoImport to bridge the gap between global automotive markets and local enthusiasts, turning complex international logistics into a frictionless experience.
             </p>
@@ -64,7 +66,7 @@ export default function About() {
       {/* Timeline */}
       <section className="py-24">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-3xl font-bold text-white mb-16 text-center">Our History</h2>
+          <h2 className="text-3xl font-bold text-white mb-16 text-center">{t("about.timeline")}</h2>
           
           <div className="space-y-12">
             {[
@@ -101,11 +103,11 @@ export default function About() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
             {[
-              { value: "5,000+", label: "Cars Delivered" },
-              { value: "98%", label: "Satisfied Clients" },
-              { value: "12", label: "Years Experience" },
-              { value: "40+", label: "Countries Served" },
-              { value: "$2.4B", label: "Vehicle Value" }
+              { value: "5,000+", label: t("stats.delivered") },
+              { value: "98%", label: t("stats.clients") },
+              { value: "12", label: t("stats.experience") },
+              { value: "40+", label: t("stats.countries") },
+              { value: "$2.4B", label: t("stats.value") }
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <h3 className="text-3xl md:text-5xl font-bold mb-2">{stat.value}</h3>
@@ -119,7 +121,7 @@ export default function About() {
       {/* Team */}
       <section className="py-24 bg-card/30 border-y border-border/50">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-16 text-center">Leadership Team</h2>
+          <h2 className="text-3xl font-bold text-white mb-16 text-center">{t("about.team")}</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {team.map((member, i) => (
@@ -155,7 +157,7 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Why Choose Us</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t("about.whyUs")}</h2>
               <p className="text-muted-foreground mb-8 text-lg">
                 We combine deep automotive expertise with world-class logistics infrastructure. This isn't just about buying cars; it's about executing complex international transactions flawlessly.
               </p>

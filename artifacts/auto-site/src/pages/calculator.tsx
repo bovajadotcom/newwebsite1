@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calculator as CalcIcon, RefreshCw, DollarSign } from "lucide-react";
+import { Calculator as CalcIcon, DollarSign } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Calculator() {
+  const { t } = useLanguage();
   const [vehiclePrice, setVehiclePrice] = useState(25000);
   const [shipping, setShipping] = useState(1500);
   const [customsRate, setCustomsRate] = useState(10);
-  const [serviceFee, setServiceFee] = useState(599);
+  const [serviceFee] = useState(599);
   const [insurance, setInsurance] = useState(true);
   const [inspection, setInspection] = useState(true);
 
@@ -26,9 +28,9 @@ export default function Calculator() {
         >
           <div className="flex items-center gap-3 mb-4">
             <CalcIcon className="text-primary" size={32} />
-            <h1 className="text-4xl md:text-5xl font-bold text-white">Import Calculator</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-white">{t("calc.title")}</h1>
           </div>
-          <p className="text-xl text-muted-foreground">Estimate your total landed cost instantly.</p>
+          <p className="text-xl text-muted-foreground">{t("calc.sub")}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -43,7 +45,7 @@ export default function Calculator() {
               
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Vehicle Purchase Price ($)</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.vehiclePrice")}</label>
                   <input 
                     type="number" 
                     value={vehiclePrice}
@@ -54,7 +56,7 @@ export default function Calculator() {
                 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Origin</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.country")}</label>
                     <select className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary">
                       <option>Japan (USS/TAA)</option>
                       <option>USA (Copart/IAAI)</option>
@@ -80,7 +82,7 @@ export default function Calculator() {
               
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Est. Ocean Freight ($)</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.shipping")}</label>
                   <input 
                     type="number" 
                     value={shipping}
@@ -89,7 +91,7 @@ export default function Calculator() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Import Duty Rate (%)</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.customs")}</label>
                   <input 
                     type="number" 
                     value={customsRate}
@@ -164,7 +166,7 @@ export default function Calculator() {
 
               <div className="border-t border-border/50 pt-6 mb-8">
                 <div className="flex justify-between items-end mb-2">
-                  <span className="text-lg text-white font-bold">Estimated Total</span>
+                  <span className="text-lg text-white font-bold">{t("calc.total")}</span>
                   <span className="text-4xl font-bold text-primary">${total.toLocaleString(undefined, {maximumFractionDigits: 0})}</span>
                 </div>
                 <p className="text-xs text-muted-foreground text-right">*Excludes local registration and taxes</p>

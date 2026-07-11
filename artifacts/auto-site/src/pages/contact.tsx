@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Contact() {
+  const { t } = useLanguage();
   return (
     <div className="pt-12 pb-24">
       <div className="container mx-auto px-4">
@@ -10,9 +12,9 @@ export default function Contact() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Get in Touch</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("contact.title")}</h1>
           <p className="text-xl text-muted-foreground">
-            Our logistics experts are ready to source, secure, and ship your next vehicle.
+            {t("contact.sub")}
           </p>
         </motion.div>
 
@@ -67,17 +69,17 @@ export default function Contact() {
             <form className="space-y-6" onSubmit={e => e.preventDefault()}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Name</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.name")}</label>
                   <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Phone</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
                   <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Email Address</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
                 <input type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
               </div>
 
@@ -87,12 +89,12 @@ export default function Contact() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-muted-foreground mb-2">Message</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
                 <textarea rows={5} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none"></textarea>
               </div>
 
               <button className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all">
-                Send Inquiry
+                {t("form.send")}
               </button>
             </form>
           </motion.div>

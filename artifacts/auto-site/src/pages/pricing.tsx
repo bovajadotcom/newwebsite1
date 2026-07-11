@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { Check, Info } from "lucide-react";
 import { Link } from "wouter";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Pricing() {
+  const { t } = useLanguage();
   const tiers = [
     {
-      name: "Basic",
+      nameKey: "pricing.basic",
       price: "$299",
       desc: "Perfect for experienced buyers who just need auction access.",
       features: [
@@ -22,7 +24,7 @@ export default function Pricing() {
       ]
     },
     {
-      name: "Professional",
+      nameKey: "pricing.professional",
       price: "$599",
       popular: true,
       desc: "Our most popular end-to-end import solution.",
@@ -40,7 +42,7 @@ export default function Pricing() {
       ]
     },
     {
-      name: "Premium",
+      nameKey: "pricing.premium",
       price: "$1,299",
       desc: "White-glove service for high-value and exotic vehicles.",
       features: [
@@ -64,9 +66,9 @@ export default function Pricing() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Transparent Pricing</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("pricing.title")}</h1>
           <p className="text-xl text-muted-foreground">
-            Clear, upfront service fees. No hidden margins on vehicle prices or shipping rates.
+            {t("pricing.sub")}
           </p>
         </motion.div>
 
@@ -84,16 +86,16 @@ export default function Pricing() {
               } flex flex-col`}
             >
               {tier.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-full">
-                  Most Popular
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-full whitespace-nowrap">
+                  {t("pricing.popular")}
                 </div>
               )}
               
-              <h3 className="text-2xl font-bold text-white mb-2">{tier.name}</h3>
+              <h3 className="text-2xl font-bold text-white mb-2">{t(tier.nameKey)}</h3>
               <p className="text-sm text-muted-foreground mb-6 h-10">{tier.desc}</p>
-              <div className="mb-8">
+              <div className="mb-8 flex items-baseline gap-1">
                 <span className="text-5xl font-bold text-white">{tier.price}</span>
-                <span className="text-muted-foreground">/vehicle</span>
+                <span className="text-muted-foreground">/ {t("pricing.perVehicle")}</span>
               </div>
 
               <div className="flex-1 space-y-4 mb-8">
@@ -119,7 +121,7 @@ export default function Pricing() {
                     : "bg-secondary text-white hover:bg-secondary/80 border border-border/50"
                 }`}
               >
-                Choose {tier.name}
+                Choose {t(tier.nameKey)}
               </Link>
             </motion.div>
           ))}

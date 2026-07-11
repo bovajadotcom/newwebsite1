@@ -4,8 +4,10 @@ import {
   Ship, ShieldCheck, CheckSquare, FileSignature, 
   Wrench, Settings, MessageSquare
 } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export default function Services() {
+  const { t } = useLanguage();
   const services = [
     { icon: Search, title: "Vehicle Sourcing", desc: "Expert search across closed dealer networks and international auctions to find your specific requirements." },
     { icon: Gavel, title: "Auction Bidding", desc: "Strategic bidding representation at major global auto auctions on your behalf." },
@@ -36,9 +38,9 @@ export default function Services() {
           transition={{ duration: 0.6 }}
           className="max-w-3xl mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Our Services</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("services.title")}</h1>
           <p className="text-xl text-muted-foreground leading-relaxed">
-            A comprehensive suite of end-to-end import solutions. We handle the complexity of international vehicle logistics so you don't have to.
+            {t("services.sub")}
           </p>
         </motion.div>
 
