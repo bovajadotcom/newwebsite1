@@ -1,22 +1,29 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: AutoImport CMS API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
-    description: Health operations
+  - name: auth
+  - name: vehicles
+  - name: sold-vehicles
+  - name: popular-vehicles
+  - name: services
+  - name: pricing
+  - name: testimonials
+  - name: page-content
+  - name: site-settings
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +31,1092 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthCredentials"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "401":
+          description: Invalid credentials
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      responses:
+        "200":
+          description: Logged out
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "401":
+          description: Not authenticated
+
+  /vehicles:
+    get:
+      operationId: getVehicles
+      tags: [vehicles]
+      responses:
+        "200":
+          description: List of vehicles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Vehicle"
+    post:
+      operationId: createVehicle
+      tags: [vehicles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VehicleInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vehicle"
+
+  /vehicles/{id}:
+    get:
+      operationId: getVehicle
+      tags: [vehicles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Vehicle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vehicle"
+        "404":
+          description: Not found
+    put:
+      operationId: updateVehicle
+      tags: [vehicles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VehicleUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Vehicle"
+    delete:
+      operationId: deleteVehicle
+      tags: [vehicles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /sold-vehicles:
+    get:
+      operationId: getSoldVehicles
+      tags: [sold-vehicles]
+      responses:
+        "200":
+          description: List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SoldVehicle"
+    post:
+      operationId: createSoldVehicle
+      tags: [sold-vehicles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoldVehicleInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoldVehicle"
+
+  /sold-vehicles/{id}:
+    put:
+      operationId: updateSoldVehicle
+      tags: [sold-vehicles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoldVehicleUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoldVehicle"
+    delete:
+      operationId: deleteSoldVehicle
+      tags: [sold-vehicles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /popular-vehicles:
+    get:
+      operationId: getPopularVehicles
+      tags: [popular-vehicles]
+      responses:
+        "200":
+          description: List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PopularVehicle"
+    post:
+      operationId: createPopularVehicle
+      tags: [popular-vehicles]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PopularVehicleInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopularVehicle"
+
+  /popular-vehicles/{id}:
+    put:
+      operationId: updatePopularVehicle
+      tags: [popular-vehicles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PopularVehicleUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PopularVehicle"
+    delete:
+      operationId: deletePopularVehicle
+      tags: [popular-vehicles]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /services:
+    get:
+      operationId: getServices
+      tags: [services]
+      responses:
+        "200":
+          description: List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Service"
+    post:
+      operationId: createService
+      tags: [services]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+
+  /services/{id}:
+    put:
+      operationId: updateService
+      tags: [services]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+    delete:
+      operationId: deleteService
+      tags: [services]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /pricing:
+    get:
+      operationId: getPricingPackages
+      tags: [pricing]
+      responses:
+        "200":
+          description: List
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PricingPackage"
+    post:
+      operationId: createPricingPackage
+      tags: [pricing]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PricingPackageInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PricingPackage"
+
+  /pricing/{id}:
+    put:
+      operationId: updatePricingPackage
+      tags: [pricing]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PricingPackageUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PricingPackage"
+    delete:
+      operationId: deletePricingPackage
+      tags: [pricing]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /testimonials:
+    get:
+      operationId: getTestimonials
+      tags: [testimonials]
+      responses:
+        "200":
+          description: Active testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+    post:
+      operationId: createTestimonial
+      tags: [testimonials]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestimonialInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+
+  /testimonials/all:
+    get:
+      operationId: getAllTestimonials
+      tags: [testimonials]
+      responses:
+        "200":
+          description: All testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+
+  /testimonials/{id}:
+    put:
+      operationId: updateTestimonial
+      tags: [testimonials]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestimonialUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+    delete:
+      operationId: deleteTestimonial
+      tags: [testimonials]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /page-content:
+    get:
+      operationId: getPageContent
+      tags: [page-content]
+      responses:
+        "200":
+          description: All page content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PageContent"
+
+  /page-content/{page}:
+    get:
+      operationId: getPageContentByPage
+      tags: [page-content]
+      parameters:
+        - name: page
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Page content
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PageContent"
+
+  /page-content/{page}/{key}:
+    put:
+      operationId: updatePageContent
+      tags: [page-content]
+      parameters:
+        - name: page
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PageContentUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageContent"
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PageContent"
+
+  /site-settings:
+    get:
+      operationId: getSiteSettings
+      tags: [site-settings]
+      responses:
+        "200":
+          description: All settings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SiteSetting"
+
+  /site-settings/{key}:
+    put:
+      operationId: updateSiteSetting
+      tags: [site-settings]
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiteSettingUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSetting"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    AuthCredentials:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    AuthUser:
+      type: object
+      required: [id, username, role]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        role:
+          type: string
+
+    Vehicle:
+      type: object
+      required: [id, make, model, year, engine, fuel, transmission, mileage, location, price, description, status, imageUrl, sortOrder]
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        engine:
+          type: string
+        fuel:
+          type: string
+        transmission:
+          type: string
+        mileage:
+          type: integer
+        location:
+          type: string
+        price:
+          type: integer
+        description:
+          type: string
+        status:
+          type: string
+        imageUrl:
+          type: string
+        badge:
+          type: ["string", "null"]
+        isPopular:
+          type: boolean
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    VehicleInput:
+      type: object
+      required: [make, model, year, engine, fuel, transmission, mileage, location, price, description]
+      properties:
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        engine:
+          type: string
+        fuel:
+          type: string
+        transmission:
+          type: string
+        mileage:
+          type: integer
+        location:
+          type: string
+        price:
+          type: integer
+        description:
+          type: string
+        status:
+          type: string
+        imageUrl:
+          type: string
+        badge:
+          type: ["string", "null"]
+        isPopular:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    VehicleUpdate:
+      type: object
+      properties:
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        engine:
+          type: string
+        fuel:
+          type: string
+        transmission:
+          type: string
+        mileage:
+          type: integer
+        location:
+          type: string
+        price:
+          type: integer
+        description:
+          type: string
+        status:
+          type: string
+        imageUrl:
+          type: string
+        badge:
+          type: ["string", "null"]
+        isPopular:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    SoldVehicle:
+      type: object
+      required: [id, make, model, year, purchaseCountry, deliveryStatus, imageUrl]
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        finalPrice:
+          type: ["integer", "null"]
+        purchaseCountry:
+          type: string
+        deliveryStatus:
+          type: string
+        deliveryDate:
+          type: ["string", "null"]
+        imageUrl:
+          type: string
+        createdAt:
+          type: string
+
+    SoldVehicleInput:
+      type: object
+      required: [make, model, year, purchaseCountry]
+      properties:
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        finalPrice:
+          type: ["integer", "null"]
+        purchaseCountry:
+          type: string
+        deliveryStatus:
+          type: string
+        deliveryDate:
+          type: ["string", "null"]
+        imageUrl:
+          type: string
+
+    SoldVehicleUpdate:
+      type: object
+      properties:
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          type: integer
+        finalPrice:
+          type: ["integer", "null"]
+        purchaseCountry:
+          type: string
+        deliveryStatus:
+          type: string
+        deliveryDate:
+          type: ["string", "null"]
+        imageUrl:
+          type: string
+
+    PopularVehicle:
+      type: object
+      required: [id, make, model, imageUrl, priceRange, estimatedDelivery, description, sortOrder]
+      properties:
+        id:
+          type: integer
+        make:
+          type: string
+        model:
+          type: string
+        imageUrl:
+          type: string
+        priceRange:
+          type: string
+        estimatedDelivery:
+          type: string
+        description:
+          type: string
+        sortOrder:
+          type: integer
+
+    PopularVehicleInput:
+      type: object
+      required: [make, model, priceRange, estimatedDelivery, description]
+      properties:
+        make:
+          type: string
+        model:
+          type: string
+        imageUrl:
+          type: string
+        priceRange:
+          type: string
+        estimatedDelivery:
+          type: string
+        description:
+          type: string
+        sortOrder:
+          type: integer
+
+    PopularVehicleUpdate:
+      type: object
+      properties:
+        make:
+          type: string
+        model:
+          type: string
+        imageUrl:
+          type: string
+        priceRange:
+          type: string
+        estimatedDelivery:
+          type: string
+        description:
+          type: string
+        sortOrder:
+          type: integer
+
+    Service:
+      type: object
+      required: [id, iconName, titleEn, descriptionEn, sortOrder]
+      properties:
+        id:
+          type: integer
+        iconName:
+          type: string
+        titleEn:
+          type: string
+        titlePl:
+          type: string
+        titleRu:
+          type: string
+        descriptionEn:
+          type: string
+        descriptionPl:
+          type: string
+        descriptionRu:
+          type: string
+        sortOrder:
+          type: integer
+        createdAt:
+          type: string
+
+    ServiceInput:
+      type: object
+      required: [titleEn, descriptionEn]
+      properties:
+        iconName:
+          type: string
+        titleEn:
+          type: string
+        titlePl:
+          type: string
+        titleRu:
+          type: string
+        descriptionEn:
+          type: string
+        descriptionPl:
+          type: string
+        descriptionRu:
+          type: string
+        sortOrder:
+          type: integer
+
+    ServiceUpdate:
+      type: object
+      properties:
+        iconName:
+          type: string
+        titleEn:
+          type: string
+        titlePl:
+          type: string
+        titleRu:
+          type: string
+        descriptionEn:
+          type: string
+        descriptionPl:
+          type: string
+        descriptionRu:
+          type: string
+        sortOrder:
+          type: integer
+
+    PricingPackage:
+      type: object
+      required: [id, nameEn, price, currency, features, isPopular, sortOrder]
+      properties:
+        id:
+          type: integer
+        nameEn:
+          type: string
+        namePl:
+          type: string
+        nameRu:
+          type: string
+        price:
+          type: integer
+        currency:
+          type: string
+        features:
+          type: array
+          items:
+            type: string
+        isPopular:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    PricingPackageInput:
+      type: object
+      required: [nameEn, price]
+      properties:
+        nameEn:
+          type: string
+        namePl:
+          type: string
+        nameRu:
+          type: string
+        price:
+          type: integer
+        currency:
+          type: string
+        features:
+          type: array
+          items:
+            type: string
+        isPopular:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    PricingPackageUpdate:
+      type: object
+      properties:
+        nameEn:
+          type: string
+        namePl:
+          type: string
+        nameRu:
+          type: string
+        price:
+          type: integer
+        currency:
+          type: string
+        features:
+          type: array
+          items:
+            type: string
+        isPopular:
+          type: boolean
+        sortOrder:
+          type: integer
+
+    Testimonial:
+      type: object
+      required: [id, name, country, vehicleName, rating, content, isActive]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        country:
+          type: string
+        vehicleName:
+          type: string
+        rating:
+          type: integer
+        content:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+
+    TestimonialInput:
+      type: object
+      required: [name, country, vehicleName, content]
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+        vehicleName:
+          type: string
+        rating:
+          type: integer
+        content:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+
+    TestimonialUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        country:
+          type: string
+        vehicleName:
+          type: string
+        rating:
+          type: integer
+        content:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+
+    PageContent:
+      type: object
+      required: [id, page, sectionKey, valueEn, valuePl, valueRu]
+      properties:
+        id:
+          type: integer
+        page:
+          type: string
+        sectionKey:
+          type: string
+        valueEn:
+          type: string
+        valuePl:
+          type: string
+        valueRu:
+          type: string
+        updatedAt:
+          type: string
+
+    PageContentUpdate:
+      type: object
+      properties:
+        valueEn:
+          type: string
+        valuePl:
+          type: string
+        valueRu:
+          type: string
+
+    SiteSetting:
+      type: object
+      required: [id, key, value]
+      properties:
+        id:
+          type: integer
+        key:
+          type: string
+        value:
+          type: string
+        label:
+          type: string
+        group:
+          type: string
+        updatedAt:
+          type: string
+
+    SiteSettingUpdate:
+      type: object
+      required: [value]
+      properties:
+        value:
+          type: string

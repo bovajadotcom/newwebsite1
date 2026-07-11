@@ -1,0 +1,587 @@
+==================================================
+# PAGE 5 — CALCULATOR PAGE
+
+URL:
+
+/calculator
+
+
+Purpose:
+
+Create a modern interactive cost calculator.
+
+The calculator does not need real government/API integrations yet.
+
+However:
+
+The interface, logic and UI must be fully prepared for future real calculations.
+
+
+==================================================
+# CALCULATOR HERO
+
+
+Headline:
+
+"Calculate the approximate cost of your vehicle"
+
+
+Description:
+
+"Estimate the complete cost of importing a vehicle from Europe including delivery, taxes and services."
+
+
+Country selector:
+
+- Poland
+- Lithuania
+- Latvia
+- Estonia
+- Germany
+- Czech Republic
+- Belarus
+
+
+==================================================
+# VAT RATES (DEFAULT)
+
+
+Poland — 23%
+Lithuania — 21%
+Latvia — 21%
+Estonia — 24%
+Germany — 19%
+Czech Republic — 21%
+
+All VAT rates must be editable through CMS for future updates.
+
+
+==================================================
+# CALCULATOR STRUCTURE
+
+
+Each calculator should use the same modern UI.
+
+Features:
+
+- Step-by-step form
+- Progress indicator
+- Animated calculation
+- Live total update
+- Summary card
+- Responsive design
+- Prepared for future API integrations
+
+
+==================================================
+# POLAND CALCULATOR
+
+
+Calculation:
+
+Vehicle Purchase Price
+
++
+
+VAT (23%)
+
++
+
+Delivery Cost
+
++
+
+Registration Documents
+
++
+
+Company Service Fee
+
+
+Fields:
+
+- Vehicle Price
+- Country of Purchase
+- Delivery Region
+- Registration Required (Yes / No)
+
+Additional Services:
+
+- Inspection
+- Transport Insurance
+- Extra Documentation
+
+
+Result:
+
+Vehicle Price
+
+VAT
+
+Delivery
+
+Registration Documents
+
+Additional Services
+
+--------------------------------
+
+Estimated Total Cost
+
+
+==================================================
+# LITHUANIA CALCULATOR
+
+
+Calculation:
+
+Vehicle Purchase Price
+
++
+
+VAT (21%)
+
++
+
+Delivery Cost
+
++
+
+Registration Documents
+
++
+
+Company Service Fee
+
+
+Fields:
+
+- Vehicle Price
+- Country of Purchase
+- Delivery Region
+- Registration Required
+
+Additional Services
+
+Result:
+
+Vehicle Price
+
+VAT
+
+Delivery
+
+Registration Documents
+
+Additional Services
+
+--------------------------------
+
+Estimated Total Cost
+
+
+==================================================
+# LATVIA CALCULATOR
+
+
+Calculation:
+
+Vehicle Purchase Price
+
++
+
+VAT (21%)
+
++
+
+Delivery Cost
+
++
+
+Registration Documents
+
++
+
+Company Service Fee
+
+
+Fields:
+
+- Vehicle Price
+- Country of Purchase
+- Delivery Region
+- Registration Required
+
+Additional Services
+
+Result:
+
+Vehicle Price
+
+VAT
+
+Delivery
+
+Registration Documents
+
+Additional Services
+
+--------------------------------
+
+Estimated Total Cost
+
+
+==================================================
+# ESTONIA CALCULATOR
+
+
+Calculation:
+
+Vehicle Purchase Price
+
++
+
+VAT (24%)
+
++
+
+Delivery Cost
+
++
+
+Registration Documents
+
++
+
+Company Service Fee
+
+
+Fields:
+
+- Vehicle Price
+- Country of Purchase
+- Delivery Region
+- Registration Required
+
+Additional Services
+
+Result:
+
+Vehicle Price
+
+VAT
+
+Delivery
+
+Registration Documents
+
+Additional Services
+
+--------------------------------
+
+Estimated Total Cost
+
+
+==================================================
+# GERMANY CALCULATOR
+
+
+Calculation:
+
+Vehicle Purchase Price
+
++
+
+VAT (19%)
+
++
+
+Delivery Cost
+
++
+
+Registration Documents
+
++
+
+Company Service Fee
+
+
+Fields:
+
+- Vehicle Price
+- Country of Purchase
+- Delivery Region
+- Registration Required
+
+Additional Services
+
+Result:
+
+Vehicle Price
+
+VAT
+
+Delivery
+
+Registration Documents
+
+Additional Services
+
+--------------------------------
+
+Estimated Total Cost
+
+
+==================================================
+# CZECH REPUBLIC CALCULATOR
+
+
+Calculation:
+
+Vehicle Purchase Price
+
++
+
+VAT (21%)
+
++
+
+Delivery Cost
+
++
+
+Registration Documents
+
++
+
+Company Service Fee
+
+
+Fields:
+
+- Vehicle Price
+- Country of Purchase
+- Delivery Region
+- Registration Required
+
+Additional Services
+
+Result:
+
+Vehicle Price
+
+VAT
+
+Delivery
+
+Registration Documents
+
+Additional Services
+
+--------------------------------
+
+Estimated Total Cost
+
+
+==================================================
+# BELARUS CALCULATOR
+
+
+Calculation:
+
+Vehicle Purchase Price
+
++
+
+Customs Payments
+
++
+
+Delivery Cost
+
++
+
+Registration Documents
+
++
+
+Company Service Fee
+
+
+Registration Documents include:
+
+- Insurance
+- Transit Plates
+- Customs Declaration
+
+
+Default Registration Documents Cost:
+
+150 EUR
+
+Must be editable through CMS.
+
+
+Fields:
+
+- Vehicle Price
+- Engine Size
+- Fuel Type
+- Vehicle Year
+- Country of Origin
+- Delivery Region
+
+
+Result:
+
+Vehicle Price
+
+Customs Payments
+
+Delivery
+
+Registration Documents
+
+Company Service Fee
+
+--------------------------------
+
+Estimated Total Cost
+
+
+==================================================
+# DELIVERY PRICE DATABASE
+
+
+Create CMS Collection:
+
+Delivery Locations
+
+
+Default Prices:
+
+
+Germany
+
+France
+
+Italy
+
+Belgium
+
+Spain
+
+800 EUR
+
+
+Poland
+
+Lithuania
+
+Latvia
+
+Estonia
+
+Czech Republic
+
+600 EUR
+
+
+Every delivery price must be editable through CMS.
+
+
+==================================================
+# COMPANY SERVICE FEE
+
+
+Default:
+
+500 EUR
+
+
+Must be editable through CMS.
+
+
+==================================================
+# FUTURE CMS SETTINGS
+
+
+The following values must be editable from CMS without code changes:
+
+- VAT rates
+- Delivery prices
+- Company service fee
+- Registration documents fee
+- Additional services
+- Country list
+
+
+==================================================
+# RESULT CARD
+
+
+Display:
+
+Vehicle Price
+
+VAT / Customs
+
+Delivery
+
+Registration Documents
+
+Additional Services
+
+Company Service Fee
+
+--------------------------------
+
+Estimated Total Cost
+
+
+CTA Button:
+
+"Receive Detailed Calculation"
+
+
+==================================================
+# LEAD FORM
+
+
+After calculation show a lead form.
+
+Fields:
+
+- Name
+- Phone
+- Email
+
+Button:
+
+"Receive Detailed Calculation"
+
+
+==================================================
+# UI DESIGN
+
+
+Premium fintech style.
+
+Large calculator card.
+
+Modern inputs.
+
+Country flags in selector.
+
+Smooth animations.
+
+Real-time calculation updates.
+
+Progress indicator.
+
+Responsive on desktop, tablet and mobile.
+
+The architecture must be prepared for future integration with real customs, VAT and logistics APIs without redesigning the interface.
+
+==================================================
