@@ -37,6 +37,8 @@ function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }:
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const { t } = useLanguage();
+  const processRef = useRef<HTMLDivElement>(null);
+  const isProcessInView = useInView(processRef, { once: true, margin: "-120px" });
 
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
@@ -336,29 +338,138 @@ export default function Home() {
             <p className="text-muted-foreground max-w-2xl mx-auto">A streamlined, stress-free path to your perfect vehicle.</p>
           </motion.div>
 
-          <div className="relative">
-            <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border/50 -translate-y-1/2 hidden lg:block" />
-            <motion.div 
-              variants={staggerContainer}
-              initial="initial"
-              whileInView="whileInView"
-              className="grid grid-cols-1 lg:grid-cols-5 gap-8 relative z-10"
-            >
-              {[
-                "Consultation", 
-                "Vehicle Selection", 
-                "Auction Bidding", 
-                "Logistics & Shipping", 
-                "Delivery & Registration"
-              ].map((step, i) => (
-                <motion.div key={i} variants={fadeIn} className="bg-background lg:bg-transparent p-6 lg:p-0 rounded-lg border border-border/50 lg:border-none relative flex flex-col items-center">
-                  <div className="w-12 h-12 rounded-full bg-background border-2 border-primary flex items-center justify-center text-primary font-bold mb-6 shadow-[0_0_15px_rgba(59,130,246,0.3)] relative z-10">
-                    {i + 1}
-                  </div>
-                  <h3 className="text-lg font-bold text-white text-center">{step}</h3>
-                </motion.div>
+          {/* Map-style route */}
+          <div className="relative" ref={processRef}>
+
+            {/* ── DESKTOP: horizontal animated route ── */}
+            <div className="hidden lg:block">
+              {/* Base track */}
+              <div className="absolute top-6 left-[10%] right-[10%] h-px bg-border/30" />
+
+              {/* 4 animated segments between 5 nodes */}
+              {[0,1,2,3].map(seg => (
+                <motion.div
+                  key={seg}
+                  className="absolute top-[23px] h-[2px] bg-gradient-to-r from-primary to-blue-400"
+                  style={{
+                    left: `calc(10% + ${seg * 20}% + 24px)`,
+                    right: `calc(10% + ${(3 - seg) * 20}% + 24px)`,
+                    transformOrigin: "left",
+                    boxShadow: "0 0 8px rgba(59,130,246,0.6)",
+                  }}
+                  initial={{ scaleX: 0 }}
+                  animate={isProcessInView ? { scaleX: 1 } : { scaleX: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 + seg * 0.45, ease: [0.22, 1, 0.36, 1] }}
+                />
               ))}
-            </motion.div>
+
+              {/* 5 nodes */}
+              <div className="grid grid-cols-5 gap-8 relative z-10">
+                {[
+                  { label: "Consultation",          icon: MessageSquare, desc: "Free expert call" },
+                  { label: "Vehicle Selection",     icon: Globe,         desc: "Global search" },
+                  { label: "Auction Bidding",       icon: Zap,           desc: "Live auctions" },
+                  { label: "Logistics & Shipping",  icon: Clock,         desc: "End-to-end" },
+                  { label: "Delivery",              icon: Award,         desc: "Door delivery" },
+                ].map((step, i) => (
+                  <div key={i} className="flex flex-col items-center">
+                    {/* Node */}
+                    <div className="relative mb-5">
+                      {/* Pulse ring — appears after node is live */}
+                      <motion.div
+                        className="absolute -inset-2 rounded-full border border-primary"
+                        initial={{ scale: 0.6, opacity: 0 }}
+                        animate={isProcessInView
+                          ? { scale: [1, 1.7, 1], opacity: [0.7, 0, 0.7] }
+                          : { scale: 0.6, opacity: 0 }}
+                        transition={{
+                          duration: 2.2,
+                          delay: 0.8 + i * 0.45,
+                          repeat: Infinity,
+                          ease: "easeOut",
+                        }}
+                      />
+                      <motion.div
+                        className="w-12 h-12 rounded-full bg-background border-2 border-primary flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.35)] relative z-10"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={isProcessInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.55 + i * 0.45 }}
+                      >
+                        <step.icon className="text-primary" size={20} />
+                      </motion.div>
+                    </div>
+
+                    {/* Label */}
+                    <motion.div
+                      className="text-center"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={isProcessInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }}
+                      transition={{ duration: 0.4, delay: 0.7 + i * 0.45 }}
+                    >
+                      <span className="text-xs font-bold text-primary/80 tracking-widest uppercase block mb-1">{i + 1}</span>
+                      <h3 className="text-sm font-bold text-white leading-tight">{step.label}</h3>
+                      <p className="text-xs text-muted-foreground mt-1">{step.desc}</p>
+                    </motion.div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── MOBILE: vertical animated route ── */}
+            <div className="lg:hidden space-y-0">
+              {[
+                { label: "Consultation",          icon: MessageSquare, desc: "Free expert call" },
+                { label: "Vehicle Selection",     icon: Globe,         desc: "Global search" },
+                { label: "Auction Bidding",       icon: Zap,           desc: "Live auctions" },
+                { label: "Logistics & Shipping",  icon: Clock,         desc: "End-to-end" },
+                { label: "Delivery",              icon: Award,         desc: "Door delivery" },
+              ].map((step, i) => (
+                <div key={i} className="relative flex gap-5 pb-8 last:pb-0">
+                  {/* Vertical connector */}
+                  {i < 4 && (
+                    <motion.div
+                      className="absolute left-6 top-12 w-[2px] bg-gradient-to-b from-primary to-blue-400/30"
+                      style={{ bottom: 0, transformOrigin: "top", boxShadow: "0 0 6px rgba(59,130,246,0.4)" }}
+                      initial={{ scaleY: 0 }}
+                      animate={isProcessInView ? { scaleY: 1 } : { scaleY: 0 }}
+                      transition={{ duration: 0.4, delay: 0.7 + i * 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  )}
+
+                  {/* Node */}
+                  <div className="relative flex-shrink-0">
+                    <motion.div
+                      className="absolute -inset-2 rounded-full border border-primary"
+                      initial={{ scale: 0.6, opacity: 0 }}
+                      animate={isProcessInView
+                        ? { scale: [1, 1.6, 1], opacity: [0.6, 0, 0.6] }
+                        : { scale: 0.6, opacity: 0 }}
+                      transition={{ duration: 2, delay: 0.8 + i * 0.4, repeat: Infinity }}
+                    />
+                    <motion.div
+                      className="w-12 h-12 rounded-full bg-background border-2 border-primary flex items-center justify-center shadow-[0_0_16px_rgba(59,130,246,0.3)] relative z-10"
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={isProcessInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 250, damping: 18, delay: 0.5 + i * 0.4 }}
+                    >
+                      <step.icon className="text-primary" size={20} />
+                    </motion.div>
+                  </div>
+
+                  {/* Text */}
+                  <motion.div
+                    className="pt-2"
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={isProcessInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -12 }}
+                    transition={{ duration: 0.4, delay: 0.65 + i * 0.4 }}
+                  >
+                    <span className="text-xs font-bold text-primary/70 tracking-widest uppercase">Step {i + 1}</span>
+                    <h3 className="text-base font-bold text-white mt-0.5">{step.label}</h3>
+                    <p className="text-sm text-muted-foreground">{step.desc}</p>
+                  </motion.div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
