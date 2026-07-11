@@ -8,6 +8,7 @@ import { Layout } from "@/components/layout/Layout";
 import { LanguageProvider } from "@/lib/i18n";
 import Home from "@/pages/home";
 import Inventory from "@/pages/inventory";
+import Popular from "@/pages/popular";
 import Services from "@/pages/services";
 import Pricing from "@/pages/pricing";
 import Calculator from "@/pages/calculator";
@@ -23,6 +24,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/inventory" component={Inventory} />
+      <Route path="/popular" component={Popular} />
       <Route path="/services" component={Services} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/calculator" component={Calculator} />
