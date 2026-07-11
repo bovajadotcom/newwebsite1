@@ -1,3 +1,30 @@
+// ============================================================
+// 🚗 ДАННЫЕ АВТОМОБИЛЕЙ — ВСЕ АВТО САЙТА
+// ============================================================
+// Три массива:
+//   stockVehicles   — авто В НАЛИЧИИ (страница /inventory)
+//   soldVehicles    — ПРОДАННЫЕ авто (вкладка "Recently Sold")
+//   popularVehicles — САМЫЕ ПОПУЛЯРНЫЕ (страница /popular и раздел в /inventory)
+//
+// Как добавить новое авто в наличии:
+//   1. Скопируйте один объект { id: "v1", ... }
+//   2. Измените id на уникальный (v9, v10 и т.д.)
+//   3. Заполните все поля
+//   4. Для image: положите фото в папку artifacts/auto-site/public/
+//      и укажите имя файла (например "my-car.png")
+//
+// Статусы (поле status):
+//   "available" — в наличии (зелёный бейдж)
+//   "reserved"  — забронирован (синий бейдж)
+//   "sold"      — продан (серый бейдж)
+//
+// Типы топлива (поле fuel):
+//   "Petrol" | "Diesel" | "Hybrid" | "Electric"
+//
+// Коробка передач (поле transmission):
+//   "Automatic" | "Manual"
+// ============================================================
+
 export type FuelType = "Petrol" | "Diesel" | "Hybrid" | "Electric";
 export type Transmission = "Automatic" | "Manual";
 export type VehicleStatus = "available" | "sold" | "reserved";
@@ -41,6 +68,9 @@ export interface PopularVehicle {
   description: string;
 }
 
+// ── АВТО В НАЛИЧИИ ──────────────────────────────────────
+// Отображаются на странице /inventory во вкладке "In Stock"
+// Добавляйте новые авто в этот список
 export const stockVehicles: Vehicle[] = [
   {
     id: "v1",
@@ -169,6 +199,9 @@ export const stockVehicles: Vehicle[] = [
   },
 ];
 
+// ── ПРОДАННЫЕ АВТО ──────────────────────────────────────
+// Отображаются на странице /inventory во вкладке "Recently Sold"
+// Добавляйте сюда авто после продажи (или удаляйте старые записи)
 export const soldVehicles: SoldVehicle[] = [
   { id: "s1", make: "Porsche", model: "911 Carrera S", year: 2021, finalPrice: 145000, purchaseCountry: "Japan", deliveryStatus: "Delivered", deliveryDate: "Mar 2024", image: "vehicle-1.png" },
   { id: "s2", make: "BMW", model: "M3 Competition", year: 2022, finalPrice: 82000, purchaseCountry: "Germany", deliveryStatus: "Delivered", deliveryDate: "Feb 2024", image: "vehicle-2.png" },
@@ -178,6 +211,9 @@ export const soldVehicles: SoldVehicle[] = [
   { id: "s6", make: "Toyota", model: "Alphard Executive", year: 2022, purchaseCountry: "Japan", deliveryStatus: "Delivered", deliveryDate: "Oct 2023", image: "vehicle-2.png" },
 ];
 
+// ── САМЫЕ ПОПУЛЯРНЫЕ АВТО ───────────────────────────────
+// Отображаются на странице /popular и в разделе "Most Popular" на /inventory
+// Здесь нет цены в USD — только диапазон и описание
 export const popularVehicles: PopularVehicle[] = [
   { id: "p1", make: "Toyota", model: "Land Cruiser 300", image: "vehicle-4.png", priceRange: "$75,000 – $95,000", estimatedDelivery: "6–9 weeks", description: "The most in-demand import from Japan. Exceptional reliability, off-road capability, and resale value." },
   { id: "p2", make: "Porsche", model: "Cayenne / Cayenne S", image: "vehicle-1.png", priceRange: "$80,000 – $140,000", estimatedDelivery: "4–7 weeks", description: "Premium German SUV with outstanding performance and prestige. Popular from both Germany and Japan." },

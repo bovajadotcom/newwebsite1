@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "waHfGqIYVxdkcfIP3Uk2f"
@@ -60,3 +59,9 @@ id = "RWIjQWf8HHmCaqWgXIcK6"
 uri = "file://artifacts/auto-site/public/vehicle-4.png"
 type = "image"
 title = "Toyota Land Cruiser 300 white"
+
+[[outputs]]
+id = "GeiD-FV_yfp-p3uQC3gvt"
+uri = "file://CONTENT_GUIDE.md"
+type = "text"
+title = "Инструкция по редактированию контента"
