@@ -109,7 +109,7 @@ export default function Home() {
         />
 
         {/* Content */}
-        <div className="relative z-20 flex flex-col justify-center h-full px-8 md:px-16 lg:px-24 pt-16">
+        <div className="relative z-20 flex flex-col justify-center h-full px-8 md:px-16 lg:px-24 pt-4">
 
           {/* Label */}
           <motion.div
