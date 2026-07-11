@@ -30,13 +30,14 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    store: new PgSession({ pool, tableName: "session", createTableIfMissing: true }),
+    store: new PgSession({ pool, tableName: "session", createTableIfMissing: false }),
     secret: process.env.SESSION_SECRET ?? "fallback-dev-secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     },
   }),
