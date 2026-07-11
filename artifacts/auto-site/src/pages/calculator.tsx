@@ -18,6 +18,17 @@ const COUNTRIES = [
   { code: "BY", name: "Беларусь",       flag: "🇧🇾", region: "belarus" },
 ];
 
+const SOURCE_COUNTRIES = [
+  { code: "FR", name: "Франция",  flag: "🇫🇷", region: "western" },
+  { code: "IT", name: "Италия",   flag: "🇮🇹", region: "western" },
+  { code: "DE", name: "Германия", flag: "🇩🇪", region: "western" },
+  { code: "BE", name: "Бельгия",  flag: "🇧🇪", region: "western" },
+  { code: "ES", name: "Испания",  flag: "🇪🇸", region: "western" },
+  { code: "PL", name: "Польша",   flag: "🇵🇱", region: "eastern" },
+  { code: "LV", name: "Латвия",   flag: "🇱🇻", region: "eastern" },
+  { code: "LT", name: "Литва",    flag: "🇱🇹", region: "eastern" },
+];
+
 const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric"];
 const TRANSMISSION_TYPES = ["Automatic", "Manual"];
 const BY_BENEFIT_TYPES = ["Инвалидность", "Многодетная семья", "Ветеран", "Другая льгота"];
@@ -27,6 +38,7 @@ type ByPersonType = "individual" | "benefit" | "company" | "";
 
 interface FormState {
   vehiclePrice: number;
+  sourceCountry: string;
   countryCode: string;
   // Belarus-specific vehicle details
   year: number;
@@ -36,6 +48,7 @@ interface FormState {
   byPersonType: ByPersonType;
   byBenefitType: string;
   byHasDocument: boolean;
+  byDelivery: boolean;
   // Lead
   name: string;
   phone: string;
@@ -57,6 +70,7 @@ interface ByResult {
   utilizationFee: number;
   processingFee: number;
   vat: number;
+  delivery: number;
   customsTotal: number;
   total: number;
   ageLabel: string;
@@ -110,11 +124,13 @@ function calculateBelarusResult(form: FormState): ByResult {
     vat = Math.round((form.vehiclePrice + rawDuty) * belarusConfig.company.vat_percent / 100);
   }
 
+  const delivery = form.byDelivery ? belarusConfig.delivery_to_belarus : 0;
+  const customsTotal = discountedDuty + utilizationFee + processingFee + vat;
   const ageLabels: Record<string, string> = { under3: "до 3 лет", "3to5": "от 3 до 5 лет", over5: "старше 5 лет" };
   return {
     customsDuty: rawDuty, discountedDuty, utilizationFee, processingFee, vat,
-    customsTotal: discountedDuty + utilizationFee + processingFee + vat,
-    total: form.vehiclePrice + discountedDuty + utilizationFee + processingFee + vat,
+    delivery, customsTotal,
+    total: form.vehiclePrice + customsTotal + delivery,
     ageLabel: ageLabels[ageCategory],
   };
 }
@@ -123,8 +139,8 @@ function calculateStandardResult(form: FormState, settings: { key: string; value
   const serviceFee = getSettingValue(settings, "calculator.service_fee", 500);
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
-  const country = COUNTRIES.find((c) => c.code === form.countryCode);
-  const delivery = country?.region === "western" ? westernDelivery : easternDelivery;
+  const source = SOURCE_COUNTRIES.find((c) => c.code === form.sourceCountry);
+  const delivery = source?.region === "western" ? westernDelivery : easternDelivery;
   const vatKey: Record<string, string> = { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" };
   const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
   const vatRate = getSettingValue(settings, vatKey[form.countryCode] ?? "", fallbacks[form.countryCode] ?? 21);
@@ -138,6 +154,7 @@ const SELECT_CLS = "w-full bg-input border border-border rounded px-4 py-3 text-
 
 const DEFAULT_FORM: FormState = {
   vehiclePrice: 25000,
+  sourceCountry: "DE",
   countryCode: "PL",
   year: new Date().getFullYear() - 2,
   fuel: "Petrol",
@@ -146,6 +163,7 @@ const DEFAULT_FORM: FormState = {
   byPersonType: "",
   byBenefitType: BY_BENEFIT_TYPES[0],
   byHasDocument: true,
+  byDelivery: false,
   name: "", phone: "", email: "",
 };
 
@@ -234,11 +252,11 @@ export default function Calculator() {
           <div className="lg:col-span-7">
             <AnimatePresence mode="wait">
 
-              {/* ── STEP 1: Price only ── */}
+              {/* ── STEP 1: Price + Source country ── */}
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Стоимость автомобиля</h3>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Стоимость и откуда автомобиль</h3>
 
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.vehiclePrice")}</label>
@@ -254,12 +272,27 @@ export default function Calculator() {
                     <p className="text-xs text-muted-foreground mt-2">Укажите стоимость автомобиля в евро</p>
                   </div>
 
+                  <div>
+                    <label className="block text-sm font-medium text-muted-foreground mb-3">Откуда едет автомобиль?</label>
+                    <div className="grid grid-cols-4 gap-2">
+                      {SOURCE_COUNTRIES.map((c) => (
+                        <button key={c.code} onClick={() => update("sourceCountry", c.code)}
+                          className={`p-3 rounded-lg border-2 flex flex-col items-center gap-1 transition-all
+                            ${form.sourceCountry === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                          <span className="text-xl">{c.flag}</span>
+                          <span className="text-xs font-medium leading-tight text-center">{c.name}</span>
+                          <span className="text-xs opacity-60">{c.region === "western" ? "€800" : "€600"}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   <button
                     onClick={() => setStep(2)}
                     disabled={form.vehiclePrice <= 0}
                     className="w-full py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-40"
                   >
-                    Далее — выбрать страну <ChevronRight size={18} />
+                    Далее — выбрать страну назначения <ChevronRight size={18} />
                   </button>
                 </motion.div>
               )}
@@ -396,6 +429,22 @@ export default function Calculator() {
                     </div>
                   )}
 
+                  {/* Delivery to Belarus toggle */}
+                  <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/20 border border-border/30">
+                    <div>
+                      <p className="text-sm font-medium text-white">Доставка в Беларусь</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{fmt(belarusConfig.delivery_to_belarus)} — включить в расчёт?</p>
+                    </div>
+                    <div className="flex gap-2">
+                      {[{ v: true, l: "Да" }, { v: false, l: "Нет" }].map(({ v, l }) => (
+                        <button key={l} onClick={() => update("byDelivery", v)}
+                          className={`px-4 py-2 rounded border-2 text-sm font-medium transition-all ${form.byDelivery === v ? "border-primary bg-primary/15 text-white" : "border-border/50 text-muted-foreground hover:text-white"}`}>
+                          {l}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                   {/* Result breakdown */}
                   {form.byPersonType && byResult && (
                     <div className="space-y-3 text-sm pt-1">
@@ -408,6 +457,7 @@ export default function Calculator() {
                         form.byPersonType === "company" ? { label: `НДС ${belarusConfig.company.vat_percent}%`, value: fmt(byResult.vat) } : null,
                         { label: "Утилизационный сбор", value: fmt(byResult.utilizationFee) },
                         { label: "Таможенное оформление", value: fmt(byResult.processingFee) },
+                        byResult.delivery > 0 ? { label: "Доставка в Беларусь", value: fmt(byResult.delivery) } : null,
                       ].filter(Boolean).map((row) => row && (
                         <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
                           <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
@@ -415,8 +465,8 @@ export default function Calculator() {
                         </div>
                       ))}
                       <div className="pt-3 flex justify-between items-center border-t border-border/30">
-                        <span className="text-sm text-muted-foreground">Итого растаможка</span>
-                        <span className="text-lg font-semibold text-amber-200">{fmt(byResult.customsTotal)}</span>
+                        <span className="text-sm text-muted-foreground">Итого растаможка + доп. расходы</span>
+                        <span className="text-lg font-semibold text-amber-200">{fmt(byResult.customsTotal + byResult.delivery)}</span>
                       </div>
                       <div className="flex justify-between items-end pt-1">
                         <span className="text-base font-bold text-white">Полная стоимость авто</span>
@@ -559,10 +609,12 @@ export default function Calculator() {
                           <span className="text-muted-foreground">Оформление</span>
                           <span className="text-white font-medium">{fmt(byResult.processingFee)}</span>
                         </div>
-                      </div>
-                      <div className="border-t border-border/30 pt-2 flex justify-between">
-                        <span className="text-muted-foreground text-xs">Итого растаможка</span>
-                        <span className="text-amber-200 font-medium text-sm">{fmt(byResult.customsTotal)}</span>
+                        {byResult.delivery > 0 && (
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Доставка в Беларусь</span>
+                            <span className="text-white font-medium">{fmt(byResult.delivery)}</span>
+                          </div>
+                        )}
                       </div>
                       <div className="border-t border-border/50 pt-2 flex justify-between items-end">
                         <span className="text-base font-bold text-white">Полная стоимость</span>

@@ -37,6 +37,7 @@
       ]
     }
   },
+  "delivery_to_belarus": 650,
   "company": {
     "customs_duty_percent": 15,
     "vat_percent": 20
