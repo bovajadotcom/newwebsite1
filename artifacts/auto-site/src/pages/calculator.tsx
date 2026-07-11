@@ -27,16 +27,16 @@ type ByPersonType = "individual" | "benefit" | "company" | "";
 
 interface FormState {
   vehiclePrice: number;
-  make: string;
-  model: string;
+  countryCode: string;
+  // Belarus-specific vehicle details
   year: number;
   fuel: string;
   transmission: string;
   engineVolume: number;
-  countryCode: string;
   byPersonType: ByPersonType;
   byBenefitType: string;
   byHasDocument: boolean;
+  // Lead
   name: string;
   phone: string;
   email: string;
@@ -77,9 +77,10 @@ function calcByDutyIndividual(price: number, engineVolume: number, ageCategory: 
   if (ageCategory === "under3") {
     const tiers = belarusConfig.individual.age_under_3.tiers;
     const tier = tiers.find((t) => t.max_price === null || price <= t.max_price)!;
-    const byPercent = Math.round(price * tier.percent / 100);
-    const byVolume = Math.round(engineVolume * tier.rate_per_cc);
-    return Math.max(byPercent, byVolume);
+    return Math.max(
+      Math.round(price * tier.percent / 100),
+      Math.round(engineVolume * tier.rate_per_cc),
+    );
   }
   const tiers = ageCategory === "3to5"
     ? belarusConfig.individual.age_3_to_5.volume_tiers
@@ -101,23 +102,19 @@ function calculateBelarusResult(form: FormState): ByResult {
   let vat = 0;
 
   if (form.byPersonType === "benefit") {
-    const discount = belarusConfig.discount_percent;
-    discountedDuty = Math.round(rawDuty * (1 - discount / 100));
+    discountedDuty = Math.round(rawDuty * (1 - belarusConfig.discount_percent / 100));
   } else if (form.byPersonType === "company") {
-    const dutyPercent = belarusConfig.company.customs_duty_percent;
-    rawDuty = Math.round(form.vehiclePrice * dutyPercent / 100);
+    rawDuty = Math.round(form.vehiclePrice * belarusConfig.company.customs_duty_percent / 100);
     discountedDuty = rawDuty;
     vat = Math.round((form.vehiclePrice + rawDuty) * belarusConfig.company.vat_percent / 100);
   }
 
-  const ageLabels: Record<string, string> = {
-    under3: "до 3 лет",
-    "3to5": "от 3 до 5 лет",
-    over5: "старше 5 лет",
+  const ageLabels: Record<string, string> = { under3: "до 3 лет", "3to5": "от 3 до 5 лет", over5: "старше 5 лет" };
+  return {
+    customsDuty: rawDuty, discountedDuty, utilizationFee, processingFee, vat,
+    total: discountedDuty + utilizationFee + processingFee + vat,
+    ageLabel: ageLabels[ageCategory],
   };
-
-  const total = discountedDuty + utilizationFee + processingFee + vat;
-  return { customsDuty: rawDuty, discountedDuty, utilizationFee, processingFee, vat, total, ageLabel: ageLabels[ageCategory] };
 }
 
 function calculateStandardResult(form: FormState, settings: { key: string; value: string }[]): StandardResult {
@@ -126,48 +123,35 @@ function calculateStandardResult(form: FormState, settings: { key: string; value
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
   const country = COUNTRIES.find((c) => c.code === form.countryCode);
   const delivery = country?.region === "western" ? westernDelivery : easternDelivery;
-
-  const vatKey: Record<string, string> = {
-    PL: "calculator.vat.poland", LT: "calculator.vat.lithuania",
-    LV: "calculator.vat.latvia", EE: "calculator.vat.estonia",
-    DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic",
-  };
+  const vatKey: Record<string, string> = { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" };
   const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
   const vatRate = getSettingValue(settings, vatKey[form.countryCode] ?? "", fallbacks[form.countryCode] ?? 21);
   const vatOrCustoms = Math.round(form.vehiclePrice * vatRate / 100);
-
-  return {
-    vehiclePrice: form.vehiclePrice,
-    vatOrCustoms,
-    vatOrCustomsLabel: `VAT (${vatRate}%)`,
-    delivery,
-    serviceFee,
-    total: form.vehiclePrice + vatOrCustoms + delivery + serviceFee,
-  };
+  return { vehiclePrice: form.vehiclePrice, vatOrCustoms, vatOrCustomsLabel: `VAT (${vatRate}%)`, delivery, serviceFee, total: form.vehiclePrice + vatOrCustoms + delivery + serviceFee };
 }
 
 const fmt = (n: number) => `€${n.toLocaleString("en-EU")}`;
-
 const INPUT_CLS = "w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors";
 const SELECT_CLS = "w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors";
+
+const DEFAULT_FORM: FormState = {
+  vehiclePrice: 25000,
+  countryCode: "PL",
+  year: new Date().getFullYear() - 2,
+  fuel: "Petrol",
+  transmission: "Automatic",
+  engineVolume: 1500,
+  byPersonType: "",
+  byBenefitType: BY_BENEFIT_TYPES[0],
+  byHasDocument: true,
+  name: "", phone: "", email: "",
+};
 
 export default function Calculator() {
   const { t } = useLanguage();
   const [step, setStep] = useState<Step>(1);
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState<FormState>({
-    vehiclePrice: 25000,
-    make: "", model: "",
-    year: new Date().getFullYear() - 2,
-    fuel: "Petrol",
-    transmission: "Automatic",
-    engineVolume: 1500,
-    countryCode: "PL",
-    byPersonType: "",
-    byBenefitType: BY_BENEFIT_TYPES[0],
-    byHasDocument: true,
-    name: "", phone: "", email: "",
-  });
+  const [form, setForm] = useState<FormState>(DEFAULT_FORM);
 
   const { data: rawSettings } = useGetSiteSettings();
   const settings = rawSettings ?? [];
@@ -189,10 +173,10 @@ export default function Calculator() {
     setForm((f) => ({ ...f, [key]: value }));
 
   const steps = [
-    { icon: Car, label: "Автомобиль" },
-    { icon: MapPin, label: "Направление" },
+    { icon: Car,      label: "Стоимость" },
+    { icon: MapPin,   label: "Направление" },
     { icon: BarChart3, label: "Расчёт" },
-    { icon: Send, label: "Заявка" },
+    { icon: Send,     label: "Заявка" },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -204,16 +188,11 @@ export default function Calculator() {
       credentials: "include",
       body: JSON.stringify({
         name: form.name, phone: form.phone, email: form.email,
-        message: `Запрос расчёта: ${form.make} ${form.model} (${form.year}), ${selectedCountry?.name}. Итог: ${totalStr}`,
+        message: `Запрос расчёта: ${selectedCountry?.name}, авто ${form.vehiclePrice}€. Итог: ${totalStr}`,
         service: "calculator-quote",
       }),
     }).catch(() => {});
     setSubmitted(true);
-  };
-
-  const resetForm = () => {
-    setStep(1); setSubmitted(false);
-    setForm({ vehiclePrice: 25000, make: "", model: "", year: new Date().getFullYear() - 2, fuel: "Petrol", transmission: "Automatic", engineVolume: 1500, countryCode: "PL", byPersonType: "", byBenefitType: BY_BENEFIT_TYPES[0], byHasDocument: true, name: "", phone: "", email: "" });
   };
 
   return (
@@ -238,87 +217,52 @@ export default function Calculator() {
             return (
               <div key={i} className="flex items-center gap-2 flex-1 last:flex-none">
                 <div className={`flex items-center gap-2 transition-all ${active ? "text-primary" : done ? "text-green-400" : "text-muted-foreground"}`}>
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all
-                    ${active ? "border-primary bg-primary/20" : done ? "border-green-400 bg-green-400/20" : "border-border/50"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all ${active ? "border-primary bg-primary/20" : done ? "border-green-400 bg-green-400/20" : "border-border/50"}`}>
                     {done ? <CheckCircle size={16} /> : <Icon size={16} />}
                   </div>
                   <span className="hidden sm:block text-sm font-medium">{s.label}</span>
                 </div>
-                {i < steps.length - 1 && (
-                  <div className={`flex-1 h-px mx-2 transition-all ${done ? "bg-green-400/50" : "bg-border/30"}`} />
-                )}
+                {i < steps.length - 1 && <div className={`flex-1 h-px mx-2 transition-all ${done ? "bg-green-400/50" : "bg-border/30"}`} />}
               </div>
             );
           })}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left — Steps */}
           <div className="lg:col-span-7">
             <AnimatePresence mode="wait">
 
-              {/* ── STEP 1: Vehicle + Price ── */}
+              {/* ── STEP 1: Price only ── */}
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
-                  className="p-8 rounded-xl bg-card border border-border/50 space-y-5">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Данные автомобиля и стоимость</h3>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Марка <span className="text-xs opacity-50">(опционально)</span></label>
-                      <input value={form.make} onChange={(e) => update("make", e.target.value)} placeholder="например BMW" className={INPUT_CLS} />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Модель <span className="text-xs opacity-50">(опционально)</span></label>
-                      <input value={form.model} onChange={(e) => update("model", e.target.value)} placeholder="например X5" className={INPUT_CLS} />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Год выпуска</label>
-                      <input type="number" value={form.year} onChange={(e) => update("year", Number(e.target.value))}
-                        min={2000} max={new Date().getFullYear()} className={INPUT_CLS} />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Тип топлива</label>
-                      <select value={form.fuel} onChange={(e) => update("fuel", e.target.value)} className={SELECT_CLS}>
-                        {FUEL_TYPES.map((f) => <option key={f}>{f}</option>)}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Объём двигателя (см³)</label>
-                      <input type="number" value={form.engineVolume} onChange={(e) => update("engineVolume", Number(e.target.value) || 0)}
-                        min={0} max={9000} step={100} className={INPUT_CLS} />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Коробка передач</label>
-                      <select value={form.transmission} onChange={(e) => update("transmission", e.target.value)} className={SELECT_CLS}>
-                        {TRANSMISSION_TYPES.map((t) => <option key={t}>{t}</option>)}
-                      </select>
-                    </div>
-                  </div>
+                  className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Стоимость автомобиля</h3>
 
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.vehiclePrice")}</label>
                     <div className="relative">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">€</span>
-                      <input type="number" value={form.vehiclePrice} onChange={(e) => update("vehiclePrice", Number(e.target.value) || 0)}
-                        className="w-full bg-input border border-border rounded pl-8 pr-4 py-3 text-white focus:outline-none focus:border-primary transition-colors text-lg font-medium" />
+                      <input
+                        type="number"
+                        value={form.vehiclePrice}
+                        onChange={(e) => update("vehiclePrice", Number(e.target.value) || 0)}
+                        className="w-full bg-input border border-border rounded pl-8 pr-4 py-4 text-white focus:outline-none focus:border-primary transition-colors text-2xl font-medium"
+                      />
                     </div>
+                    <p className="text-xs text-muted-foreground mt-2">Укажите стоимость автомобиля в евро</p>
                   </div>
 
-                  <button onClick={() => setStep(2)}
-                    className="w-full py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
-                    Далее <ChevronRight size={18} />
+                  <button
+                    onClick={() => setStep(2)}
+                    disabled={form.vehiclePrice <= 0}
+                    className="w-full py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-40"
+                  >
+                    Далее — выбрать страну <ChevronRight size={18} />
                   </button>
                 </motion.div>
               )}
 
-              {/* ── STEP 2: Destination Country ── */}
+              {/* ── STEP 2: Destination ── */}
               {step === 2 && (
                 <motion.div key="step2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
@@ -328,13 +272,10 @@ export default function Calculator() {
                     {COUNTRIES.map((c) => {
                       const vatKey: Record<string, string> = { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" };
                       const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
-                      const subtitle = c.region === "belarus"
-                        ? "Таможенный расчёт"
-                        : `НДС ${getSettingValue(settings, vatKey[c.code] ?? "", fallbacks[c.code] ?? 21)}%`;
+                      const subtitle = c.region === "belarus" ? "Таможенный расчёт" : `НДС ${getSettingValue(settings, vatKey[c.code] ?? "", fallbacks[c.code] ?? 21)}%`;
                       return (
                         <button key={c.code} onClick={() => update("countryCode", c.code)}
-                          className={`p-4 rounded-lg border-2 flex items-center gap-3 transition-all text-left
-                            ${form.countryCode === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                          className={`p-4 rounded-lg border-2 flex items-center gap-3 transition-all text-left ${form.countryCode === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
                           <span className="text-2xl">{c.flag}</span>
                           <div>
                             <div className="font-semibold text-sm">{c.name}</div>
@@ -346,32 +287,28 @@ export default function Calculator() {
                   </div>
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(1)}
-                      className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(1)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> Назад
                     </button>
-                    <button onClick={() => { update("byPersonType", ""); setStep(3); }}
-                      className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
+                    <button onClick={() => { update("byPersonType", ""); setStep(3); }} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
                       Рассчитать <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
               )}
 
-              {/* ── STEP 3A: Standard Calculation (non-Belarus) ── */}
+              {/* ── STEP 3A: Standard result ── */}
               {step === 3 && !isBelarus && standardResult && (
                 <motion.div key="step3-std" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">
-                    Расчёт стоимости {form.make && `— ${form.make} ${form.model}`}
-                  </h3>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Расчёт стоимости</h3>
 
                   <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/20 border border-border/30">
                     <span className="text-3xl">{selectedCountry?.flag}</span>
                     <div>
                       <div className="text-white font-semibold">Назначение: {selectedCountry?.name}</div>
                       <div className="text-muted-foreground text-sm">
-                        {selectedCountry?.region === "western" ? "Западная Европа" : "Восточная Европа"} — доставка {fmt(standardResult.delivery)}
+                        {selectedCountry?.region === "western" ? "Западная Европа" : "Восточная Европа"}
                       </div>
                     </div>
                   </div>
@@ -397,19 +334,17 @@ export default function Calculator() {
                   <p className="text-xs text-muted-foreground">*Предварительный расчёт. Итоговая стоимость подтверждается после оформления заказа.</p>
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(2)}
-                      className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(2)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> Назад
                     </button>
-                    <button onClick={() => setStep(4)}
-                      className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                    <button onClick={() => setStep(4)} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                       Получить расчёт <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
               )}
 
-              {/* ── STEP 3B: Belarus Customs Calculator ── */}
+              {/* ── STEP 3B: Belarus calculator ── */}
               {step === 3 && isBelarus && (
                 <motion.div key="step3-by" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
@@ -418,40 +353,69 @@ export default function Calculator() {
                     <h3 className="text-xl font-bold text-white">Расчёт растаможки — Беларусь</h3>
                   </div>
 
-                  {/* Person Type */}
+                  {/* Vehicle details — only shown here for Belarus */}
+                  <div className="space-y-4 p-4 rounded-lg bg-secondary/20 border border-border/30">
+                    <p className="text-sm font-medium text-white">Данные автомобиля</p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">Год выпуска</label>
+                        <input type="number" value={form.year} onChange={(e) => update("year", Number(e.target.value))}
+                          min={2000} max={new Date().getFullYear()} className={INPUT_CLS} />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">Тип топлива</label>
+                        <select value={form.fuel} onChange={(e) => update("fuel", e.target.value)} className={SELECT_CLS}>
+                          {FUEL_TYPES.map((f) => <option key={f}>{f}</option>)}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">Объём двигателя (см³)</label>
+                        <input type="number" value={form.engineVolume} onChange={(e) => update("engineVolume", Number(e.target.value) || 0)}
+                          min={0} max={9000} step={100} className={INPUT_CLS} />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">Коробка передач</label>
+                        <select value={form.transmission} onChange={(e) => update("transmission", e.target.value)} className={SELECT_CLS}>
+                          {TRANSMISSION_TYPES.map((t) => <option key={t}>{t}</option>)}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Person type */}
                   <div>
                     <p className="text-sm font-medium text-muted-foreground mb-3">Кто ввозит автомобиль?</p>
                     <div className="grid grid-cols-3 gap-3">
-                      {[
+                      {([
                         { key: "individual" as ByPersonType, label: "Физическое лицо" },
                         { key: "benefit"    as ByPersonType, label: "Льготная категория" },
                         { key: "company"    as ByPersonType, label: "Юридическое лицо" },
-                      ].map((opt) => (
+                      ]).map((opt) => (
                         <button key={opt.key} onClick={() => update("byPersonType", opt.key)}
-                          className={`py-3 px-2 rounded-lg border-2 text-sm font-medium transition-all text-center
-                            ${form.byPersonType === opt.key ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                          className={`py-3 px-2 rounded-lg border-2 text-sm font-medium transition-all text-center ${form.byPersonType === opt.key ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
                           {opt.label}
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  {/* Benefit-specific fields */}
+                  {/* Benefit fields */}
                   {form.byPersonType === "benefit" && (
                     <div className="space-y-4 p-4 rounded-lg bg-secondary/20 border border-border/30">
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">Тип льготы</label>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">Тип льготы</label>
                         <select value={form.byBenefitType} onChange={(e) => update("byBenefitType", e.target.value)} className={SELECT_CLS}>
                           {BY_BENEFIT_TYPES.map((b) => <option key={b}>{b}</option>)}
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-muted-foreground mb-2">Документ подтверждения</label>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">Документ подтверждения</label>
                         <div className="flex gap-3">
                           {[{ v: true, l: "Да" }, { v: false, l: "Нет" }].map(({ v, l }) => (
                             <button key={l} onClick={() => update("byHasDocument", v)}
-                              className={`flex-1 py-2 rounded border-2 text-sm font-medium transition-all
-                                ${form.byHasDocument === v ? "border-primary bg-primary/15 text-white" : "border-border/50 text-muted-foreground hover:text-white"}`}>
+                              className={`flex-1 py-2 rounded border-2 text-sm font-medium transition-all ${form.byHasDocument === v ? "border-primary bg-primary/15 text-white" : "border-border/50 text-muted-foreground hover:text-white"}`}>
                               {l}
                             </button>
                           ))}
@@ -460,21 +424,16 @@ export default function Calculator() {
                     </div>
                   )}
 
-                  {/* Calculation result */}
+                  {/* Result breakdown */}
                   {form.byPersonType && byResult && (
-                    <div className="space-y-3 text-sm pt-2">
-                      <div className="text-xs text-muted-foreground mb-1 font-medium uppercase tracking-wide">
-                        Возраст авто: {byResult.ageLabel}
-                      </div>
-
+                    <div className="space-y-3 text-sm pt-1">
+                      <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Возраст авто: {byResult.ageLabel}</p>
                       {[
                         { label: "Стоимость автомобиля", value: fmt(form.vehiclePrice) },
                         form.byPersonType === "benefit" && byResult.customsDuty !== byResult.discountedDuty
                           ? { label: `Таможенная пошлина (скидка ${belarusConfig.discount_percent}%)`, value: fmt(byResult.discountedDuty), accent: true }
                           : { label: "Таможенная пошлина", value: fmt(byResult.discountedDuty), accent: true },
-                        form.byPersonType === "company"
-                          ? { label: `НДС ${belarusConfig.company.vat_percent}%`, value: fmt(byResult.vat) }
-                          : null,
+                        form.byPersonType === "company" ? { label: `НДС ${belarusConfig.company.vat_percent}%`, value: fmt(byResult.vat) } : null,
                         { label: "Утилизационный сбор", value: fmt(byResult.utilizationFee) },
                         { label: "Таможенное оформление", value: fmt(byResult.processingFee) },
                       ].filter(Boolean).map((row) => row && (
@@ -483,14 +442,12 @@ export default function Calculator() {
                           <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
                         </div>
                       ))}
-
                       <div className="pt-3 flex justify-between items-end">
                         <span className="text-base font-bold text-white">Итого растаможка</span>
                         <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
                       </div>
-
-                      <div className="mt-4 flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
-                        <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
+                      <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                        <AlertTriangle size={15} className="text-amber-400 mt-0.5 shrink-0" />
                         <p className="text-xs text-amber-300 leading-relaxed">
                           Расчет является предварительным. Итоговая сумма зависит от действующих ставок законодательства Республики Беларусь.
                         </p>
@@ -499,8 +456,7 @@ export default function Calculator() {
                   )}
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(2)}
-                      className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(2)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> Назад
                     </button>
                     <button onClick={() => setStep(4)} disabled={!form.byPersonType}
@@ -517,7 +473,6 @@ export default function Calculator() {
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Получить детальный расчёт</h3>
                   <p className="text-muted-foreground text-sm">Оставьте контакты — наш специалист пришлёт подробный расчёт с точными цифрами.</p>
-
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Имя *</label>
@@ -531,14 +486,11 @@ export default function Calculator() {
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Email *</label>
                       <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="ваш@email.com" className={INPUT_CLS} />
                     </div>
-
                     <div className="flex gap-3 pt-2">
-                      <button type="button" onClick={() => setStep(3)}
-                        className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                      <button type="button" onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                         <ChevronLeft size={18} /> Назад
                       </button>
-                      <button type="submit"
-                        className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                      <button type="submit" className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                         <Send size={18} /> Отправить заявку
                       </button>
                     </div>
@@ -555,7 +507,7 @@ export default function Calculator() {
                   </div>
                   <h3 className="text-2xl font-bold text-white">Заявка отправлена!</h3>
                   <p className="text-muted-foreground">Спасибо, {form.name}. Специалист свяжется с вами в течение 2 часов в рабочее время.</p>
-                  <button onClick={resetForm}
+                  <button onClick={() => { setStep(1); setSubmitted(false); setForm(DEFAULT_FORM); }}
                     className="mt-4 px-6 py-3 bg-primary text-white rounded font-semibold hover:bg-primary/90 transition-all">
                     Новый расчёт
                   </button>
@@ -569,22 +521,19 @@ export default function Calculator() {
           <div className="lg:col-span-5">
             <div className="sticky top-28 p-7 rounded-xl bg-secondary/30 border border-primary/30 shadow-[0_0_30px_rgba(59,130,246,0.1)]">
               <div className="flex items-center gap-2 mb-5">
-                <span className="text-2xl">{selectedCountry?.flag}</span>
+                <span className="text-2xl">{selectedCountry?.flag ?? "🚗"}</span>
                 <h3 className="text-lg font-bold text-white">
                   {isBelarus ? "Растаможка" : "Предварительный расчёт"}
                 </h3>
-                {(form.make || form.model) && (
-                  <span className="ml-auto text-xs text-muted-foreground truncate">{form.make} {form.model}</span>
-                )}
               </div>
 
               {!isBelarus && standardResult && (
                 <>
                   <div className="space-y-3 text-sm mb-5">
                     {[
-                      { label: "Стоимость авто", value: fmt(standardResult.vehiclePrice) },
+                      { label: "Стоимость авто",    value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
-                      { label: "Доставка", value: fmt(standardResult.delivery) },
+                      { label: "Доставка",           value: fmt(standardResult.delivery) },
                       { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) },
                     ].map((row) => (
                       <div key={row.label} className="flex justify-between">
@@ -609,38 +558,39 @@ export default function Calculator() {
                     <span className="text-muted-foreground">Стоимость авто</span>
                     <span className="text-white font-medium">{fmt(form.vehiclePrice)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Год / объём</span>
-                    <span className="text-white font-medium">{form.year} / {form.engineVolume} см³</span>
-                  </div>
-                  {byResult && form.byPersonType && (
+                  {byResult && form.byPersonType ? (
                     <>
-                      <div className="border-t border-border/30 pt-3 flex justify-between">
-                        <span className="text-muted-foreground">Таможенная пошлина</span>
-                        <span className="text-amber-200 font-medium">{fmt(byResult.discountedDuty)}</span>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Год / объём</span>
+                        <span className="text-white font-medium">{form.year} / {form.engineVolume} см³</span>
                       </div>
-                      {byResult.vat > 0 && (
+                      <div className="border-t border-border/30 pt-3 space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">НДС</span>
-                          <span className="text-white font-medium">{fmt(byResult.vat)}</span>
+                          <span className="text-muted-foreground">Таможенная пошлина</span>
+                          <span className="text-amber-200 font-medium">{fmt(byResult.discountedDuty)}</span>
                         </div>
-                      )}
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Утилизационный сбор</span>
-                        <span className="text-white font-medium">{fmt(byResult.utilizationFee)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Оформление</span>
-                        <span className="text-white font-medium">{fmt(byResult.processingFee)}</span>
+                        {byResult.vat > 0 && (
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">НДС</span>
+                            <span className="text-white font-medium">{fmt(byResult.vat)}</span>
+                          </div>
+                        )}
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Утилизационный сбор</span>
+                          <span className="text-white font-medium">{fmt(byResult.utilizationFee)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-muted-foreground">Оформление</span>
+                          <span className="text-white font-medium">{fmt(byResult.processingFee)}</span>
+                        </div>
                       </div>
                       <div className="border-t border-border/50 pt-3 flex justify-between items-end">
                         <span className="text-base font-bold text-white">Итого</span>
                         <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
                       </div>
                     </>
-                  )}
-                  {!form.byPersonType && (
-                    <p className="text-xs text-muted-foreground pt-2">Выберите тип импортёра для расчёта</p>
+                  ) : (
+                    <p className="text-xs text-muted-foreground pt-1">Заполните данные авто и выберите тип импортёра</p>
                   )}
                   <div className="mt-3 flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
                     <AlertTriangle size={14} className="text-amber-400 mt-0.5 shrink-0" />
@@ -651,13 +601,16 @@ export default function Calculator() {
                 </div>
               )}
 
-              <div className="mt-5 space-y-2 border-t border-border/30 pt-4">
-                <p className="text-xs text-muted-foreground">✓ Прозрачное ценообразование</p>
-                <p className="text-xs text-muted-foreground">✓ Все налоги включены в расчёт</p>
-                <p className="text-xs text-muted-foreground">✓ Бесплатная консультация специалиста</p>
-              </div>
+              {!isBelarus && (
+                <div className="mt-5 space-y-1 border-t border-border/30 pt-4">
+                  <p className="text-xs text-muted-foreground">✓ Прозрачное ценообразование</p>
+                  <p className="text-xs text-muted-foreground">✓ Все налоги включены в расчёт</p>
+                  <p className="text-xs text-muted-foreground">✓ Бесплатная консультация специалиста</p>
+                </div>
+              )}
             </div>
           </div>
+
         </div>
       </div>
     </div>
