@@ -365,23 +365,9 @@ export default function Calculator() {
                           min={2000} max={new Date().getFullYear()} className={INPUT_CLS} />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-2">Тип топлива</label>
-                        <select value={form.fuel} onChange={(e) => update("fuel", e.target.value)} className={SELECT_CLS}>
-                          {FUEL_TYPES.map((f) => <option key={f}>{f}</option>)}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-2">Объём двигателя (см³)</label>
                         <input type="number" value={form.engineVolume} onChange={(e) => update("engineVolume", Number(e.target.value) || 0)}
                           min={0} max={9000} step={100} className={INPUT_CLS} />
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-2">Коробка передач</label>
-                        <select value={form.transmission} onChange={(e) => update("transmission", e.target.value)} className={SELECT_CLS}>
-                          {TRANSMISSION_TYPES.map((t) => <option key={t}>{t}</option>)}
-                        </select>
                       </div>
                     </div>
                   </div>
@@ -403,26 +389,10 @@ export default function Calculator() {
                     </div>
                   </div>
 
-                  {/* Benefit fields */}
+                  {/* Benefit note */}
                   {form.byPersonType === "benefit" && (
-                    <div className="space-y-4 p-4 rounded-lg bg-secondary/20 border border-border/30">
-                      <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-2">Тип льготы</label>
-                        <select value={form.byBenefitType} onChange={(e) => update("byBenefitType", e.target.value)} className={SELECT_CLS}>
-                          {BY_BENEFIT_TYPES.map((b) => <option key={b}>{b}</option>)}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-2">Документ подтверждения</label>
-                        <div className="flex gap-3">
-                          {[{ v: true, l: "Да" }, { v: false, l: "Нет" }].map(({ v, l }) => (
-                            <button key={l} onClick={() => update("byHasDocument", v)}
-                              className={`flex-1 py-2 rounded border-2 text-sm font-medium transition-all ${form.byHasDocument === v ? "border-primary bg-primary/15 text-white" : "border-border/50 text-muted-foreground hover:text-white"}`}>
-                              {l}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                    <div className="p-3 rounded-lg bg-primary/10 border border-primary/30 text-sm text-primary">
+                      Скидка {belarusConfig.discount_percent}% на таможенную пошлину применяется автоматически.
                     </div>
                   )}
 
