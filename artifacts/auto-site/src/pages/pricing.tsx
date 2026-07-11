@@ -59,15 +59,15 @@ export default function Pricing() {
   ];
 
   return (
-    <div className="pt-12 pb-24">
+    <div className="pt-12 pb-24 bg-slate-50">
       <div className="container mx-auto px-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("pricing.title")}</h1>
-          <p className="text-xl text-muted-foreground">
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">{t("pricing.title")}</h1>
+          <p className="text-xl text-slate-600">
             {t("pricing.sub")}
           </p>
         </motion.div>
@@ -81,34 +81,34 @@ export default function Pricing() {
               transition={{ delay: i * 0.1 }}
               className={`relative p-8 rounded-2xl border ${
                 tier.popular 
-                  ? "bg-secondary/40 border-primary/50 shadow-[0_0_30px_rgba(59,130,246,0.15)] scale-105 z-10" 
-                  : "bg-card border-border/50"
+                  ? "bg-white border-blue-500 shadow-xl scale-105 z-10" 
+                  : "bg-white border-slate-200 shadow-sm"
               } flex flex-col`}
             >
               {tier.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-white text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-full whitespace-nowrap">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-600 text-white text-xs font-bold uppercase tracking-wider py-1 px-4 rounded-full whitespace-nowrap">
                   {t("pricing.popular")}
                 </div>
               )}
               
-              <h3 className="text-2xl font-bold text-white mb-2">{t(tier.nameKey)}</h3>
-              <p className="text-sm text-muted-foreground mb-6 h-10">{tier.desc}</p>
+              <h3 className={`text-2xl font-bold mb-2 ${tier.popular ? "text-blue-600" : "text-slate-900"}`}>{t(tier.nameKey)}</h3>
+              <p className="text-sm text-slate-600 mb-6 h-10">{tier.desc}</p>
               <div className="mb-8 flex items-baseline gap-1">
-                <span className="text-5xl font-bold text-white">{tier.price}</span>
-                <span className="text-muted-foreground">/ {t("pricing.perVehicle")}</span>
+                <span className="text-5xl font-bold text-slate-900">{tier.price}</span>
+                <span className="text-slate-500">/ {t("pricing.perVehicle")}</span>
               </div>
 
               <div className="flex-1 space-y-4 mb-8">
                 {tier.features.map((feat, j) => (
                   <div key={j} className="flex items-start gap-3">
-                    <Check size={18} className="text-primary shrink-0 mt-0.5" />
-                    <span className="text-sm text-foreground">{feat}</span>
+                    <Check size={18} className="text-blue-600 shrink-0 mt-0.5" />
+                    <span className="text-sm text-slate-700">{feat}</span>
                   </div>
                 ))}
                 {tier.missing.map((feat, j) => (
                   <div key={`m-${j}`} className="flex items-start gap-3 opacity-40">
                     <div className="w-[18px] h-[18px] shrink-0" />
-                    <span className="text-sm text-muted-foreground line-through">{feat}</span>
+                    <span className="text-sm text-slate-500 line-through">{feat}</span>
                   </div>
                 ))}
               </div>
@@ -117,8 +117,8 @@ export default function Pricing() {
                 href="/calculator"
                 className={`w-full py-3 rounded text-center font-medium transition-all ${
                   tier.popular 
-                    ? "bg-primary text-white hover:bg-primary/90" 
-                    : "bg-secondary text-white hover:bg-secondary/80 border border-border/50"
+                    ? "bg-blue-600 text-white hover:bg-blue-700" 
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200"
                 }`}
               >
                 Choose {t(tier.nameKey)}
@@ -130,11 +130,11 @@ export default function Pricing() {
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          className="max-w-4xl mx-auto p-6 bg-secondary/30 rounded-xl border border-border/50 flex gap-4"
+          className="max-w-4xl mx-auto p-6 bg-white rounded-xl border border-slate-200 shadow-sm flex gap-4"
         >
-          <Info className="text-primary shrink-0" />
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            <strong className="text-white">Disclaimer:</strong> The prices listed above are our service/brokerage fees only. Final total cost depends heavily on the vehicle purchase price, country of origin, destination country, current exchange rates, ocean freight rates, and local customs duties. Use our Cost Calculator for a detailed estimate.
+          <Info className="text-blue-600 shrink-0" />
+          <p className="text-sm text-slate-600 leading-relaxed">
+            <strong className="text-slate-900">Disclaimer:</strong> The prices listed above are our service/brokerage fees only. Final total cost depends heavily on the vehicle purchase price, country of origin, destination country, current exchange rates, ocean freight rates, and local customs duties. Use our Cost Calculator for a detailed estimate.
           </p>
         </motion.div>
       </div>

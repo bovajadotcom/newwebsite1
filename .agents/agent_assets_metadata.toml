@@ -5,58 +5,58 @@ outputs = []
 id = "waHfGqIYVxdkcfIP3Uk2f"
 uri = "file://artifacts/auto-site/public/hero-car.png"
 type = "image"
-title = "Hero background luxury car"
+title = "dealership showroom interior"
 
 [[generated]]
 id = "z5Smy_8Gkliyg0RF_J8P1"
 uri = "file://artifacts/auto-site/public/port-night.png"
 type = "image"
-title = "About hero port night"
+title = "shipping port daytime"
 
 [[generated]]
 id = "V8DPSp7mbp79jg2aEpiKv"
 uri = "file://artifacts/auto-site/public/team-1.png"
 type = "image"
-title = "Team member 1 male"
+title = "male executive headshot"
 
 [[generated]]
 id = "hgnQenX2gAQgi1fj6csmi"
 uri = "file://artifacts/auto-site/public/team-2.png"
 type = "image"
-title = "Team member 2 female"
+title = "female executive headshot"
 
 [[generated]]
 id = "weivEtdyKa-KStmNiSCNP"
 uri = "file://artifacts/auto-site/public/team-3.png"
 type = "image"
-title = "Team member 3 male"
+title = "young male professional headshot"
 
 [[generated]]
 id = "mKZEtIP_rwF227gDR4TER"
 uri = "file://artifacts/auto-site/public/team-4.png"
 type = "image"
-title = "Team member 4 female"
+title = "female professional headshot"
 
 [[generated]]
 id = "f5clEQk-78G_t-k4y0-GY"
 uri = "file://artifacts/auto-site/public/vehicle-1.png"
 type = "image"
-title = "Porsche 911 featured"
+title = "Porsche Cayenne S white"
 
 [[generated]]
 id = "ul_b7xrCZmqZXdSyogcKR"
 uri = "file://artifacts/auto-site/public/vehicle-2.png"
 type = "image"
-title = "BMW M5 featured"
+title = "BMW M5 Competition blue"
 
 [[generated]]
 id = "RCN2RORQWXqWoQtbo9_Wg"
 uri = "file://artifacts/auto-site/public/vehicle-3.png"
 type = "image"
-title = "Mercedes GLE featured"
+title = "Mercedes-Benz GLE black"
 
 [[generated]]
 id = "RWIjQWf8HHmCaqWgXIcK6"
 uri = "file://artifacts/auto-site/public/vehicle-4.png"
 type = "image"
-title = "Toyota Land Cruiser featured"
+title = "Toyota Land Cruiser 300 white"

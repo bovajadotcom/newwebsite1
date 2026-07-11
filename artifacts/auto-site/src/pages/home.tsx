@@ -86,12 +86,12 @@ export default function Home() {
       </section>
 
       {/* AUCTION PARTNERS */}
-      <section className="py-12 border-y border-border/50 bg-secondary/30">
+      <section className="py-12 border-y border-slate-200 bg-slate-50">
         <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-8">{t("section.partners")}</p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+          <p className="text-center text-sm text-slate-500 uppercase tracking-widest mb-8">{t("section.partners")}</p>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 hover:opacity-100 transition-all duration-500">
             {["Copart", "IAAI", "Manheim", "USS Tokyo", "TAA", "JU Group", "Adesa", "Autorola"].map(partner => (
-              <span key={partner} className="text-xl md:text-2xl font-bold tracking-tighter hover:text-white transition-colors">{partner}</span>
+              <span key={partner} className="text-xl md:text-2xl font-bold tracking-tighter text-slate-800 hover:text-blue-600 transition-colors">{partner}</span>
             ))}
           </div>
         </div>
@@ -123,11 +123,11 @@ export default function Home() {
       </section>
 
       {/* ADVANTAGES */}
-      <section className="py-24 bg-card/30">
+      <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.advantages")}</h2>
-            <p className="text-muted-foreground">The difference between a broker and a partner. We handle every detail so you can focus on the drive.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.advantages")}</h2>
+            <p className="text-slate-600">The difference between a broker and a partner. We handle every detail so you can focus on the drive.</p>
           </motion.div>
 
           <motion.div 
@@ -147,13 +147,13 @@ export default function Home() {
               <motion.div 
                 key={i} 
                 variants={fadeIn}
-                className="p-8 rounded-xl bg-secondary/20 border border-border/50 hover:bg-secondary/40 hover:border-primary/50 transition-all duration-300 group"
+                className="p-8 rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-lg hover:border-blue-200 transition-all duration-300 group"
               >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                  <adv.icon className="text-primary" size={24} />
+                <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
+                  <adv.icon className="text-blue-600" size={24} />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{adv.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{adv.desc}</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{adv.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{adv.desc}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -196,12 +196,12 @@ export default function Home() {
       </section>
 
       {/* FEATURED VEHICLES */}
-      <section className="py-24 bg-card/30">
+      <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.vehicles")}</h2>
-              <p className="text-muted-foreground">Exceptional vehicles secured for our clients this month.</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.vehicles")}</h2>
+              <p className="text-slate-600">Exceptional vehicles secured for our clients this month.</p>
             </motion.div>
           </div>
 
@@ -217,20 +217,20 @@ export default function Home() {
               { img: "vehicle-3.png", title: "2023 Mercedes-Benz GLE", origin: "USA", status: "Customs" },
               { img: "vehicle-4.png", title: "2023 Toyota Land Cruiser", origin: "UAE", status: "Delivered" }
             ].map((car, i) => (
-              <motion.div key={i} variants={fadeIn} className="group overflow-hidden rounded-xl bg-secondary/20 border border-border/50">
+              <motion.div key={i} variants={fadeIn} className="group overflow-hidden rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-all">
                 <div className="aspect-[16/9] overflow-hidden relative">
                   <img 
                     src={`${import.meta.env.BASE_URL}${car.img}`} 
                     alt={car.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
                     <div>
-                      <p className="text-xs text-primary font-medium mb-1 uppercase tracking-wider">From {car.origin}</p>
+                      <p className="text-xs text-blue-400 font-medium mb-1 uppercase tracking-wider">From {car.origin}</p>
                       <h3 className="text-xl font-bold text-white">{car.title}</h3>
                     </div>
-                    <div className="px-3 py-1 bg-white/10 backdrop-blur rounded text-xs text-white border border-white/10">
+                    <div className="px-3 py-1 bg-white/20 backdrop-blur rounded text-xs text-white border border-white/20">
                       {car.status}
                     </div>
                   </div>
@@ -281,11 +281,11 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-card/30 border-y border-border/50">
+      <section className="py-24 bg-white border-y border-slate-200">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div {...fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.faq")}</h2>
-            <p className="text-muted-foreground">Everything you need to know about the import process.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.faq")}</h2>
+            <p className="text-slate-600">Everything you need to know about the import process.</p>
           </motion.div>
 
           <div className="space-y-4">
@@ -295,17 +295,17 @@ export default function Home() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="border border-border/50 rounded-lg overflow-hidden bg-background"
+                className="border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm"
               >
                 <button 
-                  className="w-full p-6 text-left flex justify-between items-center hover:bg-secondary/20 transition-colors"
+                  className="w-full p-6 text-left flex justify-between items-center hover:bg-slate-50 transition-colors"
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                 >
-                  <span className="font-bold text-white">{faq.q}</span>
-                  <ChevronDown className={`text-muted-foreground transition-transform ${openFaq === i ? "rotate-180" : ""}`} size={20} />
+                  <span className="font-bold text-slate-900">{faq.q}</span>
+                  <ChevronDown className={`text-slate-500 transition-transform ${openFaq === i ? "rotate-180" : ""}`} size={20} />
                 </button>
                 {openFaq === i && (
-                  <div className="p-6 pt-0 text-muted-foreground leading-relaxed border-t border-border/50 mt-2 bg-secondary/10">
+                  <div className="p-6 pt-0 text-slate-600 leading-relaxed border-t border-slate-100 mt-2 bg-slate-50">
                     <p className="pt-4">{faq.a}</p>
                   </div>
                 )}

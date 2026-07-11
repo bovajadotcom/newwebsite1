@@ -27,13 +27,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 bg-primary rounded shadow-[0_0_15px_rgba(59,130,246,0.5)] flex items-center justify-center">
-                <span className="text-white font-bold text-lg tracking-tighter">A</span>
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-blue-600 shadow-md">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M3 14l4-8 3 5 2-3 5 6H3z" fill="white" strokeLinejoin="round"/>
+                </svg>
               </div>
-              <span className="text-xl font-bold tracking-widest uppercase text-white group-hover:text-primary transition-colors">
-                AutoImport
-              </span>
+              <div className="flex flex-col leading-none">
+                <span className="text-white font-bold text-base tracking-tight">AutoImport</span>
+                <span className="text-blue-400 text-[10px] font-medium tracking-widest uppercase">Global</span>
+              </div>
             </Link>
 
             {/* Desktop Nav */}
@@ -119,13 +122,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="col-span-1 md:col-span-1">
-              <Link href="/" className="flex items-center gap-2 mb-6">
-                <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">A</span>
+              <Link href="/" className="flex items-center gap-3 mb-6">
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600 shadow-md">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M3 14l4-8 3 5 2-3 5 6H3z" fill="white" strokeLinejoin="round"/>
+                  </svg>
                 </div>
-                <span className="text-lg font-bold tracking-widest uppercase text-white">
-                  AutoImport
-                </span>
+                <div className="flex flex-col leading-none">
+                  <span className="text-white font-bold text-base tracking-tight">AutoImport</span>
+                  <span className="text-blue-400 text-[10px] font-medium tracking-widest uppercase">Global</span>
+                </div>
               </Link>
               <p className="text-muted-foreground text-sm leading-relaxed mb-6">
                 {t("footer.tagline")}

@@ -30,7 +30,7 @@ export default function Services() {
   };
 
   return (
-    <div className="pt-12 pb-24">
+    <div className="pt-12 pb-24 bg-slate-50">
       <div className="container mx-auto px-4">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -38,8 +38,8 @@ export default function Services() {
           transition={{ duration: 0.6 }}
           className="max-w-3xl mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("services.title")}</h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">{t("services.title")}</h1>
+          <p className="text-xl text-slate-600 leading-relaxed">
             {t("services.sub")}
           </p>
         </motion.div>
@@ -52,13 +52,13 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="p-6 rounded-xl bg-card border border-border/50 hover:border-primary/50 hover:bg-card/80 transition-all duration-300 group"
+              className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-blue-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
             >
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors shadow-[0_0_15px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
-                <service.icon className="text-primary" size={24} />
+              <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
+                <service.icon className="text-blue-600" size={24} />
               </div>
-              <h3 className="text-lg font-bold text-white mb-3">{service.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h3 className="text-lg font-bold text-slate-900 mb-3">{service.title}</h3>
+              <p className="text-sm text-slate-600 leading-relaxed">
                 {service.desc}
               </p>
             </motion.div>

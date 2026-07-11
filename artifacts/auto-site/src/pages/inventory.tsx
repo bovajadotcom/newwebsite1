@@ -74,17 +74,17 @@ export default function Inventory() {
       </section>
 
       {/* Filters Sticky Bar */}
-      <section className="sticky top-20 z-40 bg-background/95 backdrop-blur-xl border-b border-border/50 py-4 shadow-sm">
+      <section className="sticky top-20 z-40 bg-slate-100 border-b border-slate-200 py-4 shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" size={18} />
               <input 
                 type="text" 
                 placeholder={t("inventory.filter.model") + "..."}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-input border border-border rounded-lg pl-10 pr-4 py-2.5 text-white focus:border-primary outline-none text-sm"
+                className="w-full bg-white border border-slate-300 rounded-lg pl-10 pr-4 py-2.5 text-slate-900 focus:border-blue-500 outline-none text-sm"
               />
             </div>
             
@@ -92,7 +92,7 @@ export default function Inventory() {
               <select 
                 value={filterBrand} 
                 onChange={(e) => setFilterBrand(e.target.value)}
-                className="bg-input border border-border rounded-lg px-3 py-2.5 text-white text-sm outline-none"
+                className="bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-slate-900 text-sm outline-none"
               >
                 {brands.map(b => (
                   <option key={b} value={b}>{b === "all" ? t("inventory.filter.brand") : b}</option>
@@ -102,7 +102,7 @@ export default function Inventory() {
               <select 
                 value={filterFuel} 
                 onChange={(e) => setFilterFuel(e.target.value)}
-                className="bg-input border border-border rounded-lg px-3 py-2.5 text-white text-sm outline-none"
+                className="bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-slate-900 text-sm outline-none"
               >
                 <option value="all">{t("inventory.filter.fuel")}</option>
                 <option value="petrol">Petrol</option>
@@ -114,7 +114,7 @@ export default function Inventory() {
               <select 
                 value={filterStatus} 
                 onChange={(e) => setFilterStatus(e.target.value)}
-                className="bg-input border border-border rounded-lg px-3 py-2.5 text-white text-sm outline-none"
+                className="bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-slate-900 text-sm outline-none"
               >
                 <option value="all">{t("inventory.filter.status")}</option>
                 <option value="available">{t("inventory.filter.available")}</option>
@@ -122,13 +122,13 @@ export default function Inventory() {
                 <option value="reserved">{t("inventory.status.reserved")}</option>
               </select>
 
-              <div className="flex gap-1 bg-input rounded-lg p-1 border border-border">
+              <div className="flex gap-1 bg-white rounded-lg p-1 border border-slate-300">
                 {["all", "0-50", "50-100", "100+"].map(range => (
                   <button
                     key={range}
                     onClick={() => setFilterPrice(range)}
                     className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                      filterPrice === range ? "bg-primary text-white" : "text-muted-foreground hover:text-white"
+                      filterPrice === range ? "bg-blue-600 text-white" : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
                     {range === "all" ? t("inventory.filter.all") : 
@@ -141,7 +141,7 @@ export default function Inventory() {
               {hasActiveFilters && (
                 <button 
                   onClick={clearFilters}
-                  className="px-3 py-2.5 text-muted-foreground hover:text-white text-sm flex items-center gap-1 transition-colors"
+                  className="px-3 py-2.5 text-slate-500 hover:text-slate-900 text-sm flex items-center gap-1 transition-colors"
                 >
                   <X size={14} /> Clear
                 </button>
@@ -152,12 +152,12 @@ export default function Inventory() {
       </section>
 
       {/* In Stock Grid */}
-      <section className="py-16">
+      <section className="py-16 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-white mb-2">{t("inventory.inStock")}</h2>
-              <p className="text-muted-foreground">{filtered.length} vehicles found</p>
+              <h2 className="text-3xl font-bold text-slate-900 mb-2">{t("inventory.inStock")}</h2>
+              <p className="text-slate-600">{filtered.length} vehicles found</p>
             </div>
           </div>
 
@@ -167,14 +167,14 @@ export default function Inventory() {
                 initial={{ opacity: 0 }} 
                 animate={{ opacity: 1 }} 
                 exit={{ opacity: 0 }}
-                className="py-20 text-center border border-border/50 rounded-2xl bg-secondary/10"
+                className="py-20 text-center border border-slate-200 rounded-2xl bg-white shadow-sm"
               >
-                <SlidersHorizontal className="mx-auto text-muted-foreground mb-4" size={48} />
-                <h3 className="text-xl font-bold text-white mb-2">No vehicles match your criteria</h3>
-                <p className="text-muted-foreground mb-6">Try adjusting your filters or search terms.</p>
+                <SlidersHorizontal className="mx-auto text-slate-400 mb-4" size={48} />
+                <h3 className="text-xl font-bold text-slate-900 mb-2">No vehicles match your criteria</h3>
+                <p className="text-slate-500 mb-6">Try adjusting your filters or search terms.</p>
                 <button 
                   onClick={clearFilters}
-                  className="px-6 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+                  className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 >
                   Clear All Filters
                 </button>
@@ -189,9 +189,9 @@ export default function Inventory() {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                     key={car.id} 
-                    className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:border-primary/50 transition-all shadow-sm hover:shadow-[0_0_30px_rgba(59,130,246,0.15)] hover:-translate-y-1"
+                    className="group rounded-2xl bg-white border border-slate-200 overflow-hidden hover:border-blue-300 transition-all shadow-sm hover:shadow-lg hover:-translate-y-1"
                   >
-                    <div className="aspect-video relative overflow-hidden bg-secondary">
+                    <div className="aspect-video relative overflow-hidden bg-slate-100">
                       <img 
                         src={`${import.meta.env.BASE_URL}${car.image}`} 
                         alt={`${car.make} ${car.model}`}
@@ -201,7 +201,7 @@ export default function Inventory() {
                       {/* Badges */}
                       <div className="absolute top-4 left-4 flex flex-col gap-2">
                         {car.badge && (
-                          <span className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold uppercase tracking-wider rounded">
+                          <span className="px-3 py-1 bg-white/90 backdrop-blur-md border border-slate-200 text-slate-900 text-xs font-bold uppercase tracking-wider rounded shadow-sm">
                             {car.badge}
                           </span>
                         )}
@@ -209,9 +209,9 @@ export default function Inventory() {
                       
                       <div className="absolute top-4 right-4">
                         <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md border ${
-                          car.status === 'available' ? 'bg-primary/80 border-primary text-white' : 
-                          car.status === 'reserved' ? 'bg-amber-500/80 border-amber-500 text-white' : 
-                          'bg-zinc-500/80 border-zinc-500 text-white'
+                          car.status === 'available' ? 'bg-blue-600 border-blue-600 text-white' : 
+                          car.status === 'reserved' ? 'bg-amber-500 border-amber-500 text-white' : 
+                          'bg-slate-500 border-slate-500 text-white'
                         }`}>
                           {t(`inventory.status.${car.status}`)}
                         </span>
@@ -221,30 +221,30 @@ export default function Inventory() {
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <p className="text-sm text-primary font-medium mb-1">{car.year}</p>
-                          <h3 className="text-xl font-bold text-white leading-tight">
+                          <p className="text-sm text-blue-600 font-medium mb-1">{car.year}</p>
+                          <h3 className="text-xl font-bold text-slate-900 leading-tight">
                             {car.make} <span className="font-light">{car.model}</span>
                           </h3>
                         </div>
                         <div className="text-right">
-                          <p className="text-2xl font-bold text-white">${car.price.toLocaleString()}</p>
+                          <p className="text-2xl font-bold text-slate-900">${car.price.toLocaleString()}</p>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm text-muted-foreground mb-6 bg-secondary/30 p-4 rounded-xl border border-border/30">
-                        <div className="flex items-center gap-2"><Gauge size={14} className="text-primary/70" /> {car.mileage.toLocaleString()} km</div>
-                        <div className="flex items-center gap-2"><MapPin size={14} className="text-primary/70" /> {car.location}</div>
-                        <div className="flex items-center gap-2"><Fuel size={14} className="text-primary/70" /> {car.fuel}</div>
-                        <div className="flex items-center gap-2"><Settings2 size={14} className="text-primary/70" /> {car.transmission}</div>
+                      <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm text-slate-600 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                        <div className="flex items-center gap-2"><Gauge size={14} className="text-blue-500" /> {car.mileage.toLocaleString()} km</div>
+                        <div className="flex items-center gap-2"><MapPin size={14} className="text-blue-500" /> {car.location}</div>
+                        <div className="flex items-center gap-2"><Fuel size={14} className="text-blue-500" /> {car.fuel}</div>
+                        <div className="flex items-center gap-2"><Settings2 size={14} className="text-blue-500" /> {car.transmission}</div>
                       </div>
 
-                      <p className="text-sm text-muted-foreground/80 line-clamp-2 mb-6 h-10">
+                      <p className="text-sm text-slate-500 line-clamp-2 mb-6 h-10">
                         {car.description}
                       </p>
 
                       <Link 
                         href="/contact"
-                        className="w-full py-3 bg-secondary hover:bg-primary text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn"
+                        className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn"
                       >
                         {t("cta.requestInfo")} <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                       </Link>
