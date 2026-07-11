@@ -222,12 +222,6 @@ export default function Calculator() {
                       <input type="number" value={form.vehiclePrice} onChange={(e) => update("vehiclePrice", Number(e.target.value) || 0)}
                         className="w-full bg-input border border-border rounded pl-8 pr-4 py-3 text-white focus:outline-none focus:border-primary transition-colors text-lg font-medium" />
                     </div>
-                    <input type="range" min={5000} max={200000} step={1000} value={form.vehiclePrice}
-                      onChange={(e) => update("vehiclePrice", Number(e.target.value))}
-                      className="w-full mt-3 accent-primary" />
-                    <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                      <span>€5,000</span><span>€200,000</span>
-                    </div>
                   </div>
 
                   <button onClick={() => setStep(2)}
