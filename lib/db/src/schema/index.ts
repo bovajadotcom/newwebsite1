@@ -7,3 +7,4 @@ export * from "./pricing_packages";
 export * from "./testimonials";
 export * from "./page_content";
 export * from "./site_settings";
+export * from "./leads";

@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { Layout } from "@/components/layout/Layout";
 import { LanguageProvider } from "@/lib/i18n";
+import { LeadCaptureModal } from "@/components/LeadCaptureModal";
 import Home from "@/pages/home";
 import Inventory from "@/pages/inventory";
 import Popular from "@/pages/popular";
@@ -19,20 +20,36 @@ import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
 
+const MODAL_PAGES: Record<string, string> = {
+  "/": "home",
+  "/inventory": "inventory",
+  "/popular": "popular",
+};
+
+function PageModal() {
+  const [location] = useLocation();
+  const source = MODAL_PAGES[location];
+  if (!source) return null;
+  return <LeadCaptureModal source={source} />;
+}
+
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/inventory" component={Inventory} />
-      <Route path="/popular" component={Popular} />
-      <Route path="/services" component={Services} />
-      <Route path="/pricing" component={Pricing} />
-      <Route path="/calculator" component={Calculator} />
-      <Route path="/business" component={Business} />
-      <Route path="/about" component={About} />
-      <Route path="/contact" component={Contact} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/inventory" component={Inventory} />
+        <Route path="/popular" component={Popular} />
+        <Route path="/services" component={Services} />
+        <Route path="/pricing" component={Pricing} />
+        <Route path="/calculator" component={Calculator} />
+        <Route path="/business" component={Business} />
+        <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
+        <Route component={NotFound} />
+      </Switch>
+      <PageModal />
+    </>
   );
 }
 

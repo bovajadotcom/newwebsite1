@@ -9,6 +9,7 @@ import pricingRouter from "./pricing";
 import testimonialsRouter from "./testimonials";
 import pageContentRouter from "./page-content";
 import siteSettingsRouter from "./site-settings";
+import leadsRouter from "./leads";
 
 const router: IRouter = Router();
 
@@ -22,5 +23,6 @@ router.use(pricingRouter);
 router.use(testimonialsRouter);
 router.use(pageContentRouter);
 router.use(siteSettingsRouter);
+router.use(leadsRouter);
 
 export default router;
