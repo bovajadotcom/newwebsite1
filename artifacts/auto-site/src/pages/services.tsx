@@ -44,6 +44,31 @@ export default function Services() {
           </p>
         </motion.div>
 
+        {/* Hero image */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="relative w-full rounded-2xl overflow-hidden mb-16 shadow-lg"
+          style={{ height: "420px" }}
+        >
+          <img
+            src={`${import.meta.env.BASE_URL}services-inspection.png`}
+            alt="Vehicle inspection by BOVAJA specialist"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            style={{ filter: "brightness(0.92) contrast(1.04)" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/20 to-transparent" />
+          <div className="absolute bottom-8 left-8">
+            <span className="inline-block bg-blue-600 text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-3">
+              Our Approach
+            </span>
+            <p className="text-white text-xl font-semibold max-w-sm leading-snug drop-shadow">
+              Every vehicle personally inspected before purchase
+            </p>
+          </div>
+        </motion.div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {services.map((service, i) => (
             <motion.div 
