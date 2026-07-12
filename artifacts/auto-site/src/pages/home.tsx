@@ -1,8 +1,10 @@
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck } from "lucide-react";
+import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck, Calculator, Heart } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
+import { popularVehicles as staticPopular } from "@/data/inventory";
+import { useFavorites } from "@/lib/FavoritesContext";
 
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
   to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
@@ -34,11 +36,44 @@ function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }:
   return <span ref={ref}>{prefix}{formatted}{suffix}</span>;
 }
 
+interface DisplayPopular {
+  id: string | number;
+  make: string; model: string;
+  priceRange: string; estimatedDelivery: string;
+  description: string; image: string;
+}
+
+const FALLBACKS = ["vehicle-1.png","vehicle-2.png","vehicle-3.png","vehicle-4.png"];
+function resolveImage(url: string | null | undefined, idx: number): string {
+  const base = import.meta.env.BASE_URL;
+  if (!url) return `${base}${FALLBACKS[idx % 4]}`;
+  if (url.startsWith("http")) return url;
+  if (!url.startsWith("/")) return `${base}${url}`;
+  return `${base}${FALLBACKS[idx % 4]}`;
+}
+
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [popularCars, setPopularCars] = useState<DisplayPopular[]>([]);
   const { t } = useLanguage();
+  const { toggle, isFavorited } = useFavorites();
   const processRef = useRef<HTMLDivElement>(null);
   const isProcessInView = useInView(processRef, { once: true, margin: "-120px" });
+
+  useEffect(() => {
+    fetch("/api/popular-vehicles")
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        const list = data.length > 0 ? data : staticPopular;
+        setPopularCars(list.slice(0, 4).map((v: any, i: number) => ({
+          ...v,
+          image: resolveImage(v.imageUrl ?? v.image, i),
+        })));
+      })
+      .catch(() => {
+        setPopularCars(staticPopular.slice(0, 4).map((v, i) => ({ ...v, image: resolveImage(v.image, i) })));
+      });
+  }, []);
 
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
@@ -458,49 +493,87 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURED VEHICLES */}
+      {/* POPULAR VEHICLES */}
       <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.vehicles")}</h2>
-              <p className="text-slate-600">Exceptional vehicles secured for our clients this month.</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("inventory.popular")}</h2>
+              <p className="text-slate-600">Автомобили, которые чаще всего привозим под заказ.</p>
+            </motion.div>
+            <motion.div {...fadeIn}>
+              <Link href="/popular" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
+                {t("home.viewAll")} <ArrowRight size={16} />
+              </Link>
             </motion.div>
           </div>
 
-          <motion.div 
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="whileInView"
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          >
-            {[
-              { img: "vehicle-1.png", title: "2023 Porsche 911 Carrera", origin: "Germany", status: "Delivered" },
-              { img: "vehicle-2.png", title: "2022 BMW M5 Competition", origin: "Japan", status: "In Transit" },
-              { img: "vehicle-3.png", title: "2023 Mercedes-Benz GLE", origin: "USA", status: "Customs" },
-              { img: "vehicle-4.png", title: "2023 Toyota Land Cruiser", origin: "UAE", status: "Delivered" }
-            ].map((car, i) => (
-              <motion.div key={i} variants={fadeIn} className="group overflow-hidden rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition-all">
-                <div className="aspect-[16/9] overflow-hidden relative">
-                  <img 
-                    src={`${import.meta.env.BASE_URL}${car.img}`} 
-                    alt={car.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
-                    <div>
-                      <p className="text-xs text-blue-400 font-medium mb-1 uppercase tracking-wider">From {car.origin}</p>
-                      <h3 className="text-xl font-bold text-white">{car.title}</h3>
-                    </div>
-                    <div className="px-3 py-1 bg-white/20 backdrop-blur rounded text-xs text-white border border-white/20">
-                      {car.status}
-                    </div>
+          {popularCars.length === 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden animate-pulse">
+                  <div className="h-44 bg-slate-200" />
+                  <div className="p-5 space-y-3">
+                    <div className="h-4 bg-slate-200 rounded w-3/4" />
+                    <div className="h-4 bg-slate-200 rounded w-1/2" />
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              variants={staggerContainer}
+              initial="initial"
+              whileInView="whileInView"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              {popularCars.map((car, i) => (
+                <motion.div
+                  key={car.id}
+                  variants={fadeIn}
+                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="h-44 overflow-hidden relative bg-slate-100">
+                    <img
+                      src={car.image}
+                      alt={`${car.make} ${car.model}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+                    <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-blue-600 text-white">
+                      {t("inventory.badge.popular")}
+                    </span>
+                    <button
+                      onClick={() => toggle(`popular-${car.id}`)}
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
+                    >
+                      <Heart size={14} className={isFavorited(`popular-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/70"} />
+                    </button>
+                  </div>
+
+                  <div className="p-5 flex-1 flex flex-col">
+                    <h3 className="text-base font-bold text-slate-900 mb-3">{car.make} {car.model}</h3>
+                    <div className="flex justify-between items-center mb-4 py-2.5 border-y border-slate-100 text-sm">
+                      <div>
+                        <p className="text-xs text-slate-400 uppercase">{t("inventory.priceRange")}</p>
+                        <p className="text-blue-600 font-bold">{car.priceRange}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-slate-400 uppercase">{t("inventory.estDelivery")}</p>
+                        <p className="text-slate-700 font-medium">{car.estimatedDelivery}</p>
+                      </div>
+                    </div>
+                    <Link
+                      href="/calculator"
+                      className="mt-auto flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 text-sm font-semibold transition-all duration-200"
+                    >
+                      <Calculator size={15} /> {t("cta.calculate")}
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </div>
       </section>
 
