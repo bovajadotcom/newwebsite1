@@ -549,12 +549,6 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                         >
                           <ArrowRight size={14} /> Find Similar Vehicle
                         </button>
-                        <button
-                          onClick={() => setActiveFormName("Sold Vehicle Inquiry")}
-                          className="w-full py-2.5 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-white/10"
-                        >
-                          <MessageCircle size={14} /> Ask About This Vehicle
-                        </button>
                       </div>
                     )}
 
