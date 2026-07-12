@@ -645,18 +645,18 @@ export default function Home() {
 
       {/* ② RECENTLY SOLD VEHICLES */}
       {soldCars.length > 0 && (
-      <section className="py-24 bg-slate-900">
+      <section className="py-24 bg-slate-100 border-y border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/70 text-xs font-semibold uppercase mb-3 border border-white/20">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-700 text-white text-xs font-semibold uppercase mb-3 border border-slate-600">
                 <CheckSquare size={12} /> {t("inventory.sold") || "Sold"}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{t("home.soldTitle") || "Recently Sold Vehicles"}</h2>
-              <p className="text-white/60">{t("home.soldSub") || "Cars we've successfully sourced and delivered to our clients."}</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("home.soldTitle") || "Recently Sold Vehicles"}</h2>
+              <p className="text-slate-600">{t("home.soldSub") || "Cars we've successfully sourced and delivered to our clients."}</p>
             </motion.div>
             <motion.div {...fadeIn}>
-              <Link href="/inventory" className="flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-300 transition-colors">
+              <Link href="/inventory" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
                 {t("home.viewAll")} <ArrowRight size={16} />
               </Link>
             </motion.div>
@@ -667,29 +667,49 @@ export default function Home() {
                 key={car.id}
                 variants={fadeIn}
                 onClick={() => setSelectedVehicle(toModalSold(car))}
-                className="group relative rounded-2xl overflow-hidden h-56 cursor-pointer border border-white/10 hover:border-white/30 transition-all"
+                className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-slate-400 hover:shadow-lg transition-all duration-300 cursor-pointer"
               >
-                <img src={car.image} alt={`${car.make} ${car.model}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-                <div className="absolute top-3 left-3">
-                  <span className="px-2 py-1 rounded text-xs font-semibold bg-white/20 text-white backdrop-blur-sm border border-white/20">SOLD</span>
+                {/* Image */}
+                <div className="h-44 overflow-hidden relative bg-slate-100">
+                  <img
+                    src={car.image}
+                    alt={`${car.make} ${car.model}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+                  <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-slate-800 text-white">
+                    SOLD
+                  </span>
                 </div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <h4 className="text-white font-bold mb-1.5">{car.year} {car.make} {car.model}</h4>
-                  <div className="flex flex-col gap-1 text-xs text-white/70">
-                    <div className="flex items-center gap-1 flex-wrap">
-                      <MapPin size={11} className="text-white/50 shrink-0" />
-                      <span>{car.purchaseCountry}</span>
-                      {car.deliveredTo && (
-                        <><ArrowRight size={10} className="text-white/40 shrink-0" /><span className="text-green-400">{car.deliveredTo}</span></>
-                      )}
-                    </div>
-                    {car.deliveryDate && (
-                      <div className="flex items-center gap-1 text-white/50">
-                        <CheckSquare size={11} /> {car.deliveryDate}
-                      </div>
+
+                {/* Body */}
+                <div className="p-5 flex-1 flex flex-col gap-3">
+                  <h3 className="text-base font-bold text-slate-900">{car.year} {car.make} {car.model}</h3>
+
+                  {/* Route */}
+                  <div className="flex items-center gap-2 text-sm flex-wrap">
+                    <span className="flex items-center gap-1 text-slate-500">
+                      <MapPin size={13} className="text-slate-400 shrink-0" />
+                      {car.purchaseCountry}
+                    </span>
+                    {car.deliveredTo && (
+                      <>
+                        <ArrowRight size={13} className="text-slate-400 shrink-0" />
+                        <span className="flex items-center gap-1 text-green-600 font-medium">
+                          <MapPin size={13} className="text-green-500 shrink-0" />
+                          {car.deliveredTo}
+                        </span>
+                      </>
                     )}
                   </div>
+
+                  {/* Delivery date */}
+                  {car.deliveryDate && (
+                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-auto">
+                      <CheckSquare size={12} className="text-slate-300" />
+                      Delivered: {car.deliveryDate}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
