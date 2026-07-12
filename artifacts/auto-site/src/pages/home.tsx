@@ -195,20 +195,18 @@ export default function Home() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1.0, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-full h-full flex items-center justify-end px-4 py-6"
+              className="relative z-10 w-full h-full flex items-center justify-center px-6 py-8"
               style={{ minHeight: "420px" }}
             >
               <img
                 src={`${import.meta.env.BASE_URL}hero-bmw2-nobg.png`}
                 alt="Premium Vehicle"
                 style={{
-                  width: "115%",
-                  maxWidth: "none",
-                  height: "auto",
+                  width: "auto",
+                  height: "430px",
+                  maxWidth: "100%",
                   objectFit: "contain",
-                  marginRight: "-8%",
-                  filter: "brightness(0.94) contrast(1.12) saturate(1.06) drop-shadow(0 28px 32px rgba(0,0,0,0.7)) drop-shadow(0 8px 12px rgba(0,0,0,0.5))",
-                  transform: "translateY(4%)",
+                  filter: "brightness(0.96) contrast(1.10) saturate(1.06) drop-shadow(0 20px 26px rgba(0,0,0,0.65)) drop-shadow(0 6px 10px rgba(0,0,0,0.4))",
                 }}
               />
             </motion.div>
