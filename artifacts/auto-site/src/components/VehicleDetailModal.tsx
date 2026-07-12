@@ -522,12 +522,6 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                         >
                           <Send size={15} /> Request This Vehicle
                         </button>
-                        <button
-                          onClick={() => setActiveFormName("Get More Photos")}
-                          className="w-full py-3 border border-border/40 text-muted-foreground font-medium rounded-lg hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-2 text-sm"
-                        >
-                          <MessageCircle size={15} /> Get More Photos
-                        </button>
                       </div>
                     )}
 
