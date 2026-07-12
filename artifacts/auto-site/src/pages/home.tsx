@@ -67,25 +67,26 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* ══ HERO CARD — FleetAuto style ══ */}
+      {/* ══ HERO — Two-card grid ══ */}
       <div className="px-3 pb-3">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-3xl overflow-hidden"
-          style={{ background: "linear-gradient(135deg, #0B1830 0%, #0E2040 55%, #091528 100%)" }}
-        >
-          {/* subtle radial glow */}
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 70% 80% at 70% 50%, rgba(37,99,235,0.12) 0%, transparent 70%)" }} />
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_42%] gap-5 lg:gap-6" style={{ height: "580px" }}>
 
-          <div className="relative flex flex-col lg:grid lg:grid-cols-[54%_46%] min-h-[480px] lg:min-h-[520px]">
+          {/* ── LEFT CARD ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="relative rounded-[24px] overflow-hidden flex flex-col h-full"
+            style={{ background: "linear-gradient(135deg, #0B1830 0%, #0E2040 55%, #091528 100%)" }}
+          >
+            {/* Ambient glow */}
+            <div className="absolute inset-0 pointer-events-none"
+              style={{ background: "radial-gradient(ellipse 65% 70% at 30% 40%, rgba(37,99,235,0.13) 0%, transparent 70%)" }} />
 
-            {/* ── LEFT: text content ── */}
-            <div className="flex flex-col justify-center px-8 md:px-12 pt-10 pb-6 lg:py-12 z-10">
+            {/* Text content */}
+            <div className="relative flex flex-col justify-center flex-1 px-8 md:px-12 pt-10 pb-6 lg:py-14 z-10">
 
-              {/* Badge pill */}
+              {/* Badge */}
               <motion.div
                 initial={{ opacity: 0, y: -8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -97,12 +98,12 @@ export default function Home() {
                 </span>
               </motion.div>
 
-              {/* Heading with blue highlight */}
+              {/* Heading */}
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="text-3xl md:text-4xl lg:text-[2.6rem] xl:text-5xl font-black text-white leading-[1.12] tracking-tight mb-5"
+                className="text-3xl md:text-4xl lg:text-[2.7rem] xl:text-5xl font-black text-white leading-[1.12] tracking-tight mb-5"
               >
                 {t("home.hero.headline1")}{" "}
                 <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug">
@@ -110,7 +111,7 @@ export default function Home() {
                 </span>
               </motion.h1>
 
-              {/* Description */}
+              {/* Sub */}
               <motion.p
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -120,7 +121,7 @@ export default function Home() {
                 {t("home.hero.sub")}
               </motion.p>
 
-              {/* CTA buttons */}
+              {/* CTAs */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -129,7 +130,7 @@ export default function Home() {
               >
                 <Link
                   href="/calculator"
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-2xl text-[14px] transition-all shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] flex items-center gap-2 group"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-2xl text-[14px] transition-all shadow-[0_0_22px_rgba(37,99,235,0.45)] hover:shadow-[0_0_32px_rgba(37,99,235,0.65)] flex items-center gap-2 group"
                 >
                   {t("home.hero.cta1")}
                   <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
@@ -143,65 +144,90 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* ── RIGHT: car image ── */}
-            <div className="relative hidden lg:block overflow-hidden">
-
-              {/* Left-side fade → blends into card bg */}
-              <div className="absolute inset-0 z-10 pointer-events-none"
-                style={{ background: "linear-gradient(to right, #0C1B35 0%, rgba(12,27,53,0.3) 28%, transparent 55%)" }} />
-
-              {/* Car — no bg, large, right half bleeds off card edge */}
-              <motion.img
-                src={`${import.meta.env.BASE_URL}hero-car-nobg.png`}
-                alt="Car"
-                initial={{ opacity: 0, x: 60 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  position: "absolute",
-                  width: "210%",
-                  height: "auto",
-                  bottom: "-10%",
-                  left: "-10%",
-                  filter: "brightness(0.58) contrast(1.12) saturate(0.8)",
-                  pointerEvents: "none",
-                }}
-              />
-
-              {/* Bottom fade — solid zone reaches above the plate */}
-              <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
-                style={{
-                  height: "70%",
-                  background: "linear-gradient(to top, #091528 0%, #091528 50%, rgba(9,21,40,0.55) 72%, transparent 100%)",
-                }}
-              />
-            </div>
-          </div>
-
-          {/* ── FEATURES ROW ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="border-t border-white/[0.08] px-8 md:px-12 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0"
-          >
-            {[
-              { icon: Award,       text: "Аукционная цена без наценок",          sub: "Прямой доступ к торгам" },
-              { icon: Truck,       text: "Доставка 30–60 дней под ключ",         sub: "США, Европа, Япония" },
-              { icon: BadgeCheck,  text: "Юридическая чистота",                   sub: "Проверка до покупки" },
-            ].map(({ icon: Icon, text, sub }, i) => (
-              <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
-                <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
-                  <Icon size={16} className="text-blue-400" />
+            {/* Features row */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 0.6 }}
+              className="relative z-10 border-t border-white/[0.08] px-8 md:px-12 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0"
+            >
+              {[
+                { icon: Award,      text: "Аукционная цена без наценок", sub: "Прямой доступ к торгам" },
+                { icon: Truck,      text: "Доставка 30–60 дней под ключ", sub: "США, Европа, Япония" },
+                { icon: BadgeCheck, text: "Юридическая чистота",          sub: "Проверка до покупки" },
+              ].map(({ icon: Icon, text, sub }, i) => (
+                <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
+                  <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
+                    <Icon size={16} className="text-blue-400" />
+                  </div>
+                  <div>
+                    <p className="text-white text-[13px] font-semibold leading-tight">{text}</p>
+                    <p className="text-slate-500 text-[12px] mt-0.5">{sub}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-white text-[13px] font-semibold leading-tight">{text}</p>
-                  <p className="text-slate-500 text-[12px] mt-0.5">{sub}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </motion.div>
           </motion.div>
-        </motion.div>
+
+          {/* ── RIGHT CARD — vehicle showcase ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+            className="relative rounded-[24px] overflow-hidden hidden lg:flex items-center justify-center h-full"
+            style={{
+              background: "linear-gradient(145deg, #0B1020 0%, #0E1628 50%, #131C32 100%)",
+              boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 24px 60px rgba(0,0,0,0.55)",
+            }}
+          >
+            {/* Clip overflow within card bounds but let img use overflow:visible via wrapper */}
+            <div className="absolute inset-0 rounded-[24px] overflow-hidden">
+              {/* Ambient blue-purple glow at center */}
+              <div className="absolute inset-0 pointer-events-none"
+                style={{ background: "radial-gradient(ellipse 80% 65% at 60% 50%, rgba(37,99,235,0.09) 0%, rgba(88,28,235,0.05) 45%, transparent 75%)" }} />
+              {/* Subtle top sheen */}
+              <div className="absolute top-0 left-0 right-0 h-px"
+                style={{ background: "linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)" }} />
+            </div>
+
+            {/* Car image — contained, right-aligned, slight overflow on right edge */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1.0, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="relative z-10 w-full h-full flex items-center justify-end px-4 py-6"
+              style={{ minHeight: "420px" }}
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}hero-mercedes-nobg.png`}
+                alt="Premium Vehicle"
+                style={{
+                  width: "115%",
+                  maxWidth: "none",
+                  height: "auto",
+                  objectFit: "contain",
+                  marginRight: "-8%",
+                  filter: "brightness(0.94) contrast(1.12) saturate(1.06) drop-shadow(0 28px 32px rgba(0,0,0,0.7)) drop-shadow(0 8px 12px rgba(0,0,0,0.5))",
+                  transform: "translateY(4%)",
+                }}
+              />
+            </motion.div>
+
+            {/* Soft ground shadow under car */}
+            <div className="absolute bottom-6 left-8 right-8 z-20 pointer-events-none"
+              style={{
+                height: "32px",
+                background: "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(0,0,0,0.55) 0%, transparent 100%)",
+                filter: "blur(6px)",
+              }}
+            />
+
+            {/* Bottom vignette so car merges with card floor */}
+            <div className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none rounded-b-[24px]"
+              style={{ background: "linear-gradient(to top, #0B1020 0%, transparent 100%)" }} />
+          </motion.div>
+
+        </div>
       </div>
 
       {/* AUCTION PARTNERS */}
