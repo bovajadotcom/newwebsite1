@@ -668,6 +668,11 @@ components:
           type: string
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
+          description: Additional photo URLs for the gallery
         badge:
           type: ["string", "null"]
         isPopular:
@@ -707,6 +712,10 @@ components:
           type: string
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
         badge:
           type: ["string", "null"]
         isPopular:
@@ -741,6 +750,10 @@ components:
           type: string
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
         badge:
           type: ["string", "null"]
         isPopular:

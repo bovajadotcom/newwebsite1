@@ -46,7 +46,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, X, ImagePlus, GripVertical, Images } from "lucide-react";
 
 const vehicleSchema = z.object({
   make: z.string().min(1, "Make is required"),
@@ -68,6 +68,136 @@ const vehicleSchema = z.object({
 
 type VehicleFormValues = z.infer<typeof vehicleSchema>;
 
+function PhotoGalleryManager({
+  photos,
+  onChange,
+}: {
+  photos: string[];
+  onChange: (photos: string[]) => void;
+}) {
+  const [inputValue, setInputValue] = useState("");
+  const [inputError, setInputError] = useState("");
+
+  const addPhoto = () => {
+    const url = inputValue.trim();
+    if (!url) return;
+    try {
+      new URL(url);
+    } catch {
+      setInputError("Please enter a valid URL");
+      return;
+    }
+    if (photos.includes(url)) {
+      setInputError("This URL is already added");
+      return;
+    }
+    onChange([...photos, url]);
+    setInputValue("");
+    setInputError("");
+  };
+
+  const removePhoto = (idx: number) => {
+    onChange(photos.filter((_, i) => i !== idx));
+  };
+
+  const moveUp = (idx: number) => {
+    if (idx === 0) return;
+    const next = [...photos];
+    [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
+    onChange(next);
+  };
+
+  const moveDown = (idx: number) => {
+    if (idx === photos.length - 1) return;
+    const next = [...photos];
+    [next[idx], next[idx + 1]] = [next[idx + 1], next[idx]];
+    onChange(next);
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center gap-2">
+        <Images className="h-4 w-4 text-muted-foreground" />
+        <span className="text-sm font-medium">Additional Photos Gallery</span>
+        <span className="ml-auto text-xs text-muted-foreground">{photos.length} photo{photos.length !== 1 ? "s" : ""}</span>
+      </div>
+
+      {photos.length > 0 && (
+        <div className="rounded-md border divide-y bg-muted/30">
+          {photos.map((url, idx) => (
+            <div key={idx} className="flex items-center gap-3 p-2">
+              <div className="flex flex-col gap-0.5">
+                <button
+                  type="button"
+                  onClick={() => moveUp(idx)}
+                  disabled={idx === 0}
+                  className="p-0.5 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed"
+                  title="Move up"
+                >
+                  <GripVertical className="h-3 w-3 rotate-90" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => moveDown(idx)}
+                  disabled={idx === photos.length - 1}
+                  className="p-0.5 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed"
+                  title="Move down"
+                >
+                  <GripVertical className="h-3 w-3 -rotate-90" />
+                </button>
+              </div>
+              <img
+                src={url}
+                alt={`Photo ${idx + 1}`}
+                className="h-14 w-20 object-cover rounded border bg-muted flex-shrink-0"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='56' viewBox='0 0 80 56'%3E%3Crect width='80' height='56' fill='%23374151'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='10'%3ENo image%3C/text%3E%3C/svg%3E";
+                }}
+              />
+              <p className="flex-1 text-xs text-muted-foreground truncate font-mono">{url}</p>
+              <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">#{idx + 1}</span>
+              <button
+                type="button"
+                onClick={() => removePhoto(idx)}
+                className="p-1 rounded hover:bg-destructive/10 hover:text-destructive text-muted-foreground transition-colors flex-shrink-0"
+                title="Remove photo"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="flex gap-2">
+        <div className="flex-1 space-y-1">
+          <Input
+            placeholder="https://example.com/photo.jpg"
+            value={inputValue}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+              setInputError("");
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addPhoto();
+              }
+            }}
+            className={inputError ? "border-destructive" : ""}
+          />
+          {inputError && <p className="text-xs text-destructive">{inputError}</p>}
+        </div>
+        <Button type="button" variant="outline" onClick={addPhoto} className="gap-1.5 flex-shrink-0">
+          <ImagePlus className="h-4 w-4" />
+          Add Photo
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export default function VehiclesPage() {
   const { data: vehicles, isLoading } = useGetVehicles();
   const queryClient = useQueryClient();
@@ -75,6 +205,7 @@ export default function VehiclesPage() {
   const [editingVehicle, setEditingVehicle] = useState<any>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [extraPhotos, setExtraPhotos] = useState<string[]>([]);
 
   const createMutation = useCreateVehicle();
   const updateMutation = useUpdateVehicle();
@@ -103,19 +234,21 @@ export default function VehiclesPage() {
 
   const onSubmit = async (values: VehicleFormValues) => {
     try {
+      const payload = { ...values, photos: extraPhotos };
       if (editingVehicle) {
         await updateMutation.mutateAsync({
           id: editingVehicle.id,
-          data: values,
+          data: payload as any,
         });
         toast({ title: "Vehicle updated successfully" });
       } else {
-        await createMutation.mutateAsync({ data: values });
+        await createMutation.mutateAsync({ data: payload as any });
         toast({ title: "Vehicle created successfully" });
       }
       queryClient.invalidateQueries({ queryKey: getGetVehiclesQueryKey() });
       setIsDialogOpen(false);
       setEditingVehicle(null);
+      setExtraPhotos([]);
       form.reset();
     } catch (error: any) {
       toast({
@@ -128,9 +261,24 @@ export default function VehiclesPage() {
 
   const handleEdit = (vehicle: any) => {
     setEditingVehicle(vehicle);
+    setExtraPhotos(Array.isArray(vehicle.photos) ? vehicle.photos : []);
     form.reset({
       ...vehicle,
       badge: vehicle.badge || null,
+    });
+    setIsDialogOpen(true);
+  };
+
+  const handleAdd = () => {
+    setEditingVehicle(null);
+    setExtraPhotos([]);
+    form.reset({
+      make: "", model: "", year: new Date().getFullYear(),
+      engine: "", fuel: "Petrol", transmission: "Automatic",
+      mileage: 0, location: "", price: 0, description: "",
+      status: "available",
+      imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
+      badge: null, isPopular: false, sortOrder: 0,
     });
     setIsDialogOpen(true);
   };
@@ -184,11 +332,12 @@ export default function VehiclesPage() {
           setIsDialogOpen(open);
           if (!open) {
             setEditingVehicle(null);
+            setExtraPhotos([]);
             form.reset();
           }
         }}>
           <DialogTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={handleAdd}>
               <Plus className="h-4 w-4" /> Add Vehicle
             </Button>
           </DialogTrigger>
@@ -264,7 +413,7 @@ export default function VehiclesPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Fuel</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select fuel type" />
@@ -287,7 +436,7 @@ export default function VehiclesPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Transmission</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} value={field.value}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select transmission" />
@@ -333,7 +482,7 @@ export default function VehiclesPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select status" />
@@ -349,17 +498,42 @@ export default function VehiclesPage() {
                     </FormItem>
                   )}
                 />
+
+                {/* Main image */}
                 <FormField
                   control={form.control}
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Image URL</FormLabel>
-                      <FormControl><Input {...field} /></FormControl>
+                      <FormLabel>Main Image URL</FormLabel>
+                      <FormControl>
+                        <div className="space-y-2">
+                          <Input {...field} placeholder="https://..." />
+                          {field.value && (
+                            <img
+                              src={field.value}
+                              alt="Preview"
+                              className="h-28 w-full object-cover rounded border bg-muted"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = "none";
+                              }}
+                            />
+                          )}
+                        </div>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+
+                {/* Extra photos gallery manager */}
+                <div className="rounded-lg border p-4 bg-muted/20">
+                  <PhotoGalleryManager
+                    photos={extraPhotos}
+                    onChange={setExtraPhotos}
+                  />
+                </div>
+
                 <FormField
                   control={form.control}
                   name="description"
@@ -372,7 +546,7 @@ export default function VehiclesPage() {
                   )}
                 />
                 <div className="grid grid-cols-2 gap-4">
-                   <FormField
+                  <FormField
                     control={form.control}
                     name="badge"
                     render={({ field }) => (
@@ -433,26 +607,51 @@ export default function VehiclesPage() {
               <TableHead>Price</TableHead>
               <TableHead>Fuel</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Photos</TableHead>
               <TableHead>Popular</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={7} className="text-center py-8">Loading vehicles...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center py-8">Loading vehicles...</TableCell></TableRow>
             ) : filteredVehicles?.length === 0 ? (
-              <TableRow><TableCell colSpan={7} className="text-center py-8">No vehicles found.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center py-8">No vehicles found.</TableCell></TableRow>
             ) : (
               filteredVehicles?.map((vehicle) => (
                 <TableRow key={vehicle.id}>
                   <TableCell className="font-medium">
-                    <div>{vehicle.make} {vehicle.model}</div>
-                    <div className="text-xs text-muted-foreground">{vehicle.engine}</div>
+                    <div className="flex items-center gap-3">
+                      {vehicle.imageUrl && (
+                        <img
+                          src={vehicle.imageUrl}
+                          alt=""
+                          className="h-10 w-14 object-cover rounded border bg-muted flex-shrink-0"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).style.display = "none";
+                          }}
+                        />
+                      )}
+                      <div>
+                        <div>{vehicle.make} {vehicle.model}</div>
+                        <div className="text-xs text-muted-foreground">{vehicle.engine}</div>
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell>{vehicle.year}</TableCell>
                   <TableCell>€{vehicle.price.toLocaleString()}</TableCell>
                   <TableCell>{vehicle.fuel}</TableCell>
                   <TableCell>{getStatusBadge(vehicle.status)}</TableCell>
+                  <TableCell>
+                    {Array.isArray((vehicle as any).photos) && (vehicle as any).photos.length > 0 ? (
+                      <Badge variant="secondary" className="gap-1">
+                        <Images className="h-3 w-3" />
+                        {(vehicle as any).photos.length}
+                      </Badge>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     {vehicle.isPopular && <Badge variant="secondary">Popular</Badge>}
                   </TableCell>

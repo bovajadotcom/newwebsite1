@@ -34,6 +34,8 @@ export interface Vehicle {
   description: string;
   status: string;
   imageUrl: string;
+  /** Additional photo URLs for the gallery */
+  photos?: string[];
   /** @nullable */
   badge?: string | null;
   isPopular?: boolean;
@@ -55,6 +57,7 @@ export interface VehicleInput {
   description: string;
   status?: string;
   imageUrl?: string;
+  photos?: string[];
   /** @nullable */
   badge?: string | null;
   isPopular?: boolean;
@@ -74,6 +77,7 @@ export interface VehicleUpdate {
   description?: string;
   status?: string;
   imageUrl?: string;
+  photos?: string[];
   /** @nullable */
   badge?: string | null;
   isPopular?: boolean;

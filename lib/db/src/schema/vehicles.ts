@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, json } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -16,6 +16,7 @@ export const vehiclesTable = pgTable("vehicles", {
   description: text("description").notNull(),
   status: text("status").notNull().default("available"),
   imageUrl: text("image_url").notNull().default(""),
+  photos: json("photos").$type<string[]>().notNull().default([]),
   badge: text("badge"),
   isPopular: boolean("is_popular").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),

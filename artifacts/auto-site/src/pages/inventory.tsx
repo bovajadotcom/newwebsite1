@@ -22,6 +22,7 @@ interface DisplayVehicle {
   mileage: number; location: string; price: number;
   description: string; status: string;
   image: string; badge?: string | null;
+  photos?: string[];
 }
 interface DisplaySold {
   id: string | number;
@@ -49,12 +50,13 @@ function resolveImage(url: string | null | undefined, idx: number): string {
 }
 
 function toModalStock(car: DisplayVehicle): ModalVehicle {
+  const extraPhotos = (car.photos ?? []).filter(Boolean);
   return {
     id: car.id, type: "available", make: car.make, model: car.model,
     year: car.year, price: car.price, status: car.status, badge: car.badge,
     description: car.description, engine: car.engine, fuel: car.fuel,
     transmission: car.transmission, mileage: car.mileage, location: car.location,
-    images: [car.image],
+    images: [car.image, ...extraPhotos],
   };
 }
 function toModalSold(car: DisplaySold): ModalVehicle {

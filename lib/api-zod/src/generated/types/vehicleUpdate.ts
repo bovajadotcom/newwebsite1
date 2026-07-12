@@ -19,6 +19,7 @@ export interface VehicleUpdate {
   description?: string;
   status?: string;
   imageUrl?: string;
+  photos?: string[];
   /** @nullable */
   badge?: string | null;
   isPopular?: boolean;
