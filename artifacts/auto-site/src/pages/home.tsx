@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck, Calculator, Heart, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck, Calculator, Heart, CheckCircle, AlertCircle, MapPin, Gauge, Fuel, Settings2, CheckSquare } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { popularVehicles as staticPopular } from "@/data/inventory";
@@ -40,6 +40,18 @@ function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }:
   return <span ref={ref}>{prefix}{formatted}{suffix}</span>;
 }
 
+interface DisplayVehicle {
+  id: string | number;
+  make: string; model: string; year: number;
+  price: number; fuel: string; transmission: string; mileage: number;
+  status: string; badge?: string | null; image: string;
+}
+interface DisplaySold {
+  id: string | number;
+  make: string; model: string; year: number;
+  purchaseCountry: string; deliveredTo?: string | null; deliveryDate?: string | null;
+  image: string;
+}
 interface DisplayPopular {
   id: string | number;
   make: string; model: string;
@@ -56,6 +68,22 @@ function resolveImage(url: string | null | undefined, idx: number): string {
   return `${base}${FALLBACKS[idx % 4]}`;
 }
 
+function toModalStock(car: DisplayVehicle): ModalVehicle {
+  return {
+    id: car.id, type: "available", make: car.make, model: car.model,
+    year: car.year, price: car.price, status: car.status, badge: car.badge,
+    fuel: car.fuel, transmission: car.transmission, mileage: car.mileage,
+    images: [car.image],
+  };
+}
+function toModalSold(car: DisplaySold): ModalVehicle {
+  return {
+    id: car.id, type: "sold", make: car.make, model: car.model,
+    year: car.year, purchaseCountry: car.purchaseCountry,
+    deliveredTo: car.deliveredTo ?? null, deliveryDate: car.deliveryDate ?? null,
+    images: [car.image],
+  };
+}
 function toModal(car: DisplayPopular): ModalVehicle {
   return {
     id: car.id, type: "popular", make: car.make, model: car.model,
@@ -67,6 +95,8 @@ function toModal(car: DisplayPopular): ModalVehicle {
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
+  const [availableCars, setAvailableCars] = useState<DisplayVehicle[]>([]);
+  const [soldCars, setSoldCars] = useState<DisplaySold[]>([]);
   const [popularCars, setPopularCars] = useState<DisplayPopular[]>([]);
   const [footerFormStatus, setFooterFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [footerPrefLang, setFooterPrefLang] = useState<PreferredLanguage>("Russian");
@@ -100,13 +130,34 @@ export default function Home() {
   };
 
   useEffect(() => {
+    // Available vehicles
+    fetch("/api/vehicles")
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        const available = data.filter((v: any) => v.status === "available" || v.status === "reserved");
+        setAvailableCars(available.slice(0, 4).map((v: any, i: number) => ({
+          ...v, image: resolveImage(v.imageUrl ?? v.image, i),
+        })));
+      })
+      .catch(() => {});
+
+    // Recently sold vehicles
+    fetch("/api/sold-vehicles")
+      .then(r => r.ok ? r.json() : [])
+      .then((data: any[]) => {
+        setSoldCars(data.slice(0, 4).map((v: any, i: number) => ({
+          ...v, image: resolveImage(v.imageUrl ?? v.image, i),
+        })));
+      })
+      .catch(() => {});
+
+    // Popular vehicles
     fetch("/api/popular-vehicles")
       .then(r => r.ok ? r.json() : [])
       .then((data: any[]) => {
         const list = data.length > 0 ? data : staticPopular;
         setPopularCars(list.slice(0, 4).map((v: any, i: number) => ({
-          ...v,
-          image: resolveImage(v.imageUrl ?? v.image, i),
+          ...v, image: resolveImage(v.imageUrl ?? v.image, i),
         })));
       })
       .catch(() => {
@@ -537,7 +588,117 @@ export default function Home() {
         </div>
       </section>
 
-      {/* POPULAR VEHICLES */}
+      {/* ① AVAILABLE VEHICLES */}
+      {availableCars.length > 0 && (
+      <section className="py-24 bg-white border-y border-slate-200">
+        <div className="container mx-auto px-4">
+          <div className="flex items-end justify-between mb-12">
+            <motion.div {...fadeIn}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold uppercase mb-3 border border-green-200">
+                <CheckCircle size={12} /> {t("inventory.available") || "Available"}
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("home.availableTitle") || "Available Vehicles"}</h2>
+              <p className="text-slate-600">{t("home.availableSub") || "Premium cars ready for sourcing right now."}</p>
+            </motion.div>
+            <motion.div {...fadeIn}>
+              <Link href="/inventory" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
+                {t("home.viewAll")} <ArrowRight size={16} />
+              </Link>
+            </motion.div>
+          </div>
+          <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {availableCars.map((car, i) => (
+              <motion.div
+                key={car.id}
+                variants={fadeIn}
+                onClick={() => setSelectedVehicle(toModalStock(car))}
+                className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
+              >
+                <div className="h-44 overflow-hidden relative bg-slate-100">
+                  <img src={car.image} alt={`${car.make} ${car.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+                  {car.badge && (
+                    <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-blue-600 text-white">{car.badge}</span>
+                  )}
+                  <span className={`absolute top-3 ${car.badge ? "left-[calc(0.75rem+60px)]" : "left-3"} px-2 py-1 rounded text-xs font-semibold ${car.status === "available" ? "bg-green-500 text-white" : "bg-amber-500 text-white"}`}>
+                    {car.status === "available" ? "Available" : "Reserved"}
+                  </span>
+                  <button onClick={(e) => { e.stopPropagation(); toggle(`available-${car.id}`); }} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
+                    <Heart size={14} className={isFavorited(`available-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/70"} />
+                  </button>
+                </div>
+                <div className="p-5 flex-1 flex flex-col">
+                  <h3 className="text-base font-bold text-slate-900 mb-2">{car.year} {car.make} {car.model}</h3>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500 mb-3">
+                    <span className="flex items-center gap-1"><Gauge size={11} /> {car.mileage.toLocaleString()} km</span>
+                    <span className="flex items-center gap-1"><Fuel size={11} /> {car.fuel}</span>
+                    <span className="flex items-center gap-1"><Settings2 size={11} /> {car.transmission}</span>
+                  </div>
+                  <p className="text-blue-600 font-bold text-lg mt-auto">€{car.price.toLocaleString()}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+      )}
+
+      {/* ② RECENTLY SOLD VEHICLES */}
+      {soldCars.length > 0 && (
+      <section className="py-24 bg-slate-900">
+        <div className="container mx-auto px-4">
+          <div className="flex items-end justify-between mb-12">
+            <motion.div {...fadeIn}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/70 text-xs font-semibold uppercase mb-3 border border-white/20">
+                <CheckSquare size={12} /> {t("inventory.sold") || "Sold"}
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{t("home.soldTitle") || "Recently Sold Vehicles"}</h2>
+              <p className="text-white/60">{t("home.soldSub") || "Cars we've successfully sourced and delivered to our clients."}</p>
+            </motion.div>
+            <motion.div {...fadeIn}>
+              <Link href="/inventory" className="flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-300 transition-colors">
+                {t("home.viewAll")} <ArrowRight size={16} />
+              </Link>
+            </motion.div>
+          </div>
+          <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {soldCars.map((car, i) => (
+              <motion.div
+                key={car.id}
+                variants={fadeIn}
+                onClick={() => setSelectedVehicle(toModalSold(car))}
+                className="group relative rounded-2xl overflow-hidden h-56 cursor-pointer border border-white/10 hover:border-white/30 transition-all"
+              >
+                <img src={car.image} alt={`${car.make} ${car.model}`} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                <div className="absolute top-3 left-3">
+                  <span className="px-2 py-1 rounded text-xs font-semibold bg-white/20 text-white backdrop-blur-sm border border-white/20">SOLD</span>
+                </div>
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <h4 className="text-white font-bold mb-1.5">{car.year} {car.make} {car.model}</h4>
+                  <div className="flex flex-col gap-1 text-xs text-white/70">
+                    <div className="flex items-center gap-1 flex-wrap">
+                      <MapPin size={11} className="text-white/50 shrink-0" />
+                      <span>{car.purchaseCountry}</span>
+                      {car.deliveredTo && (
+                        <><ArrowRight size={10} className="text-white/40 shrink-0" /><span className="text-green-400">{car.deliveredTo}</span></>
+                      )}
+                    </div>
+                    {car.deliveryDate && (
+                      <div className="flex items-center gap-1 text-white/50">
+                        <CheckSquare size={11} /> {car.deliveryDate}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+      )}
+
+      {/* ③ POPULAR VEHICLES */}
       <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
