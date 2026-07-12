@@ -467,8 +467,6 @@ export default function Inventory() {
           </AnimatePresence>
         </div>
       </section>
-      {/* Bridge: light stock → dark popular */}
-      <div className="h-20 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
 
       {/* Popular Sourcing Models */}
       <section id="popular" className="py-24">
