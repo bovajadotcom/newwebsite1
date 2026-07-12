@@ -591,7 +591,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                       </div>
                     )}
                     <h3 className="text-xl font-bold text-white mb-1">
-                      {activeFormName ? activeFormName : "Want More Information About This Vehicle?"}
+                      {activeFormName ? activeFormName : "Want to Buy a Similar Vehicle at Auction?"}
                     </h3>
                     <p className="text-sm text-muted-foreground mb-6">
                       Leave your WhatsApp, Telegram, Viber, phone number, or email and our team will contact you shortly.
