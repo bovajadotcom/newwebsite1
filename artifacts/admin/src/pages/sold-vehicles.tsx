@@ -31,6 +31,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -42,6 +43,11 @@ const soldVehicleSchema = z.object({
   make: z.string().min(1, "Make is required"),
   model: z.string().min(1, "Model is required"),
   year: z.coerce.number().min(1900),
+  mileage: z.coerce.number().nullable().optional(),
+  engine: z.string().nullable().optional(),
+  fuel: z.string().nullable().optional(),
+  transmission: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
   finalPrice: z.coerce.number().nullable().optional(),
   purchaseCountry: z.string().min(1, "Purchase country is required"),
   deliveredTo: z.string().nullable().optional(),
@@ -69,6 +75,11 @@ export default function SoldVehiclesPage() {
       make: "",
       model: "",
       year: new Date().getFullYear(),
+      mileage: null,
+      engine: null,
+      fuel: null,
+      transmission: null,
+      description: null,
       finalPrice: null,
       purchaseCountry: "",
       deliveredTo: null,
@@ -81,10 +92,7 @@ export default function SoldVehiclesPage() {
   const onSubmit = async (values: SoldVehicleFormValues) => {
     try {
       if (editingVehicle) {
-        await updateMutation.mutateAsync({
-          id: editingVehicle.id,
-          data: values,
-        });
+        await updateMutation.mutateAsync({ id: editingVehicle.id, data: values });
         toast({ title: "Sold vehicle updated successfully" });
       } else {
         await createMutation.mutateAsync({ data: values });
@@ -107,6 +115,11 @@ export default function SoldVehiclesPage() {
     setEditingVehicle(vehicle);
     form.reset({
       ...vehicle,
+      mileage: vehicle.mileage ?? null,
+      engine: vehicle.engine ?? null,
+      fuel: vehicle.fuel ?? null,
+      transmission: vehicle.transmission ?? null,
+      description: vehicle.description ?? null,
       finalPrice: vehicle.finalPrice ?? null,
       deliveredTo: vehicle.deliveredTo ?? null,
       deliveryDate: vehicle.deliveryDate ?? null,
@@ -137,45 +150,79 @@ export default function SoldVehiclesPage() {
           <DialogTrigger asChild>
             <Button className="gap-2"><Plus className="h-4 w-4" /> Add Record</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingVehicle ? "Edit Record" : "Add Sold Vehicle"}</DialogTitle>
             </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                {/* Identity */}
+                <div className="grid grid-cols-3 gap-4">
                   <FormField control={form.control} name="make" render={({ field }) => (
                     <FormItem><FormLabel>Make</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
                   <FormField control={form.control} name="model" render={({ field }) => (
                     <FormItem><FormLabel>Model</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
                   <FormField control={form.control} name="year" render={({ field }) => (
                     <FormItem><FormLabel>Year</FormLabel><FormControl><Input type="number" {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
-                  <FormField control={form.control} name="finalPrice" render={({ field }) => (
-                    <FormItem><FormLabel>Final Price (€)</FormLabel><FormControl><Input type="number" {...field} value={field.value || ""} /></FormControl><FormMessage /></FormItem>
+                </div>
+
+                {/* Vehicle specs */}
+                <div className="grid grid-cols-3 gap-4">
+                  <FormField control={form.control} name="mileage" render={({ field }) => (
+                    <FormItem><FormLabel>Mileage (km)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ""} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="engine" render={({ field }) => (
+                    <FormItem><FormLabel>Engine</FormLabel><FormControl><Input {...field} value={field.value ?? ""} placeholder="e.g. 2.0 TDI" /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="fuel" render={({ field }) => (
+                    <FormItem><FormLabel>Fuel Type</FormLabel><FormControl><Input {...field} value={field.value ?? ""} placeholder="e.g. Diesel" /></FormControl><FormMessage /></FormItem>
                   )} />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  <FormField control={form.control} name="purchaseCountry" render={({ field }) => (
-                    <FormItem><FormLabel>Purchase Country</FormLabel><FormControl><Input {...field} placeholder="e.g. Germany" /></FormControl><FormMessage /></FormItem>
+                  <FormField control={form.control} name="transmission" render={({ field }) => (
+                    <FormItem><FormLabel>Transmission</FormLabel><FormControl><Input {...field} value={field.value ?? ""} placeholder="e.g. Automatic" /></FormControl><FormMessage /></FormItem>
                   )} />
-                  <FormField control={form.control} name="deliveredTo" render={({ field }) => (
-                    <FormItem><FormLabel>Delivered To / Sold To</FormLabel><FormControl><Input {...field} value={field.value || ""} placeholder="e.g. Warsaw, Poland" /></FormControl><FormMessage /></FormItem>
+                  <FormField control={form.control} name="finalPrice" render={({ field }) => (
+                    <FormItem><FormLabel>Final Price (€)</FormLabel><FormControl><Input type="number" {...field} value={field.value ?? ""} /></FormControl><FormMessage /></FormItem>
                   )} />
                 </div>
-                <FormField control={form.control} name="deliveryStatus" render={({ field }) => (
-                  <FormItem><FormLabel>Delivery Status</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+
+                {/* Description */}
+                <FormField control={form.control} name="description" render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description (Optional)</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} value={field.value ?? ""} rows={3} placeholder="Brief description of the vehicle..." />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )} />
-                <FormField control={form.control} name="deliveryDate" render={({ field }) => (
-                  <FormItem><FormLabel>Delivery Date (Optional)</FormLabel><FormControl><Input {...field} value={field.value || ""} /></FormControl><FormMessage /></FormItem>
-                )} />
+
+                {/* Delivery info */}
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField control={form.control} name="purchaseCountry" render={({ field }) => (
+                    <FormItem><FormLabel>Imported From</FormLabel><FormControl><Input {...field} placeholder="e.g. Germany" /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="deliveredTo" render={({ field }) => (
+                    <FormItem><FormLabel>Delivered To</FormLabel><FormControl><Input {...field} value={field.value ?? ""} placeholder="e.g. Warsaw, Poland" /></FormControl><FormMessage /></FormItem>
+                  )} />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField control={form.control} name="deliveryStatus" render={({ field }) => (
+                    <FormItem><FormLabel>Delivery Status</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="deliveryDate" render={({ field }) => (
+                    <FormItem><FormLabel>Delivery Date</FormLabel><FormControl><Input {...field} value={field.value ?? ""} placeholder="e.g. 2024-11" /></FormControl><FormMessage /></FormItem>
+                  )} />
+                </div>
+
                 <FormField control={form.control} name="imageUrl" render={({ field }) => (
                   <FormItem><FormLabel>Image URL</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
+
                 <div className="flex justify-end gap-3 pt-4">
                   <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
                   <Button type="submit">Save</Button>
@@ -192,23 +239,25 @@ export default function SoldVehiclesPage() {
             <TableRow>
               <TableHead>Make/Model</TableHead>
               <TableHead>Year</TableHead>
+              <TableHead>Mileage</TableHead>
+              <TableHead>Fuel / Trans.</TableHead>
               <TableHead>Final Price</TableHead>
-              <TableHead>From</TableHead>
-              <TableHead>Delivered To</TableHead>
+              <TableHead>From → To</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {isLoading ? (
-              <TableRow><TableCell colSpan={6} className="text-center py-8">Loading...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={8} className="text-center py-8">Loading...</TableCell></TableRow>
             ) : soldVehicles?.map((v) => (
               <TableRow key={v.id}>
                 <TableCell className="font-medium">{v.make} {v.model}</TableCell>
                 <TableCell>{v.year}</TableCell>
+                <TableCell>{(v as any).mileage ? `${(v as any).mileage.toLocaleString()} km` : "-"}</TableCell>
+                <TableCell>{[(v as any).fuel, (v as any).transmission].filter(Boolean).join(" / ") || "-"}</TableCell>
                 <TableCell>{v.finalPrice ? `€${v.finalPrice.toLocaleString()}` : "-"}</TableCell>
-                <TableCell>{v.purchaseCountry}</TableCell>
-                <TableCell>{(v as any).deliveredTo || "-"}</TableCell>
+                <TableCell>{v.purchaseCountry}{(v as any).deliveredTo ? ` → ${(v as any).deliveredTo}` : ""}</TableCell>
                 <TableCell>{v.deliveryStatus}</TableCell>
                 <TableCell className="text-right">
                   <Button variant="ghost" size="icon" onClick={() => handleEdit(v)}><Pencil className="h-4 w-4" /></Button>
