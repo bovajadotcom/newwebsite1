@@ -14,7 +14,7 @@ export const vehiclesTable = pgTable("vehicles", {
   location: text("location").notNull(),
   deliveredTo: text("delivered_to"),
   price: integer("price").notNull(),
-  description: text("description").notNull(),
+  description: text("description").notNull().default(""),
   descriptionPl: text("description_pl"),
   descriptionRu: text("description_ru"),
   descriptionLt: text("description_lt"),

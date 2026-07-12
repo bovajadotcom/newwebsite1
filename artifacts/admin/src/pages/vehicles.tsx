@@ -60,7 +60,7 @@ const vehicleSchema = z.object({
   location: z.string().min(1, "Location is required"),
   deliveredTo: z.string().nullable().optional(),
   price: z.coerce.number().min(0),
-  description: z.string().min(1, "Description (EN) is required"),
+  description: z.string().optional().default(""),
   descriptionPl: z.string().nullable().optional(),
   descriptionRu: z.string().nullable().optional(),
   descriptionLt: z.string().nullable().optional(),
