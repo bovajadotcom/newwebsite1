@@ -523,12 +523,6 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                           <Send size={15} /> Request This Vehicle
                         </button>
                         <button
-                          onClick={() => setActiveFormName("Financing Application")}
-                          className="w-full py-3 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-white/10"
-                        >
-                          <Calculator size={15} /> Apply for Financing
-                        </button>
-                        <button
                           onClick={() => setActiveFormName("Get More Photos")}
                           className="w-full py-3 border border-border/40 text-muted-foreground font-medium rounded-lg hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-2 text-sm"
                         >
