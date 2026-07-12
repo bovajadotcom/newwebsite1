@@ -3,6 +3,7 @@ import { Building2, TrendingUp, ShieldCheck, Briefcase, ArrowRight, CheckCircle,
 import { useLanguage } from "@/lib/i18n";
 import { useState, useRef } from "react";
 import { submitLead } from "@/lib/submitLead";
+import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 
 type Status = "idle" | "loading" | "success" | "error";
 

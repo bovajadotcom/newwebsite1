@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, MessageCircle, CheckCircle, AlertCircle } from "lu
 import { useLanguage } from "@/lib/i18n";
 import { useState, useRef } from "react";
 import { submitLead } from "@/lib/submitLead";
+import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 
 type Status = "idle" | "loading" | "success" | "error";
 

@@ -31,6 +31,7 @@ router.post("/leads", async (req, res): Promise<void> => {
       email: data.email,
       message: data.message,
       preferredContact: data.preferredContact,
+      preferredLanguage: data.preferredLanguage,
       vehicleInfo: data.vehicleInfo ?? null,
       pageUrl: data.pageUrl,
     }).returning();

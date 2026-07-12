@@ -1,0 +1,210 @@
+Add a new Articles / News section to both the website and CMS. The implementation must be lightweight, fast, SEO-friendly, and integrated throughout the website.
+
+1. Articles Section on the Website
+
+Create a dedicated Articles / News section.
+
+Each article card should display:
+
+- Cover image
+- Article title
+- Short excerpt
+- Publication date
+- Read More button
+
+The entire card should be clickable.
+
+Add subtle hover effects and smooth animations.
+
+2. Article Detail Page
+
+When a visitor opens an article, display:
+
+- Article title
+- Publication date
+- Cover image
+- Full article content
+
+Structure:
+
+Article Title
+
+Published: [Date]
+
+Cover Image
+
+Full Article Content
+
+The design should be clean, modern, premium, and easy to read.
+
+3. CMS Article Management
+
+Add a new CMS section:
+
+Articles
+
+Admin should be able to:
+
+- Create articles
+- Edit articles
+- Delete articles
+- Save drafts
+- Publish / unpublish articles
+- Upload cover images
+- Add article title
+- Add publication date
+- Add short excerpt
+- Add full article content
+- Preview before publishing
+
+4. Article Fields
+
+Each article should support:
+
+{
+  id: "article-001",
+  title: "How to Choose a Car from Europe",
+  slug: "how-to-choose-a-car-from-europe",
+  excerpt: "Short article preview...",
+  content: "Full article content...",
+  coverImage: "/uploads/articles/article-cover.jpg",
+  publishedAt: "2026-07-12",
+  status: "published"
+}
+
+5. Lightweight Editor
+
+Use a lightweight editor only.
+
+Support:
+
+- Headings
+- Paragraphs
+- Bold
+- Italic
+- Bullet lists
+- Numbered lists
+- Links
+- Images
+
+Avoid heavy editor libraries and unnecessary dependencies.
+
+6. Navigation
+
+Add "Articles" or "News" to the main website navigation.
+
+Users should be able to access articles from the menu.
+
+7. Sorting
+
+Display articles from newest to oldest.
+
+Drafts and unpublished articles must never appear publicly.
+
+8. Responsive Design
+
+Desktop:
+- 3-column article grid
+
+Tablet:
+- 2-column grid
+
+Mobile:
+- 1-column layout
+
+All article pages must be fully responsive.
+
+9. SEO
+
+Automatically generate:
+
+- Meta title
+- Meta description
+- Open Graph title
+- Open Graph description
+- Open Graph image
+- Canonical URL
+
+10. Related Articles Block (Important)
+
+At the bottom of EVERY important page on the website, add a lightweight "Related Articles" section.
+
+Pages:
+
+- Homepage
+- Catalog page
+- Vehicle detail pages
+- Financing page
+- Contact page
+- About Us page
+- Any major landing page
+
+The section should display:
+
+- 3 recent or relevant articles
+- Article image
+- Article title
+- Publication date
+- Read More button
+
+Section title examples:
+
+Useful Articles
+Latest News & Articles
+Helpful Guides
+Learn More
+
+The goal is to naturally encourage visitors to open articles and stay longer on the website.
+
+The block should:
+
+- Be visually attractive
+- Match the site design
+- Be lightweight
+- Not slow down page loading
+- Automatically update when new articles are published
+
+11. Article Recommendation on Vehicle Pages
+
+On every vehicle page, display relevant articles underneath the vehicle information.
+
+Examples:
+
+Interested in importing this vehicle?
+Read our guides:
+
+- How Vehicle Import Works
+- Vehicle Financing Guide
+- Inspection Checklist Before Purchase
+
+This should improve SEO and user engagement.
+
+12. Performance & Optimization (Very Important)
+
+Keep the Articles system extremely lightweight.
+
+Requirements:
+
+- No heavy dependencies
+- No large editor packages
+- Minimal JavaScript bundle size
+- Compress uploaded images automatically
+- Generate optimized image sizes
+- Lazy-load article images
+- Lazy-load article recommendation blocks
+- Load article content only when an article is opened
+- Do not preload full article content sitewide
+- Use pagination if article count grows
+- Keep database queries efficient
+- Maintain excellent PageSpeed and Lighthouse scores
+- Articles should have minimal impact on overall website performance
+
+13. Empty State
+
+If no articles exist:
+
+"No articles have been published yet."
+
+14. Goal
+
+I want a lightweight, SEO-friendly Articles / News system with CMS management, article pages, article recommendations throughout the website, and related article blocks at the bottom of important pages to increase engagement, improve SEO, and keep visitors browsing the site longer without negatively affecting website speed.

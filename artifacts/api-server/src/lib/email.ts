@@ -27,7 +27,9 @@ function row(label: string, value: string | undefined | null): string {
 }
 
 export async function sendLeadEmail(data: SubmitLead): Promise<void> {
-  const subject = `New Website Lead — ${data.formName}`;
+  const lang = data.preferredLanguage ?? "Russian";
+  const langFlag = lang === "Polish" ? "🇵🇱" : "🇷🇺";
+  const subject = `[${lang.toUpperCase()}] New Lead — ${data.formName}`;
 
   const vehicle = data.vehicleInfo as Record<string, unknown> | undefined;
 
@@ -50,11 +52,17 @@ export async function sendLeadEmail(data: SubmitLead): Promise<void> {
     : "";
 
   const body = `
+NEW WEBSITE LEAD
+================
+
 FORM SOURCE:
   ${data.formName}
 
 SUBMITTED:
   ${formatDateTime()} (CET)
+
+⚡ PREFERRED LANGUAGE: ${langFlag} ${lang.toUpperCase()}
+  ➜ Contact this customer in ${lang}
 
 CUSTOMER DETAILS:
 ${row("Name", data.name)}${row("Phone", data.phone)}${row("Email", data.email)}${row("WhatsApp", data.whatsapp)}${row("Telegram", data.telegram)}${row("Viber", data.viber)}${row("Preferred Contact", data.preferredContact)}${row("Company", data.companyName)}${row("Business Type", data.businessType)}${row("Annual Volume", data.annualVolume)}${row("Country", data.country)}
