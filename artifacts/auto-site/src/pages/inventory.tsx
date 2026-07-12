@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { 
   Search, SlidersHorizontal, MapPin, Gauge, Fuel, 
-  Settings2, X, ArrowRight, MessageSquare, Calculator, Heart, CheckSquare
+  Settings2, X, ArrowRight, MessageSquare, Calculator, Heart, CheckSquare, ChevronDown
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useFavorites } from "@/lib/FavoritesContext";
@@ -278,38 +278,47 @@ export default function Inventory() {
             </div>
             
             <div className="flex flex-wrap lg:flex-nowrap gap-2 items-center">
-              <select 
-                value={filterBrand} 
-                onChange={(e) => setFilterBrand(e.target.value)}
-                className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2.5 text-slate-900 text-sm outline-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2364748b%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-no-repeat bg-[center_right_0.75rem]"
-              >
-                {brands.map(b => (
-                  <option key={b} value={b}>{b === "all" ? t("inventory.filter.brand") : b}</option>
-                ))}
-              </select>
+              <div className="relative">
+                <select 
+                  value={filterBrand} 
+                  onChange={(e) => setFilterBrand(e.target.value)}
+                  className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2.5 text-slate-900 text-sm outline-none cursor-pointer"
+                >
+                  {brands.map(b => (
+                    <option key={b} value={b}>{b === "all" ? t("inventory.filter.brand") : b}</option>
+                  ))}
+                </select>
+                <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              </div>
 
-              <select 
-                value={filterFuel} 
-                onChange={(e) => setFilterFuel(e.target.value)}
-                className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2.5 text-slate-900 text-sm outline-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2364748b%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-no-repeat bg-[center_right_0.75rem]"
-              >
-                <option value="all">{t("inventory.filter.fuel")}</option>
-                <option value="petrol">Petrol</option>
-                <option value="diesel">Diesel</option>
-                <option value="hybrid">Hybrid</option>
-                <option value="electric">Electric</option>
-              </select>
+              <div className="relative">
+                <select 
+                  value={filterFuel} 
+                  onChange={(e) => setFilterFuel(e.target.value)}
+                  className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2.5 text-slate-900 text-sm outline-none cursor-pointer"
+                >
+                  <option value="all">{t("inventory.filter.fuel")}</option>
+                  <option value="petrol">Petrol</option>
+                  <option value="diesel">Diesel</option>
+                  <option value="hybrid">Hybrid</option>
+                  <option value="electric">Electric</option>
+                </select>
+                <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              </div>
 
-              <select 
-                value={filterStatus} 
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2.5 text-slate-900 text-sm outline-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2364748b%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')] bg-no-repeat bg-[center_right_0.75rem]"
-              >
-                <option value="all">{t("inventory.filter.status")}</option>
-                <option value="available">{t("inventory.filter.available")}</option>
-                <option value="sold">{t("inventory.filter.sold")}</option>
-                <option value="reserved">{t("inventory.status.reserved")}</option>
-              </select>
+              <div className="relative">
+                <select 
+                  value={filterStatus} 
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                  className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2.5 text-slate-900 text-sm outline-none cursor-pointer"
+                >
+                  <option value="all">{t("inventory.filter.status")}</option>
+                  <option value="available">{t("inventory.filter.available")}</option>
+                  <option value="sold">{t("inventory.filter.sold")}</option>
+                  <option value="reserved">{t("inventory.status.reserved")}</option>
+                </select>
+                <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
+              </div>
 
               <div className="flex gap-1 bg-white rounded-lg p-1 border border-slate-300">
                 {([ 
