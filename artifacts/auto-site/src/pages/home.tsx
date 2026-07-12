@@ -786,12 +786,6 @@ export default function Home() {
       </section>
       )}
 
-      {/* ── SECTION DIVIDER: Sold → Popular ── */}
-      <div className="flex items-center gap-4 px-4 container mx-auto py-1">
-        <div className="flex-1 h-px bg-slate-200" />
-        <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 whitespace-nowrap">Most Requested</span>
-        <div className="flex-1 h-px bg-slate-200" />
-      </div>
 
       {/* ③ POPULAR VEHICLES */}
       <section className="relative py-24 bg-white border-b-2 border-slate-200">
