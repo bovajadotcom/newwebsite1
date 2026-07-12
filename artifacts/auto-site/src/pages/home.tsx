@@ -152,7 +152,7 @@ export default function Home() {
         >
           {/* Background photo */}
           <motion.img
-            src={`${import.meta.env.BASE_URL}bg-cars-lineup.png`}
+            src={`${import.meta.env.BASE_URL}hero-bg.png`}
             alt="Premium Vehicle"
             className="absolute inset-0 w-full h-full object-cover object-center"
             style={{ filter: "brightness(0.75) saturate(0.95) contrast(1.08)" }}
