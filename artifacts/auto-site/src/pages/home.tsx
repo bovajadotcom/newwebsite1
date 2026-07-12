@@ -289,7 +289,7 @@ export default function Home() {
               className="text-3xl md:text-4xl lg:text-[2.7rem] xl:text-5xl font-black text-white leading-[1.12] tracking-tight mb-5"
             >
               {t("home.hero.headline1")}{" "}
-              <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug">
+              <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug whitespace-nowrap">
                 {t("home.hero.headline2")}
               </span>
             </motion.h1>
