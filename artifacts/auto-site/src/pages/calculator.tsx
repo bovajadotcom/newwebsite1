@@ -436,11 +436,52 @@ export default function Calculator() {
                     ))}
                   </div>
 
-                  <div className="pt-2 flex justify-between items-end">
-                    <span className="text-lg font-bold text-white">{t("calc.total")}</span>
-                    <span className="text-4xl font-bold text-primary">{fmt(standardResult.total)}</span>
+                  {/* Total from us */}
+                  <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
+                    <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-1">Estimated Total Vehicle Cost From Us</p>
+                    <div className="flex items-end justify-between">
+                      <span className="text-sm text-muted-foreground">Включает авто, налоги и доставку</span>
+                      <span className="text-4xl font-bold text-primary">{fmt(standardResult.total)}</span>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">*Предварительный расчёт. Итоговая стоимость подтверждается после оформления заказа.</p>
+
+                  {/* Government charges notice */}
+                  <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3">
+                    <div className="flex items-start gap-2">
+                      <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
+                      <p className="text-sm font-semibold text-amber-300">Важное уведомление</p>
+                    </div>
+                    <p className="text-xs text-amber-200/80 leading-relaxed">
+                      Показанная выше цена включает расходы, рассчитанные нашей системой, и представляет собой
+                      оценочную стоимость автомобиля от нашей компании.
+                    </p>
+                    <p className="text-xs text-amber-200/80 leading-relaxed">
+                      После регистрации автомобиля в вашей стране могут применяться дополнительные налоги,
+                      регистрационные сборы, акцизы, экологические сборы или иные государственные платежи.
+                    </p>
+                    <div className="pt-1">
+                      <p className="text-xs font-semibold text-amber-300 mb-2">Возможные дополнительные расходы:</p>
+                      <ul className="text-xs text-amber-200/70 space-y-1">
+                        {[
+                          "Акцизный налог (если применимо)",
+                          "Регистрационные сборы",
+                          "Экологические налоги",
+                          "Дорожный налог",
+                          "Местные государственные сборы",
+                          "Иные страновые платежи",
+                        ].map(item => (
+                          <li key={item} className="flex items-center gap-1.5">
+                            <span className="w-1 h-1 rounded-full bg-amber-400/60 shrink-0" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <p className="text-xs text-amber-200/60 leading-relaxed border-t border-amber-500/20 pt-3">
+                      Уточняйте актуальные требования и размеры платежей на официальных сайтах государственных
+                      органов вашей страны до принятия решения о покупке.
+                    </p>
+                  </div>
 
                   <div className="flex gap-3">
                     <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
@@ -542,14 +583,50 @@ export default function Calculator() {
                         <span className="text-sm text-muted-foreground">Итого растаможка + доп. расходы</span>
                         <span className="text-lg font-semibold text-amber-200">{fmt(byResult.customsTotal + byResult.delivery)}</span>
                       </div>
-                      <div className="flex justify-between items-end pt-1">
-                        <span className="text-base font-bold text-white">Полная стоимость авто</span>
-                        <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
+                      {/* Total from us */}
+                      <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
+                        <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-1">Estimated Total Vehicle Cost From Us</p>
+                        <div className="flex items-end justify-between">
+                          <span className="text-sm text-muted-foreground">Включает авто, таможню и доставку</span>
+                          <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
+                        </div>
                       </div>
-                      <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
-                        <AlertTriangle size={15} className="text-amber-400 mt-0.5 shrink-0" />
-                        <p className="text-xs text-amber-300 leading-relaxed">
-                          Расчет является предварительным. Итоговая сумма зависит от действующих ставок законодательства Республики Беларусь.
+
+                      {/* Government charges notice */}
+                      <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3">
+                        <div className="flex items-start gap-2">
+                          <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
+                          <p className="text-sm font-semibold text-amber-300">Важное уведомление</p>
+                        </div>
+                        <p className="text-xs text-amber-200/80 leading-relaxed">
+                          Показанная выше цена включает расходы, рассчитанные нашей системой, и представляет собой
+                          оценочную стоимость автомобиля от нашей компании.
+                        </p>
+                        <p className="text-xs text-amber-200/80 leading-relaxed">
+                          После регистрации автомобиля в вашей стране могут применяться дополнительные налоги,
+                          регистрационные сборы, акцизы, экологические сборы или иные государственные платежи.
+                        </p>
+                        <div className="pt-1">
+                          <p className="text-xs font-semibold text-amber-300 mb-2">Возможные дополнительные расходы:</p>
+                          <ul className="text-xs text-amber-200/70 space-y-1">
+                            {[
+                              "Акцизный налог (если применимо)",
+                              "Регистрационные сборы",
+                              "Экологические налоги",
+                              "Дорожный налог",
+                              "Местные государственные сборы",
+                              "Иные страновые платежи",
+                            ].map(item => (
+                              <li key={item} className="flex items-center gap-1.5">
+                                <span className="w-1 h-1 rounded-full bg-amber-400/60 shrink-0" />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <p className="text-xs text-amber-200/60 leading-relaxed border-t border-amber-500/20 pt-3">
+                          Расчёт является предварительным. Уточняйте актуальные требования и размеры платежей
+                          на официальных сайтах государственных органов вашей страны до принятия решения о покупке.
                         </p>
                       </div>
                     </div>
