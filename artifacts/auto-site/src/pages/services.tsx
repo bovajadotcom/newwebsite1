@@ -5,6 +5,7 @@ import {
   Wrench, Settings, MessageSquare
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { PopularCarsSection } from "@/components/PopularCarsSection";
 
 export default function Services() {
   const { t } = useLanguage();
@@ -90,6 +91,7 @@ export default function Services() {
           ))}
         </div>
       </div>
+      <PopularCarsSection />
     </div>
   );
 }

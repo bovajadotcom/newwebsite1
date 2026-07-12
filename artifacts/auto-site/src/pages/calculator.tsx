@@ -9,6 +9,7 @@ import {
 import { useLanguage } from "@/lib/i18n";
 import { useGetSiteSettings } from "@workspace/api-client-react";
 import belarusConfig from "@/config/customs-belarus.json";
+import { PopularCarsSection } from "@/components/PopularCarsSection";
 
 const COUNTRIES = [
   { code: "PL", name: "Poland",         flag: "🇵🇱", region: "eastern" },
@@ -797,6 +798,7 @@ export default function Calculator() {
 
         </div>
       </div>
+      <PopularCarsSection />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Check, Info } from "lucide-react";
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/i18n";
+import { PopularCarsSection } from "@/components/PopularCarsSection";
 
 export default function Pricing() {
   const { t } = useLanguage();
@@ -138,6 +139,7 @@ export default function Pricing() {
           </p>
         </motion.div>
       </div>
+      <PopularCarsSection />
     </div>
   );
 }
