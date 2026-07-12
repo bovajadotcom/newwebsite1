@@ -67,164 +67,128 @@ export default function Home() {
 
   return (
     <div className="flex flex-col w-full">
-      {/* ══ HERO — Two-card grid ══ */}
+      {/* ══ HERO — Full-width with gradient ══ */}
       <div className="px-3 pb-3">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_42%] gap-5 lg:gap-6" style={{ height: "580px" }}>
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="relative rounded-[24px] overflow-hidden flex flex-col"
+          style={{ height: "580px" }}
+        >
+          {/* Background photo */}
+          <motion.img
+            src={`${import.meta.env.BASE_URL}hero-renault.png`}
+            alt="Premium Vehicle"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            style={{ filter: "brightness(0.82) saturate(1.05) contrast(1.06)" }}
+            initial={{ scale: 1.06, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+          />
 
-          {/* ── LEFT CARD ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="relative rounded-[24px] overflow-hidden flex flex-col h-full"
-            style={{ background: "linear-gradient(135deg, #0B1830 0%, #0E2040 55%, #091528 100%)" }}
-          >
-            {/* Ambient glow */}
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: "radial-gradient(ellipse 65% 70% at 30% 40%, rgba(37,99,235,0.13) 0%, transparent 70%)" }} />
+          {/* Gradient overlay: dark left → transparent right */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(to right, #0B1830 0%, #0B1830ee 22%, #0B183099 45%, #0B183044 65%, transparent 85%)" }} />
 
-            {/* Text content */}
-            <div className="relative flex flex-col justify-center flex-1 px-8 md:px-12 pt-10 pb-6 lg:py-14 z-10">
+          {/* Subtle top vignette */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: "linear-gradient(to bottom, rgba(11,24,48,0.5) 0%, transparent 30%, transparent 70%, rgba(11,24,48,0.6) 100%)" }} />
 
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.5 }}
-                className="inline-flex items-center self-start mb-6"
-              >
-                <span className="px-3 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-wide flex items-center gap-1.5">
-                  <span className="text-sm">🇧🇾</span>
-                  <span className="text-sm">🇱🇹</span>
-                  <span className="text-sm">🇵🇱</span>
-                  <span className="text-sm">🇱🇻</span>
-                  <span className="text-sm">🇪🇪</span>
-                </span>
-              </motion.div>
+          {/* Ambient blue glow on left where text sits */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: "radial-gradient(ellipse 50% 80% at 10% 45%, rgba(37,99,235,0.12) 0%, transparent 70%)" }} />
 
-              {/* Heading */}
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="text-3xl md:text-4xl lg:text-[2.7rem] xl:text-5xl font-black text-white leading-[1.12] tracking-tight mb-5"
-              >
-                {t("home.hero.headline1")}{" "}
-                <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug">
-                  {t("home.hero.headline2")}
-                </span>
-              </motion.h1>
+          {/* Text content */}
+          <div className="relative flex flex-col justify-center flex-1 px-8 md:px-14 pt-10 pb-6 lg:py-14 z-10 max-w-2xl">
 
-              {/* Sub */}
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.6 }}
-                className="text-slate-400 text-[15px] leading-relaxed max-w-sm mb-8"
-              >
-                {t("home.hero.sub")}
-              </motion.p>
-
-              {/* CTAs */}
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.62, duration: 0.6 }}
-                className="flex flex-wrap gap-3"
-              >
-                <Link
-                  href="/calculator"
-                  className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-2xl text-[14px] transition-all shadow-[0_0_22px_rgba(37,99,235,0.45)] hover:shadow-[0_0_32px_rgba(37,99,235,0.65)] flex items-center gap-2 group"
-                >
-                  {t("home.hero.cta1")}
-                  <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-                <Link
-                  href="/inventory"
-                  className="px-6 py-3 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.12] text-white font-semibold rounded-2xl text-[14px] transition-all"
-                >
-                  {t("home.hero.cta2")}
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* Features row */}
+            {/* Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              className="relative z-10 border-t border-white/[0.08] px-8 md:px-12 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0"
+              transition={{ delay: 0.3, duration: 0.5 }}
+              className="inline-flex items-center self-start mb-6"
             >
-              {[
-                { icon: Award,      text: "Аукционная цена без наценок", sub: "Прямой доступ к торгам" },
-                { icon: Truck,      text: "Доставка 30–60 дней под ключ", sub: "США, Европа, Япония" },
-                { icon: BadgeCheck, text: "Юридическая чистота",          sub: "Проверка до покупки" },
-              ].map(({ icon: Icon, text, sub }, i) => (
-                <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
-                  <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon size={16} className="text-blue-400" />
-                  </div>
-                  <div>
-                    <p className="text-white text-[13px] font-semibold leading-tight">{text}</p>
-                    <p className="text-slate-500 text-[12px] mt-0.5">{sub}</p>
-                  </div>
-                </div>
-              ))}
+              <span className="px-3 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-wide flex items-center gap-1.5">
+                <span className="text-sm">🇧🇾</span>
+                <span className="text-sm">🇱🇹</span>
+                <span className="text-sm">🇵🇱</span>
+                <span className="text-sm">🇱🇻</span>
+                <span className="text-sm">🇪🇪</span>
+              </span>
             </motion.div>
-          </motion.div>
 
-          {/* ── RIGHT CARD — vehicle showcase ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 18, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="relative rounded-[24px] overflow-hidden hidden lg:flex items-center justify-center h-full"
-            style={{
-              background: "linear-gradient(145deg, #0B1020 0%, #0E1628 50%, #131C32 100%)",
-              boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 24px 60px rgba(0,0,0,0.55)",
-            }}
-          >
-            {/* Clip overflow within card bounds but let img use overflow:visible via wrapper */}
-            <div className="absolute inset-0 rounded-[24px] overflow-hidden">
-              {/* Ambient blue-purple glow at center */}
-              <div className="absolute inset-0 pointer-events-none"
-                style={{ background: "radial-gradient(ellipse 80% 65% at 60% 50%, rgba(37,99,235,0.09) 0%, rgba(88,28,235,0.05) 45%, transparent 75%)" }} />
-              {/* Subtle top sheen */}
-              <div className="absolute top-0 left-0 right-0 h-px"
-                style={{ background: "linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)" }} />
-            </div>
+            {/* Heading */}
+            <motion.h1
+              initial={{ opacity: 0, y: 22 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.38, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl md:text-4xl lg:text-[2.7rem] xl:text-5xl font-black text-white leading-[1.12] tracking-tight mb-5"
+            >
+              {t("home.hero.headline1")}{" "}
+              <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug">
+                {t("home.hero.headline2")}
+              </span>
+            </motion.h1>
 
-            {/* Car image — full cover */}
+            {/* Sub */}
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.52, duration: 0.6 }}
+              className="text-slate-300/80 text-[15px] leading-relaxed max-w-sm mb-8"
+            >
+              {t("home.hero.sub")}
+            </motion.p>
+
+            {/* CTAs */}
             <motion.div
-              initial={{ opacity: 0, scale: 1.04 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute inset-0 z-10"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.64, duration: 0.6 }}
+              className="flex flex-wrap gap-3"
             >
-              <img
-                src={`${import.meta.env.BASE_URL}hero-renault.png`}
-                alt="Premium Vehicle"
-                className="w-full h-full object-cover"
-                style={{ filter: "brightness(0.88) contrast(1.08) saturate(1.05)" }}
-              />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(11,16,32,0.18) 0%, transparent 60%)" }} />
+              <Link
+                href="/calculator"
+                className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-2xl text-[14px] transition-all shadow-[0_0_22px_rgba(37,99,235,0.45)] hover:shadow-[0_0_32px_rgba(37,99,235,0.65)] flex items-center gap-2 group"
+              >
+                {t("home.hero.cta1")}
+                <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link
+                href="/inventory"
+                className="px-6 py-3 bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.12] text-white font-semibold rounded-2xl text-[14px] transition-all backdrop-blur-sm"
+              >
+                {t("home.hero.cta2")}
+              </Link>
             </motion.div>
+          </div>
 
-            {/* Soft ground shadow under car */}
-            <div className="absolute bottom-6 left-8 right-8 z-20 pointer-events-none"
-              style={{
-                height: "32px",
-                background: "radial-gradient(ellipse 80% 100% at 50% 100%, rgba(0,0,0,0.55) 0%, transparent 100%)",
-                filter: "blur(6px)",
-              }}
-            />
-
-            {/* Bottom vignette so car merges with card floor */}
-            <div className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none rounded-b-[24px]"
-              style={{ background: "linear-gradient(to top, #0B1020 0%, transparent 100%)" }} />
+          {/* Features row */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.82, duration: 0.6 }}
+            className="relative z-10 border-t border-white/[0.08] px-8 md:px-14 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0"
+            style={{ backdropFilter: "blur(4px)", background: "rgba(11,24,48,0.35)" }}
+          >
+            {[
+              { icon: Award,      text: "Аукционная цена без наценок", sub: "Прямой доступ к торгам" },
+              { icon: Truck,      text: "Доставка 30–60 дней под ключ", sub: "США, Европа, Япония" },
+              { icon: BadgeCheck, text: "Юридическая чистота",          sub: "Проверка до покупки" },
+            ].map(({ icon: Icon, text, sub }, i) => (
+              <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
+                <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon size={16} className="text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-white text-[13px] font-semibold leading-tight">{text}</p>
+                  <p className="text-slate-400 text-[12px] mt-0.5">{sub}</p>
+                </div>
+              </div>
+            ))}
           </motion.div>
-
-        </div>
+        </motion.div>
       </div>
 
       {/* AUCTION PARTNERS */}
