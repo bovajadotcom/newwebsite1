@@ -199,7 +199,7 @@ export default function Home() {
               style={{ minHeight: "420px" }}
             >
               <img
-                src={`${import.meta.env.BASE_URL}hero-mercedes-nobg.png`}
+                src={`${import.meta.env.BASE_URL}hero-bmw-nobg.png`}
                 alt="Premium Vehicle"
                 style={{
                   width: "115%",
