@@ -56,7 +56,7 @@ export default function Business() {
         <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/60 to-background" />
         <div className="relative container mx-auto px-4 max-w-5xl text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase mb-6 border border-primary/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase mb-6 border border-primary/20 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.35)] hover:shadow-[0_0_20px_rgba(59,130,246,0.55)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
               <Briefcase size={14} /> B2B Import Solutions
             </div>
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("business.title")}</h1>
