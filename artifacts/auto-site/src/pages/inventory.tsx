@@ -400,7 +400,7 @@ export default function Inventory() {
                       )}
 
                       <div className="absolute top-4 right-4">
-                        <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full backdrop-blur-md border ${statusBadge} ${car.status === "available" ? "animate-pulse shadow-[0_0_12px_rgba(34,197,94,0.5)] hover:shadow-[0_0_20px_rgba(34,197,94,0.7)] transition-shadow duration-500" : ""}`} style={car.status === "available" ? { animationDuration: "3s" } : undefined}>
+                        <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full backdrop-blur-md border ${statusBadge} ${car.status === "available" ? "shadow-[0_0_10px_rgba(34,197,94,0.6),0_0_20px_rgba(34,197,94,0.3)]" : ""}`}>
                           {t(`inventory.status.${car.status}`) || car.status}
                         </span>
                       </div>
