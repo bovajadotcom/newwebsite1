@@ -456,6 +456,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Bridge: light → dark */}
+      <div className="h-16 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
+
       {/* PROCESS */}
       <section className="py-24">
         <div className="container mx-auto px-4">
@@ -600,9 +603,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Bridge: dark → light */}
+      <div className="h-16 bg-gradient-to-b from-background to-white pointer-events-none" aria-hidden="true" />
+
       {/* ① AVAILABLE & RESERVED VEHICLES */}
       {availableCars.length > 0 && (
-      <section className="py-24 bg-white border-y border-slate-200">
+      <section className="py-24 bg-white border-b border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -660,7 +666,7 @@ export default function Home() {
 
       {/* ② SOLD VEHICLES */}
       {soldCars.length > 0 && (
-      <section className="py-24 bg-white border-y border-slate-200">
+      <section className="py-24 bg-white border-b border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -744,12 +750,15 @@ export default function Home() {
       )}
 
       {/* ③ POPULAR VEHICLES */}
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-white border-b border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("inventory.popular")}</h2>
-              <p className="text-slate-600">Автомобили, которые чаще всего привозим под заказ.</p>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold uppercase mb-3 border border-blue-200">
+                <Star size={12} /> {t("inventory.badge.popular") || "Most Requested"}
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("inventory.popular")}</h2>
+              <p className="text-slate-600">{t("home.popularSub") || "The vehicles we import most often for our clients."}</p>
             </motion.div>
             <motion.div {...fadeIn}>
               <Link href="/popular" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
@@ -824,6 +833,9 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* Bridge: light → dark */}
+      <div className="h-16 bg-gradient-to-b from-white to-background pointer-events-none" aria-hidden="true" />
 
       {/* TESTIMONIALS */}
       <section className="py-24">
