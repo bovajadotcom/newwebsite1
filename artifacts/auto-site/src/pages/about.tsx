@@ -17,9 +17,10 @@ export default function About() {
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src={`${import.meta.env.BASE_URL}port-night.png`} 
-            alt="Shipping Port" 
+            src={`${import.meta.env.BASE_URL}bg-cars-lineup.png`} 
+            alt="Car Lineup" 
             className="w-full h-full object-cover"
+            style={{ filter: "brightness(0.75) saturate(0.9)" }}
           />
           <div className="absolute inset-0 bg-background/80 mix-blend-multiply" />
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />

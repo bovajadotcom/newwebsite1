@@ -194,25 +194,20 @@ export default function Home() {
                 style={{ background: "linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)" }} />
             </div>
 
-            {/* Car image — contained, right-aligned, slight overflow on right edge */}
+            {/* Car image — full cover */}
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.0, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="relative z-10 w-full h-full flex items-center justify-center px-6 py-8"
-              style={{ minHeight: "420px" }}
+              initial={{ opacity: 0, scale: 1.04 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0 z-10"
             >
               <img
-                src={`${import.meta.env.BASE_URL}hero-bmw2-nobg.png`}
+                src={`${import.meta.env.BASE_URL}hero-renault.png`}
                 alt="Premium Vehicle"
-                style={{
-                  width: "auto",
-                  height: "430px",
-                  maxWidth: "100%",
-                  objectFit: "contain",
-                  filter: "brightness(0.96) contrast(1.10) saturate(1.06) drop-shadow(0 20px 26px rgba(0,0,0,0.65)) drop-shadow(0 6px 10px rgba(0,0,0,0.4))",
-                }}
+                className="w-full h-full object-cover"
+                style={{ filter: "brightness(0.88) contrast(1.08) saturate(1.05)" }}
               />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(11,16,32,0.18) 0%, transparent 60%)" }} />
             </motion.div>
 
             {/* Soft ground shadow under car */}

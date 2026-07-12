@@ -49,8 +49,17 @@ export default function Popular() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <section className="py-20 border-b border-border/50 bg-gradient-to-b from-primary/5 to-transparent">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
+      <section className="relative py-20 border-b border-border/50 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={`${import.meta.env.BASE_URL}bg-cars-lineup.png`}
+            alt="Popular Cars"
+            className="w-full h-full object-cover"
+            style={{ filter: "brightness(0.4) saturate(0.85)" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
+        </div>
+        <div className="container mx-auto px-4 text-center max-w-3xl relative z-10">
           <motion.div {...fadeIn}>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
               <Star size={14} className="fill-primary" /> {t("inventory.popular")}

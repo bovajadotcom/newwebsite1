@@ -138,13 +138,14 @@ export default function Inventory() {
     <div className="w-full pb-24">
       {/* Hero */}
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden bg-card">
-        <div className="absolute inset-0 z-0 opacity-20">
+        <div className="absolute inset-0 z-0">
           <img 
-            src={`${import.meta.env.BASE_URL}hero-car.png`} 
+            src={`${import.meta.env.BASE_URL}bg-cars-lineup.png`} 
             alt="Inventory" 
-            className="w-full h-full object-cover grayscale mix-blend-screen"
+            className="w-full h-full object-cover"
+            style={{ filter: "brightness(0.45) saturate(0.9)" }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
         </div>
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -460,8 +461,17 @@ export default function Inventory() {
         </div>
       </section>
       {/* CTA */}
-      <section className="py-16 bg-primary/10 border-t border-primary/20">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
+      <section className="relative py-16 overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img
+            src={`${import.meta.env.BASE_URL}bg-cars-lineup.png`}
+            alt="Cars"
+            className="w-full h-full object-cover"
+            style={{ filter: "brightness(0.3) saturate(0.8)" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-background/40" />
+        </div>
+        <div className="container mx-auto px-4 text-center max-w-3xl relative z-10">
           <MessageSquare className="mx-auto text-primary mb-6" size={48} />
           <h2 className="text-3xl font-bold text-white mb-4">Don't see what you're looking for?</h2>
           <p className="text-lg text-muted-foreground mb-8">
