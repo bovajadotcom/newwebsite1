@@ -224,7 +224,7 @@ export default function Careers() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Phone</label>
-                      <input ref={phoneRef} type="tel" className={INPUT_CLS} placeholder="+370 600 00000" />
+                      <input ref={phoneRef} type="tel" className={INPUT_CLS} placeholder="+XX XXX XXX XXXX" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Email</label>
@@ -235,7 +235,7 @@ export default function Careers() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">WhatsApp</label>
-                      <input ref={whatsappRef} type="text" className={INPUT_CLS} placeholder="+370…" />
+                      <input ref={whatsappRef} type="text" className={INPUT_CLS} placeholder="+XX XXX XXX XXXX" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Telegram</label>
@@ -243,7 +243,7 @@ export default function Careers() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Viber</label>
-                      <input ref={viberRef} type="text" className={INPUT_CLS} placeholder="+370…" />
+                      <input ref={viberRef} type="text" className={INPUT_CLS} placeholder="+XX XXX XXX XXXX" />
                     </div>
                   </div>
 

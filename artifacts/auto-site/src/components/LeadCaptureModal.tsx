@@ -9,9 +9,9 @@ const SHOW_DELAYS = [15_000, 30_000, 60_000];
 const MAX_SHOWS   = 3;
 
 const CHANNELS = [
-  { id: "telegram",  label: "Telegram",  icon: Send,          hint: "+7 999 000 00 00 или @username" },
-  { id: "whatsapp",  label: "WhatsApp",  icon: MessageCircle, hint: "+7 999 000 00 00" },
-  { id: "viber",     label: "Viber",     icon: Phone,         hint: "+7 999 000 00 00" },
+  { id: "telegram",  label: "Telegram",  icon: Send,          hint: "@username or +XX XXX XXX XXXX" },
+  { id: "whatsapp",  label: "WhatsApp",  icon: MessageCircle, hint: "+XX XXX XXX XXXX" },
+  { id: "viber",     label: "Viber",     icon: Phone,         hint: "+XX XXX XXX XXXX" },
   { id: "email",     label: "Email",     icon: Mail,          hint: "your@email.com" },
 ];
 
@@ -72,7 +72,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!contact.trim()) { setError("Введите контакт"); return; }
+    if (!contact.trim()) { setError("Please enter your contact details"); return; }
     setLoading(true);
     setError("");
     try {
@@ -82,14 +82,14 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ contact: contact.trim(), channel, source }),
       });
-      if (!res.ok) throw new Error("Ошибка сервера");
+      if (!res.ok) throw new Error("Server error");
       localStorage.setItem(STORAGE_KEY, "1");
       subscribedRef.current = true;
       if (timerRef.current) clearTimeout(timerRef.current);
       setDone(true);
       setTimeout(() => setVisible(false), 2800);
     } catch {
-      setError("Не удалось сохранить. Попробуйте ещё раз.");
+      setError("Could not save. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -149,15 +149,15 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                         <Bell className="text-blue-400" size={18} />
                       </div>
                       <div>
-                        <h2 className="text-white font-bold text-lg leading-tight">Уведомления о новых авто</h2>
-                        <p className="text-slate-400 text-sm">Получайте первыми — раньше всех в каталоге</p>
+                        <h2 className="text-white font-bold text-lg leading-tight">New Car Alerts</h2>
+                        <p className="text-slate-400 text-sm">Be the first to know — before new arrivals go public</p>
                       </div>
                     </div>
 
                     <form onSubmit={submit} className="space-y-5">
                       {/* Channel selector */}
                       <div>
-                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Куда присылать</p>
+                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Notify me via</p>
                         <div className="grid grid-cols-4 gap-2">
                           {CHANNELS.map(ch => {
                             const Icon = ch.icon;
@@ -183,7 +183,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
 
                       {/* Contact input */}
                       <div>
-                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Ваш контакт</p>
+                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Your contact</p>
                         <input
                           type="text"
                           value={contact}
@@ -205,13 +205,13 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                         ) : (
                           <>
                             <ActiveIcon size={16} />
-                            Подписаться на уведомления
+                            Subscribe to alerts
                           </>
                         )}
                       </button>
 
                       <p className="text-center text-xs text-slate-600">
-                        Без спама. Только новые поступления автомобилей.
+                        No spam. New arrivals only.
                       </p>
                     </form>
                   </>
@@ -226,10 +226,10 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                       <CheckCircle2 className="text-green-400" size={32} />
                     </div>
                     <div>
-                      <h3 className="text-white font-bold text-xl mb-1">Готово!</h3>
+                      <h3 className="text-white font-bold text-xl mb-1">You're in!</h3>
                       <p className="text-slate-400 text-sm">
-                        Вы подписаны на уведомления через <span className="text-blue-400 font-medium">{activeChannel.label}</span>.
-                        <br />Сообщим при появлении новых авто.
+                        You'll receive alerts via <span className="text-blue-400 font-medium">{activeChannel.label}</span>.
+                        <br />We'll notify you as soon as new vehicles arrive.
                       </p>
                     </div>
                   </motion.div>

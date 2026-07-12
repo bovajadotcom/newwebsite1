@@ -658,7 +658,7 @@ export default function Calculator() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Телефон *</label>
-                      <input value={form.phone} onChange={(e) => update("phone", e.target.value)} required placeholder="+375 XX XXX XX XX" className={INPUT_CLS} />
+                      <input value={form.phone} onChange={(e) => update("phone", e.target.value)} required placeholder="+XX XXX XXX XXXX" className={INPUT_CLS} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Email *</label>
