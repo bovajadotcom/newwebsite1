@@ -1,0 +1,135 @@
+Update the Contact page and add a dedicated Location & Visit Us section.
+
+1. Google Map
+
+Add an interactive Google Map on the Contact page.
+
+Map location:
+
+Gariūnų g. 49,
+Vilnius, 02300 Vilniaus m. sav.,
+Lithuania
+
+Place a custom map marker on the exact location.
+
+The map should:
+
+- Be responsive
+- Support zoom
+- Support opening directions in Google Maps
+- Match the website design
+- Have rounded corners and a premium appearance
+
+2. Location Information Block
+
+Display the address clearly next to or above the map:
+
+Visit Our Vehicle площадка
+
+Address:
+
+Gariūnų g. 49
+02300 Vilnius
+Lithuania
+
+Vehicle Market:
+
+Gariūnai Car Market
+
+Location:
+
+Site / Lot 309A
+
+Add a button:
+
+OPEN IN GOOGLE MAPS
+
+3. Vehicle Lot Photos
+
+Add a dedicated photo section showing our vehicle sales area.
+
+Section title:
+
+Our Vehicle Lot
+
+or
+
+Visit Our Car Market Location
+
+Display photos of our площадка.
+
+Requirements:
+
+- Large featured image
+- Additional gallery images if available
+- Responsive layout
+- Premium presentation
+- Rounded corners
+- Lazy loading for performance
+
+4. Information Section
+
+Add a short description:
+
+You can visit us at Gariūnai Car Market, Site 309A, in Vilnius, Lithuania.
+
+Our team will be happy to assist you with vehicle selection, inspection, financing options, import services, and purchasing assistance.
+
+Location:
+
+Gariūnai Car Market
+Site 309A
+Gariūnų g. 49
+Vilnius, Lithuania
+
+5. Contact CTA
+
+Below the map and photos add:
+
+Need assistance before visiting?
+
+Contact our team by phone, email, WhatsApp, Telegram, or Viber and we will help you find the right vehicle before your visit.
+
+Include:
+
+- Call button
+- WhatsApp button
+- Telegram button
+- Email button
+
+6. CMS Support
+
+Add the following fields to the CMS Contact Page settings:
+
+- Address
+- Google Maps URL
+- Latitude
+- Longitude
+- Vehicle Market Name
+- Site Number
+- Location Description
+- Vehicle Lot Photos
+
+This information should be editable through the CMS without changing code.
+
+7. Performance
+
+Keep the implementation lightweight:
+
+- Lazy-load Google Map
+- Lazy-load location photos
+- Optimize uploaded images
+- Maintain excellent PageSpeed performance
+
+Important:
+
+Display the exact address:
+
+Gariūnų g. 49, Vilnius, 02300 Vilniaus m. sav., Lithuania
+
+and clearly mention:
+
+Gariūnai Car Market
+Site 309A
+
+as our vehicle sales location.
