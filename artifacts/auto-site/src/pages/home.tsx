@@ -600,7 +600,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ① AVAILABLE VEHICLES */}
+      {/* ① AVAILABLE & RESERVED VEHICLES */}
       {availableCars.length > 0 && (
       <section className="py-24 bg-white border-y border-slate-200">
         <div className="container mx-auto px-4">
@@ -609,7 +609,7 @@ export default function Home() {
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold uppercase mb-3 border border-green-200">
                 <CheckCircle size={12} /> {t("inventory.available") || "Available"}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("home.availableTitle") || "Available Vehicles"}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("home.availableTitle") || "Available & Reserved Vehicles"}</h2>
               <p className="text-slate-600">{t("home.availableSub") || "Premium cars ready for sourcing right now."}</p>
             </motion.div>
             <motion.div {...fadeIn}>
@@ -619,7 +619,7 @@ export default function Home() {
             </motion.div>
           </div>
           <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {availableCars.map((car, i) => (
+            {availableCars.map((car) => (
               <motion.div
                 key={car.id}
                 variants={fadeIn}
@@ -646,7 +646,10 @@ export default function Home() {
                     <span className="flex items-center gap-1"><Fuel size={11} /> {car.fuel}</span>
                     <span className="flex items-center gap-1"><Settings2 size={11} /> {car.transmission}</span>
                   </div>
-                  <p className="text-blue-600 font-bold text-lg mt-auto">€{car.price.toLocaleString()}</p>
+                  <div className="flex items-end justify-between mt-auto">
+                    <p className="text-blue-600 font-bold text-lg">€{car.price.toLocaleString()}</p>
+                    <span className="text-xs text-slate-400">{car.status === "available" ? "In stock" : "Reserved"}</span>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -655,7 +658,7 @@ export default function Home() {
       </section>
       )}
 
-      {/* ② RECENTLY SOLD VEHICLES */}
+      {/* ② SOLD VEHICLES */}
       {soldCars.length > 0 && (
       <section className="py-24 bg-white border-y border-slate-200">
         <div className="container mx-auto px-4">
@@ -679,9 +682,8 @@ export default function Home() {
                 key={car.id}
                 variants={fadeIn}
                 onClick={() => setSelectedVehicle(toModalSold(car))}
-                className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-slate-400 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
               >
-                {/* Image — same height as Available */}
                 <div className="h-44 overflow-hidden relative bg-slate-100">
                   <img
                     src={car.image}
@@ -689,13 +691,9 @@ export default function Home() {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-
-                  {/* SOLD badge */}
-                  <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-bold bg-slate-800 text-white">
+                  <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-slate-800 text-white">
                     SOLD
                   </span>
-
-                  {/* Heart */}
                   <button
                     onClick={(e) => { e.stopPropagation(); toggle(`sold-${car.id}`); }}
                     className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
@@ -703,12 +701,8 @@ export default function Home() {
                     <Heart size={14} className={isFavorited(`sold-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/70"} />
                   </button>
                 </div>
-
-                {/* Card body — same layout as Available */}
                 <div className="p-5 flex-1 flex flex-col">
                   <h3 className="text-base font-bold text-slate-900 mb-2">{car.year} {car.make} {car.model}</h3>
-
-                  {/* Specs row — same icons/format as Available */}
                   <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500 mb-3">
                     {car.mileage != null && (
                       <span className="flex items-center gap-1"><Gauge size={11} /> {car.mileage.toLocaleString()} km</span>
@@ -719,21 +713,16 @@ export default function Home() {
                     {car.transmission && (
                       <span className="flex items-center gap-1"><Settings2 size={11} /> {car.transmission}</span>
                     )}
-                  </div>
-
-                  {/* Route */}
-                  <div className="flex flex-wrap items-center gap-1.5 text-xs text-slate-500 mb-3">
-                    <MapPin size={11} className="text-slate-400 shrink-0" />
-                    <span>{car.purchaseCountry}</span>
-                    {car.deliveredTo && (
-                      <>
-                        <ArrowRight size={11} className="text-slate-400 shrink-0" />
-                        <span className="text-green-600 font-medium">{car.deliveredTo}</span>
-                      </>
+                    {car.purchaseCountry && (
+                      <span className="flex items-center gap-1">
+                        <MapPin size={11} />
+                        {car.purchaseCountry}
+                        {car.deliveredTo && (
+                          <><ArrowRight size={10} className="mx-0.5" /><span className="text-green-600 font-medium">{car.deliveredTo}</span></>
+                        )}
+                      </span>
                     )}
                   </div>
-
-                  {/* Price + delivery date row */}
                   <div className="flex items-end justify-between mt-auto">
                     {car.finalPrice ? (
                       <p className="text-blue-600 font-bold text-lg">€{car.finalPrice.toLocaleString()}</p>
