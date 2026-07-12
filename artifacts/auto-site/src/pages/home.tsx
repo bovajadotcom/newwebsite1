@@ -645,69 +645,81 @@ export default function Home() {
 
       {/* ② RECENTLY SOLD VEHICLES */}
       {soldCars.length > 0 && (
-      <section className="py-24 bg-slate-100 border-y border-slate-200">
+      <section className="py-24 bg-[#07111E] border-y border-white/10">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-700 text-white text-xs font-semibold uppercase mb-3 border border-slate-600">
-                <CheckSquare size={12} /> {t("inventory.sold") || "Sold"}
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold uppercase mb-3 border border-green-500/30">
+                <CheckCircle size={12} /> {t("inventory.sold") || "Delivered"}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("home.soldTitle") || "Recently Sold Vehicles"}</h2>
-              <p className="text-slate-600">{t("home.soldSub") || "Cars we've successfully sourced and delivered to our clients."}</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{t("home.soldTitle") || "Recently Sold Vehicles"}</h2>
+              <p className="text-white/60">{t("home.soldSub") || "Cars we've successfully sourced and delivered to our clients."}</p>
             </motion.div>
             <motion.div {...fadeIn}>
-              <Link href="/inventory" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
+              <Link href="/inventory" className="flex items-center gap-2 text-blue-400 font-semibold text-sm hover:text-blue-300 transition-colors">
                 {t("home.viewAll")} <ArrowRight size={16} />
               </Link>
             </motion.div>
           </div>
           <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {soldCars.map((car, i) => (
+            {soldCars.map((car) => (
               <motion.div
                 key={car.id}
                 variants={fadeIn}
                 onClick={() => setSelectedVehicle(toModalSold(car))}
-                className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-slate-400 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                className="group bg-[#0D1929] rounded-2xl border border-white/10 overflow-hidden flex flex-col hover:border-green-500/40 hover:shadow-[0_0_24px_rgba(34,197,94,0.12)] transition-all duration-300 cursor-pointer"
               >
                 {/* Image */}
-                <div className="h-44 overflow-hidden relative bg-slate-100">
+                <div className="h-44 overflow-hidden relative bg-slate-800">
                   <img
                     src={car.image}
                     alt={`${car.make} ${car.model}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                  <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-slate-800 text-white">
-                    SOLD
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07111E]/90 via-[#07111E]/20 to-transparent" />
+
+                  {/* Delivered badge */}
+                  <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold bg-green-500 text-white shadow-lg">
+                    <CheckCircle size={11} /> DELIVERED
                   </span>
+
+                  {/* Heart */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggle(`sold-${car.id}`); }}
+                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
+                  >
+                    <Heart size={14} className={isFavorited(`sold-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/70"} />
+                  </button>
                 </div>
 
                 {/* Body */}
-                <div className="p-5 flex-1 flex flex-col gap-3">
-                  <h3 className="text-base font-bold text-slate-900">{car.year} {car.make} {car.model}</h3>
+                <div className="p-5 flex-1 flex flex-col">
+                  <h3 className="text-base font-bold text-white mb-3">{car.year} {car.make} {car.model}</h3>
 
-                  {/* Route */}
-                  <div className="flex items-center gap-2 text-sm flex-wrap">
-                    <span className="flex items-center gap-1 text-slate-500">
-                      <MapPin size={13} className="text-slate-400 shrink-0" />
+                  {/* Route — styled like specs row */}
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-xs mb-3">
+                    <span className="flex items-center gap-1 text-white/50">
+                      <MapPin size={11} className="text-white/40 shrink-0" />
                       {car.purchaseCountry}
                     </span>
                     {car.deliveredTo && (
                       <>
-                        <ArrowRight size={13} className="text-slate-400 shrink-0" />
-                        <span className="flex items-center gap-1 text-green-600 font-medium">
-                          <MapPin size={13} className="text-green-500 shrink-0" />
+                        <ArrowRight size={11} className="text-white/30 shrink-0" />
+                        <span className="flex items-center gap-1 text-green-400 font-semibold">
+                          <MapPin size={11} className="text-green-500 shrink-0" />
                           {car.deliveredTo}
                         </span>
                       </>
                     )}
                   </div>
 
-                  {/* Delivery date */}
+                  {/* Delivery confirmation */}
                   {car.deliveryDate && (
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-auto">
-                      <CheckSquare size={12} className="text-slate-300" />
-                      Delivered: {car.deliveryDate}
+                    <div className="mt-auto pt-3 border-t border-white/[0.07] flex items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-green-400">
+                        <CheckCircle size={13} className="text-green-500" />
+                        Delivered {car.deliveryDate}
+                      </span>
                     </div>
                   )}
                 </div>
