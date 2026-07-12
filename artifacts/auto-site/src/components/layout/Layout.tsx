@@ -204,6 +204,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link href="/articles" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                    {t("nav.articles")}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/careers" className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                    {t("nav.careers")}
+                  </Link>
+                </li>
               </ul>
             </div>
 
