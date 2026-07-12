@@ -55,7 +55,9 @@ export function PopularCarsSection() {
   }, []);
 
   return (
-    <section className="bg-background border-t border-border/40 py-20">
+    <section className="relative bg-background border-t-2 border-white/10 py-20">
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
       <div className="container mx-auto px-4 max-w-6xl">
 
         {/* Header */}
