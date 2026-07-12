@@ -248,8 +248,8 @@ export default function Inventory() {
                     }`}
                   >
                     {range === "all" ? t("inventory.filter.all") : 
-                     range === "0-50" ? "< $50k" : 
-                     range === "50-100" ? "$50k-$100k" : "$100k+"}
+                     range === "0-50" ? "< €50k" : 
+                     range === "50-100" ? "€50k-€100k" : "€100k+"}
                   </button>
                 ))}
               </div>
@@ -347,7 +347,7 @@ export default function Inventory() {
                           </h3>
                         </div>
                         <div className="text-right">
-                          <p className="text-2xl font-bold text-slate-900">${car.price.toLocaleString()}</p>
+                          <p className="text-2xl font-bold text-slate-900">€{car.price.toLocaleString()}</p>
                         </div>
                       </div>
 

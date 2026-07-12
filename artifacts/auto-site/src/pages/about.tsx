@@ -109,7 +109,7 @@ export default function About() {
               { value: "98%", label: t("stats.clients") },
               { value: "12", label: t("stats.experience") },
               { value: "40+", label: t("stats.countries") },
-              { value: "$2.4B", label: t("stats.value") }
+              { value: "€2.4B", label: t("stats.value") }
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <h3 className="text-3xl md:text-5xl font-bold mb-2">{stat.value}</h3>

@@ -9,7 +9,7 @@ export default function Pricing() {
   const tiers = [
     {
       nameKey: "pricing.basic",
-      price: "$299",
+      price: "€299",
       desc: "Perfect for experienced buyers who just need auction access.",
       features: [
         "Access to basic auction data",
@@ -26,7 +26,7 @@ export default function Pricing() {
     },
     {
       nameKey: "pricing.professional",
-      price: "$599",
+      price: "€599",
       popular: true,
       desc: "Our most popular end-to-end import solution.",
       features: [
@@ -44,7 +44,7 @@ export default function Pricing() {
     },
     {
       nameKey: "pricing.premium",
-      price: "$1,299",
+      price: "€1,299",
       desc: "White-glove service for high-value and exotic vehicles.",
       features: [
         "Everything in Professional",

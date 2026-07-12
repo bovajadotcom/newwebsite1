@@ -153,7 +153,7 @@ export default function Favorites() {
                         <p className="text-sm text-blue-600 font-medium mb-1">{car.year}</p>
                         <h3 className="text-xl font-bold text-slate-900 leading-tight">{car.make} <span className="font-light">{car.model}</span></h3>
                       </div>
-                      <p className="text-2xl font-bold text-slate-900">${car.price.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-slate-900">€{car.price.toLocaleString()}</p>
                     </div>
                     <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm text-slate-600 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
                       <div className="flex items-center gap-2"><Gauge size={14} className="text-blue-500" /> {car.mileage.toLocaleString()} km</div>
