@@ -56,6 +56,9 @@ export default function Contact() {
               <button className="flex-1 py-3 bg-[#0088cc]/10 text-[#0088cc] border border-[#0088cc]/20 rounded font-medium flex items-center justify-center gap-2 hover:bg-[#0088cc]/20 transition-colors">
                 <MessageCircle size={18} /> Telegram
               </button>
+              <button className="flex-1 py-3 bg-[#7360F2]/10 text-[#7360F2] border border-[#7360F2]/20 rounded font-medium flex items-center justify-center gap-2 hover:bg-[#7360F2]/20 transition-colors">
+                <MessageCircle size={18} /> Viber
+              </button>
             </div>
           </motion.div>
 
