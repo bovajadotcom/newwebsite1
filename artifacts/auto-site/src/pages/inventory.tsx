@@ -27,8 +27,37 @@ interface DisplayVehicle {
 interface DisplaySold {
   id: string | number;
   make: string; model: string; year: number;
+  mileage?: number | null;
+  engine?: string | null;
+  fuel?: string | null;
+  transmission?: string | null;
+  finalPrice?: number | null;
+  description?: string | null;
   purchaseCountry: string; deliveredTo?: string | null; deliveryDate?: string | null;
   image: string;
+}
+
+const STATUS_PRIORITY: Record<string, number> = { available: 0, reserved: 1, sold: 2 };
+
+interface UnifiedVehicle {
+  _type: "stock" | "sold";
+  id: string | number;
+  make: string; model: string; year: number;
+  status: string;
+  image: string;
+  badge?: string | null;
+  engine?: string;
+  fuel?: string;
+  transmission?: string;
+  mileage?: number;
+  location?: string;
+  price?: number;
+  description?: string;
+  photos?: string[];
+  finalPrice?: number | null;
+  purchaseCountry?: string;
+  deliveredTo?: string | null;
+  deliveryDate?: string | null;
 }
 interface DisplayPopular {
   id: string | number;
@@ -63,12 +92,28 @@ function toModalStock(car: DisplayVehicle): ModalVehicle {
     images: [car.image, ...extraPhotos],
   };
 }
-function toModalSold(car: DisplaySold): ModalVehicle {
+function toModalUnified(car: UnifiedVehicle): ModalVehicle {
+  if (car._type === "sold") {
+    return {
+      id: car.id, type: "sold", make: car.make, model: car.model, year: car.year,
+      price: car.finalPrice ?? undefined,
+      mileage: car.mileage,
+      fuel: car.fuel ?? undefined,
+      transmission: car.transmission ?? undefined,
+      description: car.description ?? undefined,
+      purchaseCountry: car.purchaseCountry ?? "",
+      deliveredTo: car.deliveredTo ?? null,
+      deliveryDate: car.deliveryDate ?? null,
+      images: [car.image],
+    };
+  }
   return {
-    id: car.id, type: "sold", make: car.make, model: car.model, year: car.year,
-    purchaseCountry: car.purchaseCountry, deliveredTo: car.deliveredTo ?? null,
-    deliveryDate: car.deliveryDate ?? null,
-    images: [car.image],
+    id: car.id, type: "available", make: car.make, model: car.model,
+    year: car.year, price: car.price, status: car.status, badge: car.badge,
+    description: car.description,
+    engine: car.engine, fuel: car.fuel,
+    transmission: car.transmission, mileage: car.mileage, location: car.location,
+    images: [car.image, ...(car.photos ?? []).filter(Boolean)],
   };
 }
 function toModalPopular(car: DisplayPopular): ModalVehicle {
@@ -135,19 +180,45 @@ export default function Inventory() {
   const [filterStatus, setFilterStatus] = useState("all");
   const [filterPrice, setFilterPrice] = useState("all"); 
 
-  const brands = useMemo(() => ["all", ...Array.from(new Set(stockVehicles.map(v => v.make)))], [stockVehicles]);
-  
-  const filtered = useMemo(() => stockVehicles.filter(v => {
+  const allVehicles = useMemo<UnifiedVehicle[]>(() => {
+    const stock: UnifiedVehicle[] = stockVehicles.map(v => ({ ...v, _type: "stock" as const }));
+    const sold: UnifiedVehicle[] = soldVehicles.map(v => ({
+      _type: "sold" as const,
+      id: v.id, make: v.make, model: v.model, year: v.year,
+      status: "sold",
+      image: v.image,
+      mileage: v.mileage ?? undefined,
+      engine: v.engine ?? undefined,
+      fuel: v.fuel ?? undefined,
+      transmission: v.transmission ?? undefined,
+      finalPrice: v.finalPrice,
+      description: v.description ?? undefined,
+      purchaseCountry: v.purchaseCountry,
+      deliveredTo: v.deliveredTo,
+      deliveryDate: v.deliveryDate,
+    }));
+    return [...stock, ...sold].sort(
+      (a, b) => (STATUS_PRIORITY[a.status] ?? 99) - (STATUS_PRIORITY[b.status] ?? 99)
+    );
+  }, [stockVehicles, soldVehicles]);
+
+  const brands = useMemo(() => [
+    "all",
+    ...Array.from(new Set(allVehicles.map(v => v.make))),
+  ], [allVehicles]);
+
+  const filtered = useMemo(() => allVehicles.filter(v => {
     if (search && !(`${v.make} ${v.model}`.toLowerCase().includes(search.toLowerCase()))) return false;
     if (filterBrand !== "all" && v.make !== filterBrand) return false;
-    if (filterFuel !== "all" && v.fuel.toLowerCase() !== filterFuel.toLowerCase()) return false;
-    if (filterTransmission !== "all" && v.transmission.toLowerCase() !== filterTransmission.toLowerCase()) return false;
+    if (filterFuel !== "all" && !v.fuel?.toLowerCase().includes(filterFuel.toLowerCase())) return false;
+    if (filterTransmission !== "all" && !v.transmission?.toLowerCase().includes(filterTransmission.toLowerCase())) return false;
     if (filterStatus !== "all" && v.status !== filterStatus) return false;
-    if (filterPrice === "0-50" && v.price >= 50000) return false;
-    if (filterPrice === "50-100" && (v.price < 50000 || v.price >= 100000)) return false;
-    if (filterPrice === "100+" && v.price < 100000) return false;
+    const effectivePrice = v.price ?? v.finalPrice ?? 0;
+    if (filterPrice === "0-50" && effectivePrice >= 50000) return false;
+    if (filterPrice === "50-100" && (effectivePrice < 50000 || effectivePrice >= 100000)) return false;
+    if (filterPrice === "100+" && effectivePrice < 100000) return false;
     return true;
-  }), [stockVehicles, search, filterBrand, filterFuel, filterTransmission, filterStatus, filterPrice]);
+  }), [allVehicles, search, filterBrand, filterFuel, filterTransmission, filterStatus, filterPrice]);
 
   const clearFilters = () => {
     setSearch("");
@@ -296,48 +367,52 @@ export default function Inventory() {
               </motion.div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filtered.map((car) => (
-                  <motion.div 
+                {filtered.map((car) => {
+                  const effectivePrice = car.price ?? car.finalPrice;
+                  const statusBadge =
+                    car.status === "available" ? "bg-green-500 border-green-600 text-white" :
+                    car.status === "reserved"  ? "bg-amber-500 border-amber-600 text-white" :
+                                                 "bg-slate-800 border-slate-700 text-white";
+                  return (
+                  <motion.div
                     layout
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    key={car.id}
-                    onClick={() => setSelectedVehicle(toModalStock(car))}
+                    key={`${car._type}-${car.id}`}
+                    onClick={() => setSelectedVehicle(toModalUnified(car))}
                     className="group rounded-2xl bg-white border border-slate-200 overflow-hidden hover:border-blue-300 transition-all shadow-sm hover:shadow-lg hover:-translate-y-1 cursor-pointer"
                   >
                     <div className="aspect-video relative overflow-hidden bg-slate-100">
-                      <img 
-                        src={car.image} 
+                      <img
+                        src={car.image}
                         alt={`${car.make} ${car.model}`}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
-                      
-                      {/* Badges */}
-                      <div className="absolute top-4 left-4 flex flex-col gap-2">
-                        {car.badge && (
+
+                      {car.badge && (
+                        <div className="absolute top-4 left-4">
                           <span className="px-3 py-1 bg-white/90 backdrop-blur-md border border-slate-200 text-slate-900 text-xs font-bold uppercase tracking-wider rounded shadow-sm">
                             {car.badge}
                           </span>
-                        )}
-                      </div>
-                      
+                        </div>
+                      )}
+
                       <div className="absolute top-4 right-4">
-                        <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md border bg-blue-600 border-blue-600 text-white border-t-[#8a8a8a] border-r-[#8a8a8a] border-b-[#8a8a8a] border-l-[#8a8a8a]">
-                          {t(`inventory.status.${car.status}`)}
+                        <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md border ${statusBadge}`}>
+                          {t(`inventory.status.${car.status}`) || car.status}
                         </span>
                       </div>
 
-                      {/* Like button */}
                       <button
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(`stock-${car.id}`); }}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(`${car._type}-${car.id}`); }}
                         className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform"
                       >
-                        <Heart size={14} className={isFavorited(`stock-${car.id}`) ? "text-red-500 fill-red-500" : "text-slate-400"} />
+                        <Heart size={14} className={isFavorited(`${car._type}-${car.id}`) ? "text-red-500 fill-red-500" : "text-slate-400"} />
                       </button>
                     </div>
-                    
+
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-4">
                         <div>
@@ -347,93 +422,49 @@ export default function Inventory() {
                           </h3>
                         </div>
                         <div className="text-right">
-                          <p className="text-2xl font-bold text-slate-900">€{car.price.toLocaleString()}</p>
+                          {effectivePrice != null
+                            ? <p className="text-2xl font-bold text-slate-900">€{effectivePrice.toLocaleString()}</p>
+                            : <span className="text-sm text-slate-400 font-medium">On request</span>
+                          }
                         </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-y-3 gap-x-2 text-sm text-slate-600 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
-                        <div className="flex items-center gap-2"><Gauge size={14} className="text-blue-500" /> {car.mileage.toLocaleString()} km</div>
-                        <div className="flex items-center gap-2"><MapPin size={14} className="text-blue-500" /> {car.location}</div>
-                        <div className="flex items-center gap-2"><Fuel size={14} className="text-blue-500" /> {car.fuel}</div>
-                        <div className="flex items-center gap-2"><Settings2 size={14} className="text-blue-500" /> {car.transmission}</div>
+                        {car.mileage != null && (
+                          <div className="flex items-center gap-2"><Gauge size={14} className="text-blue-500" /> {car.mileage.toLocaleString()} km</div>
+                        )}
+                        <div className="flex items-center gap-2 col-span-1">
+                          <MapPin size={14} className="text-blue-500 shrink-0" />
+                          {car._type === "sold" ? (
+                            <span className="flex items-center gap-1 flex-wrap">
+                              {car.purchaseCountry}
+                              {car.deliveredTo && <><ArrowRight size={10} /><span className="text-green-600 font-medium">{car.deliveredTo}</span></>}
+                            </span>
+                          ) : car.location}
+                        </div>
+                        {car.fuel && <div className="flex items-center gap-2"><Fuel size={14} className="text-blue-500" /> {car.fuel}</div>}
+                        {car.transmission && <div className="flex items-center gap-2"><Settings2 size={14} className="text-blue-500" /> {car.transmission}</div>}
                       </div>
 
-                      <p className="text-sm text-slate-500 line-clamp-2 mb-6 h-10">
-                        {car.description}
+                      <p className="text-sm text-slate-500 line-clamp-2 mb-3 min-h-[2.5rem]">
+                        {car.description ?? ""}
                       </p>
+                      {car.deliveryDate && (
+                        <div className="flex items-center gap-2 text-green-600 text-xs font-medium mb-3">
+                          <CheckSquare size={12} /> Delivered: {car.deliveryDate}
+                        </div>
+                      )}
 
-                      <button
-                        className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn"
-                      >
+                      <button className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn">
                         View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                       </button>
                     </div>
                   </motion.div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </AnimatePresence>
-        </div>
-      </section>
-      {/* Sold Gallery */}
-      <section className="py-24 bg-card/30 border-y border-border/50 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <motion.div {...fadeIn} className="mb-12">
-            <h2 className="text-3xl font-bold text-white mb-2">{t("inventory.sold")}</h2>
-            <p className="text-muted-foreground">Successful deliveries from our global network.</p>
-          </motion.div>
-
-          <div className="flex overflow-x-auto pb-8 -mx-4 px-4 snap-x lg:grid lg:grid-cols-3 xl:grid-cols-6 lg:overflow-visible lg:pb-0 lg:px-0 lg:mx-0 gap-4 hide-scrollbar">
-            {soldVehicles.map((car, i) => (
-              <motion.div 
-                key={car.id} 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                onClick={() => setSelectedVehicle(toModalSold(car))}
-                className="shrink-0 w-[280px] lg:w-auto snap-start group relative rounded-xl overflow-hidden border border-border/50 cursor-pointer hover:border-border transition-colors"
-              >
-                <div className="aspect-[4/3] bg-secondary relative">
-                  <img 
-                    src={`${import.meta.env.BASE_URL}${car.image}`} 
-                    alt={`${car.make} ${car.model}`}
-                    className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
-                  />
-                  
-                  {/* SOLD Ribbon */}
-                  <div className="absolute top-4 -right-8 w-32 bg-red-600 text-white text-[10px] font-bold py-1 text-center rotate-45 shadow-lg">
-                    SOLD
-                  </div>
-
-                  {/* Like button */}
-                  <button
-                    onClick={(e) => { e.stopPropagation(); toggle(`sold-${car.id}`); }}
-                    className="absolute top-2 left-2 z-10 w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
-                  >
-                    <Heart size={12} className={isFavorited(`sold-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
-                  </button>
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-90" />
-                  
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h4 className="text-white font-bold mb-1">{car.year} {car.make} {car.model}</h4>
-                    <div className="flex flex-col gap-1 text-xs text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <MapPin size={12} /> {car.purchaseCountry}
-                        {car.deliveredTo && (
-                          <><ArrowRight size={10} className="mx-0.5" /><span className="text-green-400">{car.deliveredTo}</span></>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1 text-primary">
-                        <CheckSquare size={12} /> {car.deliveryDate}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
       {/* Popular Sourcing Models */}
