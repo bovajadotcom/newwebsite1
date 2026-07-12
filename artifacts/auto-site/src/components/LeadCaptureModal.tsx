@@ -1,9 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, MessageCircle, Phone, Send, CheckCircle2, Bell } from "lucide-react";
 
 const STORAGE_KEY = "bovaja_subscribed";
-const DELAY_MS = 30_000;
+
+// Delays between each display (ms): 1st after 15s, 2nd after 30s, 3rd after 60s
+const SHOW_DELAYS = [15_000, 30_000, 60_000];
+const MAX_SHOWS   = 3;
 
 const CHANNELS = [
   { id: "telegram",  label: "Telegram",  icon: Send,          hint: "+7 999 000 00 00 или @username" },
@@ -12,28 +15,60 @@ const CHANNELS = [
   { id: "email",     label: "Email",     icon: Mail,          hint: "your@email.com" },
 ];
 
+function isModalOpen(): boolean {
+  return !!(
+    document.querySelector('[role="dialog"]:not([data-bovaja-lead])') ||
+    document.querySelector('.modal-open') ||
+    document.querySelector('[data-state="open"]')
+  );
+}
+
 interface LeadCaptureModalProps {
   source?: string;
 }
 
 export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
-  const [visible, setVisible]     = useState(false);
-  const [channel, setChannel]     = useState("telegram");
-  const [contact, setContact]     = useState("");
-  const [loading, setLoading]     = useState(false);
-  const [done, setDone]           = useState(false);
-  const [error, setError]         = useState("");
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [visible, setVisible]   = useState(false);
+  const [channel, setChannel]   = useState("telegram");
+  const [contact, setContact]   = useState("");
+  const [loading, setLoading]   = useState(false);
+  const [done, setDone]         = useState(false);
+  const [error, setError]       = useState("");
+
+  const showCountRef  = useRef(0);   // how many times shown this session
+  const subscribedRef = useRef(false);
+  const timerRef      = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scheduleNext = useCallback((delayIndex: number) => {
+    if (subscribedRef.current) return;
+    if (delayIndex >= MAX_SHOWS) return;
+
+    const delay = SHOW_DELAYS[delayIndex];
+    timerRef.current = setTimeout(() => {
+      if (subscribedRef.current) return;
+      if (isModalOpen()) {
+        // Another modal is open — reschedule after 5s
+        timerRef.current = setTimeout(() => scheduleNext(delayIndex), 5_000);
+        return;
+      }
+      showCountRef.current = delayIndex + 1;
+      setVisible(true);
+    }, delay);
+  }, []);
 
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY)) return;
-    timerRef.current = setTimeout(() => setVisible(true), DELAY_MS);
+    scheduleNext(0);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, []);
+  }, [scheduleNext]);
 
-  function dismiss() {
+  const dismiss = useCallback(() => {
     setVisible(false);
-  }
+    const nextIndex = showCountRef.current; // 1-indexed count = next delay index
+    if (!subscribedRef.current && nextIndex < MAX_SHOWS) {
+      scheduleNext(nextIndex);
+    }
+  }, [scheduleNext]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,6 +84,8 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
       });
       if (!res.ok) throw new Error("Ошибка сервера");
       localStorage.setItem(STORAGE_KEY, "1");
+      subscribedRef.current = true;
+      if (timerRef.current) clearTimeout(timerRef.current);
       setDone(true);
       setTimeout(() => setVisible(false), 2800);
     } catch {
@@ -71,11 +108,13 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
             onClick={dismiss}
           />
 
           {/* Modal */}
           <motion.div
+            data-bovaja-lead
             className="fixed z-50 inset-0 flex items-center justify-center px-4 pointer-events-none"
             initial={{ opacity: 0, scale: 0.92, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -83,6 +122,8 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
             transition={{ type: "spring", stiffness: 280, damping: 24 }}
           >
             <div
+              role="dialog"
+              data-bovaja-lead
               className="relative pointer-events-auto w-full max-w-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
               style={{ background: "linear-gradient(135deg, #0d1628 0%, #0a0f1e 100%)" }}
               onClick={e => e.stopPropagation()}
@@ -95,6 +136,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                 <button
                   onClick={dismiss}
                   className="absolute top-5 right-5 text-slate-500 hover:text-white transition-colors"
+                  aria-label="Close"
                 >
                   <X size={20} />
                 </button>
@@ -174,7 +216,6 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                     </form>
                   </>
                 ) : (
-                  /* Success state */
                   <motion.div
                     className="py-6 flex flex-col items-center gap-4 text-center"
                     initial={{ opacity: 0, scale: 0.9 }}
