@@ -93,8 +93,12 @@ export default function Home() {
                 transition={{ delay: 0.25, duration: 0.5 }}
                 className="inline-flex items-center self-start mb-6"
               >
-                <span className="px-3 py-1 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-wide">
-                  {t("home.hero.badge")}
+                <span className="px-3 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-wide flex items-center gap-1.5">
+                  <span className="text-sm">🇧🇾</span>
+                  <span className="text-sm">🇱🇹</span>
+                  <span className="text-sm">🇵🇱</span>
+                  <span className="text-sm">🇱🇻</span>
+                  <span className="text-sm">🇪🇪</span>
                 </span>
               </motion.div>
 
