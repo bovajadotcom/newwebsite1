@@ -370,7 +370,7 @@ export default function Inventory() {
                 {filtered.map((car) => {
                   const effectivePrice = car.price ?? car.finalPrice;
                   const statusBadge =
-                    car.status === "available" ? "bg-green-500 border-green-600 text-white" :
+                    car.status === "available" ? "bg-green-500/15 border-green-500/30 text-green-400" :
                     car.status === "reserved"  ? "bg-amber-500 border-amber-600 text-white" :
                                                  "bg-slate-800 border-slate-700 text-white";
                   return (
@@ -400,7 +400,7 @@ export default function Inventory() {
                       )}
 
                       <div className="absolute top-4 right-4">
-                        <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md border ${statusBadge} ${car.status === "available" ? "shadow-[0_0_12px_rgba(34,197,94,0.55),0_0_24px_rgba(34,197,94,0.25)]" : ""}`}>
+                        <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full backdrop-blur-md border ${statusBadge} ${car.status === "available" ? "animate-pulse shadow-[0_0_12px_rgba(34,197,94,0.5)] hover:shadow-[0_0_20px_rgba(34,197,94,0.7)] transition-shadow duration-500" : ""}`} style={car.status === "available" ? { animationDuration: "3s" } : undefined}>
                           {t(`inventory.status.${car.status}`) || car.status}
                         </span>
                       </div>
