@@ -333,11 +333,8 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* Bridge: hero dark → partners light */}
-      <div className="h-12 bg-gradient-to-b from-background to-slate-50 pointer-events-none" aria-hidden="true" />
-
       {/* AUCTION PARTNERS */}
-      <section className="py-12 bg-slate-50 overflow-hidden">
+      <section className="py-14 bg-slate-100 border-y-2 border-slate-200 overflow-hidden">
         <style>{`
           @keyframes marquee {
             from { transform: translateX(0); }
@@ -367,11 +364,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bridge: partners light → stats dark */}
-      <div className="h-16 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
-
       {/* STATS */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-20 overflow-hidden border-b border-white/[0.06]">
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
         {/* Subtle static glow behind content */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-20"
@@ -425,7 +421,7 @@ export default function Home() {
       </section>
 
       {/* ADVANTAGES */}
-      <section className="py-24 bg-slate-50">
+      <section className="py-24 bg-white border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.advantages")}</h2>
@@ -462,11 +458,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bridge: light → dark */}
-      <div className="h-16 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
-
       {/* PROCESS */}
-      <section className="py-24">
+      <section className="relative py-24 border-b border-white/[0.06]">
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="mb-16 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.process")}</h2>
@@ -609,12 +604,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bridge: dark → light */}
-      <div className="h-16 bg-gradient-to-b from-background to-white pointer-events-none" aria-hidden="true" />
-
       {/* ① AVAILABLE & RESERVED VEHICLES */}
       {availableCars.length > 0 && (
-      <section className="py-24 bg-white border-b border-slate-200">
+      <section className="py-24 bg-white border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -672,7 +664,7 @@ export default function Home() {
 
       {/* ② SOLD VEHICLES */}
       {soldCars.length > 0 && (
-      <section className="py-24 bg-white border-b border-slate-200">
+      <section className="py-24 bg-slate-50 border-b border-slate-300">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -756,7 +748,7 @@ export default function Home() {
       )}
 
       {/* ③ POPULAR VEHICLES */}
-      <section className="py-24 bg-white border-b border-slate-200">
+      <section className="py-24 bg-white border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -840,11 +832,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bridge: light → dark */}
-      <div className="h-16 bg-gradient-to-b from-white to-background pointer-events-none" aria-hidden="true" />
-
       {/* TESTIMONIALS */}
-      <section className="py-24">
+      <section className="relative py-24 border-b border-white/[0.06]">
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.testimonials")}</h2>
@@ -882,11 +873,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bridge: dark testimonials → light FAQ */}
-      <div className="h-16 bg-gradient-to-b from-background to-white pointer-events-none" aria-hidden="true" />
-
       {/* FAQ */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-slate-50 border-b-2 border-slate-200">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div {...fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.faq")}</h2>
@@ -920,11 +908,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Bridge: light FAQ → dark CTA */}
-      <div className="h-16 bg-gradient-to-b from-white to-background pointer-events-none" aria-hidden="true" />
-
       {/* CONTACT FORM & CTA */}
-      <section className="py-24 relative overflow-hidden">
+      <section className="relative py-24 overflow-hidden">
+        {/* Top accent line */}
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="absolute inset-0 bg-primary/5" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 blur-[120px] rounded-full pointer-events-none" />
         
