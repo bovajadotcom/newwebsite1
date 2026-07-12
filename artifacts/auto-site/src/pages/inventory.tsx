@@ -214,9 +214,11 @@ export default function Inventory() {
     if (filterTransmission !== "all" && !v.transmission?.toLowerCase().includes(filterTransmission.toLowerCase())) return false;
     if (filterStatus !== "all" && v.status !== filterStatus) return false;
     const effectivePrice = v.price ?? v.finalPrice ?? 0;
-    if (filterPrice === "0-50" && effectivePrice >= 50000) return false;
-    if (filterPrice === "50-100" && (effectivePrice < 50000 || effectivePrice >= 100000)) return false;
-    if (filterPrice === "100+" && effectivePrice < 100000) return false;
+    if (filterPrice === "0-5"   && effectivePrice >= 5000) return false;
+    if (filterPrice === "6-9"   && (effectivePrice < 6000  || effectivePrice >= 10000)) return false;
+    if (filterPrice === "10-15" && (effectivePrice < 10000 || effectivePrice >= 16000)) return false;
+    if (filterPrice === "16-20" && (effectivePrice < 16000 || effectivePrice >= 21000)) return false;
+    if (filterPrice === "21+"   && effectivePrice < 21000) return false;
     return true;
   }), [allVehicles, search, filterBrand, filterFuel, filterTransmission, filterStatus, filterPrice]);
 
@@ -310,17 +312,22 @@ export default function Inventory() {
               </select>
 
               <div className="flex gap-1 bg-white rounded-lg p-1 border border-slate-300">
-                {["all", "0-50", "50-100", "100+"].map(range => (
+                {([ 
+                  { key: "all",   label: t("inventory.filter.all") },
+                  { key: "0-5",   label: "< €5k" },
+                  { key: "6-9",   label: "€6k–9k" },
+                  { key: "10-15", label: "€10k–15k" },
+                  { key: "16-20", label: "€16k–20k" },
+                  { key: "21+",   label: "€21k+" },
+                ] as const).map(({ key, label }) => (
                   <button
-                    key={range}
-                    onClick={() => setFilterPrice(range)}
+                    key={key}
+                    onClick={() => setFilterPrice(key)}
                     className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                      filterPrice === range ? "bg-blue-600 text-white" : "text-slate-600 hover:text-slate-900"
+                      filterPrice === key ? "bg-blue-600 text-white" : "text-slate-600 hover:text-slate-900"
                     }`}
                   >
-                    {range === "all" ? t("inventory.filter.all") : 
-                     range === "0-50" ? "< €50k" : 
-                     range === "50-100" ? "€50k-€100k" : "€100k+"}
+                    {label}
                   </button>
                 ))}
               </div>
