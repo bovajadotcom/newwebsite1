@@ -353,10 +353,8 @@ export default function Home() {
           </motion.div>
         </motion.div>
       </div>
-
       {/* ── SECTION DIVIDER: Hero → Partners ── */}
       <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
-
       {/* AUCTION PARTNERS */}
       <section className="py-14 bg-slate-100 border-b-2 border-slate-200 overflow-hidden">
         <style>{`
@@ -387,7 +385,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* STATS */}
       <section className="relative py-20 overflow-hidden border-b-2 border-white/10">
         {/* Top accent line */}
@@ -449,7 +446,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* ADVANTAGES */}
       <section className="py-24 bg-white border-t-2 border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
@@ -490,7 +486,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* PROCESS */}
       <section className="relative py-24 border-b-2 border-white/10">
         {/* Top accent line */}
@@ -639,7 +634,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* ① AVAILABLE & RESERVED VEHICLES */}
       {availableCars.length > 0 && (
       <section className="relative py-24 bg-white border-t-2 border-b-2 border-slate-200">
@@ -673,7 +667,7 @@ export default function Home() {
                     {car.badge && (
                       <span className="px-2 py-1 rounded text-xs font-semibold bg-blue-600 text-white">{car.badge}</span>
                     )}
-                    <span className={`px-2 py-1 rounded text-xs font-semibold ${car.status === "available" ? "bg-green-500 text-white" : "bg-amber-500 text-white"}`}>
+                    <span className="px-2 py-1 rounded text-xs font-semibold text-white bg-[#76c297]">
                       {car.status === "available" ? "Available" : "Reserved"}
                     </span>
                   </div>
@@ -699,8 +693,6 @@ export default function Home() {
         </div>
       </section>
       )}
-
-
       {/* ② SOLD VEHICLES */}
       {soldCars.length > 0 && (
       <section className="relative py-24 bg-slate-100 border-b-2 border-slate-200">
@@ -787,8 +779,6 @@ export default function Home() {
         </div>
       </section>
       )}
-
-
       {/* ③ POPULAR VEHICLES */}
       <section className="relative py-24 bg-white border-b-2 border-slate-200">
         {/* Blue accent stripe */}
@@ -875,7 +865,6 @@ export default function Home() {
           )}
         </div>
       </section>
-
       {/* TESTIMONIALS */}
       <section className="relative py-24 border-b-2 border-white/10">
         {/* Top accent line */}
@@ -919,7 +908,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
       {/* FAQ */}
       <section className="py-24 bg-slate-100 border-t-2 border-b-2 border-slate-200">
         <div className="container mx-auto px-4 max-w-4xl">
@@ -957,7 +945,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* CONTACT FORM & CTA */}
       <section className="relative py-24 overflow-hidden border-b-2 border-white/10">
         {/* Top accent line */}
@@ -1044,9 +1031,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       <VehicleDetailModal vehicle={selectedVehicle} onClose={() => setSelectedVehicle(null)} />
-
       <RelatedArticles title="Latest News & Articles" limit={3} />
     </div>
   );
