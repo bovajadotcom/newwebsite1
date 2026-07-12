@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { submitLead } from "@/lib/submitLead";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calculator as CalcIcon, ChevronRight, ChevronLeft, Send,
@@ -204,19 +205,18 @@ export default function Calculator() {
     { icon: Send,     label: "Заявка" },
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const totalStr = isBelarus && byResult ? fmt(byResult.total) : standardResult ? fmt(standardResult.total) : "";
-    fetch("/api/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        name: form.name, phone: form.phone, email: form.email,
-        message: `Запрос расчёта: ${selectedCountry?.name}, авто ${form.vehiclePrice}€. Итог: ${totalStr}`,
-        service: "calculator-quote",
-      }),
-    }).catch(() => {});
+    try {
+      await submitLead({
+        formName: "Calculator Quote Request",
+        name: form.name,
+        phone: form.phone,
+        email: form.email,
+        message: `Quote request: ${selectedCountry?.name}, vehicle price €${form.vehiclePrice}. Vehicle type: ${form.vehicleType || "catalog"}. Total: ${totalStr}`,
+      });
+    } catch {}
     setSubmitted(true);
   };
 

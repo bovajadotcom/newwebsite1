@@ -1,11 +1,12 @@
 import { motion, useInView } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck, Calculator, Heart } from "lucide-react";
+import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck, Calculator, Heart, CheckCircle, AlertCircle } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { popularVehicles as staticPopular } from "@/data/inventory";
 import { useFavorites } from "@/lib/FavoritesContext";
 import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
+import { submitLead } from "@/lib/submitLead";
 
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
   to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
@@ -65,10 +66,34 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
   const [popularCars, setPopularCars] = useState<DisplayPopular[]>([]);
+  const [footerFormStatus, setFooterFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const { t } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
   const processRef = useRef<HTMLDivElement>(null);
   const isProcessInView = useInView(processRef, { once: true, margin: "-120px" });
+  const footerNameRef = useRef<HTMLInputElement>(null);
+  const footerPhoneRef = useRef<HTMLInputElement>(null);
+  const footerEmailRef = useRef<HTMLInputElement>(null);
+  const footerCountryRef = useRef<HTMLInputElement>(null);
+  const footerMessageRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleFooterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFooterFormStatus("loading");
+    try {
+      await submitLead({
+        formName: "Footer Contact Form",
+        name: footerNameRef.current?.value,
+        phone: footerPhoneRef.current?.value,
+        email: footerEmailRef.current?.value,
+        country: footerCountryRef.current?.value,
+        message: footerMessageRef.current?.value,
+      });
+      setFooterFormStatus("success");
+    } catch {
+      setFooterFormStatus("error");
+    }
+  };
 
   useEffect(() => {
     fetch("/api/popular-vehicles")
@@ -694,38 +719,55 @@ export default function Home() {
               viewport={{ once: true }}
               className="p-8 rounded-2xl bg-card border border-border/50 shadow-2xl backdrop-blur-sm"
             >
-              <form className="space-y-6" onSubmit={e => e.preventDefault()}>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.name")}</label>
-                    <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+              {footerFormStatus === "success" ? (
+                <div className="flex flex-col items-center justify-center py-16 gap-4">
+                  <div className="w-14 h-14 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center">
+                    <CheckCircle className="text-green-400" size={28} />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
-                    <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
-                  </div>
+                  <p className="text-white font-bold text-lg">Thank you.</p>
+                  <p className="text-muted-foreground text-center text-sm">Your request has been received. Our team will contact you shortly.</p>
                 </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
-                    <input type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+              ) : (
+                <form className="space-y-6" onSubmit={handleFooterSubmit}>
+                  {footerFormStatus === "error" && (
+                    <div className="flex items-center gap-3 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                      <AlertCircle size={16} />
+                      Your request could not be sent. Please try again later or contact us directly.
+                    </div>
+                  )}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.name")}</label>
+                      <input ref={footerNameRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
+                      <input ref={footerPhoneRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
+                      <input ref={footerEmailRef} type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.country")}</label>
+                      <input ref={footerCountryRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.country")}</label>
-                    <input type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
+                    <textarea ref={footerMessageRef} rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
                   </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
-                  <textarea rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none"></textarea>
-                </div>
-
-                <button className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2">
-                  {t("cta.startNow")} <ArrowRight size={18} />
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    disabled={footerFormStatus === "loading"}
+                    className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 disabled:opacity-60"
+                  >
+                    {footerFormStatus === "loading" ? "Sending…" : <>{t("cta.startNow")} <ArrowRight size={18} /></>}
+                  </button>
+                </form>
+              )}
             </motion.div>
           </div>
         </div>

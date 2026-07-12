@@ -1,0 +1,154 @@
+Add a new Articles / News section to both the website and CMS, but keep it lightweight, fast, and optimized.
+
+1. Articles Section on the Website
+
+Create a dedicated Articles or News section.
+
+Each article card should display:
+
+- Cover image
+- Article title
+- Short excerpt
+- Publication date
+- Read More button
+
+The entire card should be clickable.
+
+Add a subtle hover effect and smooth animation.
+
+2. Article Detail Page
+
+When a visitor opens an article, show:
+
+- Article title
+- Publication date
+- Cover image
+- Full article content
+
+Simple structure:
+
+Article Title
+
+Published: 12 July 2026
+
+Cover Image
+
+Full Article Text
+
+Keep the design clean, modern, and easy to read.
+
+3. CMS Article Management
+
+Add a new CMS section called:
+
+Articles
+
+The admin should be able to:
+
+- Create articles
+- Edit articles
+- Delete articles
+- Save drafts
+- Publish or unpublish articles
+- Upload a cover image
+- Add title
+- Add publication date
+- Add short excerpt
+- Add full article content
+- Preview before publishing
+
+4. Article Fields
+
+Each article should support:
+
+{
+  id: "article-001",
+  title: "How to Choose a Car from Europe",
+  slug: "how-to-choose-a-car-from-europe",
+  excerpt: "Short article preview...",
+  content: "Full article content...",
+  coverImage: "/uploads/articles/article-cover.jpg",
+  publishedAt: "2026-07-12",
+  status: "published"
+}
+
+5. Article Editor
+
+Use a lightweight editor.
+
+Support:
+
+- Paragraphs
+- Headings
+- Bold text
+- Italic text
+- Bullet lists
+- Numbered lists
+- Links
+- Images inside articles
+
+Avoid heavy editor packages.
+
+6. Navigation
+
+Add an Articles or News item to the website menu.
+
+Users should be able to open the articles page from the main navigation.
+
+7. Sorting
+
+Display published articles from newest to oldest.
+
+Drafts and unpublished articles must never appear publicly.
+
+8. Responsive Design
+
+Desktop:
+- 3-column grid
+
+Tablet:
+- 2-column grid
+
+Mobile:
+- 1-column layout
+
+9. SEO
+
+Automatically generate:
+
+- Page title
+- Meta description
+- Open Graph title
+- Open Graph description
+- Open Graph image
+- Canonical URL
+
+10. Performance & Optimization (Very Important)
+
+Keep the Articles system lightweight.
+
+Requirements:
+
+- Do not add heavy dependencies.
+- Avoid large rich text editor libraries.
+- Keep bundle size minimal.
+- Compress uploaded images automatically.
+- Generate optimized image sizes.
+- Use lazy loading for article images.
+- Load article content only when the article is opened.
+- Do not preload all article content on the homepage.
+- Use pagination if the article count grows.
+- Minimize database queries.
+- Maintain excellent PageSpeed and Lighthouse scores.
+- Articles must not noticeably affect website loading speed.
+- The website should remain fast even with many published articles.
+
+11. Empty State
+
+If no articles exist, display:
+
+"No articles have been published yet."
+
+Goal:
+
+I want a simple, lightweight, SEO-friendly Articles section that allows me to create and manage articles from the CMS with a title, date, image, excerpt, and full content, while keeping the website extremely fast and optimized.

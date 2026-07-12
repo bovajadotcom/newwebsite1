@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { submitLead } from "@/lib/submitLead";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, ChevronLeft, ChevronRight, MapPin, Gauge, Fuel, Settings2,
@@ -148,13 +149,13 @@ function Gallery({ images, vehicleName }: { images: string[]; vehicleName: strin
   );
 }
 
-function ContactForm({ vehicle }: { vehicle: ModalVehicle }) {
+function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: string }) {
   const [method, setMethod] = useState<ContactMethod>("WhatsApp");
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<"success" | "error" | null>(null);
 
   const vehicleLabel = `${vehicle.year ? vehicle.year + " " : ""}${vehicle.make} ${vehicle.model}`;
 
@@ -162,24 +163,32 @@ function ContactForm({ vehicle }: { vehicle: ModalVehicle }) {
     e.preventDefault();
     setLoading(true);
     try {
-      await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          name,
-          phone: contact,
-          email: method === "Email" ? contact : undefined,
-          message: `[${vehicleLabel}] ${method}: ${contact}${message ? " — " + message : ""}`,
-          service: "vehicle-inquiry",
-        }),
+      await submitLead({
+        formName,
+        name,
+        phone: method !== "Email" ? contact : undefined,
+        email: method === "Email" ? contact : undefined,
+        preferredContact: method,
+        message,
+        vehicleInfo: {
+          label: vehicleLabel,
+          id: vehicle.id,
+          make: vehicle.make,
+          model: vehicle.model,
+          year: vehicle.year,
+          price: vehicle.price,
+          priceRange: vehicle.priceRange,
+          status: vehicle.status ?? vehicle.type,
+        },
       });
-    } catch (_) {}
+      setDone("success");
+    } catch {
+      setDone("error");
+    }
     setLoading(false);
-    setDone(true);
   };
 
-  if (done) {
+  if (done === "success") {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
@@ -191,8 +200,20 @@ function ContactForm({ vehicle }: { vehicle: ModalVehicle }) {
         </div>
         <h4 className="text-xl font-bold text-white">Thank you.</h4>
         <p className="text-muted-foreground text-sm max-w-sm mx-auto">
-          Our team will contact you shortly regarding this vehicle.
+          Your request has been received. Our team will contact you shortly.
         </p>
+      </motion.div>
+    );
+  }
+  if (done === "error") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="text-center py-10 space-y-4"
+      >
+        <p className="text-red-400 text-sm">Your request could not be sent. Please try again later or contact us directly.</p>
+        <button onClick={() => setDone(null)} className="text-primary text-sm underline">Try again</button>
       </motion.div>
     );
   }
@@ -269,6 +290,7 @@ function ContactForm({ vehicle }: { vehicle: ModalVehicle }) {
 
 export function VehicleDetailModal({ vehicle, onClose }: Props) {
   const { toggle, isFavorited } = useFavorites();
+  const [activeFormName, setActiveFormName] = useState<string | null>(null);
 
   const favKey = vehicle
     ? `${vehicle.type}-${vehicle.id}`
@@ -475,27 +497,24 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                     {/* Action buttons */}
                     {isAvailable && (
                       <div className="flex flex-col gap-2.5">
-                        <Link
-                          href="/contact"
-                          onClick={onClose}
+                        <button
+                          onClick={() => setActiveFormName("Request This Vehicle")}
                           className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 text-sm"
                         >
                           <Send size={15} /> Request This Vehicle
-                        </Link>
-                        <Link
-                          href="/calculator"
-                          onClick={onClose}
+                        </button>
+                        <button
+                          onClick={() => setActiveFormName("Financing Application")}
                           className="w-full py-3 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-white/10"
                         >
                           <Calculator size={15} /> Apply for Financing
-                        </Link>
-                        <Link
-                          href="/contact"
-                          onClick={onClose}
+                        </button>
+                        <button
+                          onClick={() => setActiveFormName("Get More Photos")}
                           className="w-full py-3 border border-border/40 text-muted-foreground font-medium rounded-lg hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-2 text-sm"
                         >
-                          <MessageCircle size={15} /> Contact Us
-                        </Link>
+                          <MessageCircle size={15} /> Get More Photos
+                        </button>
                       </div>
                     )}
 
@@ -505,32 +524,35 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                         <p className="text-xs text-muted-foreground">
                           Leave your contact details and we will find similar options for you.
                         </p>
-                        <Link
-                          href="/contact"
-                          onClick={onClose}
+                        <button
+                          onClick={() => setActiveFormName("Similar Vehicle Request")}
                           className="w-full py-2.5 bg-primary/90 text-white font-semibold rounded-lg hover:bg-primary transition-all flex items-center justify-center gap-2 text-sm"
                         >
                           <ArrowRight size={14} /> Find Similar Vehicle
-                        </Link>
+                        </button>
+                        <button
+                          onClick={() => setActiveFormName("Sold Vehicle Inquiry")}
+                          className="w-full py-2.5 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-white/10"
+                        >
+                          <MessageCircle size={14} /> Ask About This Vehicle
+                        </button>
                       </div>
                     )}
 
                     {isPopular && (
                       <div className="flex flex-col gap-2.5">
-                        <Link
-                          href="/contact"
-                          onClick={onClose}
+                        <button
+                          onClick={() => setActiveFormName("Similar Vehicle Request")}
                           className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 text-sm"
                         >
                           <Send size={15} /> Request This Model
-                        </Link>
-                        <Link
-                          href="/calculator"
-                          onClick={onClose}
+                        </button>
+                        <button
+                          onClick={() => setActiveFormName("Get More Information")}
                           className="w-full py-3 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-white/10"
                         >
-                          <Calculator size={15} /> Calculate Import Cost
-                        </Link>
+                          <MessageCircle size={15} /> Get More Information
+                        </button>
                       </div>
                     )}
                   </div>
@@ -539,13 +561,30 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                 {/* Bottom: contact section */}
                 <div className="border-t border-white/10 px-6 py-8">
                   <div className="max-w-2xl mx-auto">
+                    {activeFormName && (
+                      <div className="mb-4 flex items-center gap-2">
+                        <span className="px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wide border border-primary/30">
+                          {activeFormName}
+                        </span>
+                        <button onClick={() => setActiveFormName(null)} className="text-xs text-muted-foreground hover:text-white ml-auto">
+                          ✕ Clear
+                        </button>
+                      </div>
+                    )}
                     <h3 className="text-xl font-bold text-white mb-1">
-                      Want More Information About This Vehicle?
+                      {activeFormName ? activeFormName : "Want More Information About This Vehicle?"}
                     </h3>
                     <p className="text-sm text-muted-foreground mb-6">
                       Leave your WhatsApp, Telegram, Viber, phone number, or email and our team will contact you shortly.
                     </p>
-                    <ContactForm vehicle={vehicle} />
+                    <ContactForm
+                      vehicle={vehicle}
+                      formName={activeFormName ?? (
+                        isSold ? "Sold Vehicle Inquiry" :
+                        isPopular ? "Similar Vehicle Request" :
+                        "Get More Information"
+                      )}
+                    />
                   </div>
                 </div>
 
