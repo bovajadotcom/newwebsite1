@@ -338,7 +338,7 @@ export default function Inventory() {
         </div>
       </section>
       {/* In Stock Grid */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-8">
             <div>
@@ -467,6 +467,9 @@ export default function Inventory() {
           </AnimatePresence>
         </div>
       </section>
+      {/* Bridge: light stock → dark popular */}
+      <div className="h-20 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
+
       {/* Popular Sourcing Models */}
       <section id="popular" className="py-24">
         <div className="container mx-auto px-4">

@@ -15,31 +15,40 @@ export default function About() {
   return (
     <div className="w-full">
       {/* Hero */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[65vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
             src={`${import.meta.env.BASE_URL}fleet-cars.png`} 
             alt="Car Lineup" 
             className="w-full h-full object-cover"
-            style={{ filter: "brightness(0.75) saturate(0.9)" }}
+            style={{ filter: "brightness(0.65) saturate(0.9)" }}
           />
-          <div className="absolute inset-0 bg-background/80 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute inset-0 bg-background/70 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">{t("about.title")}</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              We built AutoImport to bridge the gap between global automotive markets and local enthusiasts, turning complex international logistics into a frictionless experience.
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              We built BOVAJA to bridge the gap between global automotive markets and local enthusiasts, turning complex international logistics into a frictionless experience.
             </p>
           </motion.div>
         </div>
       </section>
 
       {/* Mission & Values */}
-      <section className="py-24 bg-card/30 border-y border-border/50">
+      <section className="py-24 bg-secondary/10">
         <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{t("about.mission") || "Our Core Values"}</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">The principles that guide every vehicle we source and every deal we execute.</p>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { icon: Target, title: "Precision", desc: "Every document, every inspection, every logistical move is executed with absolute accuracy." },
@@ -52,7 +61,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="p-8 bg-background border border-border/50 rounded-xl text-center"
+                className="p-8 bg-card border border-border/40 rounded-2xl text-center hover:border-primary/30 transition-colors"
               >
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <v.icon className="text-primary" size={32} />
@@ -65,12 +74,23 @@ export default function About() {
         </div>
       </section>
 
+      {/* Bridge: dark → timeline */}
+      <div className="h-12 bg-gradient-to-b from-secondary/10 to-background pointer-events-none" aria-hidden="true" />
+
       {/* Timeline */}
-      <section className="py-24">
+      <section className="py-20">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="text-3xl font-bold text-white mb-16 text-center">{t("about.timeline")}</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl font-bold text-white mb-3">{t("about.timeline")}</h2>
+            <p className="text-muted-foreground">Over a decade of consistent growth and global expansion.</p>
+          </motion.div>
           
-          <div className="space-y-12">
+          <div className="space-y-10">
             {[
               { year: "2012", title: "Founded in Miami", desc: "Started as a boutique broker for exotic European imports." },
               { year: "2014", title: "First International Shipment", desc: "Successfully delivered our first bulk container of vehicles across the Atlantic." },
@@ -90,8 +110,8 @@ export default function About() {
                 <div className="w-24 shrink-0 text-primary font-bold text-xl pt-1 border-r-2 border-primary/30 pr-6 text-right">
                   {item.year}
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                <div className="pt-0.5">
+                  <h3 className="text-xl font-bold text-white mb-1.5">{item.title}</h3>
                   <p className="text-muted-foreground">{item.desc}</p>
                 </div>
               </motion.div>
@@ -100,8 +120,11 @@ export default function About() {
         </div>
       </section>
 
+      {/* Bridge: dark → stats accent */}
+      <div className="h-20 bg-gradient-to-b from-background to-primary pointer-events-none" aria-hidden="true" />
+
       {/* Stats */}
-      <section className="py-16 bg-primary text-white">
+      <section className="py-12 bg-primary text-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
             {[
@@ -120,10 +143,21 @@ export default function About() {
         </div>
       </section>
 
+      {/* Bridge: stats → team */}
+      <div className="h-20 bg-gradient-to-b from-primary to-background pointer-events-none" aria-hidden="true" />
+
       {/* Team */}
-      <section className="py-24 bg-card/30 border-y border-border/50">
+      <section className="py-20">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-white mb-16 text-center">{t("about.team")}</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-14"
+          >
+            <h2 className="text-3xl font-bold text-white mb-3">{t("about.team")}</h2>
+            <p className="text-muted-foreground max-w-lg mx-auto">The experts behind every successful transaction.</p>
+          </motion.div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
             {team.map((member, i) => (
@@ -135,7 +169,7 @@ export default function About() {
                 transition={{ delay: i * 0.1 }}
                 className="text-center group"
               >
-                <div className="aspect-[3/4] mb-6 overflow-hidden rounded-xl border border-border/50 bg-secondary/50">
+                <div className="aspect-[3/4] mb-6 overflow-hidden rounded-2xl border border-border/40 bg-secondary/50 group-hover:border-primary/30 transition-colors">
                   <img 
                     src={`${import.meta.env.BASE_URL}${member.img}`} 
                     alt={member.name}
@@ -143,15 +177,18 @@ export default function About() {
                   />
                 </div>
                 <h3 className="text-lg font-bold text-white">{member.name}</h3>
-                <p className="text-sm text-primary">{member.title}</p>
+                <p className="text-sm text-primary mt-1">{member.title}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* Bridge: dark → why-us accent */}
+      <div className="h-12 bg-gradient-to-b from-background to-secondary/15 pointer-events-none" aria-hidden="true" />
+
       {/* Why Choose Us & Achievements */}
-      <section className="py-24">
+      <section className="py-20 bg-secondary/15">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div 
@@ -160,7 +197,7 @@ export default function About() {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t("about.whyUs")}</h2>
-              <p className="text-muted-foreground mb-8 text-lg">
+              <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
                 We combine deep automotive expertise with world-class logistics infrastructure. This isn't just about buying cars; it's about executing complex international transactions flawlessly.
               </p>
               
@@ -172,7 +209,7 @@ export default function About() {
                   "Comprehensive Marine Insurance Included"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
-                    <CheckCircle2 className="text-primary" size={20} />
+                    <CheckCircle2 className="text-primary shrink-0" size={20} />
                     <span className="text-white font-medium">{item}</span>
                   </div>
                 ))}
@@ -185,12 +222,12 @@ export default function About() {
               viewport={{ once: true }}
               className="grid grid-cols-2 gap-6"
             >
-              <div className="p-6 bg-card border border-border/50 rounded-xl text-center">
+              <div className="p-6 bg-card border border-border/40 rounded-2xl text-center hover:border-primary/30 transition-colors">
                 <Award className="text-primary mx-auto mb-4" size={32} />
                 <h4 className="font-bold text-white mb-2">ISO 9001</h4>
                 <p className="text-sm text-muted-foreground">Certified Quality Management</p>
               </div>
-              <div className="p-6 bg-card border border-border/50 rounded-xl text-center">
+              <div className="p-6 bg-card border border-border/40 rounded-2xl text-center hover:border-primary/30 transition-colors">
                 <Zap className="text-primary mx-auto mb-4" size={32} />
                 <h4 className="font-bold text-white mb-2">FMC Licensed</h4>
                 <p className="text-sm text-muted-foreground">Federal Maritime Commission</p>
@@ -200,11 +237,14 @@ export default function About() {
         </div>
       </section>
 
+      {/* Bridge: accent → partners */}
+      <div className="h-12 bg-gradient-to-b from-secondary/15 to-background pointer-events-none" aria-hidden="true" />
+
       {/* Partner Logos */}
-      <section className="py-12 border-t border-border/50 bg-secondary/30">
+      <section className="py-14">
         <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-8">Official Partners & Certifications</p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+          <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-10">Official Partners & Certifications</p>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-500">
             {["Copart", "IAAI", "Manheim", "USS Tokyo", "Lloyd's", "Maersk", "CBP"].map(partner => (
               <span key={partner} className="text-xl font-bold tracking-tighter">{partner}</span>
             ))}

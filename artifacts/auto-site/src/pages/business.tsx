@@ -47,7 +47,7 @@ export default function Business() {
 
   return (
     <div className="w-full">
-      <section className="relative py-24 border-b border-border/50 overflow-hidden">
+      <section className="relative py-28 overflow-hidden">
         <img
           src={`${import.meta.env.BASE_URL}fleet-cars.png`}
           alt="Fleet"
@@ -102,7 +102,8 @@ export default function Business() {
       </section>
 
       {/* Partnership Workflow */}
-      <section className="py-24 bg-card/30 border-t border-border/50">
+      <div className="h-12 bg-gradient-to-b from-background to-secondary/20 pointer-events-none" aria-hidden="true" />
+      <section className="py-24 bg-secondary/20">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -136,7 +137,8 @@ export default function Business() {
       </section>
 
       {/* Inquiry Form */}
-      <section className="py-24 bg-background border-t border-border/50">
+      <div className="h-12 bg-gradient-to-b from-secondary/20 to-background pointer-events-none" aria-hidden="true" />
+      <section className="py-24">
         <div className="container mx-auto px-4 max-w-3xl">
           <motion.div 
             initial={{ opacity: 0 }}

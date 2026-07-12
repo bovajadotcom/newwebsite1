@@ -333,8 +333,11 @@ export default function Home() {
         </motion.div>
       </div>
 
+      {/* Bridge: hero dark → partners light */}
+      <div className="h-12 bg-gradient-to-b from-background to-slate-50 pointer-events-none" aria-hidden="true" />
+
       {/* AUCTION PARTNERS */}
-      <section className="py-12 border-y border-slate-200 bg-slate-50 overflow-hidden">
+      <section className="py-12 bg-slate-50 overflow-hidden">
         <style>{`
           @keyframes marquee {
             from { transform: translateX(0); }
@@ -363,6 +366,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Bridge: partners light → stats dark */}
+      <div className="h-16 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
 
       {/* STATS */}
       <section className="relative py-20 overflow-hidden">
@@ -876,8 +882,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Bridge: dark testimonials → light FAQ */}
+      <div className="h-16 bg-gradient-to-b from-background to-white pointer-events-none" aria-hidden="true" />
+
       {/* FAQ */}
-      <section className="py-24 bg-white border-y border-slate-200">
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div {...fadeIn} className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.faq")}</h2>
@@ -910,6 +919,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Bridge: light FAQ → dark CTA */}
+      <div className="h-16 bg-gradient-to-b from-white to-background pointer-events-none" aria-hidden="true" />
 
       {/* CONTACT FORM & CTA */}
       <section className="py-24 relative overflow-hidden">

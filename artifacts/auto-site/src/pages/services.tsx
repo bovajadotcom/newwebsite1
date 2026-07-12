@@ -31,66 +31,81 @@ export default function Services() {
   };
 
   return (
-    <div className="pt-12 pb-24 bg-slate-50">
-      <div className="container mx-auto px-4">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mb-16"
-        >
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">{t("services.title")}</h1>
-          <p className="text-xl text-slate-600 leading-relaxed">
-            {t("services.sub")}
-          </p>
-        </motion.div>
-
-        {/* Hero image */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
-          className="relative w-full rounded-2xl overflow-hidden mb-16 shadow-lg"
-          style={{ height: "420px" }}
-        >
-          <img
-            src={`${import.meta.env.BASE_URL}services-inspection.png`}
-            alt="Vehicle inspection by BOVAJA specialist"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-            style={{ filter: "brightness(0.92) contrast(1.04)" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/20 to-transparent" />
-          <div className="absolute bottom-8 left-8">
-            <span className="inline-block bg-blue-600 text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-3">
-              Our Approach
-            </span>
-            <p className="text-white text-xl font-semibold max-w-sm leading-snug drop-shadow">
-              Every vehicle personally inspected before purchase
+    <div className="w-full">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-slate-50 pt-20 pb-0">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-3xl mb-14"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">{t("services.title")}</h1>
+            <p className="text-xl text-slate-600 leading-relaxed">
+              {t("services.sub")}
             </p>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {services.map((service, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.05 }}
-              className="p-6 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-blue-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
-            >
-              <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
-                <service.icon className="text-blue-600" size={24} />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-3">{service.title}</h3>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                {service.desc}
+          {/* Hero image */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="relative w-full rounded-2xl overflow-hidden shadow-xl"
+            style={{ height: "420px" }}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}services-inspection.png`}
+              alt="Vehicle inspection by BOVAJA specialist"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+              style={{ filter: "brightness(0.92) contrast(1.04)" }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-900/20 to-transparent" />
+            <div className="absolute bottom-8 left-8">
+              <span className="inline-block bg-blue-600 text-white text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-3">
+                Our Approach
+              </span>
+              <p className="text-white text-xl font-semibold max-w-sm leading-snug drop-shadow">
+                Every vehicle personally inspected before purchase
               </p>
-            </motion.div>
-          ))}
+            </div>
+          </motion.div>
         </div>
-      </div>
+
+        {/* Smooth fade from slate-50 into the grid section */}
+        <div className="h-8 bg-gradient-to-b from-transparent to-slate-50 relative z-10" aria-hidden="true" />
+      </section>
+
+      {/* Services Grid */}
+      <section className="py-20 bg-slate-50">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {services.map((service, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.05 }}
+                className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm hover:border-blue-200 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
+                  <service.icon className="text-blue-600" size={24} />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3">{service.title}</h3>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {service.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Bridge: light → dark */}
+      <div className="h-20 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
+
       <PopularCarsSection />
     </div>
   );
