@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calculator as CalcIcon, ChevronRight, ChevronLeft, Send,
-  CheckCircle, Car, MapPin, BarChart3, AlertTriangle,
+  CheckCircle, Car, MapPin, BarChart3, AlertTriangle, Search, Tag,
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useGetSiteSettings } from "@workspace/api-client-react";
@@ -34,13 +34,15 @@ const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric"];
 const TRANSMISSION_TYPES = ["Automatic", "Manual"];
 const BY_BENEFIT_TYPES = ["Инвалидность", "Многодетная семья", "Ветеран", "Другая льгота"];
 
-type Step = 1 | 2 | 3 | 4;
+type Step = 1 | 2 | 3 | 4 | 5;
 type ByPersonType = "individual" | "benefit" | "company" | "";
+type VehicleType = "catalog" | "sourcing" | "";
 
 interface FormState {
   vehiclePrice: number;
   sourceCountry: string;
   countryCode: string;
+  vehicleType: VehicleType;
   // Belarus-specific vehicle details
   year: number;
   fuel: string;
@@ -137,7 +139,7 @@ function calculateBelarusResult(form: FormState): ByResult {
 }
 
 function calculateStandardResult(form: FormState, settings: { key: string; value: string }[]): StandardResult {
-  const serviceFee = getSettingValue(settings, "calculator.service_fee", 500);
+  const serviceFee = form.vehicleType === "catalog" ? 0 : getSettingValue(settings, "calculator.service_fee", 500);
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
   const source = SOURCE_COUNTRIES.find((c) => c.code === form.sourceCountry);
@@ -157,6 +159,7 @@ const DEFAULT_FORM: FormState = {
   vehiclePrice: 25000,
   sourceCountry: "DE",
   countryCode: "PL",
+  vehicleType: "",
   year: new Date().getFullYear() - 2,
   fuel: "Petrol",
   transmission: "Automatic",
@@ -196,6 +199,7 @@ export default function Calculator() {
   const steps = [
     { icon: Car,      label: "Стоимость" },
     { icon: MapPin,   label: "Направление" },
+    { icon: Tag,      label: "Тип" },
     { icon: BarChart3, label: "Расчёт" },
     { icon: Send,     label: "Заявка" },
   ];
@@ -333,8 +337,55 @@ export default function Calculator() {
                 </motion.div>
               )}
 
-              {/* ── STEP 3A: Standard result ── */}
-              {step === 3 && !isBelarus && standardResult && (
+              {/* ── STEP 3: Service type ── */}
+              {step === 3 && (
+                <motion.div key="step3-type" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
+                  className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Тип запроса</h3>
+                  <p className="text-sm text-muted-foreground -mt-2">Это важно для корректного расчёта стоимости</p>
+
+                  <div className="grid grid-cols-1 gap-4">
+                    <button
+                      onClick={() => { update("vehicleType", "catalog"); setStep(4); }}
+                      className={`p-6 rounded-xl border-2 flex items-start gap-5 transition-all text-left group
+                        ${form.vehicleType === "catalog" ? "border-green-500 bg-green-500/10" : "border-border/50 hover:border-green-500/50 hover:bg-green-500/5"}`}>
+                      <div className="w-12 h-12 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                        <Car className="text-green-400" size={22} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold text-white text-base mb-1">Автомобиль из нашего каталога</div>
+                        <div className="text-sm text-muted-foreground leading-relaxed">Фиксированная цена — авто уже подобран и готов к оформлению.</div>
+                        <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold border border-green-500/30">
+                          ✓ Без сервисного сбора
+                        </div>
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={() => { update("vehicleType", "sourcing"); setStep(4); }}
+                      className={`p-6 rounded-xl border-2 flex items-start gap-5 transition-all text-left group
+                        ${form.vehicleType === "sourcing" ? "border-primary bg-primary/10" : "border-border/50 hover:border-primary/50 hover:bg-primary/5"}`}>
+                      <div className="w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                        <Search className="text-blue-400" size={22} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-bold text-white text-base mb-1">Подбор автомобиля (авто-селекшн)</div>
+                        <div className="text-sm text-muted-foreground leading-relaxed">Индивидуальный поиск и подбор под ваши требования с аукционов и дилеров.</div>
+                        <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">
+                          + €500 сервисная комиссия
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+
+                  <button onClick={() => setStep(2)} className="w-full py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <ChevronLeft size={18} /> Назад
+                  </button>
+                </motion.div>
+              )}
+
+              {/* ── STEP 4A: Standard result ── */}
+              {step === 4 && !isBelarus && standardResult && (
                 <motion.div key="step3-std" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Расчёт стоимости</h3>
@@ -354,8 +405,8 @@ export default function Calculator() {
                       { label: "Стоимость автомобиля", value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
                       { label: form.sourceCountry === "XX" ? "Доставка (зависит от страны)" : `Доставка (${selectedCountry?.region === "western" ? "Западная" : "Восточная"} Европа)`, value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
-                      { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) },
-                    ].map((row) => (
+                      standardResult.serviceFee > 0 ? { label: "Сервисная комиссия (подбор)", value: fmt(standardResult.serviceFee) } : null,
+                    ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
                         <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
                         <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
@@ -370,18 +421,18 @@ export default function Calculator() {
                   <p className="text-xs text-muted-foreground">*Предварительный расчёт. Итоговая стоимость подтверждается после оформления заказа.</p>
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(2)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> Назад
                     </button>
-                    <button onClick={() => setStep(4)} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                    <button onClick={() => setStep(5)} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
                       Получить расчёт <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
               )}
 
-              {/* ── STEP 3B: Belarus calculator ── */}
-              {step === 3 && isBelarus && (
+              {/* ── STEP 4B: Belarus calculator ── */}
+              {step === 4 && isBelarus && (
                 <motion.div key="step3-by" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <div className="flex items-center gap-3">
@@ -483,10 +534,10 @@ export default function Calculator() {
                   )}
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(2)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> Назад
                     </button>
-                    <button onClick={() => setStep(4)} disabled={!form.byPersonType}
+                    <button onClick={() => setStep(5)} disabled={!form.byPersonType}
                       className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] disabled:opacity-40 disabled:cursor-not-allowed">
                       Получить расчёт <ChevronRight size={18} />
                     </button>
@@ -494,8 +545,8 @@ export default function Calculator() {
                 </motion.div>
               )}
 
-              {/* ── STEP 4: Lead Form ── */}
-              {step === 4 && !submitted && (
+              {/* ── STEP 5: Lead Form ── */}
+              {step === 5 && !submitted && (
                 <motion.div key="step4" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Получить детальный расчёт</h3>
@@ -514,7 +565,7 @@ export default function Calculator() {
                       <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="ваш@email.com" className={INPUT_CLS} />
                     </div>
                     <div className="flex gap-3 pt-2">
-                      <button type="button" onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                      <button type="button" onClick={() => setStep(4)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                         <ChevronLeft size={18} /> Назад
                       </button>
                       <button type="submit" className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
@@ -526,7 +577,7 @@ export default function Calculator() {
               )}
 
               {/* ── Success ── */}
-              {step === 4 && submitted && (
+              {step === 5 && submitted && (
                 <motion.div key="success" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                   className="p-10 rounded-xl bg-card border border-green-500/30 text-center space-y-4">
                   <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
@@ -561,8 +612,8 @@ export default function Calculator() {
                       { label: "Стоимость авто",    value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
                       { label: "Доставка",           value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
-                      { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) },
-                    ].map((row) => (
+                      standardResult.serviceFee > 0 ? { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) } : null,
+                    ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between">
                         <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
                         <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
