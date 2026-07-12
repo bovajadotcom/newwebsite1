@@ -44,6 +44,7 @@ const soldVehicleSchema = z.object({
   year: z.coerce.number().min(1900),
   finalPrice: z.coerce.number().nullable().optional(),
   purchaseCountry: z.string().min(1, "Purchase country is required"),
+  deliveredTo: z.string().nullable().optional(),
   deliveryStatus: z.string().min(1, "Delivery status is required"),
   deliveryDate: z.string().nullable().optional(),
   imageUrl: z.string().url("Valid image URL is required"),
@@ -70,6 +71,7 @@ export default function SoldVehiclesPage() {
       year: new Date().getFullYear(),
       finalPrice: null,
       purchaseCountry: "",
+      deliveredTo: null,
       deliveryStatus: "Delivered",
       deliveryDate: null,
       imageUrl: "https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&q=80&w=800",
@@ -106,6 +108,7 @@ export default function SoldVehiclesPage() {
     form.reset({
       ...vehicle,
       finalPrice: vehicle.finalPrice ?? null,
+      deliveredTo: vehicle.deliveredTo ?? null,
       deliveryDate: vehicle.deliveryDate ?? null,
     });
     setIsDialogOpen(true);
@@ -156,9 +159,14 @@ export default function SoldVehiclesPage() {
                     <FormItem><FormLabel>Final Price (€)</FormLabel><FormControl><Input type="number" {...field} value={field.value || ""} /></FormControl><FormMessage /></FormItem>
                   )} />
                 </div>
-                <FormField control={form.control} name="purchaseCountry" render={({ field }) => (
-                  <FormItem><FormLabel>Purchase Country</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField control={form.control} name="purchaseCountry" render={({ field }) => (
+                    <FormItem><FormLabel>Purchase Country</FormLabel><FormControl><Input {...field} placeholder="e.g. Germany" /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name="deliveredTo" render={({ field }) => (
+                    <FormItem><FormLabel>Delivered To / Sold To</FormLabel><FormControl><Input {...field} value={field.value || ""} placeholder="e.g. Warsaw, Poland" /></FormControl><FormMessage /></FormItem>
+                  )} />
+                </div>
                 <FormField control={form.control} name="deliveryStatus" render={({ field }) => (
                   <FormItem><FormLabel>Delivery Status</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
@@ -185,7 +193,8 @@ export default function SoldVehiclesPage() {
               <TableHead>Make/Model</TableHead>
               <TableHead>Year</TableHead>
               <TableHead>Final Price</TableHead>
-              <TableHead>Country</TableHead>
+              <TableHead>From</TableHead>
+              <TableHead>Delivered To</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -199,6 +208,7 @@ export default function SoldVehiclesPage() {
                 <TableCell>{v.year}</TableCell>
                 <TableCell>{v.finalPrice ? `€${v.finalPrice.toLocaleString()}` : "-"}</TableCell>
                 <TableCell>{v.purchaseCountry}</TableCell>
+                <TableCell>{(v as any).deliveredTo || "-"}</TableCell>
                 <TableCell>{v.deliveryStatus}</TableCell>
                 <TableCell className="text-right">
                   <Button variant="ghost" size="icon" onClick={() => handleEdit(v)}><Pencil className="h-4 w-4" /></Button>

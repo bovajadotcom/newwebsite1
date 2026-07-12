@@ -9,6 +9,7 @@ export const soldVehiclesTable = pgTable("sold_vehicles", {
   year: integer("year").notNull(),
   finalPrice: integer("final_price"),
   purchaseCountry: text("purchase_country").notNull(),
+  deliveredTo: text("delivered_to"),
   deliveryStatus: text("delivery_status").notNull().default("Delivered"),
   deliveryDate: text("delivery_date"),
   imageUrl: text("image_url").notNull().default(""),

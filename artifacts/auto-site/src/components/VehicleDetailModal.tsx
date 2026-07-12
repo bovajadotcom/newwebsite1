@@ -32,6 +32,7 @@ export interface ModalVehicle {
   estimatedDelivery?: string;
   deliveryDate?: string | null;
   purchaseCountry?: string;
+  deliveredTo?: string | null;
   deliveryStatus?: string;
   images: string[];
 }
@@ -447,7 +448,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                               <ArrowRight size={14} className="text-muted-foreground shrink-0" />
                               <div className="flex items-center gap-1.5 text-white/80">
                                 <MapPin size={13} className="text-green-400 shrink-0" />
-                                <span>Your location</span>
+                                <span>{vehicle.deliveredTo || "Your location"}</span>
                               </div>
                             </>
                           )}

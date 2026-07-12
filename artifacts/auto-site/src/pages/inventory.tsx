@@ -27,7 +27,7 @@ interface DisplayVehicle {
 interface DisplaySold {
   id: string | number;
   make: string; model: string; year: number;
-  purchaseCountry: string; deliveryDate?: string | null;
+  purchaseCountry: string; deliveredTo?: string | null; deliveryDate?: string | null;
   image: string;
 }
 interface DisplayPopular {
@@ -62,7 +62,8 @@ function toModalStock(car: DisplayVehicle): ModalVehicle {
 function toModalSold(car: DisplaySold): ModalVehicle {
   return {
     id: car.id, type: "sold", make: car.make, model: car.model, year: car.year,
-    purchaseCountry: car.purchaseCountry, deliveryDate: car.deliveryDate ?? null,
+    purchaseCountry: car.purchaseCountry, deliveredTo: car.deliveredTo ?? null,
+    deliveryDate: car.deliveryDate ?? null,
     images: [car.image],
   };
 }
@@ -416,6 +417,9 @@ export default function Inventory() {
                     <div className="flex flex-col gap-1 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <MapPin size={12} /> {car.purchaseCountry}
+                        {car.deliveredTo && (
+                          <><ArrowRight size={10} className="mx-0.5" /><span className="text-green-400">{car.deliveredTo}</span></>
+                        )}
                       </div>
                       <div className="flex items-center gap-1 text-primary">
                         <CheckSquare size={12} /> {car.deliveryDate}
