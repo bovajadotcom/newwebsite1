@@ -16,8 +16,8 @@ function coerceVehicle(body: Record<string, unknown>): Record<string, unknown> {
     try { result.photos = JSON.parse(result.photos); } catch { result.photos = []; }
   }
   if (!Array.isArray(result.photos)) result.photos = [];
-  // Nullable multilingual description fields
-  for (const f of ["descriptionPl", "descriptionRu", "descriptionLt"] as const) {
+  // Nullable optional fields
+  for (const f of ["descriptionPl", "descriptionRu", "descriptionLt", "deliveredTo"] as const) {
     if (result[f] === "" || result[f] === undefined) result[f] = null;
   }
   return result;

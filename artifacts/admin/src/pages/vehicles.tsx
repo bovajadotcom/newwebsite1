@@ -58,6 +58,7 @@ const vehicleSchema = z.object({
   transmission: z.string().min(1, "Transmission is required"),
   mileage: z.coerce.number().min(0),
   location: z.string().min(1, "Location is required"),
+  deliveredTo: z.string().nullable().optional(),
   price: z.coerce.number().min(0),
   description: z.string().min(1, "Description (EN) is required"),
   descriptionPl: z.string().nullable().optional(),
@@ -226,6 +227,7 @@ export default function VehiclesPage() {
       transmission: "Automatic",
       mileage: 0,
       location: "",
+      deliveredTo: null,
       price: 0,
       description: "",
       descriptionPl: "",
@@ -285,7 +287,7 @@ export default function VehiclesPage() {
     form.reset({
       make: "", model: "", year: new Date().getFullYear(),
       engine: "", fuel: "Petrol", transmission: "Automatic",
-      mileage: 0, location: "", price: 0,
+      mileage: 0, location: "", deliveredTo: null, price: 0,
       description: "", descriptionPl: "", descriptionRu: "", descriptionLt: "",
       status: "available",
       imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
@@ -487,6 +489,17 @@ export default function VehiclesPage() {
                     )}
                   />
                 </div>
+                <FormField
+                  control={form.control}
+                  name="deliveredTo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Delivered To <span className="text-muted-foreground font-normal">(optional)</span></FormLabel>
+                      <FormControl><Input placeholder="e.g. Warsaw, Poland" {...field} value={field.value ?? ""} /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="status"
