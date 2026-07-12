@@ -12,10 +12,8 @@ const navLinks = [
   { labelKey: "nav.services",   href: "/services" },
   { labelKey: "nav.pricing",    href: "/pricing" },
   { labelKey: "nav.calculator", href: "/calculator" },
-  { labelKey: "nav.articles",   href: "/articles" },
   { labelKey: "nav.business",   href: "/business" },
   { labelKey: "nav.about",      href: "/about" },
-  { labelKey: "nav.careers",    href: "/careers" },
   { labelKey: "nav.contact",    href: "/contact" },
 ];
 
