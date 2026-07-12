@@ -1,0 +1,253 @@
+Update all vehicle cards and create a premium full-screen vehicle details experience.
+
+1. Vehicle Cards
+
+All vehicle cards (Available, Sold, and Most Popular) must be clickable.
+
+When a user clicks any vehicle card:
+- Open a premium full-screen vehicle details page or modal.
+- Do not reload the page.
+- Animate smoothly from the card into the details view.
+- Preserve scroll position when closing.
+- Add hover effects and cursor pointer on all cards.
+- Use a premium automotive design similar to BMW, Mercedes-Benz, Porsche, Genesis, or luxury dealership websites.
+
+2. Available Vehicles (Gallery Experience)
+
+Only vehicles marked as "Available" should have a photo gallery.
+
+Requirements:
+
+- Display 2–3 vehicle photos minimum.
+- Support additional photos if available.
+- Show one large primary image.
+- Show thumbnails below the main image.
+- Support left/right navigation arrows.
+- Support swipe gestures on mobile.
+- Add smooth image transitions.
+- Add subtle zoom-on-hover effect.
+- Images must remain high quality and responsive.
+
+Available vehicles should feel like a complete vehicle presentation with multiple photos.
+
+3. Sold & Most Popular Vehicles
+
+Sold and Most Popular vehicles do not need a gallery.
+
+Instead:
+- Display one large featured image.
+- Show the vehicle information in a premium full-screen layout.
+- Use the same visual style as Available vehicles.
+- Keep all specifications and descriptions visible.
+
+4. Vehicle Information
+
+Display all information shown in the small card plus detailed specifications:
+
+- Vehicle name
+- Brand
+- Model
+- Year
+- Price
+- Status (Available / Sold / Most Popular)
+- Full description
+- Mileage
+- Engine size
+- Horsepower (if available)
+- Transmission (Automatic / Manual)
+- Fuel type (Petrol / Diesel / Hybrid / Electric)
+- Drivetrain
+- Body type
+- Exterior color
+- VIN or stock number (if available)
+
+5. Vehicle Route & Import Information
+
+Add a dedicated section showing vehicle logistics information:
+
+Vehicle Route:
+Germany, Munich → Poland, Warsaw
+
+or
+
+Imported From:
+Berlin, Germany
+
+Delivered To:
+Kraków, Poland
+
+Include:
+- Import location
+- Delivery location
+- Arrival date
+- Delivery date
+- Vehicle status history
+
+6. Available Vehicles Actions
+
+For vehicles marked as Available:
+
+Display action buttons:
+
+- Request This Vehicle
+- Apply For Financing
+- Contact Us
+
+The selected vehicle information should automatically be attached to every inquiry.
+
+7. Sold Vehicles
+
+For vehicles marked as Sold:
+
+Display a prominent SOLD badge.
+
+Replace purchase actions with:
+
+Looking for a similar vehicle?
+Leave your contact details and we will find similar options for you.
+
+8. Most Popular Vehicles
+
+For vehicles marked as Most Popular:
+
+Display a MOST POPULAR badge.
+
+Keep the same detailed vehicle presentation.
+
+9. Contact / Lead Generation Section
+
+At the bottom of every vehicle details page add a premium contact section.
+
+Section title:
+
+Want More Information About This Vehicle?
+
+Description:
+
+Leave your WhatsApp, Telegram, Viber, phone number, or email and our team will contact you shortly. We can provide additional information, vehicle history, financing options, availability details, and answer any questions you may have.
+
+Contact methods accepted:
+
+- WhatsApp
+- Telegram
+- Viber
+- Phone Number
+- Email Address
+
+Form fields:
+
+- Full Name
+- Contact Information
+- Preferred Contact Method
+- Optional Message
+
+Preferred Contact Method options:
+
+- WhatsApp
+- Telegram
+- Viber
+- Phone Call
+- Email
+
+CTA Button:
+
+GET MORE INFORMATION
+
+Alternative CTA:
+
+REQUEST DETAILS
+
+The selected vehicle information should automatically be attached to the inquiry:
+
+- Vehicle Name
+- Brand
+- Model
+- Year
+- Price
+- Stock Number
+
+Success message:
+
+Thank you.
+Our team will contact you shortly regarding this vehicle.
+
+10. Desktop Layout
+
+Desktop layout should use two columns:
+
+For Available Vehicles:
+
+Left:
+- Vehicle image gallery
+
+Right:
+- Vehicle title
+- Price
+- Status badge
+- Description
+- Specifications
+- Route information
+- Action buttons
+
+For Sold and Most Popular Vehicles:
+
+Left:
+- Large featured image
+
+Right:
+- Vehicle title
+- Price
+- Status badge
+- Description
+- Specifications
+- Route information
+- Contact form
+
+11. Mobile Layout
+
+Mobile version should:
+
+- Stack content vertically
+- Support swipeable gallery for Available vehicles
+- Keep CTA buttons visible
+- Keep close button fixed
+- Be fully responsive
+- Optimize forms for mobile devices
+
+12. Vehicle Data Structure
+
+Use a reusable vehicle data model instead of hardcoded cards.
+
+Example:
+
+{
+  id: "vehicle-001",
+  name: "BMW 530d",
+  year: 2021,
+  price: "€42,900",
+  status: "available",
+  popular: true,
+  description: "...",
+  mileage: "54,000 km",
+  engineCapacity: "3.0L",
+  horsepower: "286 HP",
+  transmission: "Automatic",
+  fuelType: "Diesel",
+  drivetrain: "AWD",
+  bodyType: "Sedan",
+  color: "Black",
+  stockNumber: "FA-001",
+  importedFrom: "Munich, Germany",
+  deliveredTo: "Warsaw, Poland",
+  arrivalDate: "2026-05-10",
+  deliveryDate: null,
+  images: [
+    "/images/car-1.jpg",
+    "/images/car-2.jpg",
+    "/images/car-3.jpg"
+  ]
+}
+
+Use one reusable full-screen vehicle details component for all vehicle types.
+
+The final result should feel like a premium automotive marketplace where users can browse vehicle cards, open a beautiful full-screen vehicle presentation, view specifications, see import history, and leave their WhatsApp, Telegram, Viber, phone number, or email to receive more information and be contacted by the team.

@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useFavorites } from "@/lib/FavoritesContext";
+import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
 import {
   stockVehicles as staticStock,
   soldVehicles as staticSold,
@@ -47,9 +48,34 @@ function resolveImage(url: string | null | undefined, idx: number): string {
   return `${import.meta.env.BASE_URL}${FALLBACKS[idx % 4]}`;
 }
 
+function toModalStock(car: DisplayVehicle): ModalVehicle {
+  return {
+    id: car.id, type: "available", make: car.make, model: car.model,
+    year: car.year, price: car.price, status: car.status, badge: car.badge,
+    description: car.description, engine: car.engine, fuel: car.fuel,
+    transmission: car.transmission, mileage: car.mileage, location: car.location,
+    images: [car.image],
+  };
+}
+function toModalSold(car: DisplaySold): ModalVehicle {
+  return {
+    id: car.id, type: "sold", make: car.make, model: car.model, year: car.year,
+    purchaseCountry: car.purchaseCountry, deliveryDate: car.deliveryDate ?? null,
+    images: [car.image],
+  };
+}
+function toModalPopular(car: DisplayPopular): ModalVehicle {
+  return {
+    id: car.id, type: "popular", make: car.make, model: car.model,
+    priceRange: car.priceRange, estimatedDelivery: car.estimatedDelivery,
+    description: car.description, images: [car.image],
+  };
+}
+
 export default function Inventory() {
   const { t } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
+  const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
 
   const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>([]);
   const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>([]);
@@ -270,8 +296,9 @@ export default function Inventory() {
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    key={car.id} 
-                    className="group rounded-2xl bg-white border border-slate-200 overflow-hidden hover:border-blue-300 transition-all shadow-sm hover:shadow-lg hover:-translate-y-1"
+                    key={car.id}
+                    onClick={() => setSelectedVehicle(toModalStock(car))}
+                    className="group rounded-2xl bg-white border border-slate-200 overflow-hidden hover:border-blue-300 transition-all shadow-sm hover:shadow-lg hover:-translate-y-1 cursor-pointer"
                   >
                     <div className="aspect-video relative overflow-hidden bg-slate-100">
                       <img 
@@ -297,7 +324,7 @@ export default function Inventory() {
 
                       {/* Like button */}
                       <button
-                        onClick={(e) => { e.preventDefault(); toggle(`stock-${car.id}`); }}
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggle(`stock-${car.id}`); }}
                         className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform"
                       >
                         <Heart size={14} className={isFavorited(`stock-${car.id}`) ? "text-red-500 fill-red-500" : "text-slate-400"} />
@@ -328,12 +355,11 @@ export default function Inventory() {
                         {car.description}
                       </p>
 
-                      <Link 
-                        href="/contact"
+                      <button
                         className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn"
                       >
-                        {t("cta.requestInfo")} <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                      </Link>
+                        View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                      </button>
                     </div>
                   </motion.div>
                 ))}
@@ -358,7 +384,8 @@ export default function Inventory() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="shrink-0 w-[280px] lg:w-auto snap-start group relative rounded-xl overflow-hidden border border-border/50"
+                onClick={() => setSelectedVehicle(toModalSold(car))}
+                className="shrink-0 w-[280px] lg:w-auto snap-start group relative rounded-xl overflow-hidden border border-border/50 cursor-pointer hover:border-border transition-colors"
               >
                 <div className="aspect-[4/3] bg-secondary relative">
                   <img 
@@ -374,7 +401,7 @@ export default function Inventory() {
 
                   {/* Like button */}
                   <button
-                    onClick={() => toggle(`sold-${car.id}`)}
+                    onClick={(e) => { e.stopPropagation(); toggle(`sold-${car.id}`); }}
                     className="absolute top-2 left-2 z-10 w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
                   >
                     <Heart size={12} className={isFavorited(`sold-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
@@ -415,7 +442,8 @@ export default function Inventory() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col"
+                onClick={() => setSelectedVehicle(toModalPopular(car))}
+                className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col cursor-pointer hover:border-primary/40 transition-colors"
               >
                 <div className="h-48 overflow-hidden bg-secondary relative">
                   <img 
@@ -424,7 +452,7 @@ export default function Inventory() {
                     className="w-full h-full object-cover opacity-80"
                   />
                   <button
-                    onClick={() => toggle(`popular-${car.id}`)}
+                    onClick={(e) => { e.stopPropagation(); toggle(`popular-${car.id}`); }}
                     className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
                   >
                     <Heart size={13} className={isFavorited(`popular-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
@@ -448,12 +476,11 @@ export default function Inventory() {
                     {car.description}
                   </p>
 
-                  <Link 
-                    href="/calculator"
+                  <button
                     className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2"
                   >
-                    <Calculator size={16} /> {t("cta.calculate")}
-                  </Link>
+                    <ArrowRight size={16} /> View Details
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -485,6 +512,8 @@ export default function Inventory() {
           </Link>
         </div>
       </section>
+
+      <VehicleDetailModal vehicle={selectedVehicle} onClose={() => setSelectedVehicle(null)} />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
 import { popularVehicles as staticPopular } from "@/data/inventory";
 import { useFavorites } from "@/lib/FavoritesContext";
+import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
 
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
   to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
@@ -52,8 +53,17 @@ function resolveImage(url: string | null | undefined, idx: number): string {
   return `${base}${FALLBACKS[idx % 4]}`;
 }
 
+function toModal(car: DisplayPopular): ModalVehicle {
+  return {
+    id: car.id, type: "popular", make: car.make, model: car.model,
+    priceRange: car.priceRange, estimatedDelivery: car.estimatedDelivery,
+    description: car.description, images: [car.image],
+  };
+}
+
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
   const [popularCars, setPopularCars] = useState<DisplayPopular[]>([]);
   const { t } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
@@ -213,9 +223,9 @@ export default function Home() {
             style={{ backdropFilter: "blur(4px)", background: "rgba(11,24,48,0.35)" }}
           >
             {[
-              { icon: Award,      text: "Аукционная цена без наценок", sub: "Прямой доступ к торгам" },
-              { icon: Truck,      text: "Доставка 30–60 дней под ключ", sub: "США, Европа, Япония" },
-              { icon: BadgeCheck, text: "Юридическая чистота",          sub: "Проверка до покупки" },
+              { icon: BadgeCheck,      text: "Безопасная оплата", sub: "Официальный перевод по фактуре, в том числе из Беларуси" },
+              { icon: Truck,      text: "Самовывоз или доставка под ключ", sub: "Получение автомобиля за 20–45 дней" },
+              { icon: Award, text: "Аукционная цена",          sub: "Фиксированная комиссия 500€ без скрытых платежей" },
             ].map(({ icon: Icon, text, sub }, i) => (
               <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
                 <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
@@ -536,7 +546,8 @@ export default function Home() {
                 <motion.div
                   key={car.id}
                   variants={fadeIn}
-                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300"
+                  onClick={() => setSelectedVehicle(toModal(car))}
+                  className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                 >
                   <div className="h-44 overflow-hidden relative bg-slate-100">
                     <img
@@ -549,7 +560,7 @@ export default function Home() {
                       {t("inventory.badge.popular")}
                     </span>
                     <button
-                      onClick={() => toggle(`popular-${car.id}`)}
+                      onClick={(e) => { e.stopPropagation(); toggle(`popular-${car.id}`); }}
                       className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
                     >
                       <Heart size={14} className={isFavorited(`popular-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/70"} />
@@ -568,12 +579,9 @@ export default function Home() {
                         <p className="text-slate-700 font-medium">{car.estimatedDelivery}</p>
                       </div>
                     </div>
-                    <Link
-                      href="/calculator"
-                      className="mt-auto flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 text-sm font-semibold transition-all duration-200"
-                    >
-                      <Calculator size={15} /> {t("cta.calculate")}
-                    </Link>
+                    <button className="mt-auto flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 text-sm font-semibold transition-all duration-200">
+                      <ArrowRight size={15} /> View Details
+                    </button>
                   </div>
                 </motion.div>
               ))}
@@ -722,6 +730,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <VehicleDetailModal vehicle={selectedVehicle} onClose={() => setSelectedVehicle(null)} />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { ArrowRight, MessageSquare, Calculator, Star, Heart } from "lucide-react
 import { useLanguage } from "@/lib/i18n";
 import { popularVehicles as staticPopular } from "@/data/inventory";
 import { useFavorites } from "@/lib/FavoritesContext";
+import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
 
 const fadeIn = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } };
 
@@ -24,9 +25,18 @@ interface DisplayPopular {
   description: string; image: string;
 }
 
+function toModal(car: DisplayPopular): ModalVehicle {
+  return {
+    id: car.id, type: "popular", make: car.make, model: car.model,
+    priceRange: car.priceRange, estimatedDelivery: car.estimatedDelivery,
+    description: car.description, images: [car.image],
+  };
+}
+
 export default function Popular() {
   const { t } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
+  const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
   const [vehicles, setVehicles] = useState<DisplayPopular[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -97,7 +107,8 @@ export default function Popular() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col hover:border-primary/30 transition-colors"
+                  onClick={() => setSelectedVehicle(toModal(car))}
+                  className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col hover:border-primary/40 transition-colors cursor-pointer"
                 >
                   <div className="h-52 overflow-hidden bg-secondary relative">
                     <img
@@ -111,7 +122,7 @@ export default function Popular() {
                       </span>
                     </div>
                     <button
-                      onClick={() => toggle(`popular-${car.id}`)}
+                      onClick={(e) => { e.stopPropagation(); toggle(`popular-${car.id}`); }}
                       className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
                     >
                       <Heart size={14} className={isFavorited(`popular-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
@@ -134,12 +145,9 @@ export default function Popular() {
 
                     <p className="text-sm text-muted-foreground mb-6 flex-1">{car.description}</p>
 
-                    <Link
-                      href="/calculator"
-                      className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Calculator size={16} /> {t("cta.calculate")}
-                    </Link>
+                    <button className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2">
+                      <ArrowRight size={16} /> View Details
+                    </button>
                   </div>
                 </motion.div>
               ))}
@@ -147,6 +155,8 @@ export default function Popular() {
           )}
         </div>
       </section>
+
+      <VehicleDetailModal vehicle={selectedVehicle} onClose={() => setSelectedVehicle(null)} />
 
       {/* CTA */}
       <section className="py-16 bg-primary/10 border-t border-primary/20">
