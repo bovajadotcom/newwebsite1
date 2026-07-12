@@ -874,16 +874,38 @@ components:
           type: string
         year:
           type: integer
+        mileage:
+          type: ["integer", "null"]
+        engine:
+          type: ["string", "null"]
+        fuel:
+          type: ["string", "null"]
+        transmission:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        descriptionPl:
+          type: ["string", "null"]
+        descriptionRu:
+          type: ["string", "null"]
+        descriptionLt:
+          type: ["string", "null"]
         finalPrice:
           type: ["integer", "null"]
         purchaseCountry:
           type: string
+        deliveredTo:
+          type: ["string", "null"]
         deliveryStatus:
           type: string
         deliveryDate:
           type: ["string", "null"]
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
         createdAt:
           type: string
 
@@ -897,16 +919,38 @@ components:
           type: string
         year:
           type: integer
+        mileage:
+          type: ["integer", "null"]
+        engine:
+          type: ["string", "null"]
+        fuel:
+          type: ["string", "null"]
+        transmission:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        descriptionPl:
+          type: ["string", "null"]
+        descriptionRu:
+          type: ["string", "null"]
+        descriptionLt:
+          type: ["string", "null"]
         finalPrice:
           type: ["integer", "null"]
         purchaseCountry:
           type: string
+        deliveredTo:
+          type: ["string", "null"]
         deliveryStatus:
           type: string
         deliveryDate:
           type: ["string", "null"]
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
 
     SoldVehicleUpdate:
       type: object
@@ -917,16 +961,38 @@ components:
           type: string
         year:
           type: integer
+        mileage:
+          type: ["integer", "null"]
+        engine:
+          type: ["string", "null"]
+        fuel:
+          type: ["string", "null"]
+        transmission:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        descriptionPl:
+          type: ["string", "null"]
+        descriptionRu:
+          type: ["string", "null"]
+        descriptionLt:
+          type: ["string", "null"]
         finalPrice:
           type: ["integer", "null"]
         purchaseCountry:
           type: string
+        deliveredTo:
+          type: ["string", "null"]
         deliveryStatus:
           type: string
         deliveryDate:
           type: ["string", "null"]
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
 
     PopularVehicle:
       type: object
@@ -938,14 +1004,34 @@ components:
           type: string
         model:
           type: string
+        year:
+          type: ["integer", "null"]
+        engine:
+          type: ["string", "null"]
+        fuel:
+          type: ["string", "null"]
+        transmission:
+          type: ["string", "null"]
+        mileage:
+          type: ["integer", "null"]
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
         priceRange:
           type: string
         estimatedDelivery:
           type: string
         description:
           type: string
+        descriptionPl:
+          type: ["string", "null"]
+        descriptionRu:
+          type: ["string", "null"]
+        descriptionLt:
+          type: ["string", "null"]
         sortOrder:
           type: integer
 
@@ -957,14 +1043,34 @@ components:
           type: string
         model:
           type: string
+        year:
+          type: ["integer", "null"]
+        engine:
+          type: ["string", "null"]
+        fuel:
+          type: ["string", "null"]
+        transmission:
+          type: ["string", "null"]
+        mileage:
+          type: ["integer", "null"]
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
         priceRange:
           type: string
         estimatedDelivery:
           type: string
         description:
           type: string
+        descriptionPl:
+          type: ["string", "null"]
+        descriptionRu:
+          type: ["string", "null"]
+        descriptionLt:
+          type: ["string", "null"]
         sortOrder:
           type: integer
 
@@ -975,14 +1081,34 @@ components:
           type: string
         model:
           type: string
+        year:
+          type: ["integer", "null"]
+        engine:
+          type: ["string", "null"]
+        fuel:
+          type: ["string", "null"]
+        transmission:
+          type: ["string", "null"]
+        mileage:
+          type: ["integer", "null"]
         imageUrl:
           type: string
+        photos:
+          type: array
+          items:
+            type: string
         priceRange:
           type: string
         estimatedDelivery:
           type: string
         description:
           type: string
+        descriptionPl:
+          type: ["string", "null"]
+        descriptionRu:
+          type: ["string", "null"]
+        descriptionLt:
+          type: ["string", "null"]
         sortOrder:
           type: integer
 

@@ -18,17 +18,33 @@ interface DisplayCar {
   id: string | number;
   make: string;
   model: string;
+  year?: number | null;
+  engine?: string | null;
+  fuel?: string | null;
+  transmission?: string | null;
+  mileage?: number | null;
   priceRange: string;
   estimatedDelivery: string;
   description: string;
+  descriptionPl?: string | null;
+  descriptionRu?: string | null;
+  descriptionLt?: string | null;
   image: string;
+  photos?: string[];
 }
 
 function toModal(car: DisplayCar): ModalVehicle {
   return {
     id: car.id, type: "popular", make: car.make, model: car.model,
+    year: car.year ?? undefined,
+    engine: car.engine ?? undefined, fuel: car.fuel ?? undefined,
+    transmission: car.transmission ?? undefined, mileage: car.mileage ?? undefined,
     priceRange: car.priceRange, estimatedDelivery: car.estimatedDelivery,
-    description: car.description, images: [car.image],
+    description: car.description,
+    descriptionPl: car.descriptionPl ?? null,
+    descriptionRu: car.descriptionRu ?? null,
+    descriptionLt: car.descriptionLt ?? null,
+    images: car.photos?.length ? [car.image, ...car.photos] : [car.image],
   };
 }
 

@@ -189,11 +189,21 @@ export const GetSoldVehiclesResponseItem = zod.object({
   "make": zod.string(),
   "model": zod.string(),
   "year": zod.number(),
+  "mileage": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "finalPrice": zod.number().nullish(),
   "purchaseCountry": zod.string(),
+  "deliveredTo": zod.string().nullish(),
   "deliveryStatus": zod.string(),
   "deliveryDate": zod.string().nullish(),
   "imageUrl": zod.string(),
+  "photos": zod.array(zod.string()).optional(),
   "createdAt": zod.string().optional()
 })
 export const GetSoldVehiclesResponse = zod.array(GetSoldVehiclesResponseItem)
@@ -203,11 +213,21 @@ export const CreateSoldVehicleBody = zod.object({
   "make": zod.string(),
   "model": zod.string(),
   "year": zod.number(),
+  "mileage": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "finalPrice": zod.number().nullish(),
   "purchaseCountry": zod.string(),
+  "deliveredTo": zod.string().nullish(),
   "deliveryStatus": zod.string().optional(),
   "deliveryDate": zod.string().nullish(),
-  "imageUrl": zod.string().optional()
+  "imageUrl": zod.string().optional(),
+  "photos": zod.array(zod.string()).optional()
 })
 
 export const CreateSoldVehicleResponse = zod.object({
@@ -215,11 +235,21 @@ export const CreateSoldVehicleResponse = zod.object({
   "make": zod.string(),
   "model": zod.string(),
   "year": zod.number(),
+  "mileage": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "finalPrice": zod.number().nullish(),
   "purchaseCountry": zod.string(),
+  "deliveredTo": zod.string().nullish(),
   "deliveryStatus": zod.string(),
   "deliveryDate": zod.string().nullish(),
   "imageUrl": zod.string(),
+  "photos": zod.array(zod.string()).optional(),
   "createdAt": zod.string().optional()
 })
 
@@ -232,11 +262,21 @@ export const UpdateSoldVehicleBody = zod.object({
   "make": zod.string().optional(),
   "model": zod.string().optional(),
   "year": zod.number().optional(),
+  "mileage": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "finalPrice": zod.number().nullish(),
   "purchaseCountry": zod.string().optional(),
+  "deliveredTo": zod.string().nullish(),
   "deliveryStatus": zod.string().optional(),
   "deliveryDate": zod.string().nullish(),
-  "imageUrl": zod.string().optional()
+  "imageUrl": zod.string().optional(),
+  "photos": zod.array(zod.string()).optional()
 })
 
 export const UpdateSoldVehicleResponse = zod.object({
@@ -244,11 +284,21 @@ export const UpdateSoldVehicleResponse = zod.object({
   "make": zod.string(),
   "model": zod.string(),
   "year": zod.number(),
+  "mileage": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "description": zod.string().nullish(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "finalPrice": zod.number().nullish(),
   "purchaseCountry": zod.string(),
+  "deliveredTo": zod.string().nullish(),
   "deliveryStatus": zod.string(),
   "deliveryDate": zod.string().nullish(),
   "imageUrl": zod.string(),
+  "photos": zod.array(zod.string()).optional(),
   "createdAt": zod.string().optional()
 })
 
@@ -264,10 +314,19 @@ export const GetPopularVehiclesResponseItem = zod.object({
   "id": zod.number(),
   "make": zod.string(),
   "model": zod.string(),
+  "year": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "mileage": zod.number().nullish(),
   "imageUrl": zod.string(),
+  "photos": zod.array(zod.string()).optional(),
   "priceRange": zod.string(),
   "estimatedDelivery": zod.string(),
   "description": zod.string(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "sortOrder": zod.number()
 })
 export const GetPopularVehiclesResponse = zod.array(GetPopularVehiclesResponseItem)
@@ -276,10 +335,19 @@ export const GetPopularVehiclesResponse = zod.array(GetPopularVehiclesResponseIt
 export const CreatePopularVehicleBody = zod.object({
   "make": zod.string(),
   "model": zod.string(),
+  "year": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "mileage": zod.number().nullish(),
   "imageUrl": zod.string().optional(),
+  "photos": zod.array(zod.string()).optional(),
   "priceRange": zod.string(),
   "estimatedDelivery": zod.string(),
   "description": zod.string(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "sortOrder": zod.number().optional()
 })
 
@@ -287,10 +355,19 @@ export const CreatePopularVehicleResponse = zod.object({
   "id": zod.number(),
   "make": zod.string(),
   "model": zod.string(),
+  "year": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "mileage": zod.number().nullish(),
   "imageUrl": zod.string(),
+  "photos": zod.array(zod.string()).optional(),
   "priceRange": zod.string(),
   "estimatedDelivery": zod.string(),
   "description": zod.string(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "sortOrder": zod.number()
 })
 
@@ -302,10 +379,19 @@ export const UpdatePopularVehicleParams = zod.object({
 export const UpdatePopularVehicleBody = zod.object({
   "make": zod.string().optional(),
   "model": zod.string().optional(),
+  "year": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "mileage": zod.number().nullish(),
   "imageUrl": zod.string().optional(),
+  "photos": zod.array(zod.string()).optional(),
   "priceRange": zod.string().optional(),
   "estimatedDelivery": zod.string().optional(),
   "description": zod.string().optional(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "sortOrder": zod.number().optional()
 })
 
@@ -313,10 +399,19 @@ export const UpdatePopularVehicleResponse = zod.object({
   "id": zod.number(),
   "make": zod.string(),
   "model": zod.string(),
+  "year": zod.number().nullish(),
+  "engine": zod.string().nullish(),
+  "fuel": zod.string().nullish(),
+  "transmission": zod.string().nullish(),
+  "mileage": zod.number().nullish(),
   "imageUrl": zod.string(),
+  "photos": zod.array(zod.string()).optional(),
   "priceRange": zod.string(),
   "estimatedDelivery": zod.string(),
   "description": zod.string(),
+  "descriptionPl": zod.string().nullish(),
+  "descriptionRu": zod.string().nullish(),
+  "descriptionLt": zod.string().nullish(),
   "sortOrder": zod.number()
 })
 

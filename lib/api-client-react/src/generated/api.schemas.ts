@@ -90,12 +90,31 @@ export interface SoldVehicle {
   model: string;
   year: number;
   /** @nullable */
+  mileage?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
+  /** @nullable */
   finalPrice?: number | null;
   purchaseCountry: string;
+  /** @nullable */
+  deliveredTo?: string | null;
   deliveryStatus: string;
   /** @nullable */
   deliveryDate?: string | null;
   imageUrl: string;
+  photos?: string[];
   createdAt?: string;
 }
 
@@ -104,12 +123,31 @@ export interface SoldVehicleInput {
   model: string;
   year: number;
   /** @nullable */
+  mileage?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
+  /** @nullable */
   finalPrice?: number | null;
   purchaseCountry: string;
+  /** @nullable */
+  deliveredTo?: string | null;
   deliveryStatus?: string;
   /** @nullable */
   deliveryDate?: string | null;
   imageUrl?: string;
+  photos?: string[];
 }
 
 export interface SoldVehicleUpdate {
@@ -117,42 +155,112 @@ export interface SoldVehicleUpdate {
   model?: string;
   year?: number;
   /** @nullable */
+  mileage?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
+  /** @nullable */
   finalPrice?: number | null;
   purchaseCountry?: string;
+  /** @nullable */
+  deliveredTo?: string | null;
   deliveryStatus?: string;
   /** @nullable */
   deliveryDate?: string | null;
   imageUrl?: string;
+  photos?: string[];
 }
 
 export interface PopularVehicle {
   id: number;
   make: string;
   model: string;
+  /** @nullable */
+  year?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  mileage?: number | null;
   imageUrl: string;
+  photos?: string[];
   priceRange: string;
   estimatedDelivery: string;
   description: string;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
   sortOrder: number;
 }
 
 export interface PopularVehicleInput {
   make: string;
   model: string;
+  /** @nullable */
+  year?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  mileage?: number | null;
   imageUrl?: string;
+  photos?: string[];
   priceRange: string;
   estimatedDelivery: string;
   description: string;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
   sortOrder?: number;
 }
 
 export interface PopularVehicleUpdate {
   make?: string;
   model?: string;
+  /** @nullable */
+  year?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  mileage?: number | null;
   imageUrl?: string;
+  photos?: string[];
   priceRange?: string;
   estimatedDelivery?: string;
   description?: string;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
   sortOrder?: number;
 }
 

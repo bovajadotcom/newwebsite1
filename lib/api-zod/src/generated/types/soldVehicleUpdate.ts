@@ -11,10 +11,29 @@ export interface SoldVehicleUpdate {
   model?: string;
   year?: number;
   /** @nullable */
+  mileage?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
+  /** @nullable */
   finalPrice?: number | null;
   purchaseCountry?: string;
+  /** @nullable */
+  deliveredTo?: string | null;
   deliveryStatus?: string;
   /** @nullable */
   deliveryDate?: string | null;
   imageUrl?: string;
+  photos?: string[];
 }

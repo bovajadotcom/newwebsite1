@@ -51,15 +51,21 @@ interface DisplaySold {
   make: string; model: string; year: number;
   mileage?: number | null; engine?: string | null;
   fuel?: string | null; transmission?: string | null;
-  description?: string | null; finalPrice?: number | null;
+  description?: string | null; descriptionPl?: string | null;
+  descriptionRu?: string | null; descriptionLt?: string | null;
+  finalPrice?: number | null;
   purchaseCountry: string; deliveredTo?: string | null; deliveryDate?: string | null;
-  image: string;
+  image: string; photos?: string[];
 }
 interface DisplayPopular {
   id: string | number;
   make: string; model: string;
+  year?: number | null; engine?: string | null;
+  fuel?: string | null; transmission?: string | null; mileage?: number | null;
   priceRange: string; estimatedDelivery: string;
-  description: string; image: string;
+  description: string; descriptionPl?: string | null;
+  descriptionRu?: string | null; descriptionLt?: string | null;
+  image: string; photos?: string[];
 }
 
 const FALLBACKS = ["vehicle-1.png","vehicle-2.png","vehicle-3.png","vehicle-4.png"];
@@ -87,14 +93,24 @@ function toModalSold(car: DisplaySold): ModalVehicle {
     mileage: car.mileage ?? undefined, fuel: car.fuel ?? undefined,
     transmission: car.transmission ?? undefined, price: car.finalPrice ?? undefined,
     description: car.description ?? undefined,
-    images: [car.image],
+    descriptionPl: car.descriptionPl ?? null,
+    descriptionRu: car.descriptionRu ?? null,
+    descriptionLt: car.descriptionLt ?? null,
+    images: car.photos?.length ? [car.image, ...car.photos] : [car.image],
   };
 }
 function toModal(car: DisplayPopular): ModalVehicle {
   return {
     id: car.id, type: "popular", make: car.make, model: car.model,
+    year: car.year ?? undefined,
+    engine: car.engine ?? undefined, fuel: car.fuel ?? undefined,
+    transmission: car.transmission ?? undefined, mileage: car.mileage ?? undefined,
     priceRange: car.priceRange, estimatedDelivery: car.estimatedDelivery,
-    description: car.description, images: [car.image],
+    description: car.description,
+    descriptionPl: car.descriptionPl ?? null,
+    descriptionRu: car.descriptionRu ?? null,
+    descriptionLt: car.descriptionLt ?? null,
+    images: car.photos?.length ? [car.image, ...car.photos] : [car.image],
   };
 }
 
@@ -155,10 +171,15 @@ export default function Home() {
           id: v.id, make: v.make, model: v.model, year: v.year,
           mileage: v.mileage ?? null, engine: v.engine ?? null,
           fuel: v.fuel ?? null, transmission: v.transmission ?? null,
-          description: v.description ?? null, finalPrice: v.finalPrice ?? null,
+          description: v.description ?? null,
+          descriptionPl: v.descriptionPl ?? null,
+          descriptionRu: v.descriptionRu ?? null,
+          descriptionLt: v.descriptionLt ?? null,
+          finalPrice: v.finalPrice ?? null,
           purchaseCountry: v.purchaseCountry, deliveredTo: v.deliveredTo ?? null,
           deliveryDate: v.deliveryDate ?? null,
           image: resolveImage(v.imageUrl ?? v.image, i),
+          photos: Array.isArray(v.photos) ? v.photos : [],
         })));
       })
       .catch(() => {});

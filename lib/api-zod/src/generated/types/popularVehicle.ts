@@ -10,9 +10,26 @@ export interface PopularVehicle {
   id: number;
   make: string;
   model: string;
+  /** @nullable */
+  year?: number | null;
+  /** @nullable */
+  engine?: string | null;
+  /** @nullable */
+  fuel?: string | null;
+  /** @nullable */
+  transmission?: string | null;
+  /** @nullable */
+  mileage?: number | null;
   imageUrl: string;
+  photos?: string[];
   priceRange: string;
   estimatedDelivery: string;
   description: string;
+  /** @nullable */
+  descriptionPl?: string | null;
+  /** @nullable */
+  descriptionRu?: string | null;
+  /** @nullable */
+  descriptionLt?: string | null;
   sortOrder: number;
 }
