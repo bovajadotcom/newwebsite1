@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Menu, X, ChevronRight, Heart, Phone } from "lucide-react";
+import { Menu, X, ChevronRight, Heart, Phone, Mail, MessageCircle, MapPin } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n";
@@ -14,6 +14,7 @@ const navLinks = [
   { labelKey: "nav.calculator", href: "/calculator" },
   { labelKey: "nav.articles",   href: "/articles" },
   { labelKey: "nav.about",      href: "/about" },
+  { labelKey: "nav.careers",    href: "/careers" },
   { labelKey: "nav.contact",    href: "/contact" },
 ];
 
@@ -167,57 +168,110 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* ══ FOOTER ══ */}
-      <footer className="bg-[#050508] border-t border-white/[0.06] py-16 mt-4">
+      <footer className="bg-[#050508] border-t border-white/[0.06] pt-16 pb-8 mt-4">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div>
-              <Link href="/" className="flex items-center gap-2 mb-6">
-                <img
-                  src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
-                  alt="BOVAJA"
-                  className="h-7 w-auto brightness-0 invert"
-                />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 mb-14">
+
+            {/* Brand */}
+            <div className="lg:col-span-1">
+              <Link href="/" className="flex items-center gap-2 mb-5">
+                <img src={`${import.meta.env.BASE_URL}bovaja-logo.png`} alt="BOVAJA" className="h-7 w-auto brightness-0 invert" />
               </Link>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                {t("footer.tagline")}
-              </p>
+              <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t("footer.tagline")}</p>
+              <div className="flex gap-2">
+                <a href="https://wa.me/37060000000" target="_blank" rel="noreferrer"
+                  className="w-8 h-8 rounded-lg bg-[#25D366]/10 flex items-center justify-center text-[#25D366] hover:bg-[#25D366]/20 transition-colors" title="WhatsApp">
+                  <MessageCircle size={14} />
+                </a>
+                <a href="https://t.me/bovaja" target="_blank" rel="noreferrer"
+                  className="w-8 h-8 rounded-lg bg-[#0088cc]/10 flex items-center justify-center text-[#0088cc] hover:bg-[#0088cc]/20 transition-colors" title="Telegram">
+                  <MessageCircle size={14} />
+                </a>
+                <a href="viber://chat?number=37060000000"
+                  className="w-8 h-8 rounded-lg bg-[#7360F2]/10 flex items-center justify-center text-[#7360F2] hover:bg-[#7360F2]/20 transition-colors" title="Viber">
+                  <MessageCircle size={14} />
+                </a>
+              </div>
             </div>
 
+            {/* Navigation */}
             <div>
-              <h4 className="text-white font-semibold mb-6">{t("footer.services")}</h4>
-              <ul className="space-y-4">
+              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">Navigation</h4>
+              <ul className="space-y-3">
+                {navLinks.map((l) => (
+                  <li key={l.href}>
+                    <Link href={l.href} className="text-muted-foreground hover:text-primary text-sm transition-colors">
+                      {t(l.labelKey)}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Vehicle Services */}
+            <div>
+              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">{t("footer.services")}</h4>
+              <ul className="space-y-3">
                 <li><Link href="/inventory" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.inventory")}</Link></li>
+                <li><Link href="/popular" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.popular")}</Link></li>
                 <li><Link href="/services" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.services")}</Link></li>
+                <li><Link href="/pricing" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.pricing")}</Link></li>
+                <li><Link href="/calculator" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.calculator")}</Link></li>
                 <li><Link href="/business" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.business")}</Link></li>
               </ul>
             </div>
 
+            {/* Contact */}
             <div>
-              <h4 className="text-white font-semibold mb-6">{t("footer.company")}</h4>
-              <ul className="space-y-4">
-                <li><Link href="/about" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.about")}</Link></li>
-                <li><Link href="/pricing" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.pricing")}</Link></li>
-                <li><Link href="/calculator" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.calculator")}</Link></li>
-                <li><Link href="/contact" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.contact")}</Link></li>
+              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">{t("footer.contact")}</h4>
+              <ul className="space-y-3 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2 hover:text-white transition-colors">
+                  <Phone size={13} />
+                  <a href="tel:+37060000000">+370 600 00000</a>
+                </li>
+                <li className="flex items-center gap-2 hover:text-white transition-colors">
+                  <Mail size={13} />
+                  <a href="mailto:bovaja.auctions@gmail.com">bovaja.auctions@gmail.com</a>
+                </li>
+                <li className="flex items-start gap-2">
+                  <MessageCircle size={13} className="mt-0.5 shrink-0" />
+                  <span>WhatsApp · Telegram · Viber</span>
+                </li>
               </ul>
             </div>
 
+            {/* Location */}
             <div>
-              <h4 className="text-white font-semibold mb-6">{t("footer.contact")}</h4>
-              <ul className="space-y-4 text-sm text-muted-foreground">
-                <li className="flex items-center gap-2"><Phone size={14} /> +48 000 000 000</li>
-                <li>info@bovaja.com</li>
-              </ul>
+              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">Location</h4>
+              <div className="flex items-start gap-2 text-sm text-muted-foreground mb-4">
+                <MapPin size={13} className="mt-0.5 shrink-0 text-primary" />
+                <div>
+                  <div className="text-white text-xs font-semibold mb-1">Gariūnai Car Market</div>
+                  <div>Site 309A</div>
+                  <div>Gariūnų g. 49</div>
+                  <div>Vilnius, 02300</div>
+                  <div>Lithuania</div>
+                </div>
+              </div>
+              <a
+                href="https://maps.google.com/?q=Gariu%CC%B3nu%CC%B3+g.+49,+Vilnius"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
+              >
+                <MapPin size={11} /> Open in Google Maps
+              </a>
             </div>
           </div>
 
-          <div className="mt-16 pt-8 border-t border-white/[0.06] flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-muted-foreground text-sm">
               &copy; {new Date().getFullYear()} BOVAJA. {t("footer.rights")}
             </p>
-            <div className="flex gap-6">
-              <a href="#" className="text-muted-foreground hover:text-white text-sm">{t("footer.privacy")}</a>
-              <a href="#" className="text-muted-foreground hover:text-white text-sm">{t("footer.terms")}</a>
+            <div className="flex gap-5">
+              <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.privacy")}</a>
+              <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.terms")}</a>
+              <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">Cookies</a>
             </div>
           </div>
         </div>

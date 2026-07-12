@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Target, Shield, Compass, CheckCircle2, Award, Zap } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { RelatedArticles } from "@/components/RelatedArticles";
 
 export default function About() {
   const { t } = useLanguage();
@@ -210,6 +211,8 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      <RelatedArticles title="Latest Articles" limit={3} />
     </div>
   );
 }

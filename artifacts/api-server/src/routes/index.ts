@@ -12,6 +12,7 @@ import siteSettingsRouter from "./site-settings";
 import leadsRouter from "./leads";
 import contactRouter from "./contact";
 import articlesRouter from "./articles";
+import careersRouter from "./careers";
 
 const router: IRouter = Router();
 
@@ -28,5 +29,6 @@ router.use(siteSettingsRouter);
 router.use(leadsRouter);
 router.use(contactRouter);
 router.use(articlesRouter);
+router.use(careersRouter);
 
 export default router;

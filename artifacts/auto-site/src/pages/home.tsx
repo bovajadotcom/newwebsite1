@@ -8,6 +8,7 @@ import { useFavorites } from "@/lib/FavoritesContext";
 import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
 import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
+import { RelatedArticles } from "@/components/RelatedArticles";
 
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
   to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
@@ -778,6 +779,8 @@ export default function Home() {
       </section>
 
       <VehicleDetailModal vehicle={selectedVehicle} onClose={() => setSelectedVehicle(null)} />
+
+      <RelatedArticles title="Latest News & Articles" limit={3} />
     </div>
   );
 }
