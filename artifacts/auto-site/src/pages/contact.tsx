@@ -152,12 +152,22 @@ export default function Contact() {
           </motion.div>
         </div>
 
+        {/* ── Section divider ── */}
+        <div className="relative mt-20 mb-20 max-w-6xl mx-auto">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t-2 border-white/10" />
+          </div>
+          <div className="relative flex justify-center">
+            <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-primary/60 to-transparent absolute top-0 left-1/2 -translate-x-1/2" />
+          </div>
+        </div>
+
         {/* ── Location & Visit Us ── */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-20 max-w-6xl mx-auto"
+          className="max-w-6xl mx-auto"
         >
           <div className="text-center mb-10">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-4">

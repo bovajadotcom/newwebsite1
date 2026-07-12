@@ -354,8 +354,11 @@ export default function Home() {
         </motion.div>
       </div>
 
+      {/* ── SECTION DIVIDER: Hero → Partners ── */}
+      <div className="h-px bg-gradient-to-r from-transparent via-slate-300 to-transparent" />
+
       {/* AUCTION PARTNERS */}
-      <section className="py-14 bg-slate-100 border-y-2 border-slate-200 overflow-hidden">
+      <section className="py-14 bg-slate-100 border-b-2 border-slate-200 overflow-hidden">
         <style>{`
           @keyframes marquee {
             from { transform: translateX(0); }
@@ -386,9 +389,9 @@ export default function Home() {
       </section>
 
       {/* STATS */}
-      <section className="relative py-20 overflow-hidden border-b border-white/[0.06]">
+      <section className="relative py-20 overflow-hidden border-b-2 border-white/10">
         {/* Top accent line */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         {/* Subtle static glow behind content */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-20"
@@ -398,6 +401,12 @@ export default function Home() {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
+          <motion.div {...fadeIn} className="text-center mb-12">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
+              <Award size={11} /> {t("section.stats") || "Our Track Record"}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold">{t("section.statsTitle") || "Numbers That Define Us"}</h2>
+          </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
             {[
               { to: 5000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "59,130,246" },
@@ -442,10 +451,13 @@ export default function Home() {
       </section>
 
       {/* ADVANTAGES */}
-      <section className="py-24 bg-white border-b-2 border-slate-200">
+      <section className="py-24 bg-white border-t-2 border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.advantages")}</h2>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-widest mb-4 border border-blue-200">
+              <Shield size={11} /> {t("section.advantages")}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.advantagesTitle") || "Why Work With BOVAJA"}</h2>
             <p className="text-slate-600">The difference between a broker and a partner. We handle every detail so you can focus on the drive.</p>
           </motion.div>
 
@@ -480,12 +492,15 @@ export default function Home() {
       </section>
 
       {/* PROCESS */}
-      <section className="relative py-24 border-b border-white/[0.06]">
+      <section className="relative py-24 border-b-2 border-white/10">
         {/* Top accent line */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="mb-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.process")}</h2>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
+              <Zap size={11} /> {t("section.process")}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.processTitle") || "How It Works"}</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">A streamlined, stress-free path to your perfect vehicle.</p>
           </motion.div>
 
@@ -627,7 +642,9 @@ export default function Home() {
 
       {/* ① AVAILABLE & RESERVED VEHICLES */}
       {availableCars.length > 0 && (
-      <section className="py-24 bg-white border-b-2 border-slate-200">
+      <section className="relative py-24 bg-white border-t-2 border-b-2 border-slate-200">
+        {/* Green accent stripe */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 via-green-500 to-green-400 opacity-80" />
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -683,9 +700,20 @@ export default function Home() {
       </section>
       )}
 
+      {/* ── SECTION DIVIDER: Available → Sold ── */}
+      {soldCars.length > 0 && (
+        <div className="flex items-center gap-4 px-4 container mx-auto py-1">
+          <div className="flex-1 h-px bg-slate-200" />
+          <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 whitespace-nowrap">Recently Delivered</span>
+          <div className="flex-1 h-px bg-slate-200" />
+        </div>
+      )}
+
       {/* ② SOLD VEHICLES */}
       {soldCars.length > 0 && (
-      <section className="py-24 bg-slate-50 border-b border-slate-300">
+      <section className="relative py-24 bg-slate-100 border-b-2 border-slate-200">
+        {/* Charcoal accent stripe */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 opacity-60" />
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -768,8 +796,17 @@ export default function Home() {
       </section>
       )}
 
+      {/* ── SECTION DIVIDER: Sold → Popular ── */}
+      <div className="flex items-center gap-4 px-4 container mx-auto py-1">
+        <div className="flex-1 h-px bg-slate-200" />
+        <span className="text-xs font-semibold uppercase tracking-widest text-slate-400 whitespace-nowrap">Most Requested</span>
+        <div className="flex-1 h-px bg-slate-200" />
+      </div>
+
       {/* ③ POPULAR VEHICLES */}
-      <section className="py-24 bg-white border-b-2 border-slate-200">
+      <section className="relative py-24 bg-white border-b-2 border-slate-200">
+        {/* Blue accent stripe */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-75" />
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
@@ -854,13 +891,16 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="relative py-24 border-b border-white/[0.06]">
+      <section className="relative py-24 border-b-2 border-white/10">
         {/* Top accent line */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.testimonials")}</h2>
-            <p className="text-muted-foreground">What our global clientele says about working with AutoImport.</p>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
+              <Star size={11} /> {t("section.testimonials")}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.testimonialsTitle") || "What Our Clients Say"}</h2>
+            <p className="text-muted-foreground">What our global clientele says about working with BOVAJA.</p>
           </motion.div>
 
           <motion.div 
@@ -895,10 +935,13 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-slate-50 border-b-2 border-slate-200">
+      <section className="py-24 bg-slate-100 border-t-2 border-b-2 border-slate-200">
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div {...fadeIn} className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.faq")}</h2>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-widest mb-4 border border-blue-200">
+              <MessageSquare size={11} /> {t("section.faq")}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.faqTitle") || "Frequently Asked Questions"}</h2>
             <p className="text-slate-600">Everything you need to know about the import process.</p>
           </motion.div>
 
@@ -930,7 +973,7 @@ export default function Home() {
       </section>
 
       {/* CONTACT FORM & CTA */}
-      <section className="relative py-24 overflow-hidden">
+      <section className="relative py-24 overflow-hidden border-b-2 border-white/10">
         {/* Top accent line */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="absolute inset-0 bg-primary/5" />

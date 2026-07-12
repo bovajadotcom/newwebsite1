@@ -38,7 +38,8 @@ export default function About() {
       </section>
 
       {/* Mission & Values */}
-      <section className="py-24 bg-secondary/10">
+      <section className="relative py-24 bg-secondary/10 border-b-2 border-white/10">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -46,7 +47,10 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{t("about.mission") || "Our Core Values"}</h2>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
+              <Target size={11} /> {t("about.mission") || "Our Values"}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Core Principles</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">The principles that guide every vehicle we source and every deal we execute.</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -74,11 +78,9 @@ export default function About() {
         </div>
       </section>
 
-      {/* Bridge: dark → timeline */}
-      <div className="h-12 bg-gradient-to-b from-secondary/10 to-background pointer-events-none" aria-hidden="true" />
-
       {/* Timeline */}
-      <section className="py-20">
+      <section className="relative py-20 border-b-2 border-white/10">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -86,7 +88,10 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold text-white mb-3">{t("about.timeline")}</h2>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
+              <Compass size={11} /> {t("about.timeline") || "Our Journey"}
+            </span>
+            <h2 className="text-3xl font-bold text-white mb-3">A Decade of Growth</h2>
             <p className="text-muted-foreground">Over a decade of consistent growth and global expansion.</p>
           </motion.div>
           
@@ -120,11 +125,9 @@ export default function About() {
         </div>
       </section>
 
-      {/* Bridge: dark → stats accent */}
-      <div className="h-20 bg-gradient-to-b from-background to-primary pointer-events-none" aria-hidden="true" />
-
       {/* Stats */}
-      <section className="py-12 bg-primary text-white">
+      <section className="py-12 bg-primary text-white border-b-2 border-primary/40 relative">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
             {[
@@ -143,11 +146,9 @@ export default function About() {
         </div>
       </section>
 
-      {/* Bridge: stats → team */}
-      <div className="h-20 bg-gradient-to-b from-primary to-background pointer-events-none" aria-hidden="true" />
-
       {/* Team */}
-      <section className="py-20">
+      <section className="relative py-20 border-b-2 border-white/10">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -155,7 +156,10 @@ export default function About() {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl font-bold text-white mb-3">{t("about.team")}</h2>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
+              <Shield size={11} /> {t("about.team") || "Our Team"}
+            </span>
+            <h2 className="text-3xl font-bold text-white mb-3">The People Behind BOVAJA</h2>
             <p className="text-muted-foreground max-w-lg mx-auto">The experts behind every successful transaction.</p>
           </motion.div>
           
@@ -184,11 +188,9 @@ export default function About() {
         </div>
       </section>
 
-      {/* Bridge: dark → why-us accent */}
-      <div className="h-12 bg-gradient-to-b from-background to-secondary/15 pointer-events-none" aria-hidden="true" />
-
       {/* Why Choose Us & Achievements */}
-      <section className="py-20 bg-secondary/15">
+      <section className="relative py-20 bg-secondary/15 border-b-2 border-white/10">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div 
@@ -196,7 +198,10 @@ export default function About() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t("about.whyUs")}</h2>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-5 border border-primary/25">
+                <CheckCircle2 size={11} /> {t("about.whyUs") || "Why Choose Us"}
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">The BOVAJA Difference</h2>
               <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
                 We combine deep automotive expertise with world-class logistics infrastructure. This isn't just about buying cars; it's about executing complex international transactions flawlessly.
               </p>
@@ -237,11 +242,9 @@ export default function About() {
         </div>
       </section>
 
-      {/* Bridge: accent → partners */}
-      <div className="h-12 bg-gradient-to-b from-secondary/15 to-background pointer-events-none" aria-hidden="true" />
-
       {/* Partner Logos */}
-      <section className="py-14">
+      <section className="relative py-14 border-b-2 border-white/10">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-10">Official Partners & Certifications</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-500">

@@ -27,7 +27,8 @@ export function RelatedArticles({
   if (isLoading || articles.length === 0) return null;
 
   return (
-    <section className="py-16 border-t border-border/30">
+    <section className="py-16 border-t-2 border-white/10 relative">
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <div>

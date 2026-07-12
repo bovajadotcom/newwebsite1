@@ -61,13 +61,16 @@ export default function Pricing() {
 
   return (
     <div className="w-full">
-      <section className="pt-20 pb-24 bg-slate-50">
+      <section className="pt-20 pb-24 bg-slate-50 border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center max-w-3xl mx-auto mb-16"
           >
+            <span className="inline-block bg-blue-600/10 text-blue-700 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-blue-200 mb-5">
+              Service Packages
+            </span>
             <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">{t("pricing.title")}</h1>
             <p className="text-xl text-slate-600">
               {t("pricing.sub")}
@@ -141,9 +144,6 @@ export default function Pricing() {
           </motion.div>
         </div>
       </section>
-
-      {/* Bridge: light → dark */}
-      <div className="h-20 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
 
       <PopularCarsSection />
     </div>

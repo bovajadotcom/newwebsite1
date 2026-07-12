@@ -33,7 +33,7 @@ export default function Services() {
   return (
     <div className="w-full">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-slate-50 pt-20 pb-0">
+      <section className="relative overflow-hidden bg-slate-50 pt-20 pb-12 border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -41,6 +41,9 @@ export default function Services() {
             transition={{ duration: 0.6 }}
             className="max-w-3xl mb-14"
           >
+            <span className="inline-block bg-blue-600/10 text-blue-700 text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-blue-200 mb-5">
+              BOVAJA Services
+            </span>
             <h1 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6">{t("services.title")}</h1>
             <p className="text-xl text-slate-600 leading-relaxed">
               {t("services.sub")}
@@ -73,12 +76,10 @@ export default function Services() {
           </motion.div>
         </div>
 
-        {/* Smooth fade from slate-50 into the grid section */}
-        <div className="h-8 bg-gradient-to-b from-transparent to-slate-50 relative z-10" aria-hidden="true" />
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-20 bg-white border-t-2 border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {services.map((service, i) => (
@@ -102,9 +103,6 @@ export default function Services() {
           </div>
         </div>
       </section>
-
-      {/* Bridge: light → dark */}
-      <div className="h-20 bg-gradient-to-b from-slate-50 to-background pointer-events-none" aria-hidden="true" />
 
       <PopularCarsSection />
     </div>
