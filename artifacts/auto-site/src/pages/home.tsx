@@ -643,8 +643,6 @@ export default function Home() {
       {/* ① AVAILABLE & RESERVED VEHICLES */}
       {availableCars.length > 0 && (
       <section className="relative py-24 bg-white border-t-2 border-b-2 border-slate-200">
-        {/* Green accent stripe */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 via-green-500 to-green-400 opacity-80" />
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-12">
             <motion.div {...fadeIn}>
