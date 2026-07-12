@@ -259,75 +259,17 @@ export default function Home() {
       </section>
 
       {/* STATS */}
-      <section className="relative py-28 overflow-hidden bg-[#060b18]">
-        {/* Animated gradient orbs */}
-        <motion.div
-          className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%)" }}
-          animate={{ scale: [1, 1.15, 1], opacity: [0.7, 1, 0.7] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(99,37,235,0.14) 0%, transparent 70%)" }}
-          animate={{ scale: [1.1, 1, 1.1], opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full pointer-events-none"
-          style={{ background: "radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%)" }}
-          animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.9, 0.5] }}
-          transition={{ duration: 11, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Floating particles */}
-        {[
-          { x: "15%", y: "20%", delay: 0 },
-          { x: "75%", y: "15%", delay: 1.5 },
-          { x: "45%", y: "80%", delay: 3 },
-          { x: "85%", y: "65%", delay: 0.8 },
-          { x: "25%", y: "70%", delay: 2.2 },
-          { x: "60%", y: "35%", delay: 4 },
-          { x: "10%", y: "55%", delay: 1.1 },
-          { x: "90%", y: "40%", delay: 2.8 },
-        ].map((p, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 rounded-full bg-blue-400/60 pointer-events-none"
-            style={{ left: p.x, top: p.y }}
-            animate={{ y: [0, -18, 0], opacity: [0.3, 1, 0.3], scale: [1, 1.6, 1] }}
-            transition={{ duration: 3.5 + i * 0.4, repeat: Infinity, delay: p.delay, ease: "easeInOut" }}
-          />
-        ))}
-
-        {/* Horizontal scan line */}
-        <motion.div
-          className="absolute left-0 right-0 h-px pointer-events-none"
-          style={{ background: "linear-gradient(to right, transparent, rgba(59,130,246,0.6), rgba(147,51,234,0.4), transparent)" }}
-          animate={{ top: ["20%", "80%", "20%"] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-        />
-
-        {/* Grid lines overlay */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+      <section className="relative py-20 overflow-hidden">
+        {/* Subtle static glow behind content */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-20"
+            style={{ background: "radial-gradient(ellipse, rgba(37,99,235,0.5) 0%, transparent 70%)", filter: "blur(60px)" }} />
+          <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[250px] rounded-full opacity-15"
+            style={{ background: "radial-gradient(ellipse, rgba(99,102,241,0.4) 0%, transparent 70%)", filter: "blur(60px)" }} />
+        </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          {/* Label */}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-14"
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-semibold uppercase tracking-widest">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
-              Performance Metrics
-            </span>
-          </motion.div>
-
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
             {[
               { to: 5000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "59,130,246" },
               { to: 98,   prefix: "", suffix: "%", separator: "",  decimals: 0, label: t("stats.clients"),   color: "99,102,241" },
@@ -337,42 +279,33 @@ export default function Home() {
             ].map((stat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.7, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ y: -6, transition: { duration: 0.25 } }}
-                className="group relative text-center p-7 rounded-2xl cursor-default"
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="group relative text-center py-8 px-5 rounded-2xl cursor-default"
                 style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  backdropFilter: "blur(12px)",
+                  background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  backdropFilter: "blur(16px)",
                 }}
               >
-                {/* Card glow on hover */}
-                <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{ boxShadow: `0 0 30px rgba(${stat.color},0.25), inset 0 0 30px rgba(${stat.color},0.04)`, border: `1px solid rgba(${stat.color},0.3)` }}
-                />
+                {/* Hover border glow */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
+                  style={{ boxShadow: `0 0 24px rgba(${stat.color},0.2)`, border: `1px solid rgba(${stat.color},0.25)` }} />
 
-                {/* Top accent line */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-12 h-[2px] rounded-full"
-                  style={{ background: `linear-gradient(to right, transparent, rgba(${stat.color},0.8), transparent)` }} />
+                {/* Top accent */}
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-[2px] rounded-full"
+                  style={{ background: `linear-gradient(to right, transparent, rgba(${stat.color},0.7), transparent)` }} />
 
-                {/* Number */}
-                <div className="relative mb-3">
-                  <h3
-                    className="text-4xl md:text-5xl font-black text-white tracking-tight"
-                    style={{ textShadow: `0 0 40px rgba(${stat.color},0.7), 0 0 80px rgba(${stat.color},0.3)` }}
-                  >
-                    <CountUp to={stat.to} prefix={stat.prefix} suffix={stat.suffix} separator={stat.separator} decimals={stat.decimals} />
-                  </h3>
-                  {/* Glow ring behind number */}
-                  <div className="absolute inset-0 pointer-events-none -z-10 blur-2xl opacity-30 group-hover:opacity-60 transition-opacity"
-                    style={{ background: `radial-gradient(circle, rgba(${stat.color},0.5) 0%, transparent 70%)` }} />
-                </div>
-
-                <p className="text-xs text-slate-400 uppercase tracking-widest font-medium leading-snug">{stat.label}</p>
+                <h3
+                  className="text-4xl md:text-5xl font-black text-white tracking-tight mb-2"
+                  style={{ textShadow: `0 0 30px rgba(${stat.color},0.5)` }}
+                >
+                  <CountUp to={stat.to} prefix={stat.prefix} suffix={stat.suffix} separator={stat.separator} decimals={stat.decimals} />
+                </h3>
+                <p className="text-xs text-slate-400 uppercase tracking-widest font-medium">{stat.label}</p>
               </motion.div>
             ))}
           </div>
