@@ -47,6 +47,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Plus, Pencil, Trash2, Search, X, ImagePlus, GripVertical, Images } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const vehicleSchema = z.object({
   make: z.string().min(1, "Make is required"),
@@ -58,7 +59,10 @@ const vehicleSchema = z.object({
   mileage: z.coerce.number().min(0),
   location: z.string().min(1, "Location is required"),
   price: z.coerce.number().min(0),
-  description: z.string().min(1, "Description is required"),
+  description: z.string().min(1, "Description (EN) is required"),
+  descriptionPl: z.string().nullable().optional(),
+  descriptionRu: z.string().nullable().optional(),
+  descriptionLt: z.string().nullable().optional(),
   status: z.string().min(1, "Status is required"),
   imageUrl: z.string().url("Valid image URL is required"),
   badge: z.string().nullable().optional(),
@@ -224,6 +228,9 @@ export default function VehiclesPage() {
       location: "",
       price: 0,
       description: "",
+      descriptionPl: "",
+      descriptionRu: "",
+      descriptionLt: "",
       status: "available",
       imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
       badge: null,
@@ -265,6 +272,9 @@ export default function VehiclesPage() {
     form.reset({
       ...vehicle,
       badge: vehicle.badge || null,
+      descriptionPl: vehicle.descriptionPl || "",
+      descriptionRu: vehicle.descriptionRu || "",
+      descriptionLt: vehicle.descriptionLt || "",
     });
     setIsDialogOpen(true);
   };
@@ -275,7 +285,8 @@ export default function VehiclesPage() {
     form.reset({
       make: "", model: "", year: new Date().getFullYear(),
       engine: "", fuel: "Petrol", transmission: "Automatic",
-      mileage: 0, location: "", price: 0, description: "",
+      mileage: 0, location: "", price: 0,
+      description: "", descriptionPl: "", descriptionRu: "", descriptionLt: "",
       status: "available",
       imageUrl: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=800",
       badge: null, isPopular: false, sortOrder: 0,
@@ -534,17 +545,70 @@ export default function VehiclesPage() {
                   />
                 </div>
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl><Textarea rows={3} {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Multilingual Descriptions */}
+                <div className="rounded-lg border p-4 bg-muted/20 space-y-3">
+                  <p className="text-sm font-medium">Descriptions</p>
+                  <Tabs defaultValue="en">
+                    <TabsList className="mb-3">
+                      <TabsTrigger value="en">🇬🇧 EN</TabsTrigger>
+                      <TabsTrigger value="pl">🇵🇱 PL</TabsTrigger>
+                      <TabsTrigger value="ru">🇷🇺 RU</TabsTrigger>
+                      <TabsTrigger value="lt">🇱🇹 LT</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="en">
+                      <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description (English) <span className="text-destructive">*</span></FormLabel>
+                            <FormControl><Textarea rows={4} placeholder="Vehicle description in English..." {...field} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </TabsContent>
+                    <TabsContent value="pl">
+                      <FormField
+                        control={form.control}
+                        name="descriptionPl"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description (Polish)</FormLabel>
+                            <FormControl><Textarea rows={4} placeholder="Opis pojazdu po polsku..." {...field} value={field.value || ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </TabsContent>
+                    <TabsContent value="ru">
+                      <FormField
+                        control={form.control}
+                        name="descriptionRu"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description (Russian)</FormLabel>
+                            <FormControl><Textarea rows={4} placeholder="Описание автомобиля на русском..." {...field} value={field.value || ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </TabsContent>
+                    <TabsContent value="lt">
+                      <FormField
+                        control={form.control}
+                        name="descriptionLt"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Description (Lithuanian)</FormLabel>
+                            <FormControl><Textarea rows={4} placeholder="Transporto priemonės aprašymas lietuvių kalba..." {...field} value={field.value || ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </TabsContent>
+                  </Tabs>
+                </div>
                 <div className="grid grid-cols-2 gap-4">
                   <FormField
                     control={form.control}

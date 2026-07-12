@@ -24,6 +24,9 @@ export interface ModalVehicle {
   status?: string;
   badge?: string | null;
   description?: string;
+  descriptionPl?: string | null;
+  descriptionRu?: string | null;
+  descriptionLt?: string | null;
   engine?: string;
   fuel?: string;
   transmission?: string;
@@ -298,6 +301,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
 
 export function VehicleDetailModal({ vehicle, onClose }: Props) {
   const { toggle, isFavorited } = useFavorites();
+  const { lang } = useLanguage();
   const [activeFormName, setActiveFormName] = useState<string | null>(null);
 
   const favKey = vehicle
@@ -485,10 +489,17 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                       )}
                     </div>
 
-                    {/* Description */}
-                    {vehicle.description && (
-                      <p className="text-sm text-muted-foreground leading-relaxed">{vehicle.description}</p>
-                    )}
+                    {/* Description — pick by active language */}
+                    {(() => {
+                      const desc =
+                        (lang === "pl" && vehicle.descriptionPl) ? vehicle.descriptionPl :
+                        (lang === "ru" && vehicle.descriptionRu) ? vehicle.descriptionRu :
+                        (lang === "lt" && vehicle.descriptionLt) ? vehicle.descriptionLt :
+                        vehicle.description;
+                      return desc ? (
+                        <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                      ) : null;
+                    })()}
 
                     {/* Specs grid */}
                     {specsRows.length > 0 && (

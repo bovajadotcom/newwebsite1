@@ -54,7 +54,11 @@ function toModalStock(car: DisplayVehicle): ModalVehicle {
   return {
     id: car.id, type: "available", make: car.make, model: car.model,
     year: car.year, price: car.price, status: car.status, badge: car.badge,
-    description: car.description, engine: car.engine, fuel: car.fuel,
+    description: car.description,
+    descriptionPl: (car as any).descriptionPl ?? null,
+    descriptionRu: (car as any).descriptionRu ?? null,
+    descriptionLt: (car as any).descriptionLt ?? null,
+    engine: car.engine, fuel: car.fuel,
     transmission: car.transmission, mileage: car.mileage, location: car.location,
     images: [car.image, ...extraPhotos],
   };
