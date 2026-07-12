@@ -137,20 +137,25 @@ export default function Home() {
           {/* Text content */}
           <div className="relative flex flex-col justify-center flex-1 px-8 md:px-14 pt-10 pb-6 lg:py-14 z-10 max-w-2xl">
 
-            {/* Badge */}
+            {/* Glowing banner */}
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.5 }}
               className="inline-flex items-center self-start mb-6"
             >
-              <span className="px-3 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium tracking-wide flex items-center gap-1.5">
-                <span className="text-sm">🇧🇾</span>
-                <span className="text-sm">🇱🇹</span>
-                <span className="text-sm">🇵🇱</span>
-                <span className="text-sm">🇱🇻</span>
-                <span className="text-sm">🇪🇪</span>
-              </span>
+              <motion.span
+                animate={{ boxShadow: ["0 0 8px rgba(59,130,246,0.4), 0 0 0px rgba(59,130,246,0)", "0 0 18px rgba(59,130,246,0.75), 0 0 32px rgba(59,130,246,0.25)", "0 0 8px rgba(59,130,246,0.4), 0 0 0px rgba(59,130,246,0)"] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wide text-blue-300 border border-blue-500/50 bg-blue-500/10 backdrop-blur-sm"
+              >
+                <motion.span
+                  className="w-2 h-2 rounded-full bg-blue-400 shrink-0"
+                  animate={{ opacity: [1, 0.3, 1], scale: [1, 0.8, 1] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                />
+                Purchasing and Delivery to Belarus, Ukraine, and Europe
+              </motion.span>
             </motion.div>
 
             {/* Heading */}
