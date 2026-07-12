@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    store: new PgSession({ pool, tableName: "session", createTableIfMissing: false }),
+    store: new PgSession({ pool, tableName: "session", createTableIfMissing: true }),
     secret: process.env.SESSION_SECRET ?? "fallback-dev-secret",
     resave: false,
     saveUninitialized: false,
