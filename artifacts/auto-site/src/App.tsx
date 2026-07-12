@@ -7,6 +7,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/layout/Layout";
 import { LanguageProvider } from "@/lib/i18n";
 import { LeadCaptureModal } from "@/components/LeadCaptureModal";
+import { FavoritesProvider } from "@/lib/FavoritesContext";
+import Favorites from "@/pages/favorites";
 import Home from "@/pages/home";
 import Inventory from "@/pages/inventory";
 import Popular from "@/pages/popular";
@@ -46,6 +48,7 @@ function Router() {
         <Route path="/business" component={Business} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/favorites" component={Favorites} />
         <Route component={NotFound} />
       </Switch>
       <PageModal />
@@ -63,9 +66,11 @@ function App() {
       <TooltipProvider>
         <LanguageProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Layout>
-              <Router />
-            </Layout>
+            <FavoritesProvider>
+              <Layout>
+                <Router />
+              </Layout>
+            </FavoritesProvider>
           </WouterRouter>
         </LanguageProvider>
         <Toaster />

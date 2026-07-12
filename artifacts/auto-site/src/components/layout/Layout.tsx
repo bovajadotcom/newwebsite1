@@ -1,9 +1,9 @@
 import { Link, useLocation } from "wouter";
-import { Menu, X, ChevronRight, Heart } from "lucide-react";
+import { Menu, X, ChevronRight, Heart, Phone } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n";
-import { Phone } from "lucide-react";
+import { useFavorites } from "@/lib/FavoritesContext";
 
 const navLinks = [
   { labelKey: "nav.home",       href: "/" },
@@ -20,6 +20,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { lang, setLang, t } = useLanguage();
+  const { count: favCount } = useFavorites();
 
   return (
     <div className="min-h-screen bg-[#07111E] text-foreground flex flex-col font-sans selection:bg-primary/30">
@@ -77,11 +78,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Heart / wishlist */}
             <Link
-              href="/inventory"
-              className="hidden sm:flex w-9 h-9 rounded-xl border border-white/10 items-center justify-center text-slate-500 hover:text-red-400 hover:border-red-400/30 transition-all"
+              href="/favorites"
+              className="relative hidden sm:flex w-9 h-9 rounded-xl border border-white/10 items-center justify-center text-slate-500 hover:text-red-400 hover:border-red-400/30 transition-all"
               title="Избранное"
             >
-              <Heart size={15} />
+              <Heart size={15} className={favCount > 0 ? "text-red-500" : ""} />
+              {favCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
+                  {favCount > 9 ? "9+" : favCount}
+                </span>
+              )}
             </Link>
 
             {/* CTA */}

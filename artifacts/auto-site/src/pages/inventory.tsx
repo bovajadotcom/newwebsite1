@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { 
   Search, SlidersHorizontal, MapPin, Gauge, Fuel, 
-  Settings2, X, ArrowRight, MessageSquare, Calculator
+  Settings2, X, ArrowRight, MessageSquare, Calculator, Heart, CheckSquare
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { useFavorites } from "@/lib/FavoritesContext";
 import {
   stockVehicles as staticStock,
   soldVehicles as staticSold,
@@ -48,6 +49,7 @@ function resolveImage(url: string | null | undefined, idx: number): string {
 
 export default function Inventory() {
   const { t } = useLanguage();
+  const { toggle, isFavorited } = useFavorites();
 
   const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>([]);
   const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>([]);
@@ -291,6 +293,14 @@ export default function Inventory() {
                           {t(`inventory.status.${car.status}`)}
                         </span>
                       </div>
+
+                      {/* Like button */}
+                      <button
+                        onClick={(e) => { e.preventDefault(); toggle(`stock-${car.id}`); }}
+                        className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center shadow-md hover:scale-110 transition-transform"
+                      >
+                        <Heart size={14} className={isFavorited(`stock-${car.id}`) ? "text-red-500 fill-red-500" : "text-slate-400"} />
+                      </button>
                     </div>
                     
                     <div className="p-6">
@@ -361,6 +371,14 @@ export default function Inventory() {
                     SOLD
                   </div>
 
+                  {/* Like button */}
+                  <button
+                    onClick={() => toggle(`sold-${car.id}`)}
+                    className="absolute top-2 left-2 z-10 w-7 h-7 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
+                  >
+                    <Heart size={12} className={isFavorited(`sold-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
+                  </button>
+
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent opacity-90" />
                   
                   <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -398,12 +416,18 @@ export default function Inventory() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col"
               >
-                <div className="h-48 overflow-hidden bg-secondary">
+                <div className="h-48 overflow-hidden bg-secondary relative">
                   <img 
                     src={`${import.meta.env.BASE_URL}${car.image}`} 
                     alt={`${car.make} ${car.model}`}
                     className="w-full h-full object-cover opacity-80"
                   />
+                  <button
+                    onClick={() => toggle(`popular-${car.id}`)}
+                    className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
+                  >
+                    <Heart size={13} className={isFavorited(`popular-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
+                  </button>
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <h3 className="text-xl font-bold text-white mb-2">{car.make} {car.model}</h3>
@@ -452,14 +476,5 @@ export default function Inventory() {
         </div>
       </section>
     </div>
-  );
-}
-
-function CheckSquare({ size, className }: { size?: number, className?: string }) {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size || 24} height={size || 24} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <polyline points="9 11 12 14 22 4"></polyline>
-      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-    </svg>
   );
 }

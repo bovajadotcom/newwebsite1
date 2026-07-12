@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowRight, MessageSquare, Calculator, Star } from "lucide-react";
+import { ArrowRight, MessageSquare, Calculator, Star, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { popularVehicles as staticPopular } from "@/data/inventory";
+import { useFavorites } from "@/lib/FavoritesContext";
 
 const fadeIn = { initial: { opacity: 0, y: 20 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true } };
 
@@ -25,6 +26,7 @@ interface DisplayPopular {
 
 export default function Popular() {
   const { t } = useLanguage();
+  const { toggle, isFavorited } = useFavorites();
   const [vehicles, setVehicles] = useState<DisplayPopular[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -99,6 +101,12 @@ export default function Popular() {
                         {t("inventory.badge.popular")}
                       </span>
                     </div>
+                    <button
+                      onClick={() => toggle(`popular-${car.id}`)}
+                      className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
+                    >
+                      <Heart size={14} className={isFavorited(`popular-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
+                    </button>
                   </div>
 
                   <div className="p-6 flex-1 flex flex-col">
