@@ -65,7 +65,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-2 ml-4">
             {/* Language switcher */}
             <div className="hidden sm:flex items-center gap-0.5 bg-white/[0.06] rounded-lg p-0.5">
-              {(["en", "pl", "ru"] as const).map((l) => (
+              {(["en", "pl", "ru", "lt"] as const).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLang(l)}
@@ -121,7 +121,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             className="fixed inset-0 z-40 bg-[#07111E]/98 backdrop-blur-xl pt-[80px] px-6 xl:hidden overflow-y-auto"
           >
             <div className="flex items-center gap-1 bg-white/[0.06] rounded-xl p-1 mb-6">
-              {(["en", "pl", "ru"] as const).map((l) => (
+              {(["en", "pl", "ru", "lt"] as const).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLang(l)}

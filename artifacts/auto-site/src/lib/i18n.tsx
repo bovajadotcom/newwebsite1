@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { translations } from "./translations";
 
-export type Language = "en" | "pl" | "ru";
+export type Language = "en" | "pl" | "ru" | "lt";
 
 interface LanguageContextType {
   lang: Language;
@@ -16,7 +16,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("autoimport-lang") as Language;
-    if (saved && ["en", "pl", "ru"].includes(saved)) {
+    if (saved && ["en", "pl", "ru", "lt"].includes(saved)) {
       setLangState(saved);
     }
   }, []);
