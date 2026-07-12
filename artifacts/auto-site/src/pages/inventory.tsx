@@ -173,7 +173,7 @@ export default function Inventory() {
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden bg-card">
         <div className="absolute inset-0 z-0">
           <img 
-            src={`${import.meta.env.BASE_URL}bg-cars-lineup.png`} 
+            src={`${import.meta.env.BASE_URL}fleet-cars.png`} 
             alt="Inventory" 
             className="w-full h-full object-cover"
             style={{ filter: "brightness(0.45) saturate(0.9)" }}
