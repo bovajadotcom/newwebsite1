@@ -5,6 +5,20 @@ import { requireAuth } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
 
+function coerceVehicle(body: Record<string, unknown>): Record<string, unknown> {
+  const result = { ...body };
+  if (result.year !== undefined) result.year = parseInt(String(result.year), 10) || 0;
+  if (result.mileage !== undefined) result.mileage = Math.round(parseFloat(String(result.mileage))) || 0;
+  if (result.price !== undefined) result.price = Math.round(parseFloat(String(result.price))) || 0;
+  if (result.sortOrder !== undefined) result.sortOrder = parseInt(String(result.sortOrder), 10) || 0;
+  if (result.isPopular !== undefined) result.isPopular = result.isPopular === true || result.isPopular === "true" || result.isPopular === 1;
+  if (result.photos !== undefined && typeof result.photos === "string") {
+    try { result.photos = JSON.parse(result.photos); } catch { result.photos = []; }
+  }
+  if (!Array.isArray(result.photos)) result.photos = [];
+  return result;
+}
+
 router.get("/vehicles", async (_req, res): Promise<void> => {
   const vehicles = await db.select().from(vehiclesTable).orderBy(asc(vehiclesTable.sortOrder), asc(vehiclesTable.id));
   res.json(vehicles);
@@ -20,7 +34,7 @@ router.get("/vehicles/:id", async (req, res): Promise<void> => {
 });
 
 router.post("/vehicles", requireAuth, async (req, res): Promise<void> => {
-  const [v] = await db.insert(vehiclesTable).values(req.body).returning();
+  const [v] = await db.insert(vehiclesTable).values(coerceVehicle(req.body)).returning();
   res.status(201).json(v);
 });
 
@@ -28,7 +42,7 @@ router.put("/vehicles/:id", requireAuth, async (req, res): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
-  const [v] = await db.update(vehiclesTable).set(req.body).where(eq(vehiclesTable.id, id)).returning();
+  const [v] = await db.update(vehiclesTable).set(coerceVehicle(req.body)).where(eq(vehiclesTable.id, id)).returning();
   if (!v) { res.status(404).json({ error: "Not found" }); return; }
   res.json(v);
 });
