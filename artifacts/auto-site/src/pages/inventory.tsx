@@ -370,7 +370,7 @@ export default function Inventory() {
                 {filtered.map((car) => {
                   const effectivePrice = car.price ?? car.finalPrice;
                   const statusBadge =
-                    car.status === "available" ? "bg-green-500/15 border-green-500/30 text-green-400" :
+                    car.status === "available" ? "bg-green-500 border-green-600 text-white" :
                     car.status === "reserved"  ? "bg-amber-500 border-amber-600 text-white" :
                                                  "bg-slate-800 border-slate-700 text-white";
                   return (
