@@ -346,19 +346,23 @@ export default function Calculator() {
                 <motion.div key="step3-type" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Тип запроса</h3>
-                  <p className="text-sm text-muted-foreground -mt-2">Это важно для корректного расчёта стоимости</p>
+                  <p className="text-sm text-muted-foreground -mt-2">Выберите один из вариантов и нажмите «Продолжить»</p>
 
                   <div className="grid grid-cols-1 gap-4">
                     <button
-                      onClick={() => { update("vehicleType", "catalog"); setStep(4); }}
+                      onClick={() => update("vehicleType", "catalog")}
                       className={`p-6 rounded-xl border-2 flex items-start gap-5 transition-all text-left group
                         ${form.vehicleType === "catalog" ? "border-green-500 bg-green-500/10" : "border-border/50 hover:border-green-500/50 hover:bg-green-500/5"}`}>
-                      <div className="w-12 h-12 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-all
+                        ${form.vehicleType === "catalog" ? "bg-green-500/30 border-2 border-green-500" : "bg-green-500/20 border border-green-500/30"}`}>
                         <Car className="text-green-400" size={22} />
                       </div>
                       <div className="flex-1">
-                        <div className="font-bold text-white text-base mb-1">Автомобиль из нашего каталога</div>
-                        <div className="text-sm text-muted-foreground leading-relaxed">Фиксированная цена — авто уже подобран и готов к оформлению.</div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-white text-base">Автомобиль из нашего каталога</span>
+                          {form.vehicleType === "catalog" && <span className="text-green-400 text-lg leading-none">✓</span>}
+                        </div>
+                        <div className="text-sm text-muted-foreground leading-relaxed mt-1">Фиксированная цена — авто уже подобран и готов к оформлению.</div>
                         <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold border border-green-500/30">
                           ✓ Без сервисного сбора
                         </div>
@@ -366,15 +370,19 @@ export default function Calculator() {
                     </button>
 
                     <button
-                      onClick={() => { update("vehicleType", "sourcing"); setStep(4); }}
+                      onClick={() => update("vehicleType", "sourcing")}
                       className={`p-6 rounded-xl border-2 flex items-start gap-5 transition-all text-left group
                         ${form.vehicleType === "sourcing" ? "border-primary bg-primary/10" : "border-border/50 hover:border-primary/50 hover:bg-primary/5"}`}>
-                      <div className="w-12 h-12 rounded-full bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0 mt-0.5">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-all
+                        ${form.vehicleType === "sourcing" ? "bg-blue-500/30 border-2 border-primary" : "bg-blue-500/20 border border-blue-500/30"}`}>
                         <Search className="text-blue-400" size={22} />
                       </div>
                       <div className="flex-1">
-                        <div className="font-bold text-white text-base mb-1">Подбор автомобиля (авто-селекшн)</div>
-                        <div className="text-sm text-muted-foreground leading-relaxed">Индивидуальный поиск и подбор под ваши требования с аукционов и дилеров.</div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-white text-base">Подбор автомобиля (авто-селекшн)</span>
+                          {form.vehicleType === "sourcing" && <span className="text-primary text-lg leading-none">✓</span>}
+                        </div>
+                        <div className="text-sm text-muted-foreground leading-relaxed mt-1">Индивидуальный поиск и подбор под ваши требования с аукционов и дилеров.</div>
                         <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">
                           + €500 сервисная комиссия
                         </div>
@@ -382,7 +390,17 @@ export default function Calculator() {
                     </button>
                   </div>
 
-                  <button onClick={() => setStep(2)} className="w-full py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                  <button
+                    onClick={() => { if (form.vehicleType) setStep(4); }}
+                    disabled={!form.vehicleType}
+                    className={`w-full py-4 font-bold rounded flex items-center justify-center gap-2 transition-all
+                      ${form.vehicleType
+                        ? "bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
+                        : "bg-white/5 text-white/30 border border-border/30 cursor-not-allowed"}`}>
+                    {form.vehicleType ? <><ChevronRight size={18} /> Продолжить</> : <>Выберите вариант выше</>}
+                  </button>
+
+                  <button onClick={() => setStep(2)} className="w-full py-3 border border-border/50 text-muted-foreground font-medium rounded flex items-center justify-center gap-2 hover:bg-card hover:text-white transition-all">
                     <ChevronLeft size={18} /> Назад
                   </button>
                 </motion.div>
