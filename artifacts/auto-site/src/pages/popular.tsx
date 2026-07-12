@@ -71,7 +71,7 @@ export default function Popular() {
         </div>
         <div className="container mx-auto px-4 text-center max-w-3xl relative z-10">
           <motion.div {...fadeIn}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.35)] hover:shadow-[0_0_20px_rgba(59,130,246,0.55)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
               <Star size={14} className="fill-primary" /> {t("inventory.popular")}
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">{t("inventory.popular")}</h1>
