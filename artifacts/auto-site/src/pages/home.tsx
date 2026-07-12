@@ -7,6 +7,7 @@ import { popularVehicles as staticPopular } from "@/data/inventory";
 import { useFavorites } from "@/lib/FavoritesContext";
 import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
 import { submitLead } from "@/lib/submitLead";
+import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
   to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
@@ -67,7 +68,8 @@ export default function Home() {
   const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
   const [popularCars, setPopularCars] = useState<DisplayPopular[]>([]);
   const [footerFormStatus, setFooterFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const { t } = useLanguage();
+  const [footerPrefLang, setFooterPrefLang] = useState<PreferredLanguage>("Russian");
+  const { t, lang } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
   const processRef = useRef<HTMLDivElement>(null);
   const isProcessInView = useInView(processRef, { once: true, margin: "-120px" });
@@ -88,6 +90,7 @@ export default function Home() {
         email: footerEmailRef.current?.value,
         country: footerCountryRef.current?.value,
         message: footerMessageRef.current?.value,
+        preferredLanguage: footerPrefLang,
       });
       setFooterFormStatus("success");
     } catch {
@@ -759,6 +762,7 @@ export default function Home() {
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
                     <textarea ref={footerMessageRef} rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
                   </div>
+                  <LanguageSelector value={footerPrefLang} onChange={setFooterPrefLang} />
                   <button
                     type="submit"
                     disabled={footerFormStatus === "loading"}

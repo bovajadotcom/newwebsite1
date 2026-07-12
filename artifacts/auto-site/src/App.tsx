@@ -18,6 +18,8 @@ import Calculator from "@/pages/calculator";
 import Business from "@/pages/business";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
+import Articles from "@/pages/articles";
+import Article from "@/pages/article";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -48,6 +50,8 @@ function Router() {
         <Route path="/business" component={Business} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/articles" component={Articles} />
+        <Route path="/articles/:slug" component={Article} />
         <Route path="/favorites" component={Favorites} />
         <Route component={NotFound} />
       </Switch>

@@ -1,0 +1,59 @@
+import { Router, type IRouter } from "express";
+import { db, articlesTable } from "@workspace/db";
+import { eq, desc } from "drizzle-orm";
+import { requireAuth } from "../middlewares/requireAuth";
+
+const router: IRouter = Router();
+
+router.get("/articles", async (_req, res): Promise<void> => {
+  const articles = await db
+    .select()
+    .from(articlesTable)
+    .where(eq(articlesTable.status, "published"))
+    .orderBy(desc(articlesTable.publishedAt));
+  res.json(articles);
+});
+
+router.get("/articles/all", requireAuth, async (_req, res): Promise<void> => {
+  const articles = await db
+    .select()
+    .from(articlesTable)
+    .orderBy(desc(articlesTable.createdAt));
+  res.json(articles);
+});
+
+router.get("/articles/:slug", async (req, res): Promise<void> => {
+  const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
+  const [article] = await db
+    .select()
+    .from(articlesTable)
+    .where(eq(articlesTable.slug, slug));
+  if (!article) { res.status(404).json({ error: "Not found" }); return; }
+  if (article.status !== "published") { res.status(404).json({ error: "Not found" }); return; }
+  res.json(article);
+});
+
+router.post("/articles", requireAuth, async (req, res): Promise<void> => {
+  const [article] = await db.insert(articlesTable).values(req.body).returning();
+  res.status(201).json(article);
+});
+
+router.put("/articles/:id", requireAuth, async (req, res): Promise<void> => {
+  const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(raw, 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+  const [article] = await db.update(articlesTable).set(req.body).where(eq(articlesTable.id, id)).returning();
+  if (!article) { res.status(404).json({ error: "Not found" }); return; }
+  res.json(article);
+});
+
+router.delete("/articles/:id", requireAuth, async (req, res): Promise<void> => {
+  const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+  const id = parseInt(raw, 10);
+  if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
+  const [article] = await db.delete(articlesTable).where(eq(articlesTable.id, id)).returning();
+  if (!article) { res.status(404).json({ error: "Not found" }); return; }
+  res.sendStatus(204);
+});
+
+export default router;

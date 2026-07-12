@@ -1,0 +1,360 @@
+Add a new “Careers” page and navigation item to the existing website.
+
+Important:
+
+The website already has English, Polish, Russian, and Lithuanian language versions.
+
+Add the Careers page to all existing language versions and to the CMS.
+
+Do not rebuild the existing multilingual system. Reuse the current routing, translations, forms, email handler, CMS structure, and design components.
+
+1. Careers Navigation Item
+
+Add a new item to the main header navigation:
+
+Careers
+
+Add equivalent translation fields for:
+
+- English
+- Polish
+- Russian
+- Lithuanian
+
+The Careers link should open a dedicated Careers page.
+
+2. Careers Page Content
+
+Create a premium Careers page matching the website design.
+
+Main heading:
+
+Join Our Team
+
+Introductory text:
+
+If you would like to join our team, you can send us your CV or simply tell us about your professional experience in your own words.
+
+You do not need to have a prepared CV. You can leave your contact details and tell us about your experience, skills, preferred role, and why you would like to work with us.
+
+We are open not only to full-time employees but also to part-time, freelance, project-based, and flexible cooperation opportunities.
+
+If you are looking for part-time work, additional income, freelance projects, or flexible collaboration, feel free to contact us.
+
+Add two clear options:
+
+- Upload Your CV
+- Tell Us About Your Experience
+
+3. Careers Application Form
+
+Form title:
+
+Apply to Join Our Team
+
+Fields:
+
+- Full Name
+- Phone Number
+- Email Address
+- Preferred Contact Method
+- WhatsApp
+- Telegram
+- Viber
+- Position or Area of Interest
+- Employment Preference
+- Work Experience
+- Skills
+- Languages Spoken
+- Short Introduction
+- Additional Message
+- CV Upload
+
+Require at least one contact method:
+
+- Phone
+- Email
+- WhatsApp
+- Telegram
+- Viber
+
+4. Employment Preference
+
+Add a dedicated field:
+
+Employment Preference
+
+Options:
+
+- Full-time
+- Part-time
+- Freelance / Contract
+- Flexible Schedule
+- Remote Work
+- Open to Opportunities
+
+Helper text:
+
+Looking for a full-time job, part-time work, freelance projects, or flexible cooperation?
+
+Tell us about your experience and availability, and we will see how we can work together.
+
+Additional helper text:
+
+No CV? No problem. Tell us about your experience, skills, and the type of work you are interested in.
+
+5. CV Upload
+
+Allow applicants to upload:
+
+- PDF
+- DOC
+- DOCX
+
+Maximum file size: 5 MB
+
+Validate file type and size on both frontend and backend.
+
+Uploading a CV must be optional.
+
+6. Applications Without CV
+
+Users must be able to apply without uploading a CV.
+
+They should be able to describe:
+
+- Experience
+- Skills
+- Languages
+- Availability
+- Preferred role
+- Why they want to work with us
+
+7. Email Delivery
+
+All career applications must be sent to:
+
+bovaja.auctions@gmail.com
+
+Use the existing centralized lead system.
+
+Email subject:
+
+New Website Application — Careers
+
+At the top of the email:
+
+FORM SOURCE:
+Careers Application
+
+LANGUAGE:
+[EN / PL / RU / LT]
+
+SUBMITTED:
+[Date & Time]
+
+APPLICANT DETAILS:
+
+- Full Name
+- Phone
+- Email
+- WhatsApp
+- Telegram
+- Viber
+- Preferred Contact Method
+- Position or Area of Interest
+- Employment Preference
+- Work Experience
+- Skills
+- Languages Spoken
+- Introduction
+- Message
+
+CV:
+- Attached file
+or
+- Download link
+
+If the applicant entered an email address, set it as Reply-To.
+
+8. Success Message
+
+Success:
+
+Thank you. Your application has been received. Our team will review it and contact you if there is a suitable opportunity.
+
+Error:
+
+Your application could not be sent. Please try again or contact us directly.
+
+Do not display success unless the email was actually sent.
+
+9. CMS Support
+
+Add Careers page management to CMS.
+
+Editable fields:
+
+- Page title
+- Intro text
+- Helper text
+- Form title
+- Button labels
+- Success message
+- Error message
+- SEO title
+- SEO description
+- Cover image
+- Published status
+
+Support:
+
+- English
+- Polish
+- Russian
+- Lithuanian
+
+10. Careers Design
+
+Desktop:
+
+Left:
+- Careers content
+- Benefits
+- Optional image
+
+Right:
+- Application form
+
+Mobile:
+
+- Vertical layout
+- Responsive form
+- Easy CV upload
+
+Use:
+
+- Premium cards
+- Rounded corners
+- Modern spacing
+- Consistent styling
+
+11. Privacy Notice
+
+Display below the form:
+
+By submitting this form, you agree that we may use your information to review your application and contact you regarding employment opportunities.
+
+Support all languages.
+
+12. Footer Navigation
+
+Update the footer so it contains ALL important navigation links currently visible in the header.
+
+Anything shown in the top navigation should also be accessible from the footer.
+
+This includes:
+
+- Home
+- Vehicles / Catalog
+- Available Vehicles
+- Sold Vehicles
+- Financing
+- Articles / News
+- About Us
+- Contact
+- Careers
+- Any additional primary navigation item
+
+Do not hardcode a separate outdated footer menu.
+
+Reuse the same navigation configuration used by the header whenever possible.
+
+13. Footer Structure
+
+Organize the footer into sections.
+
+Navigation:
+- Home
+- Vehicles
+- Financing
+- Articles
+- About Us
+- Careers
+- Contact
+
+Vehicle Services:
+- Available Vehicles
+- Sold Vehicles
+- Vehicle Request
+- Financing Request
+
+Contact:
+- Phone
+- Email
+- WhatsApp
+- Telegram
+- Viber
+
+Location:
+Gariūnai Car Market
+Site 309A
+Gariūnų g. 49
+Vilnius, 02300 Vilniaus m. sav.
+Lithuania
+
+Legal:
+- Privacy Policy
+- Terms & Conditions
+- Cookie Policy
+
+14. Multilingual Footer
+
+Footer must work correctly in:
+
+- English
+- Polish
+- Russian
+- Lithuanian
+
+Use the existing translation system.
+
+15. Responsive Footer
+
+Desktop:
+- Multiple columns
+
+Tablet:
+- 2–3 columns
+
+Mobile:
+- Vertical sections or lightweight accordions
+
+Keep all contact methods easily accessible.
+
+16. Performance
+
+Keep Careers and Footer lightweight.
+
+Requirements:
+
+- Reuse existing components
+- No heavy dependencies
+- Lazy-load optional images
+- Optimize uploads
+- Preserve current PageSpeed and Lighthouse performance
+
+17. Final Verification
+
+Verify that:
+
+- Careers appears in header
+- Careers appears in footer
+- Careers works in EN, PL, RU, LT
+- CV upload works
+- Applying without CV works
+- Full-time and part-time applicants can apply
+- Applications are sent to bovaja.auctions@gmail.com
+- Email clearly identifies Careers applications
+- Footer contains all main navigation links
+- Existing routes, languages, forms, and CMS functionality remain intact

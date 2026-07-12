@@ -641,3 +641,116 @@ export const UpdateSiteSettingResponse = zod.object({
 })
 
 
+/**
+ * @summary Get published articles
+ */
+export const GetArticlesResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImage": zod.string(),
+  "publishedAt": zod.string().nullish(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+export const GetArticlesResponse = zod.array(GetArticlesResponseItem)
+
+
+export const CreateArticleBody = zod.object({
+  "title": zod.string(),
+  "slug": zod.string(),
+  "excerpt": zod.string().optional(),
+  "content": zod.string().optional(),
+  "coverImage": zod.string().optional(),
+  "publishedAt": zod.string().nullish(),
+  "status": zod.string().optional()
+})
+
+export const CreateArticleResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImage": zod.string(),
+  "publishedAt": zod.string().nullish(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Get all articles (admin)
+ */
+export const GetAllArticlesResponseItem = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImage": zod.string(),
+  "publishedAt": zod.string().nullish(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+export const GetAllArticlesResponse = zod.array(GetAllArticlesResponseItem)
+
+
+export const GetArticleBySlugParams = zod.object({
+  "slug": zod.coerce.string()
+})
+
+export const GetArticleBySlugResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImage": zod.string(),
+  "publishedAt": zod.string().nullish(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+export const UpdateArticleParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateArticleBody = zod.object({
+  "title": zod.string().optional(),
+  "slug": zod.string().optional(),
+  "excerpt": zod.string().optional(),
+  "content": zod.string().optional(),
+  "coverImage": zod.string().optional(),
+  "publishedAt": zod.string().nullish(),
+  "status": zod.string().optional()
+})
+
+export const UpdateArticleResponse = zod.object({
+  "id": zod.number(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "excerpt": zod.string(),
+  "content": zod.string(),
+  "coverImage": zod.string(),
+  "publishedAt": zod.string().nullish(),
+  "status": zod.string(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+export const DeleteArticleParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteArticleResponse = zod.void()
+
+

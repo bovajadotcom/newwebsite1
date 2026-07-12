@@ -11,6 +11,7 @@ import pageContentRouter from "./page-content";
 import siteSettingsRouter from "./site-settings";
 import leadsRouter from "./leads";
 import contactRouter from "./contact";
+import articlesRouter from "./articles";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use(pageContentRouter);
 router.use(siteSettingsRouter);
 router.use(leadsRouter);
 router.use(contactRouter);
+router.use(articlesRouter);
 
 export default router;

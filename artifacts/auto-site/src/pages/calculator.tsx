@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { submitLead } from "@/lib/submitLead";
+import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calculator as CalcIcon, ChevronRight, ChevronLeft, Send,
@@ -205,6 +206,8 @@ export default function Calculator() {
     { icon: Send,     label: "Заявка" },
   ];
 
+  const [prefLang, setPrefLang] = useState<PreferredLanguage>("Russian");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const totalStr = isBelarus && byResult ? fmt(byResult.total) : standardResult ? fmt(standardResult.total) : "";
@@ -215,6 +218,7 @@ export default function Calculator() {
         phone: form.phone,
         email: form.email,
         message: `Quote request: ${selectedCountry?.name}, vehicle price €${form.vehiclePrice}. Vehicle type: ${form.vehicleType || "catalog"}. Total: ${totalStr}`,
+        preferredLanguage: prefLang,
       });
     } catch {}
     setSubmitted(true);
@@ -564,6 +568,7 @@ export default function Calculator() {
                       <label className="block text-sm font-medium text-muted-foreground mb-2">Email *</label>
                       <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="ваш@email.com" className={INPUT_CLS} />
                     </div>
+                    <LanguageSelector value={prefLang} onChange={setPrefLang} />
                     <div className="flex gap-3 pt-2">
                       <button type="button" onClick={() => setStep(4)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                         <ChevronLeft size={18} /> Назад

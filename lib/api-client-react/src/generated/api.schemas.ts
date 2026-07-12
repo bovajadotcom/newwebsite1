@@ -289,3 +289,39 @@ export interface SiteSettingUpdate {
   value: string;
 }
 
+export interface Article {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  coverImage: string;
+  /** @nullable */
+  publishedAt?: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ArticleInput {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  content?: string;
+  coverImage?: string;
+  /** @nullable */
+  publishedAt?: string | null;
+  status?: string;
+}
+
+export interface ArticleUpdate {
+  title?: string;
+  slug?: string;
+  excerpt?: string;
+  content?: string;
+  coverImage?: string;
+  /** @nullable */
+  publishedAt?: string | null;
+  status?: string;
+}
+

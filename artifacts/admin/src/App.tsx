@@ -14,6 +14,7 @@ import PricingPage from "@/pages/pricing";
 import TestimonialsPage from "@/pages/testimonials";
 import TranslationsPage from "@/pages/translations";
 import SettingsPage from "@/pages/settings";
+import ArticlesPage from "@/pages/articles";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -58,6 +59,7 @@ function Router() {
               <Route path="/services" component={ServicesPage} />
               <Route path="/pricing" component={PricingPage} />
               <Route path="/testimonials" component={TestimonialsPage} />
+              <Route path="/articles" component={ArticlesPage} />
               <Route path="/translations" component={TranslationsPage} />
               <Route path="/settings" component={SettingsPage} />
               <Route component={NotFound} />

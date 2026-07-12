@@ -12,6 +12,7 @@ import {
   Sliders,
   LogOut,
   User,
+  Newspaper,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     { href: "/services", icon: Settings2, title: "Services" },
     { href: "/pricing", icon: CreditCard, title: "Pricing" },
     { href: "/testimonials", icon: MessageSquare, title: "Testimonials" },
+    { href: "/articles", icon: Newspaper, title: "Articles" },
     { href: "/translations", icon: Languages, title: "Translations" },
     { href: "/settings", icon: Sliders, title: "Site Settings" },
   ];

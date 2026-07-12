@@ -8,8 +8,9 @@ import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/comp
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Contact() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [status, setStatus] = useState<Status>("idle");
+  const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
   const nameRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -27,6 +28,7 @@ export default function Contact() {
         email: emailRef.current?.value,
         subject: subjectRef.current?.value,
         message: messageRef.current?.value,
+        preferredLanguage: prefLang,
       });
       setStatus("success");
     } catch {
@@ -139,6 +141,7 @@ export default function Contact() {
                   <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
                   <textarea ref={messageRef} rows={5} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
                 </div>
+                <LanguageSelector value={prefLang} onChange={setPrefLang} />
                 <button
                   type="submit"
                   disabled={status === "loading"}

@@ -8,8 +8,9 @@ import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/comp
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Business() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [status, setStatus] = useState<Status>("idle");
+  const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
   const companyRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const businessTypeRef = useRef<HTMLSelectElement>(null);
@@ -36,6 +37,7 @@ export default function Business() {
         annualVolume: annualVolumeRef.current?.value,
         phone: phoneRef.current?.value,
         email: emailRef.current?.value,
+        preferredLanguage: prefLang,
       });
       setStatus("success");
     } catch {
@@ -201,6 +203,7 @@ export default function Business() {
                   </div>
                 </div>
 
+                <LanguageSelector value={prefLang} onChange={setPrefLang} />
                 <button
                   type="submit"
                   disabled={status === "loading"}

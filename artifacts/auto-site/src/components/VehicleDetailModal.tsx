@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { submitLead } from "@/lib/submitLead";
+import { useLanguage } from "@/lib/i18n";
+import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X, ChevronLeft, ChevronRight, MapPin, Gauge, Fuel, Settings2,
@@ -150,10 +152,12 @@ function Gallery({ images, vehicleName }: { images: string[]; vehicleName: strin
 }
 
 function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: string }) {
+  const { lang } = useLanguage();
   const [method, setMethod] = useState<ContactMethod>("WhatsApp");
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
   const [message, setMessage] = useState("");
+  const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<"success" | "error" | null>(null);
 
@@ -170,6 +174,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
         email: method === "Email" ? contact : undefined,
         preferredContact: method,
         message,
+        preferredLanguage: prefLang,
         vehicleInfo: {
           label: vehicleLabel,
           id: vehicle.id,
@@ -271,6 +276,8 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
           className="w-full bg-secondary/50 border border-border rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary transition-colors resize-none"
         />
       </div>
+
+      <LanguageSelector value={prefLang} onChange={setPrefLang} />
 
       <button
         type="submit"

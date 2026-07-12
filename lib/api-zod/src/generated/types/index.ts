@@ -6,6 +6,9 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './article';
+export * from './articleInput';
+export * from './articleUpdate';
 export * from './authCredentials';
 export * from './authUser';
 export * from './healthStatus';
