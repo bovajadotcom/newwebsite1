@@ -33,8 +33,19 @@ router.get("/articles/:slug", async (req, res): Promise<void> => {
   res.json(article);
 });
 
+function parseDates(body: Record<string, unknown>): Record<string, unknown> {
+  const dateFields = ["publishedAt", "createdAt", "updatedAt"];
+  const result = { ...body };
+  for (const field of dateFields) {
+    if (result[field] && typeof result[field] === "string") {
+      result[field] = new Date(result[field] as string);
+    }
+  }
+  return result;
+}
+
 router.post("/articles", requireAuth, async (req, res): Promise<void> => {
-  const [article] = await db.insert(articlesTable).values(req.body).returning();
+  const [article] = await db.insert(articlesTable).values(parseDates(req.body)).returning();
   res.status(201).json(article);
 });
 
@@ -42,7 +53,7 @@ router.put("/articles/:id", requireAuth, async (req, res): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
-  const [article] = await db.update(articlesTable).set(req.body).where(eq(articlesTable.id, id)).returning();
+  const [article] = await db.update(articlesTable).set(parseDates(req.body)).where(eq(articlesTable.id, id)).returning();
   if (!article) { res.status(404).json({ error: "Not found" }); return; }
   res.json(article);
 });
