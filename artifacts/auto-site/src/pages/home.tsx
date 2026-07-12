@@ -669,12 +669,14 @@ export default function Home() {
                 <div className="h-44 overflow-hidden relative bg-slate-100">
                   <img src={car.image} alt={`${car.make} ${car.model}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
-                  {car.badge && (
-                    <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-blue-600 text-white">{car.badge}</span>
-                  )}
-                  <span className={`absolute top-3 ${car.badge ? "left-[calc(0.75rem+60px)]" : "left-3"} px-2 py-1 rounded text-xs font-semibold ${car.status === "available" ? "bg-green-500 text-white" : "bg-amber-500 text-white"}`}>
-                    {car.status === "available" ? "Available" : "Reserved"}
-                  </span>
+                  <div className="absolute top-3 left-3 flex items-center gap-1.5 flex-wrap">
+                    {car.badge && (
+                      <span className="px-2 py-1 rounded text-xs font-semibold bg-blue-600 text-white">{car.badge}</span>
+                    )}
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${car.status === "available" ? "bg-green-500 text-white" : "bg-amber-500 text-white"}`}>
+                      {car.status === "available" ? "Available" : "Reserved"}
+                    </span>
+                  </div>
                   <button onClick={(e) => { e.stopPropagation(); toggle(`available-${car.id}`); }} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
                     <Heart size={14} className={isFavorited(`available-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/70"} />
                   </button>
