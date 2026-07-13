@@ -77,32 +77,9 @@ export default function Pricing() {
               </Link>
             </motion.div>
 
-            {/* ── Buy a Vehicle in Stock ── */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
-              className="relative flex flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 overflow-hidden"
-            >
-              <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-slate-400/5 blur-3xl pointer-events-none" />
-              <div className="flex items-start justify-between mb-5">
-                <div className="w-11 h-11 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
-                  <Car className="text-slate-300" size={20} />
-                </div>
-                <span className="text-xs font-medium text-slate-400 text-right max-w-[160px] leading-snug">{t("services.stock.price")}</span>
-              </div>
-              <h2 className="text-xl font-bold text-white mb-3">{t("services.stock.title")}</h2>
-              <p className="text-slate-400 text-sm leading-relaxed mb-5">{t("services.stock.desc")}</p>
-              <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.stock.included")}</p>
-              <IncludedList keys="services.stock.inc" count={7} t={t} />
-              <Link href="/contact?service=stock"
-                className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.10] text-white font-semibold text-sm transition-all mt-auto"
-              >
-                {t("services.stock.cta")} <ArrowRight size={16} />
-              </Link>
-            </motion.div>
-
             {/* ── Free Consultation ── */}
             <motion.div
-              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
+              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}
               className="relative flex flex-col rounded-2xl border border-emerald-500/20 bg-gradient-to-b from-emerald-950/30 to-[#0D1929] p-6 overflow-hidden"
             >
               <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-emerald-600/8 blur-3xl pointer-events-none" />
@@ -123,6 +100,29 @@ export default function Pricing() {
                   {t("services.consultation.cta")} <ArrowRight size={16} />
                 </Link>
               </div>
+            </motion.div>
+
+            {/* ── Buy a Vehicle in Stock ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
+              className="relative flex flex-col rounded-2xl border border-white/[0.08] bg-white/[0.03] p-6 overflow-hidden"
+            >
+              <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-slate-400/5 blur-3xl pointer-events-none" />
+              <div className="flex items-start justify-between mb-5">
+                <div className="w-11 h-11 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
+                  <Car className="text-slate-300" size={20} />
+                </div>
+                <span className="text-xs font-medium text-slate-400 text-right max-w-[160px] leading-snug">{t("services.stock.price")}</span>
+              </div>
+              <h2 className="text-xl font-bold text-white mb-3">{t("services.stock.title")}</h2>
+              <p className="text-slate-400 text-sm leading-relaxed mb-5">{t("services.stock.desc")}</p>
+              <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.stock.included")}</p>
+              <IncludedList keys="services.stock.inc" count={7} t={t} />
+              <Link href="/contact?service=stock"
+                className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.10] text-white font-semibold text-sm transition-all mt-auto"
+              >
+                {t("services.stock.cta")} <ArrowRight size={16} />
+              </Link>
             </motion.div>
 
           </div>
