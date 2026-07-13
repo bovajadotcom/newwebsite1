@@ -277,7 +277,7 @@ export default function Home() {
                   animate={{ opacity: [1, 0.3, 1], scale: [1, 0.8, 1] }}
                   transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
                 />
-                Purchasing and Delivery to Belarus, Ukraine, and Europe
+                {t("home.hero.badge")}
               </motion.span>
             </motion.div>
 
