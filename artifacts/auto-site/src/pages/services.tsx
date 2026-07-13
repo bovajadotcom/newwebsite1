@@ -8,12 +8,49 @@ import { useLanguage } from "@/lib/i18n";
 import { PopularCarsSection } from "@/components/PopularCarsSection";
 
 const workshopServices = [
-  { icon: Sparkles,  titleKey: "services.local.detailing.title",   descKey: "services.local.detailing.desc",   price: "€100", color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20", priceBg: "bg-violet-500/10 text-violet-300 border-violet-500/20" },
-  { icon: RotateCcw, titleKey: "services.local.tires.title",       descKey: "services.local.tires.desc",       price: "€50",  color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", priceBg: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20" },
-  { icon: Wrench,    titleKey: "services.local.repair.title",      descKey: "services.local.repair.desc",      price: "€100", color: "text-amber-400",  bg: "bg-amber-500/10",  border: "border-amber-500/20",  priceBg: "bg-amber-500/10 text-amber-300 border-amber-500/20" },
-  { icon: ScanSearch,titleKey: "services.local.diagnostics.title", descKey: "services.local.diagnostics.desc", price: "€50",  color: "text-blue-400",   bg: "bg-blue-500/10",   border: "border-blue-500/20",   priceBg: "bg-blue-500/10 text-blue-300 border-blue-500/20" },
-  { icon: Truck,     titleKey: "services.addons.belarus.title",    descKey: "services.addons.belarus.desc",    price: "€300+",color: "text-sky-400",    bg: "bg-sky-500/10",    border: "border-sky-500/20",    priceBg: "bg-sky-500/10 text-sky-300 border-sky-500/20" },
-  { icon: FileCheck, titleKey: "services.addons.export.title",     descKey: "services.addons.export.desc",     price: "€120", color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/20", priceBg: "bg-indigo-500/10 text-indigo-300 border-indigo-500/20", incKeys: ["services.addons.export.inc.1","services.addons.export.inc.2","services.addons.export.inc.3"] },
+  {
+    icon: Sparkles, price: "€100",
+    color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20", priceBg: "bg-violet-500/10 text-violet-300 border-violet-500/20",
+    titleKey: "services.local.detailing.title",
+    descKey:  "services.local.detailing.desc",
+    incKeys:  ["services.local.detailing.inc.1","services.local.detailing.inc.2","services.local.detailing.inc.3","services.local.detailing.inc.4","services.local.detailing.inc.5","services.local.detailing.inc.6","services.local.detailing.inc.7","services.local.detailing.inc.8","services.local.detailing.inc.9"],
+  },
+  {
+    icon: RotateCcw, price: "€50",
+    color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", priceBg: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20",
+    titleKey: "services.local.tires.title",
+    descKey:  "services.local.tires.desc",
+    incKeys:  ["services.local.tires.inc.1","services.local.tires.inc.2","services.local.tires.inc.3","services.local.tires.inc.4","services.local.tires.inc.5","services.local.tires.inc.6"],
+  },
+  {
+    icon: Wrench, price: "€100",
+    color: "text-amber-400", bg: "bg-amber-500/10", border: "border-amber-500/20", priceBg: "bg-amber-500/10 text-amber-300 border-amber-500/20",
+    titleKey: "services.local.repair.title",
+    descKey:  "services.local.repair.desc",
+    incKeys:  ["services.local.repair.inc.1","services.local.repair.inc.2","services.local.repair.inc.3","services.local.repair.inc.4","services.local.repair.inc.5","services.local.repair.inc.6","services.local.repair.inc.7","services.local.repair.inc.8"],
+    noteKey:  "services.local.repair.note",
+  },
+  {
+    icon: ScanSearch, price: "€50",
+    color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", priceBg: "bg-blue-500/10 text-blue-300 border-blue-500/20",
+    titleKey: "services.local.diagnostics.title",
+    descKey:  "services.local.diagnostics.desc",
+    incKeys:  ["services.local.diagnostics.inc.1","services.local.diagnostics.inc.2","services.local.diagnostics.inc.3","services.local.diagnostics.inc.4","services.local.diagnostics.inc.5","services.local.diagnostics.inc.6","services.local.diagnostics.inc.7","services.local.diagnostics.inc.8"],
+    noteKey:  "services.local.diagnostics.note",
+  },
+  {
+    icon: Truck, price: "€300+",
+    color: "text-sky-400", bg: "bg-sky-500/10", border: "border-sky-500/20", priceBg: "bg-sky-500/10 text-sky-300 border-sky-500/20",
+    titleKey: "services.addons.belarus.title",
+    descKey:  "services.addons.belarus.desc",
+  },
+  {
+    icon: FileCheck, price: "€120",
+    color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/20", priceBg: "bg-indigo-500/10 text-indigo-300 border-indigo-500/20",
+    titleKey: "services.addons.export.title",
+    descKey:  "services.addons.export.desc",
+    incKeys:  ["services.addons.export.inc.1","services.addons.export.inc.2","services.addons.export.inc.3"],
+  },
 ];
 
 function IncludedList({ keys, count, t }: { keys: string; count: number; t: (k: string) => string }) {
@@ -143,7 +180,7 @@ export default function Services() {
             <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{t("services.additional.label")}</span>
             <div className="h-px flex-1 bg-white/[0.06]" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
             {workshopServices.map((svc, i) => {
               const Icon = svc.icon;
               return (
@@ -151,24 +188,34 @@ export default function Services() {
                   key={i}
                   initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.08 }}
-                  className={`relative flex flex-col rounded-2xl border bg-white/[0.03] p-6 ${svc.border} hover:bg-white/[0.06] transition-all duration-300 group`}
+                  className={`relative flex flex-col rounded-2xl border bg-white/[0.03] p-6 ${svc.border} hover:bg-white/[0.06] transition-all duration-300 group h-full`}
                 >
-                  <div className={`w-12 h-12 rounded-xl ${svc.bg} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`w-12 h-12 rounded-xl ${svc.bg} flex items-center justify-center mb-5 shrink-0 group-hover:scale-110 transition-transform duration-300`}>
                     <Icon className={svc.color} size={22} />
                   </div>
                   <h3 className="text-white font-bold text-lg mb-2">{t(svc.titleKey)}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed flex-1">{t(svc.descKey)}</p>
-                  {"incKeys" in svc && svc.incKeys && (
-                    <ul className="mt-3 space-y-1.5">
-                      {svc.incKeys.map((k, j) => (
-                        <li key={j} className="flex items-center gap-2 text-xs text-slate-400">
-                          <Check size={11} className="text-emerald-500 shrink-0" />
-                          {t(k)}
-                        </li>
-                      ))}
-                    </ul>
+                  <p className="text-slate-400 text-sm leading-relaxed mb-4">{t(svc.descKey)}</p>
+
+                  {"incKeys" in svc && svc.incKeys && svc.incKeys.length > 0 && (
+                    <div className="flex-1">
+                      <p className="text-xs font-bold uppercase tracking-widest text-slate-600 mb-2">Included:</p>
+                      <ul className="space-y-1.5">
+                        {svc.incKeys.map((k, j) => (
+                          <li key={j} className="flex items-start gap-2 text-xs text-slate-400">
+                            <Check size={11} className="text-emerald-500 shrink-0 mt-0.5" />
+                            {t(k)}
+                          </li>
+                        ))}
+                      </ul>
+                      {"noteKey" in svc && svc.noteKey && (
+                        <p className="mt-3 text-xs text-slate-600 italic leading-relaxed">{t(svc.noteKey as string)}</p>
+                      )}
+                    </div>
                   )}
-                  <div className={`mt-5 inline-flex items-baseline gap-1.5 px-3 py-2 rounded-xl border ${svc.priceBg} w-full`}>
+
+                  {(!("incKeys" in svc) || !svc.incKeys) && <div className="flex-1" />}
+
+                  <div className={`mt-5 inline-flex items-baseline gap-1.5 px-3 py-2 rounded-xl border ${svc.priceBg} w-full shrink-0`}>
                     <span className="text-xs font-medium opacity-70">{t("services.local.from")}:</span>
                     <span className="text-xl font-bold">{svc.price}</span>
                   </div>
