@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Wrench, Sparkles, RotateCcw, ScanSearch,
-  Search, ArrowRight, Car, MessageCircle, Check, Square, CheckSquare
+  Search, ArrowRight, Car, MessageCircle, Check
 } from "lucide-react";
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/i18n";
@@ -14,15 +13,6 @@ const workshopServices = [
   { icon: Wrench,    titleKey: "services.local.repair.title",      descKey: "services.local.repair.desc",      price: "€100", color: "text-amber-400",  bg: "bg-amber-500/10",  border: "border-amber-500/20",  priceBg: "bg-amber-500/10 text-amber-300 border-amber-500/20" },
   { icon: ScanSearch,titleKey: "services.local.diagnostics.title", descKey: "services.local.diagnostics.desc", price: "€50",  color: "text-blue-400",   bg: "bg-blue-500/10",   border: "border-blue-500/20",   priceBg: "bg-blue-500/10 text-blue-300 border-blue-500/20" },
 ];
-
-interface Addons { export: boolean; belarus: boolean }
-
-function buildContactUrl(service: string, addons?: Addons) {
-  const selected: string[] = [];
-  if (addons?.export) selected.push("export");
-  if (addons?.belarus) selected.push("belarus");
-  return `/contact?service=${service}${selected.length ? `&addons=${selected.join(",")}` : ""}`;
-}
 
 function IncludedList({ keys, count, t }: { keys: string; count: number; t: (k: string) => string }) {
   return (
@@ -37,37 +27,8 @@ function IncludedList({ keys, count, t }: { keys: string; count: number; t: (k: 
   );
 }
 
-function AddonRow({ checked, onChange, label, price, desc }: {
-  checked: boolean; onChange: () => void; label: string; price: string; desc: string;
-}) {
-  return (
-    <label className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all select-none ${
-      checked ? "border-blue-500/50 bg-blue-500/10" : "border-white/[0.06] bg-white/[0.03] hover:border-white/10"
-    }`}>
-      <button type="button" onClick={onChange}
-        className="shrink-0 mt-0.5 text-slate-400 hover:text-blue-400 transition-colors"
-        aria-checked={checked} role="checkbox"
-      >
-        {checked ? <CheckSquare size={18} className="text-blue-400" /> : <Square size={18} />}
-      </button>
-      <div className="flex-1 min-w-0">
-        <div className="flex items-baseline justify-between gap-2 flex-wrap">
-          <span className="text-xs text-slate-300 leading-snug">{label}</span>
-          <span className="text-sm font-bold text-blue-300 shrink-0">{price}</span>
-        </div>
-        <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{desc}</p>
-      </div>
-    </label>
-  );
-}
-
 export default function Pricing() {
   const { t } = useLanguage();
-  const [sourcingAddons, setSourcingAddons] = useState<Addons>({ export: false, belarus: false });
-  const [stockAddons, setStockAddons]       = useState<Addons>({ export: false, belarus: false });
-
-  const toggleSourcing = (key: keyof Addons) => setSourcingAddons(a => ({ ...a, [key]: !a[key] }));
-  const toggleStock    = (key: keyof Addons) => setStockAddons(a => ({ ...a, [key]: !a[key] }));
 
   return (
     <div className="w-full bg-[#07111E]">
@@ -109,14 +70,7 @@ export default function Pricing() {
               <p className="text-slate-400 text-sm leading-relaxed mb-5">{t("services.sourcing.desc")}</p>
               <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.sourcing.included")}</p>
               <IncludedList keys="services.sourcing.inc" count={9} t={t} />
-              <div className="border-t border-white/[0.06] pt-4 mb-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.addons.label")}</p>
-                <div className="space-y-2">
-                  <AddonRow checked={sourcingAddons.export}   onChange={() => toggleSourcing("export")}   label={t("services.addons.export.title")}   price={t("services.addons.export.price")}   desc={t("services.addons.export.desc")} />
-                  <AddonRow checked={sourcingAddons.belarus}  onChange={() => toggleSourcing("belarus")}  label={t("services.addons.belarus.title")}  price={t("services.addons.belarus.price")}  desc={t("services.addons.belarus.desc")} />
-                </div>
-              </div>
-              <Link href={buildContactUrl("sourcing", sourcingAddons)}
+              <Link href="/contact?service=sourcing"
                 className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_28px_rgba(37,99,235,0.5)] mt-auto"
               >
                 {t("services.sourcing.cta")} <ArrowRight size={16} />
@@ -139,14 +93,7 @@ export default function Pricing() {
               <p className="text-slate-400 text-sm leading-relaxed mb-5">{t("services.stock.desc")}</p>
               <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.stock.included")}</p>
               <IncludedList keys="services.stock.inc" count={7} t={t} />
-              <div className="border-t border-white/[0.06] pt-4 mb-5">
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.addons.label")}</p>
-                <div className="space-y-2">
-                  <AddonRow checked={stockAddons.export}   onChange={() => toggleStock("export")}   label={t("services.addons.export.title")}   price={t("services.addons.export.price")}   desc={t("services.addons.export.desc")} />
-                  <AddonRow checked={stockAddons.belarus}  onChange={() => toggleStock("belarus")}  label={t("services.addons.belarus.title")}  price={t("services.addons.belarus.price")}  desc={t("services.addons.belarus.desc")} />
-                </div>
-              </div>
-              <Link href={buildContactUrl("stock", stockAddons)}
+              <Link href="/contact?service=stock"
                 className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.10] text-white font-semibold text-sm transition-all mt-auto"
               >
                 {t("services.stock.cta")} <ArrowRight size={16} />
