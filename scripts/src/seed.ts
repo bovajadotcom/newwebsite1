@@ -8,6 +8,7 @@ import {
   pricingPackagesTable,
   testimonialsTable,
   siteSettingsTable,
+  faqItemsTable,
 } from "@workspace/db";
 import bcrypt from "bcryptjs";
 import { sql } from "drizzle-orm";
@@ -104,14 +105,28 @@ async function seed() {
     { name: "Elena Müller", country: "Estonia", vehicleName: "Audi Q7 55 TFSI", rating: 5, content: "The whole process took just 3 weeks from order to delivery. The pre-purchase inspection gave me total peace of mind. Would absolutely use again for my next car.", isActive: true },
   ]);
 
-  // Site settings (calculator config + general)
+  // Site settings
   await db.execute(sql`TRUNCATE site_settings RESTART IDENTITY CASCADE`);
   await db.insert(siteSettingsTable).values([
     // General
-    { key: "general.company_name", value: "AutoImport Pro", label: "Company Name", group: "general" },
-    { key: "general.phone", value: "+48 123 456 789", label: "Phone Number", group: "general" },
-    { key: "general.email", value: "info@autoimportpro.eu", label: "Email Address", group: "general" },
-    { key: "general.whatsapp", value: "+48123456789", label: "WhatsApp Number", group: "general" },
+    { key: "general.company_name", value: "BOVAJA", label: "Company Name", group: "general" },
+    // Contact
+    { key: "contact.phone", value: "+370 600 00000", label: "Phone Number", group: "contact" },
+    { key: "contact.email", value: "bovaja.auctions@gmail.com", label: "Email Address", group: "contact" },
+    { key: "contact.address_line1", value: "Gariūnai Car Market, Site 309A", label: "Address Line 1", group: "contact" },
+    { key: "contact.address_line2", value: "Gariūnų g. 49, Vilnius 02300", label: "Address Line 2", group: "contact" },
+    { key: "contact.country", value: "Lithuania", label: "Country", group: "contact" },
+    { key: "contact.maps_url", value: "https://maps.google.com/?q=Gariu%CC%B3nu%CC%B3+g.+49,+Vilnius", label: "Google Maps URL", group: "contact" },
+    // Social
+    { key: "social.whatsapp", value: "37060000000", label: "WhatsApp Number (digits only)", group: "social" },
+    { key: "social.telegram", value: "bovaja", label: "Telegram Handle (without @)", group: "social" },
+    { key: "social.viber", value: "37060000000", label: "Viber Number (digits only)", group: "social" },
+    // Stats (homepage counters)
+    { key: "stats.vehicles_delivered", value: "5000", label: "Vehicles Delivered", group: "stats" },
+    { key: "stats.satisfaction_rate", value: "98", label: "Client Satisfaction Rate (%)", group: "stats" },
+    { key: "stats.years_experience", value: "12", label: "Years of Experience", group: "stats" },
+    { key: "stats.countries_served", value: "40", label: "Countries Served", group: "stats" },
+    { key: "stats.total_value_billion", value: "2.4", label: "Total Value Sourced (€ billion)", group: "stats" },
     // Calculator
     { key: "calculator.service_fee", value: "500", label: "Service Fee (EUR)", group: "calculator" },
     { key: "calculator.delivery.western_europe", value: "800", label: "Delivery Price – Western Europe (EUR)", group: "calculator" },
@@ -125,6 +140,99 @@ async function seed() {
     { key: "calculator.belarus.customs_rate", value: "15", label: "Belarus Customs Rate (%)", group: "calculator" },
     { key: "calculator.belarus.excise_rate", value: "5", label: "Belarus Excise Rate (%)", group: "calculator" },
     { key: "calculator.belarus.registration_docs", value: "150", label: "Belarus Registration Docs Fee (EUR)", group: "calculator" },
+  ]);
+
+  // FAQ items
+  await db.execute(sql`TRUNCATE faq_items RESTART IDENTITY CASCADE`);
+  await db.insert(faqItemsTable).values([
+    {
+      questionEn: "How long does the import process take?",
+      questionPl: "Jak długo trwa proces importu?",
+      questionRu: "Сколько времени занимает процесс импорта?",
+      questionLt: "Kiek laiko trunka importo procesas?",
+      answerEn: "The typical import process takes 3–6 weeks from order confirmation to delivery, depending on the source country and destination. Germany to Lithuania usually takes 3–4 weeks; Japan or the US can take 5–8 weeks.",
+      answerPl: "Typowy proces importu trwa od 3 do 6 tygodni od potwierdzenia zamówienia do dostawy, w zależności od kraju pochodzenia i miejsca docelowego.",
+      answerRu: "Типичный процесс импорта занимает от 3 до 6 недель с момента подтверждения заказа до доставки, в зависимости от страны происхождения и пункта назначения.",
+      answerLt: "Tipinis importo procesas trunka 3–6 savaites nuo užsakymo patvirtinimo iki pristatymo, priklausomai nuo kilmės šalies ir paskirties vietos.",
+      sortOrder: 1, isActive: true,
+    },
+    {
+      questionEn: "Which auction platforms do you work with?",
+      questionPl: "Z jakimi platformami aukcyjnymi współpracujecie?",
+      questionRu: "С какими аукционными платформами вы работаете?",
+      questionLt: "Su kokiomis aukcionų platformomis dirbate?",
+      answerEn: "We have direct access to BCA, OPENLANE, Auto1, Alcopa, Alphabet, Arval, Autorola, mobile.de, and many exclusive European dealer networks, as well as Copart, IAAI, and Manheim for US-sourced vehicles.",
+      answerPl: "Mamy bezpośredni dostęp do BCA, OPENLANE, Auto1, Alcopa, Alphabet, Arval, Autorola, mobile.de i wielu ekskluzywnych sieci dealerskich, a także Copart, IAAI i Manheim.",
+      answerRu: "У нас есть прямой доступ к BCA, OPENLANE, Auto1, Alcopa, Alphabet, Arval, Autorola, mobile.de и многим эксклюзивным дилерским сетям, а также к Copart, IAAI и Manheim.",
+      answerLt: "Turime tiesioginę prieigą prie BCA, OPENLANE, Auto1, Alcopa, Alphabet, Arval, Autorola, mobile.de ir daugelio išskirtinių Europos platintojų tinklų.",
+      sortOrder: 2, isActive: true,
+    },
+    {
+      questionEn: "What documents do I need to import a car?",
+      questionPl: "Jakie dokumenty są potrzebne do importu samochodu?",
+      questionRu: "Какие документы нужны для импорта автомобиля?",
+      questionLt: "Kokių dokumentų reikia automobilio importui?",
+      answerEn: "Generally, a valid ID or passport and proof of address. We handle all export/import certificates, customs declarations, VAT documentation, homologation, and registration paperwork on your behalf.",
+      answerPl: "Zazwyczaj wymagany jest ważny dowód tożsamości lub paszport i potwierdzenie adresu. Zajmujemy się całą dokumentacją celną, VAT, homologacją i rejestracją.",
+      answerRu: "Как правило, действующий паспорт и подтверждение адреса. Мы берём на себя всю документацию по экспорту/импорту, таможню, НДС, гомологацию и регистрацию.",
+      answerLt: "Paprastai reikalingas galiojantis asmens dokumentas ir gyvenamosios vietos patvirtinimas. Visus eksporto/importo sertifikatus, muitus, PVM ir registraciją tvarkome mes.",
+      sortOrder: 3, isActive: true,
+    },
+    {
+      questionEn: "What is your service fee?",
+      questionPl: "Jaka jest wasza opłata serwisowa?",
+      questionRu: "Какова ваша сервисная плата?",
+      questionLt: "Kokia jūsų paslaugos kaina?",
+      answerEn: "Our service fee starts from €500 for standard sourcing. Use our online calculator to get a full cost breakdown including VAT, customs duties, and delivery for your specific destination.",
+      answerPl: "Nasza opłata serwisowa zaczyna się od 500 EUR za standardowe wyszukiwanie. Skorzystaj z naszego kalkulatora online, aby uzyskać pełny podział kosztów.",
+      answerRu: "Наша сервисная плата начинается от 500 EUR за стандартный поиск. Воспользуйтесь нашим онлайн-калькулятором для полного расчёта стоимости.",
+      answerLt: "Mūsų paslaugos mokestis prasideda nuo 500 EUR už standartinę paiešką. Naudokite mūsų skaičiuoklę pilnai išlaidų specifikacijai gauti.",
+      sortOrder: 4, isActive: true,
+    },
+    {
+      questionEn: "Can I inspect the vehicle before purchase?",
+      questionPl: "Czy mogę obejrzeć pojazd przed zakupem?",
+      questionRu: "Могу ли я осмотреть автомобиль перед покупкой?",
+      questionLt: "Ar galiu apžiūrėti transporto priemonę prieš pirkimą?",
+      answerEn: "Yes. We arrange a professional pre-purchase inspection by certified independent mechanics at the vehicle's location. A full inspection report is included with every order.",
+      answerPl: "Tak. Organizujemy profesjonalną inspekcję przedsprzedażową przez certyfikowanych niezależnych mechaników w miejscu, gdzie znajduje się pojazd.",
+      answerRu: "Да. Мы организуем профессиональную предпродажную инспекцию сертифицированными независимыми механиками по месту нахождения автомобиля.",
+      answerLt: "Taip. Organizuojame profesionalią priešpirkinę patikrą sertifikuotų nepriklausomų mechanikų transporto priemonės vietoje.",
+      sortOrder: 5, isActive: true,
+    },
+    {
+      questionEn: "How are customs and taxes handled?",
+      questionPl: "Jak obsługiwane są cła i podatki?",
+      questionRu: "Как обрабатываются таможня и налоги?",
+      questionLt: "Kaip tvarkomi muitai ir mokesčiai?",
+      answerEn: "We calculate all estimated duties and taxes upfront using our online calculator. Our team handles the full customs clearance process — you pay no hidden fees. All amounts are agreed before the order is placed.",
+      answerPl: "Obliczamy wszystkie szacowane cła i podatki z góry za pomocą naszego kalkulatora online. Nasz zespół zajmuje się pełną odprawą celną — bez ukrytych opłat.",
+      answerRu: "Мы рассчитываем все предполагаемые пошлины и налоги заранее через онлайн-калькулятор. Наша команда берёт на себя полное таможенное оформление — без скрытых платежей.",
+      answerLt: "Visus numatomus muitus ir mokesčius apskaičiuojame iš anksto naudodami mūsų skaičiuoklę. Mūsų komanda atlieka visą muitinio įforminimo procesą — jokių paslėptų mokesčių.",
+      sortOrder: 6, isActive: true,
+    },
+    {
+      questionEn: "Do you offer delivery to my city?",
+      questionPl: "Czy oferujecie dostawę do mojego miasta?",
+      questionRu: "Предлагаете ли вы доставку в мой город?",
+      questionLt: "Ar siūlote pristatymą į mano miestą?",
+      answerEn: "Yes, we offer door-to-door delivery across all of Europe, including Poland, Lithuania, Latvia, Estonia, Belarus, and beyond. Delivery costs depend on the destination and are shown in the calculator.",
+      answerPl: "Tak, oferujemy dostawę od drzwi do drzwi w całej Europie, w tym do Polski, Litwy, Łotwy, Estonii, Białorusi i innych krajów.",
+      answerRu: "Да, мы предлагаем доставку «от двери до двери» по всей Европе, включая Польшу, Литву, Латвию, Эстонию, Беларусь и другие страны.",
+      answerLt: "Taip, siūlome „nuo durų iki durų" pristatymą visoje Europoje, įskaitant Lenkiją, Lietuvą, Latviją, Estiją, Baltarusiją ir kitas šalis.",
+      sortOrder: 7, isActive: true,
+    },
+    {
+      questionEn: "What happens after the car is delivered?",
+      questionPl: "Co się dzieje po dostawie samochodu?",
+      questionRu: "Что происходит после доставки автомобиля?",
+      questionLt: "Kas nutinka po automobilio pristatymo?",
+      answerEn: "After delivery, your dedicated manager remains available to help with any post-delivery questions. We also assist with local registration if needed.",
+      answerPl: "Po dostawie Twój dedykowany opiekun pozostaje do dyspozycji w celu pomocy z wszelkimi pytaniami. Pomagamy również w lokalnej rejestracji, jeśli jest potrzebna.",
+      answerRu: "После доставки ваш персональный менеджер остаётся на связи для ответа на любые вопросы. Мы также помогаем с местной регистрацией при необходимости.",
+      answerLt: "Po pristatymo jūsų paskirtas vadybininkas lieka pasiekiamas bet kokiais klausimais. Taip pat padedame su vietiniu registravimu, jei reikia.",
+      sortOrder: 8, isActive: true,
+    },
   ]);
 
   console.log("Seed complete.");

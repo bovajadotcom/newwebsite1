@@ -12,6 +12,7 @@ import PopularVehiclesPage from "@/pages/popular-vehicles";
 import ServicesPage from "@/pages/services";
 import PricingPage from "@/pages/pricing";
 import TestimonialsPage from "@/pages/testimonials";
+import FaqPage from "@/pages/faq";
 import TranslationsPage from "@/pages/translations";
 import SettingsPage from "@/pages/settings";
 import ArticlesPage from "@/pages/articles";
@@ -60,6 +61,7 @@ function Router() {
               <Route path="/services" component={ServicesPage} />
               <Route path="/pricing" component={PricingPage} />
               <Route path="/testimonials" component={TestimonialsPage} />
+              <Route path="/faq" component={FaqPage} />
               <Route path="/articles" component={ArticlesPage} />
               <Route path="/careers" component={CareersPage} />
               <Route path="/translations" component={TranslationsPage} />

@@ -10,3 +10,4 @@ export * from "./site_settings";
 export * from "./leads";
 export * from "./articles";
 export * from "./career_applications";
+export * from "./faq_items";
