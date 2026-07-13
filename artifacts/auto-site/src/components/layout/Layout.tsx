@@ -35,7 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <img
               src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
               alt="BOVAJA"
-              className="h-8 w-auto brightness-0 invert"
+              className="h-8 w-auto"
             />
           </Link>
 
@@ -174,7 +174,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             {/* Brand */}
             <div className="lg:col-span-1">
               <Link href="/" className="flex items-center gap-2 mb-5">
-                <img src={`${import.meta.env.BASE_URL}bovaja-logo.png`} alt="BOVAJA" className="h-7 w-auto brightness-0 invert" />
+                <img src={`${import.meta.env.BASE_URL}bovaja-logo.png`} alt="BOVAJA" className="h-7 w-auto" />
               </Link>
               <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t("footer.tagline")}</p>
               <div className="flex gap-2">
