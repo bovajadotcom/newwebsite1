@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, MessageCircle, Phone, Send, CheckCircle2, Bell } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 const STORAGE_KEY = "bovaja_subscribed";
 
@@ -28,6 +29,7 @@ interface LeadCaptureModalProps {
 }
 
 export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
+  const { t } = useLanguage();
   const [visible, setVisible]   = useState(false);
   const [channel, setChannel]   = useState("telegram");
   const [contact, setContact]   = useState("");
@@ -149,15 +151,15 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                         <Bell className="text-blue-400" size={18} />
                       </div>
                       <div>
-                        <h2 className="text-white font-bold text-lg leading-tight">New Car Alerts</h2>
-                        <p className="text-slate-400 text-sm">Be the first to know — before new arrivals go public</p>
+                        <h2 className="text-white font-bold text-lg leading-tight">{t("modal.alert.title")}</h2>
+                        <p className="text-slate-400 text-sm">{t("modal.alert.sub")}</p>
                       </div>
                     </div>
 
                     <form onSubmit={submit} className="space-y-5">
                       {/* Channel selector */}
                       <div>
-                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">Notify me via</p>
+                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-3">{t("modal.alert.channel")}</p>
                         <div className="grid grid-cols-4 gap-2">
                           {CHANNELS.map(ch => {
                             const Icon = ch.icon;
@@ -183,7 +185,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
 
                       {/* Contact input */}
                       <div>
-                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Your contact</p>
+                        <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">{t("modal.alert.contact")}</p>
                         <input
                           type="text"
                           value={contact}
@@ -205,13 +207,13 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                         ) : (
                           <>
                             <ActiveIcon size={16} />
-                            Subscribe to alerts
+                            {t("modal.alert.submit")}
                           </>
                         )}
                       </button>
 
                       <p className="text-center text-xs text-slate-600">
-                        No spam. New arrivals only.
+                        {t("modal.alert.nospam")}
                       </p>
                     </form>
                   </>
@@ -226,10 +228,10 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                       <CheckCircle2 className="text-green-400" size={32} />
                     </div>
                     <div>
-                      <h3 className="text-white font-bold text-xl mb-1">You're in!</h3>
+                      <h3 className="text-white font-bold text-xl mb-1">{t("modal.alert.done")}</h3>
                       <p className="text-slate-400 text-sm">
-                        You'll receive alerts via <span className="text-blue-400 font-medium">{activeChannel.label}</span>.
-                        <br />We'll notify you as soon as new vehicles arrive.
+                        {t("modal.alert.doneVia")} <span className="text-blue-400 font-medium">{activeChannel.label}</span>.
+                        <br />{t("modal.alert.doneMsg")}
                       </p>
                     </div>
                   </motion.div>
