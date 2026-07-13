@@ -40,15 +40,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
             />
           </Link>
 
-          {/* Desktop nav — centered */}
-          <nav className="hidden xl:flex items-center gap-0.5 flex-1">
+          {/* Desktop nav — hidden below lg */}
+          <nav className="hidden lg:flex items-center gap-0 flex-1 overflow-hidden">
             {navLinks.map((link) => {
               const active = location === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3 py-1.5 rounded-xl text-[13px] font-medium transition-all whitespace-nowrap ${
+                  className={`px-2 xl:px-3 py-1.5 rounded-xl text-[11px] xl:text-[13px] font-medium transition-all whitespace-nowrap ${
                     active
                       ? "text-white bg-white/10"
                       : "text-slate-400 hover:text-white hover:bg-white/5"
@@ -60,15 +60,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
             })}
           </nav>
 
-          {/* Right: lang + heart + CTA */}
-          <div className="flex items-center gap-2 ml-4">
-            {/* Language switcher */}
-            <div className="hidden sm:flex items-center gap-0.5 bg-white/[0.06] rounded-lg p-0.5">
+          {/* Right: lang + heart + CTA + burger */}
+          <div className="flex items-center gap-1.5 sm:gap-2 ml-2 sm:ml-4 shrink-0">
+
+            {/* Language switcher — visible sm+ on mobile, always on desktop */}
+            <div className="flex items-center gap-0.5 bg-white/[0.06] rounded-lg p-0.5">
               {(["en", "pl", "ru", "lt"] as const).map((l) => (
                 <button
                   key={l}
                   onClick={() => setLang(l)}
-                  className={`px-2 py-1 rounded-md text-[11px] font-bold uppercase transition-all ${
+                  className={`px-1.5 sm:px-2 py-1 rounded-md text-[10px] sm:text-[11px] font-bold uppercase transition-all ${
                     lang === l ? "bg-blue-600 text-white" : "text-slate-500 hover:text-white"
                   }`}
                 >
@@ -77,13 +78,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
               ))}
             </div>
 
-            {/* Heart / wishlist */}
+            {/* Heart / wishlist — visible sm+ */}
             <Link
               href="/favorites"
-              className="relative hidden sm:flex w-9 h-9 rounded-xl border border-white/10 items-center justify-center text-slate-500 hover:text-red-400 hover:border-red-400/30 transition-all"
+              className="relative hidden sm:flex w-8 h-8 xl:w-9 xl:h-9 rounded-xl border border-white/10 items-center justify-center text-slate-500 hover:text-red-400 hover:border-red-400/30 transition-all"
               title="Избранное"
             >
-              <Heart size={15} className={favCount > 0 ? "text-red-500" : ""} />
+              <Heart size={14} className={favCount > 0 ? "text-red-500" : ""} />
               {favCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none">
                   {favCount > 9 ? "9+" : favCount}
@@ -91,17 +92,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
               )}
             </Link>
 
-            {/* CTA */}
+            {/* CTA — hidden on xs, visible sm+ */}
             <Link
               href="/contact"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-[13px] font-semibold rounded-xl transition-all shadow-[0_0_16px_rgba(37,99,235,0.35)] hover:shadow-[0_0_24px_rgba(37,99,235,0.5)] whitespace-nowrap"
+              className="hidden sm:inline-flex px-3 xl:px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-[12px] xl:text-[13px] font-semibold rounded-xl transition-all shadow-[0_0_16px_rgba(37,99,235,0.35)] hover:shadow-[0_0_24px_rgba(37,99,235,0.5)] whitespace-nowrap items-center"
             >
               {t("nav.getQuote")}
             </Link>
 
-            {/* Mobile burger */}
+            {/* Burger — visible below lg only */}
             <button
-              className="xl:hidden p-2 text-slate-400 hover:text-white rounded-xl hover:bg-white/5 transition-all"
+              className="lg:hidden p-2 text-slate-400 hover:text-white rounded-xl hover:bg-white/5 transition-all"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -117,7 +118,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            className="fixed inset-0 z-40 bg-[#07111E]/98 backdrop-blur-xl pt-[80px] px-6 xl:hidden overflow-y-auto"
+            className="fixed inset-0 z-40 bg-[#07111E]/98 backdrop-blur-xl pt-[80px] px-6 lg:hidden overflow-y-auto"
           >
             <div className="flex items-center gap-1 bg-white/[0.06] rounded-xl p-1 mb-6">
               {(["en", "pl", "ru", "lt"] as const).map((l) => (
