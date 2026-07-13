@@ -13,7 +13,6 @@ import Home from "@/pages/home";
 import Inventory from "@/pages/inventory";
 import Popular from "@/pages/popular";
 import Services from "@/pages/services";
-import Pricing from "@/pages/pricing";
 import Calculator from "@/pages/calculator";
 import Business from "@/pages/business";
 import About from "@/pages/about";
@@ -46,7 +45,6 @@ function Router() {
         <Route path="/inventory" component={Inventory} />
         <Route path="/popular" component={Popular} />
         <Route path="/services" component={Services} />
-        <Route path="/pricing" component={Pricing} />
         <Route path="/calculator" component={Calculator} />
         <Route path="/business" component={Business} />
         <Route path="/about" component={About} />

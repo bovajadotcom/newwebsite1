@@ -10,7 +10,6 @@ const navLinks = [
   { labelKey: "nav.inventory",  href: "/inventory" },
   { labelKey: "nav.popular",    href: "/popular" },
   { labelKey: "nav.services",   href: "/services" },
-  { labelKey: "nav.pricing",    href: "/pricing" },
   { labelKey: "nav.calculator", href: "/calculator" },
   { labelKey: "nav.business",   href: "/business" },
   { labelKey: "nav.about",      href: "/about" },
@@ -225,7 +224,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <li><Link href="/inventory" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.inventory")}</Link></li>
                 <li><Link href="/popular" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.popular")}</Link></li>
                 <li><Link href="/services" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.services")}</Link></li>
-                <li><Link href="/pricing" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.pricing")}</Link></li>
                 <li><Link href="/calculator" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.calculator")}</Link></li>
                 <li><Link href="/business" className="text-muted-foreground hover:text-primary text-sm transition-colors">{t("nav.business")}</Link></li>
               </ul>
