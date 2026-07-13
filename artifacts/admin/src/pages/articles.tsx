@@ -104,6 +104,15 @@ interface ArticleForm {
   slug: string;
   excerpt: string;
   content: string;
+  titlePl: string;
+  excerptPl: string;
+  contentPl: string;
+  titleRu: string;
+  excerptRu: string;
+  contentRu: string;
+  titleLt: string;
+  excerptLt: string;
+  contentLt: string;
   coverImage: string;
   publishedAt: string;
   status: string;
@@ -114,10 +123,37 @@ const EMPTY_FORM: ArticleForm = {
   slug: "",
   excerpt: "",
   content: "",
+  titlePl: "",
+  excerptPl: "",
+  contentPl: "",
+  titleRu: "",
+  excerptRu: "",
+  contentRu: "",
+  titleLt: "",
+  excerptLt: "",
+  contentLt: "",
   coverImage: "",
   publishedAt: new Date().toISOString().split("T")[0],
   status: "draft",
 };
+
+const LANGS = [
+  { key: "en", label: "🇬🇧 EN" },
+  { key: "pl", label: "🇵🇱 PL" },
+  { key: "ru", label: "🇷🇺 RU" },
+  { key: "lt", label: "🇱🇹 LT" },
+] as const;
+
+type LangKey = "en" | "pl" | "ru" | "lt";
+
+function langFields(lang: LangKey): { title: keyof ArticleForm; excerpt: keyof ArticleForm; content: keyof ArticleForm } {
+  if (lang === "en") return { title: "title", excerpt: "excerpt", content: "content" };
+  return {
+    title: `title${lang.charAt(0).toUpperCase() + lang.slice(1)}` as keyof ArticleForm,
+    excerpt: `excerpt${lang.charAt(0).toUpperCase() + lang.slice(1)}` as keyof ArticleForm,
+    content: `content${lang.charAt(0).toUpperCase() + lang.slice(1)}` as keyof ArticleForm,
+  };
+}
 
 export default function ArticlesPage() {
   const { data: articles = [], isLoading } = useGetAllArticles();
@@ -132,6 +168,7 @@ export default function ArticlesPage() {
   const [deleteTarget, setDeleteTarget] = useState<Article | null>(null);
   const [form, setForm] = useState<ArticleForm>(EMPTY_FORM);
   const [previewMode, setPreviewMode] = useState(false);
+  const [activeLang, setActiveLang] = useState<LangKey>("en");
 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: getGetAllArticlesQueryKey() });
 
@@ -139,6 +176,7 @@ export default function ArticlesPage() {
     setEditingArticle(null);
     setForm(EMPTY_FORM);
     setPreviewMode(false);
+    setActiveLang("en");
     setDialogOpen(true);
   };
 
@@ -149,11 +187,21 @@ export default function ArticlesPage() {
       slug: a.slug,
       excerpt: a.excerpt,
       content: a.content,
+      titlePl: (a as Record<string, unknown>).titlePl as string ?? "",
+      excerptPl: (a as Record<string, unknown>).excerptPl as string ?? "",
+      contentPl: (a as Record<string, unknown>).contentPl as string ?? "",
+      titleRu: (a as Record<string, unknown>).titleRu as string ?? "",
+      excerptRu: (a as Record<string, unknown>).excerptRu as string ?? "",
+      contentRu: (a as Record<string, unknown>).contentRu as string ?? "",
+      titleLt: (a as Record<string, unknown>).titleLt as string ?? "",
+      excerptLt: (a as Record<string, unknown>).excerptLt as string ?? "",
+      contentLt: (a as Record<string, unknown>).contentLt as string ?? "",
       coverImage: a.coverImage,
       publishedAt: a.publishedAt ? a.publishedAt.split("T")[0] : new Date().toISOString().split("T")[0],
       status: a.status,
     });
     setPreviewMode(false);
+    setActiveLang("en");
     setDialogOpen(true);
   };
 
@@ -169,7 +217,7 @@ export default function ArticlesPage() {
 
   const handleSave = async () => {
     if (!form.title.trim() || !form.slug.trim()) {
-      toast({ title: "Title and Slug are required", variant: "destructive" });
+      toast({ title: "Title (EN) and Slug are required", variant: "destructive" });
       return;
     }
     const payload = {
@@ -220,6 +268,8 @@ export default function ArticlesPage() {
     }
   };
 
+  const fields = langFields(activeLang);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -256,6 +306,16 @@ export default function ArticlesPage() {
                   <Badge variant={a.status === "published" ? "default" : "secondary"}>
                     {a.status}
                   </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {["pl", "ru", "lt"].map((l) => {
+                      const hasTitle = !!((a as Record<string, unknown>)[`title${l.charAt(0).toUpperCase() + l.slice(1)}`] as string);
+                      return (
+                        <span key={l} className={hasTitle ? "text-green-500 mr-1" : "text-muted-foreground/40 mr-1"}>
+                          {l.toUpperCase()}
+                        </span>
+                      );
+                    })}
+                  </span>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1 line-clamp-1">{a.excerpt}</p>
                 <p className="text-xs text-muted-foreground mt-1">
@@ -289,30 +349,20 @@ export default function ArticlesPage() {
             <DialogTitle>{editingArticle ? "Edit Article" : "New Article"}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
+            {/* Slug, Cover, Date, Status — shared across all langs */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium">Title *</label>
-                <Input value={form.title} onChange={(e) => update("title", e.target.value)} placeholder="How to Choose a Car from Europe" />
-              </div>
               <div className="space-y-1.5">
                 <label className="text-sm font-medium">Slug *</label>
                 <Input value={form.slug} onChange={(e) => update("slug", e.target.value)} placeholder="how-to-choose-a-car-from-europe" />
               </div>
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Cover Image URL</label>
+                <Input value={form.coverImage} onChange={(e) => update("coverImage", e.target.value)} placeholder="https://… or /uploads/articles/…" />
+              </div>
             </div>
-
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium">Excerpt</label>
-              <Textarea value={form.excerpt} onChange={(e) => update("excerpt", e.target.value)} placeholder="Short article preview shown on the listing page…" rows={2} />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-sm font-medium">Cover Image URL</label>
-              <Input value={form.coverImage} onChange={(e) => update("coverImage", e.target.value)} placeholder="https://… or /uploads/articles/…" />
-              {form.coverImage && (
-                <img src={form.coverImage} alt="preview" className="mt-1 h-28 object-cover rounded-md border border-border" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
-              )}
-            </div>
-
+            {form.coverImage && (
+              <img src={form.coverImage} alt="preview" className="h-28 object-cover rounded-md border border-border" onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }} />
+            )}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-sm font-medium">Publication Date</label>
@@ -331,21 +381,67 @@ export default function ArticlesPage() {
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-medium">Content (Markdown)</label>
-                <Button type="button" variant="ghost" size="sm" className="gap-1.5 text-xs" onClick={() => setPreviewMode((p) => !p)}>
-                  {previewMode ? <><Pencil className="w-3 h-3" /> Edit</> : <><Eye className="w-3 h-3" /> Preview</>}
-                </Button>
+            {/* Language tabs */}
+            <div className="border border-border rounded-lg overflow-hidden">
+              <div className="flex border-b border-border bg-muted">
+                {LANGS.map((l) => (
+                  <button
+                    key={l.key}
+                    type="button"
+                    onClick={() => setActiveLang(l.key)}
+                    className={`px-4 py-2 text-sm font-medium transition-colors ${
+                      activeLang === l.key
+                        ? "bg-background text-foreground border-b-2 border-primary"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {l.label}
+                    {l.key !== "en" && form[langFields(l.key).title] && (
+                      <span className="ml-1.5 w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+                    )}
+                  </button>
+                ))}
               </div>
-              {previewMode ? (
-                <div
-                  className="min-h-[200px] p-4 rounded-md border border-border bg-muted prose prose-invert prose-sm max-w-none"
-                  dangerouslySetInnerHTML={{ __html: form.content.replace(/\n/g, "<br/>") }}
-                />
-              ) : (
-                <MarkdownEditor value={form.content} onChange={(v) => update("content", v)} />
-              )}
+
+              <div className="p-4 space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">
+                    Title {activeLang === "en" ? "*" : <span className="text-muted-foreground font-normal">(optional — falls back to EN)</span>}
+                  </label>
+                  <Input
+                    value={form[fields.title] as string}
+                    onChange={(e) => update(fields.title, e.target.value)}
+                    placeholder={activeLang === "en" ? "How to Choose a Car from Europe" : `Title in ${activeLang.toUpperCase()}…`}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">Excerpt</label>
+                  <Textarea
+                    value={form[fields.excerpt] as string}
+                    onChange={(e) => update(fields.excerpt, e.target.value)}
+                    placeholder={activeLang === "en" ? "Short article preview…" : `Excerpt in ${activeLang.toUpperCase()}…`}
+                    rows={2}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-sm font-medium">Content (Markdown)</label>
+                    <Button type="button" variant="ghost" size="sm" className="gap-1.5 text-xs" onClick={() => setPreviewMode((p) => !p)}>
+                      {previewMode ? <><Pencil className="w-3 h-3" /> Edit</> : <><Eye className="w-3 h-3" /> Preview</>}
+                    </Button>
+                  </div>
+                  {previewMode ? (
+                    <div
+                      className="min-h-[200px] p-4 rounded-md border border-border bg-muted prose prose-invert prose-sm max-w-none"
+                      dangerouslySetInnerHTML={{ __html: (form[fields.content] as string).replace(/\n/g, "<br/>") }}
+                    />
+                  ) : (
+                    <MarkdownEditor value={form[fields.content] as string} onChange={(v) => update(fields.content, v)} />
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="flex gap-3 pt-2">

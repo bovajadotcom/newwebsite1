@@ -147,6 +147,15 @@ export const translations = {
     "form.message": "Message",
     "form.send": "Send Message",
     "form.submit": "Submit",
+    // Articles
+    "articles.heading": "Latest News & Articles",
+    "articles.sub": "Helpful guides, market insights, and tips for importing and buying vehicles from Europe.",
+    "articles.readMore": "Read More",
+    "articles.empty": "No articles have been published yet.",
+    "articles.notFound": "Article not found",
+    "articles.backToAll": "Back to Articles",
+    "articles.published": "Published",
+    "articles.noContentLang": "Content not available in this language.",
     // Footer
     "footer.tagline": "Your gateway to global automotive excellence. Premium vehicle sourcing, purchasing, and logistics worldwide.",
     "footer.services": "Services",
@@ -281,6 +290,15 @@ export const translations = {
     "form.message": "Message",
     "form.send": "Send Message",
     "form.submit": "Submit",
+    // Articles (LT)
+    "articles.heading": "Naujienos ir Straipsniai",
+    "articles.sub": "Naudingi patarimai, rinkos įžvalgos ir rekomendacijos importuojant automobilius iš Europos.",
+    "articles.readMore": "Skaityti Daugiau",
+    "articles.empty": "Straipsnių dar nėra.",
+    "articles.notFound": "Straipsnis nerastas",
+    "articles.backToAll": "Visi Straipsniai",
+    "articles.published": "Paskelbta",
+    "articles.noContentLang": "Turinys šia kalba neprieinamas.",
     // Footer
     "footer.tagline": "Your gateway to global automotive excellence. Premium vehicle sourcing, purchasing, and logistics worldwide.",
     "footer.services": "Services",
@@ -415,6 +433,15 @@ export const translations = {
     "form.message": "Wiadomość",
     "form.send": "Wyślij",
     "form.submit": "Prześlij",
+    // Articles
+    "articles.heading": "Aktualności i Poradniki",
+    "articles.sub": "Przydatne poradniki, analizy rynku i wskazówki dotyczące importu i zakupu pojazdów z Europy.",
+    "articles.readMore": "Czytaj Więcej",
+    "articles.empty": "Brak opublikowanych artykułów.",
+    "articles.notFound": "Artykuł nie znaleziony",
+    "articles.backToAll": "Powrót do Artykułów",
+    "articles.published": "Opublikowano",
+    "articles.noContentLang": "Treść niedostępna w tym języku.",
     // Footer
     "footer.tagline": "Twoja brama do globalnej motoryzacji. Profesjonalne pozyskiwanie pojazdów i logistyka na całym świecie.",
     "footer.services": "Usługi",
@@ -549,6 +576,15 @@ export const translations = {
     "form.message": "Сообщение",
     "form.send": "Отправить",
     "form.submit": "Подтвердить",
+    // Articles
+    "articles.heading": "Новости и Статьи",
+    "articles.sub": "Полезные руководства, анализ рынка и советы по импорту и покупке автомобилей из Европы.",
+    "articles.readMore": "Читать Далее",
+    "articles.empty": "Статьи ещё не опубликованы.",
+    "articles.notFound": "Статья не найдена",
+    "articles.backToAll": "Все Статьи",
+    "articles.published": "Опубликовано",
+    "articles.noContentLang": "Содержимое недоступно на этом языке.",
     // Footer
     "footer.tagline": "Ваш путь к глобальному автомобильному превосходству. Профессиональный поиск, закупка и логистика автомобилей по всему миру.",
     "footer.services": "Услуги",

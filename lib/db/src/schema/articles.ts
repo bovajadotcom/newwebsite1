@@ -13,6 +13,16 @@ export const articlesTable = pgTable("articles", {
   status: text("status").notNull().default("draft"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+  // Multilingual fields
+  titlePl: text("title_pl").notNull().default(""),
+  titleRu: text("title_ru").notNull().default(""),
+  titleLt: text("title_lt").notNull().default(""),
+  excerptPl: text("excerpt_pl").notNull().default(""),
+  excerptRu: text("excerpt_ru").notNull().default(""),
+  excerptLt: text("excerpt_lt").notNull().default(""),
+  contentPl: text("content_pl").notNull().default(""),
+  contentRu: text("content_ru").notNull().default(""),
+  contentLt: text("content_lt").notNull().default(""),
 });
 
 export const insertArticleSchema = createInsertSchema(articlesTable).omit({ id: true, createdAt: true, updatedAt: true });
