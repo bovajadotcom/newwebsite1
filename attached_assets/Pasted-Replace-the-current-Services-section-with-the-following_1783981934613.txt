@@ -1,0 +1,96 @@
+Replace the current Services section with the following structure.
+
+The goal is to help visitors quickly understand which service best matches their needs.
+
+## 1. Free Consultation
+
+Price:
+FREE
+
+Description:
+
+Perfect for customers who are just getting familiar with our company and are not yet sure which vehicle would suit them best.
+
+Suitable for:
+
+- First-time buyers
+- Customers comparing different vehicle options
+- People who are unsure about their budget
+- Customers who want professional advice before making a decision
+
+Our specialist will explain the entire process, help compare options, estimate the total budget, and recommend the most suitable vehicle.
+
+CTA Button:
+Book Free Consultation
+
+## 2. Vehicle Sourcing
+
+Price:
+€500
+
+Description:
+
+Perfect for customers who already have a clear idea of what type of vehicle they want.
+
+We search trusted European auctions and marketplaces, verify vehicle history, assess condition, and help select the best available option based on your requirements.
+
+Our team will guide you throughout the entire sourcing and purchase process.
+
+Important:
+
+Customs declaration, transit plates, and insurance are not included.
+
+Additional documentation package:
+
+€120
+
+Includes:
+
+- Customs declaration
+- Transit plates
+- Transit insurance
+
+CTA Button:
+Request Vehicle Sourcing
+
+## 3. Buy a Vehicle in Stock
+
+Price:
+As listed in the vehicle advertisement
+
+Description:
+
+Choose a vehicle directly from our available inventory.
+
+Browse our catalog, select a vehicle, contact our team, reserve it, and complete the purchase process quickly and easily.
+
+CTA Button:
+View Available Vehicles
+
+## 4. Vehicle Preparation Package
+
+Price:
++€200
+
+Description:
+
+For customers who want to receive their vehicle professionally cleaned and prepared before delivery.
+
+Includes:
+
+- Interior deep cleaning
+- Interior detailing
+- Full interior preparation
+- Ready-for-delivery presentation
+
+CTA Button:
+Add Preparation Package
+
+Requirements:
+
+- Display these four services as the main service categories.
+- Show the price clearly on every card.
+- Keep a premium automotive design.
+- Make all content editable through the CMS.
+- Support all language versions.
+- Fully responsive on desktop, tablet, and mobile.
