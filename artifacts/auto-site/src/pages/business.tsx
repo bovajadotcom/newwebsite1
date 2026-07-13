@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import {
-  Briefcase, CheckCircle, AlertCircle, Car, ArrowLeftRight, CreditCard,
-  Truck, Users, Store, ShoppingBag, Building2, Send
+  Briefcase, CheckCircle, AlertCircle, ArrowLeftRight,
+  Store, ShoppingBag, Send
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useState, useRef } from "react";
@@ -9,15 +9,6 @@ import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 
 type Status = "idle" | "loading" | "success" | "error";
-
-const segments = [
-  { icon: Building2,      label: "Dealerships" },
-  { icon: Car,            label: "Automotive Businesses" },
-  { icon: ArrowLeftRight, label: "Resellers" },
-  { icon: CreditCard,     label: "Leasing Companies" },
-  { icon: Truck,          label: "Fleet Operators" },
-  { icon: Users,          label: "Commercial Buyers" },
-];
 
 
 const audienceCards = [
@@ -100,30 +91,6 @@ export default function Business() {
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("business.title")}</h1>
             <p className="text-xl text-slate-400 leading-relaxed max-w-3xl mx-auto">{t("business.sub")}</p>
           </motion.div>
-        </div>
-      </section>
-
-      {/* ── TARGET SEGMENTS ── */}
-      <section className="py-10 md:py-14">
-        <div className="container mx-auto px-4 max-w-5xl">
-
-          {/* Segment chips */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-0">
-            {segments.map(({ icon: Icon, label }, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.06 }}
-                className="flex flex-col items-center gap-2.5 p-4 rounded-xl border border-white/[0.08] bg-white/[0.03] text-center group"
-              >
-                <div className="w-9 h-9 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shadow-[0_0_10px_rgba(59,130,246,0.2)]">
-                  <Icon className="text-blue-400" size={16} />
-                </div>
-                <span className="text-white text-xs font-semibold leading-tight">{label}</span>
-              </motion.div>
-            ))}
-          </div>
-
         </div>
       </section>
 
