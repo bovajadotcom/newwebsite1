@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Wrench, Sparkles, RotateCcw, ScanSearch,
-  Search, ArrowRight, Car, MessageCircle, Check
+  Search, ArrowRight, Car, MessageCircle, Check, Square, CheckSquare
 } from "lucide-react";
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/i18n";
@@ -13,6 +14,52 @@ const workshopServices = [
   { icon: Wrench,    titleKey: "services.local.repair.title",      descKey: "services.local.repair.desc",      price: "€100", color: "text-amber-400",  bg: "bg-amber-500/10",  border: "border-amber-500/20",  priceBg: "bg-amber-500/10 text-amber-300 border-amber-500/20" },
   { icon: ScanSearch,titleKey: "services.local.diagnostics.title", descKey: "services.local.diagnostics.desc", price: "€50",  color: "text-blue-400",   bg: "bg-blue-500/10",   border: "border-blue-500/20",   priceBg: "bg-blue-500/10 text-blue-300 border-blue-500/20" },
 ];
+
+interface Addons { export: boolean; delivery: boolean }
+
+function buildContactUrl(service: string, addons: Addons) {
+  const selected: string[] = [];
+  if (addons.export) selected.push("export");
+  if (addons.delivery) selected.push("delivery");
+  return `/contact?service=${service}${selected.length ? `&addons=${selected.join(",")}` : ""}`;
+}
+
+function AddonRow({ checked, onChange, label, price, desc, includes }: {
+  checked: boolean; onChange: () => void;
+  label: string; price: string; desc: string; includes?: string[];
+}) {
+  return (
+    <div
+      onClick={onChange}
+      className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all select-none ${
+        checked ? "border-blue-500/40 bg-blue-500/8" : "border-white/[0.06] bg-white/[0.02] hover:border-white/10"
+      }`}
+    >
+      <div className="shrink-0 mt-0.5">
+        {checked
+          ? <CheckSquare size={17} className="text-blue-400" />
+          : <Square size={17} className="text-slate-500" />}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-baseline justify-between gap-2 flex-wrap mb-1">
+          <span className="text-sm font-semibold text-slate-200 leading-snug">{label}</span>
+          <span className="text-sm font-bold text-blue-300 shrink-0">{price}</span>
+        </div>
+        <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
+        {includes && includes.length > 0 && (
+          <ul className="mt-2 space-y-1">
+            {includes.map((item, i) => (
+              <li key={i} className="flex items-center gap-1.5 text-xs text-slate-400">
+                <Check size={11} className="text-emerald-500 shrink-0" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function IncludedList({ keys, count, t }: { keys: string; count: number; t: (k: string) => string }) {
   return (
@@ -29,6 +76,11 @@ function IncludedList({ keys, count, t }: { keys: string; count: number; t: (k: 
 
 export default function Pricing() {
   const { t } = useLanguage();
+  const [sourcingAddons, setSourcingAddons] = useState<Addons>({ export: false, delivery: false });
+  const [stockAddons, setStockAddons]       = useState<Addons>({ export: false, delivery: false });
+  const toggleSourcing = (k: keyof Addons) => setSourcingAddons(a => ({ ...a, [k]: !a[k] }));
+  const toggleStock    = (k: keyof Addons) => setStockAddons(a => ({ ...a, [k]: !a[k] }));
+  const exportIncludes = [t("services.addons.export.inc.1"), t("services.addons.export.inc.2"), t("services.addons.export.inc.3")];
 
   return (
     <div className="w-full bg-[#07111E]">
@@ -70,7 +122,12 @@ export default function Pricing() {
               <p className="text-slate-400 text-sm leading-relaxed mb-5">{t("services.sourcing.desc")}</p>
               <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.sourcing.included")}</p>
               <IncludedList keys="services.sourcing.inc" count={9} t={t} />
-              <Link href="/contact?service=sourcing"
+              <div className="border-t border-white/[0.06] pt-4 mb-5 space-y-2">
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.addons.label")}</p>
+                <AddonRow checked={sourcingAddons.export}   onChange={() => toggleSourcing("export")}   label={t("services.addons.export.title")}   price={t("services.addons.export.price")}   desc={t("services.addons.export.desc")}   includes={exportIncludes} />
+                <AddonRow checked={sourcingAddons.delivery} onChange={() => toggleSourcing("delivery")} label={t("services.addons.belarus.title")} price={t("services.addons.belarus.price")} desc={t("services.addons.belarus.desc")} />
+              </div>
+              <Link href={buildContactUrl("sourcing", sourcingAddons)}
                 className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_28px_rgba(37,99,235,0.5)] mt-auto"
               >
                 {t("services.sourcing.cta")} <ArrowRight size={16} />
@@ -118,7 +175,12 @@ export default function Pricing() {
               <p className="text-slate-400 text-sm leading-relaxed mb-5">{t("services.stock.desc")}</p>
               <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.stock.included")}</p>
               <IncludedList keys="services.stock.inc" count={7} t={t} />
-              <Link href="/contact?service=stock"
+              <div className="border-t border-white/[0.06] pt-4 mb-5 space-y-2">
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">{t("services.addons.label")}</p>
+                <AddonRow checked={stockAddons.export}   onChange={() => toggleStock("export")}   label={t("services.addons.export.title")}   price={t("services.addons.export.price")}   desc={t("services.addons.export.desc")}   includes={exportIncludes} />
+                <AddonRow checked={stockAddons.delivery} onChange={() => toggleStock("delivery")} label={t("services.addons.belarus.title")} price={t("services.addons.belarus.price")} desc={t("services.addons.belarus.desc")} />
+              </div>
+              <Link href={buildContactUrl("stock", stockAddons)}
                 className="inline-flex items-center justify-center gap-2 w-full py-3.5 rounded-xl border border-white/10 bg-white/[0.05] hover:bg-white/[0.10] text-white font-semibold text-sm transition-all mt-auto"
               >
                 {t("services.stock.cta")} <ArrowRight size={16} />
