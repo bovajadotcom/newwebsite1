@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import {
-  Building2, TrendingUp, ShieldCheck, Briefcase, ArrowRight,
+  Building2, TrendingUp, ShieldCheck, Briefcase,
   CheckCircle, AlertCircle, Car, ArrowLeftRight, CreditCard,
-  Truck, Users, ClipboardList, UserCheck, Gavel, PackageCheck,
+  Truck, Users, Store, ShoppingBag,
   Send
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
@@ -48,11 +48,34 @@ const benefits = [
   },
 ];
 
-const workflowSteps = [
-  { icon: ClipboardList, title: "Needs Assessment",    desc: "We evaluate your inventory requirements, monthly volume, and target margins." },
-  { icon: UserCheck,     title: "Account Setup",       desc: "Establish your corporate account with credit terms, invoicing preferences, and dedicated account manager." },
-  { icon: Gavel,         title: "Auction Access",      desc: "Receive direct feeds and proxy bidding rights to global auctions matching your criteria." },
-  { icon: PackageCheck,  title: "Seamless Fulfillment",desc: "Vehicles are sourced, cleared, and delivered to your lot. You receive one consolidated invoice." },
+const audienceCards = [
+  {
+    icon: Store,
+    titleKey: "business.audience.dealer.title",
+    descKey:  "business.audience.dealer.desc",
+    color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20",
+    glow: "shadow-[0_0_28px_rgba(59,130,246,0.14)]",
+    iconGlow: "shadow-[0_0_16px_rgba(59,130,246,0.35)]",
+    blob: "#3b82f6",
+  },
+  {
+    icon: ShoppingBag,
+    titleKey: "business.audience.b2b.title",
+    descKey:  "business.audience.b2b.desc",
+    color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20",
+    glow: "shadow-[0_0_28px_rgba(139,92,246,0.14)]",
+    iconGlow: "shadow-[0_0_16px_rgba(139,92,246,0.35)]",
+    blob: "#8b5cf6",
+  },
+  {
+    icon: ArrowLeftRight,
+    titleKey: "business.audience.reseller.title",
+    descKey:  "business.audience.reseller.desc",
+    color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20",
+    glow: "shadow-[0_0_28px_rgba(16,185,129,0.14)]",
+    iconGlow: "shadow-[0_0_16px_rgba(16,185,129,0.35)]",
+    blob: "#10b981",
+  },
 ];
 
 export default function Business() {
@@ -154,38 +177,40 @@ export default function Business() {
         </div>
       </section>
 
-      {/* ── PARTNERSHIP WORKFLOW ── */}
+      {/* ── WHO IS THIS FOR ── */}
       <div className="h-px bg-white/[0.06]" />
       <section className="py-24 bg-white/[0.02]">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Partnership Workflow</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">A streamlined onboarding process designed for high-volume automotive businesses.</p>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{t("business.audience.label")}</span>
+              <div className="h-px flex-1 bg-white/[0.06]" />
+            </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {workflowSteps.map((step, i) => {
-              const Icon = step.icon;
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {audienceCards.map((card, i) => {
+              const Icon = card.icon;
               return (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                  className="relative flex flex-col items-center text-center p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]"
+                  initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className={`relative flex flex-col rounded-2xl border ${card.border} bg-white/[0.03] p-7 overflow-hidden ${card.glow}`}
                 >
-                  {/* Step number */}
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-[0_0_12px_rgba(37,99,235,0.55)]">
-                    {i + 1}
+                  <div
+                    className="absolute -top-14 -right-14 w-44 h-44 rounded-full opacity-15 blur-3xl pointer-events-none"
+                    style={{ backgroundColor: card.blob }}
+                  />
+                  <div className={`w-12 h-12 rounded-xl ${card.bg} border ${card.border} flex items-center justify-center mb-5 ${card.iconGlow}`}>
+                    <Icon className={card.color} size={22} />
                   </div>
-                  <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center mt-4 mb-5 shadow-[0_0_18px_rgba(59,130,246,0.22)]">
-                    <Icon className="text-blue-400" size={24} />
-                  </div>
-                  <h3 className="text-white font-bold mb-2 text-sm">{step.title}</h3>
-                  <p className="text-slate-500 text-xs leading-relaxed">{step.desc}</p>
+                  <h3 className="text-lg font-bold text-white mb-3">{t(card.titleKey)}</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">{t(card.descKey)}</p>
                 </motion.div>
               );
             })}

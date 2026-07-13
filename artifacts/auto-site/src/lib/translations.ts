@@ -209,6 +209,13 @@ export const translations = {
     // Business
     "business.title": "Business Solutions",
     "business.sub": "Tailored solutions for dealerships, fleet operators, and automotive businesses.",
+    "business.audience.label": "Who Is This For?",
+    "business.audience.dealer.title": "Dealerships & Car Centers",
+    "business.audience.dealer.desc": "You are a dealership, showroom, or automotive business and would like to list your vehicles for sale through our platform and reach additional buyers across Europe.",
+    "business.audience.b2b.title": "B2B Vehicle Buyers",
+    "business.audience.b2b.desc": "You are a professional buyer, company, or trader interested in purchasing larger volumes of vehicles through a reliable B2B channel. We can help source and supply vehicles according to your business needs.",
+    "business.audience.reseller.title": "Resellers & Vehicle Traders",
+    "business.audience.reseller.desc": "You are a reseller or vehicle trader and want access to trusted European auctions, wholesale opportunities, and professional vehicle sourcing services. Gain access to a wider inventory and expand your business through European vehicle marketplaces.",
     // Forms
     "form.name": "Full Name",
     "form.email": "Email",
@@ -432,6 +439,13 @@ export const translations = {
     // Business
     "business.title": "Business Solutions",
     "business.sub": "Tailored solutions for dealerships, fleet operators, and automotive businesses.",
+    "business.audience.label": "Kas tai skirta?",
+    "business.audience.dealer.title": "Automobilių salonai ir centrai",
+    "business.audience.dealer.desc": "Jūs esate automobilių salonas, demonstracinis centras ar automobilių verslas ir norite parduoti savo transporto priemones per mūsų platformą bei pasiekti papildomus pirkėjus visoje Europoje.",
+    "business.audience.b2b.title": "B2B transporto priemonių pirkėjai",
+    "business.audience.b2b.desc": "Jūs esate profesionalus pirkėjas, įmonė ar prekiautojas, norintis įsigyti didesnį kiekį transporto priemonių per patikimą B2B kanalą. Galime padėti parūpinti ir tiekti transporto priemones pagal jūsų verslo poreikius.",
+    "business.audience.reseller.title": "Perpardavėjai ir automobilių prekiautojai",
+    "business.audience.reseller.desc": "Jūs esate perpardavėjas ar automobilių prekiautojas ir norite prieigos prie patikimų Europos aukcionų, didmeninių pasiūlymų ir profesionalių transporto priemonių paieškos paslaugų.",
     // Forms
     "form.name": "Full Name",
     "form.email": "Email",
@@ -655,6 +669,13 @@ export const translations = {
     // Business
     "business.title": "Rozwiązania dla Biznesu",
     "business.sub": "Rozwiązania dostosowane do dealerów, flot i firm motoryzacyjnych.",
+    "business.audience.label": "Dla kogo to jest?",
+    "business.audience.dealer.title": "Dealerzy i centra samochodowe",
+    "business.audience.dealer.desc": "Jesteś salonem, showroomem lub firmą motoryzacyjną i chcesz wystawić swoje pojazdy na sprzedaż przez naszą platformę, docierając do dodatkowych kupujących w całej Europie.",
+    "business.audience.b2b.title": "Nabywcy pojazdów B2B",
+    "business.audience.b2b.desc": "Jesteś profesjonalnym nabywcą, firmą lub handlarzem zainteresowanym zakupem większych ilości pojazdów przez rzetelny kanał B2B. Możemy pomóc pozyskać i dostarczyć pojazdy zgodnie z potrzebami Twojego biznesu.",
+    "business.audience.reseller.title": "Resellers i handlarze samochodami",
+    "business.audience.reseller.desc": "Jesteś resellerem lub handlarzem pojazdami i chcesz mieć dostęp do zaufanych europejskich aukcji, ofert hurtowych i profesjonalnych usług pozyskiwania pojazdów. Uzyskaj dostęp do szerszego inwentarza i rozwiń swój biznes na europejskich rynkach.",
     // Forms
     "form.name": "Imię i Nazwisko",
     "form.email": "Email",
@@ -878,6 +899,13 @@ export const translations = {
     // Business
     "business.title": "Бизнес-Решения",
     "business.sub": "Специализированные решения для дилеров, автобизнеса и операторов автопарков.",
+    "business.audience.label": "Для кого это?",
+    "business.audience.dealer.title": "Автосалоны и дилерские центры",
+    "business.audience.dealer.desc": "Вы являетесь автосалоном, шоурумом или автомобильным бизнесом и хотите выставить свои автомобили на продажу через нашу платформу, охватив дополнительных покупателей по всей Европе.",
+    "business.audience.b2b.title": "B2B покупатели автомобилей",
+    "business.audience.b2b.desc": "Вы являетесь профессиональным покупателем, компанией или трейдером, заинтересованным в приобретении большего количества автомобилей через надёжный B2B-канал. Мы поможем подобрать и поставить автомобили согласно потребностям вашего бизнеса.",
+    "business.audience.reseller.title": "Перекупщики и автотрейдеры",
+    "business.audience.reseller.desc": "Вы являетесь перекупщиком или автотрейдером и хотите доступ к надёжным европейским аукционам, оптовым предложениям и профессиональным услугам поиска автомобилей. Расширьте свой бизнес через европейские авторынки.",
     // Forms
     "form.name": "Полное Имя",
     "form.email": "Email",
