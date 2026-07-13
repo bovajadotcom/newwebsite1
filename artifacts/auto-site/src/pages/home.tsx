@@ -286,7 +286,8 @@ export default function Home() {
               initial={{ opacity: 0, y: 22 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.38, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="text-3xl md:text-4xl lg:text-[2.7rem] xl:text-5xl font-black text-white leading-[1.12] tracking-tight mb-5"
+              className="font-black text-white leading-[1.12] tracking-tight mb-5 whitespace-nowrap"
+              style={{ fontSize: "clamp(1.15rem, 3.8vw, 3rem)" }}
             >
               {t("home.hero.headline1")}{" "}
               <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug whitespace-nowrap">
