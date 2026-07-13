@@ -31,14 +31,6 @@ const benefits = [
     iconGlow: "shadow-[0_0_16px_rgba(59,130,246,0.35)]",
   },
   {
-    icon: Building2,
-    title: "Volume Capacity",
-    desc: "Infrastructure to handle multi-vehicle container shipments and mass customs clearance seamlessly.",
-    color: "text-violet-400", bg: "bg-violet-500/10", border: "border-violet-500/20",
-    glow: "shadow-[0_0_28px_rgba(139,92,246,0.18)]",
-    iconGlow: "shadow-[0_0_16px_rgba(139,92,246,0.35)]",
-  },
-  {
     icon: ShieldCheck,
     title: "White Label Service",
     desc: "We manage the supply chain in the background. The vehicles arrive ready for your showroom.",
