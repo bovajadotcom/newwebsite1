@@ -104,11 +104,11 @@ export default function Business() {
       </section>
 
       {/* ── TARGET SEGMENTS ── */}
-      <section className="py-24">
+      <section className="py-10 md:py-14">
         <div className="container mx-auto px-4 max-w-5xl">
 
           {/* Segment chips */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-0">
             {segments.map(({ icon: Icon, label }, i) => (
               <motion.div
                 key={i}
@@ -129,7 +129,7 @@ export default function Business() {
 
       {/* ── WHO IS THIS FOR ── */}
       <div className="h-px bg-white/[0.06]" />
-      <section className="py-24 bg-white/[0.02]">
+      <section className="py-10 md:py-14 bg-white/[0.02]">
         <div className="container mx-auto px-4 max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
