@@ -16,9 +16,20 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState<Language>("en");
 
   useEffect(() => {
+    const SUPPORTED: Language[] = ["en", "pl", "ru", "lt"];
     const saved = localStorage.getItem("autoimport-lang") as Language;
-    if (saved && ["en", "pl", "ru", "lt"].includes(saved)) {
+    if (saved && SUPPORTED.includes(saved)) {
+      // User previously made a manual selection — always honour it
       setLangState(saved);
+    } else {
+      // First visit — detect from browser, do NOT persist (so it stays "auto"
+      // until the user makes an explicit choice via setLang)
+      const nav = navigator.language || "";          // e.g. "pl-PL", "ru", "lt"
+      const code = nav.split("-")[0].toLowerCase();  // take the primary subtag
+      const detected = SUPPORTED.includes(code as Language)
+        ? (code as Language)
+        : "en";
+      setLangState(detected);
     }
   }, []);
 
