@@ -48,7 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-2 xl:px-3 py-1.5 rounded-xl text-[11px] xl:text-[13px] font-medium transition-all whitespace-nowrap ${
+                  className={`px-1.5 xl:px-2.5 py-1.5 rounded-xl text-[10px] xl:text-[12px] font-medium transition-all whitespace-nowrap ${
                     active
                       ? "text-white bg-white/10"
                       : "text-slate-400 hover:text-white hover:bg-white/5"

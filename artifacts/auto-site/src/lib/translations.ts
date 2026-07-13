@@ -173,7 +173,7 @@ export const translations = {
     "modal.alert.doneVia": "You'll receive alerts via",
     "modal.alert.doneMsg": "We'll notify you as soon as new vehicles arrive.",
     // Footer
-    "footer.tagline": "Your gateway to global automotive excellence. Premium vehicle sourcing, purchasing, and logistics worldwide.",
+    "footer.tagline": "Your Trusted Partner for Buying Cars from Europe. Professional sourcing, purchasing, and delivery of verified vehicles from leading European auctions and dealer networks",
     "footer.services": "Services",
     "footer.company": "Company",
     "footer.contact": "Contact",
@@ -187,7 +187,7 @@ export const translations = {
   lt: {
     // Nav
     "nav.home": "Pagrindinis",
-    "nav.inventory": "Automobiliai sandėlyje",
+    "nav.inventory": "Sandėlyje",
     "nav.popular": "Populiariausi",
     "nav.services": "Paslaugos",
     "nav.pricing": "Kainos",
@@ -197,7 +197,7 @@ export const translations = {
     "nav.careers": "Karjera",
     "nav.about": "Apie mus",
     "nav.contact": "Kontaktai",
-    "nav.getQuote": "Nemokama konsultacija",
+    "nav.getQuote": "Konsultacija",
     // Home hero
     "home.hero.badge": "Pirkimas ir pristatymas į Lietuvą",
     "home.hero.headline1": "Jūsų svajonių automobilis",
@@ -322,7 +322,7 @@ export const translations = {
     "articles.published": "Paskelbta",
     "articles.noContentLang": "Turinys šia kalba neprieinamas.",
     // Lead capture modal (LT)
-    "modal.alert.title": "Naujų Automobilių Įspėjimai",
+    "modal.alert.title": "Pranešimai apie naujus automobilius",
     "modal.alert.sub": "Sužinokite pirmi — dar prieš pasirodant naujam automobiliui",
     "modal.alert.channel": "Pranešti per",
     "modal.alert.contact": "Jūsų kontaktas",
@@ -332,7 +332,7 @@ export const translations = {
     "modal.alert.doneVia": "Gausite įspėjimus per",
     "modal.alert.doneMsg": "Informuosime, kai tik atvyks nauji automobiliai.",
     // Footer
-    "footer.tagline": "Your gateway to global automotive excellence. Premium vehicle sourcing, purchasing, and logistics worldwide.",
+    "footer.tagline": "Jūsų patikimas partneris perkant automobilius iš Europos. Profesionali patikrintų automobilių paieška, pirkimas ir pristatymas iš pirmaujančių Europos aukcionų bei oficialių prekybos atstovų tinklų",
     "footer.services": "Services",
     "footer.company": "Company",
     "footer.contact": "Contact",
@@ -481,7 +481,7 @@ export const translations = {
     "articles.published": "Opublikowano",
     "articles.noContentLang": "Treść niedostępna w tym języku.",
     // Lead capture modal (PL)
-    "modal.alert.title": "Powiadomienia o Nowych Autach",
+    "modal.alert.title": "Nowe samochody na bieżąco",
     "modal.alert.sub": "Dowiedz się pierwszy — zanim nowe auta trafią do oferty",
     "modal.alert.channel": "Powiadom mnie przez",
     "modal.alert.contact": "Twój kontakt",
@@ -489,9 +489,9 @@ export const translations = {
     "modal.alert.nospam": "Zero spamu. Tylko nowe auta.",
     "modal.alert.done": "Gotowe!",
     "modal.alert.doneVia": "Będziesz otrzymywać powiadomienia przez",
-    "modal.alert.doneMsg": "Powiadomimy Cię, gdy tylko pojawią się nowe pojazdy.",
+    "modal.alert.doneMsg": "Powiadomimy Cię, gdy tylko pojawią się nowe auta.",
     // Footer
-    "footer.tagline": "Twoja brama do globalnej motoryzacji. Profesjonalne pozyskiwanie pojazdów i logistyka na całym świecie.",
+    "footer.tagline": "Twój zaufany partner w sprowadzaniu samochodów z Europy. Wyszukujemy, kupujemy i dostarczamy sprawdzone samochody z europejskich aukcji oraz od renomowanych dealerów",
     "footer.services": "Usługi",
     "footer.company": "Firma",
     "footer.contact": "Kontakt",
@@ -650,7 +650,7 @@ export const translations = {
     "modal.alert.doneVia": "Вы будете получать уведомления через",
     "modal.alert.doneMsg": "Сообщим, как только появятся новые автомобили.",
     // Footer
-    "footer.tagline": "Ваш путь к глобальному автомобильному превосходству. Профессиональный поиск, закупка и логистика автомобилей по всему миру.",
+    "footer.tagline": "Ваш надежный партнер в покупке автомобилей из Европы. Профессиональный подбор, выкуп и доставка проверенных автомобилей с ведущих европейских аукционов и дилерских площадок",
     "footer.services": "Услуги",
     "footer.company": "Компания",
     "footer.contact": "Контакты",
