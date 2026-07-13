@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import {
   Wrench, Sparkles, RotateCcw, ScanSearch,
-  Search, ArrowRight, Car, MessageCircle, Check
+  Search, ArrowRight, Car, MessageCircle, Check, Truck, FileCheck
 } from "lucide-react";
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/i18n";
@@ -12,6 +12,8 @@ const workshopServices = [
   { icon: RotateCcw, titleKey: "services.local.tires.title",       descKey: "services.local.tires.desc",       price: "€50",  color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20", priceBg: "bg-emerald-500/10 text-emerald-300 border-emerald-500/20" },
   { icon: Wrench,    titleKey: "services.local.repair.title",      descKey: "services.local.repair.desc",      price: "€100", color: "text-amber-400",  bg: "bg-amber-500/10",  border: "border-amber-500/20",  priceBg: "bg-amber-500/10 text-amber-300 border-amber-500/20" },
   { icon: ScanSearch,titleKey: "services.local.diagnostics.title", descKey: "services.local.diagnostics.desc", price: "€50",  color: "text-blue-400",   bg: "bg-blue-500/10",   border: "border-blue-500/20",   priceBg: "bg-blue-500/10 text-blue-300 border-blue-500/20" },
+  { icon: Truck,     titleKey: "services.addons.belarus.title",    descKey: "services.addons.belarus.desc",    price: "€300+",color: "text-sky-400",    bg: "bg-sky-500/10",    border: "border-sky-500/20",    priceBg: "bg-sky-500/10 text-sky-300 border-sky-500/20" },
+  { icon: FileCheck, titleKey: "services.addons.export.title",     descKey: "services.addons.export.desc",     price: "€120", color: "text-indigo-400", bg: "bg-indigo-500/10", border: "border-indigo-500/20", priceBg: "bg-indigo-500/10 text-indigo-300 border-indigo-500/20", incKeys: ["services.addons.export.inc.1","services.addons.export.inc.2","services.addons.export.inc.3"] },
 ];
 
 function IncludedList({ keys, count, t }: { keys: string; count: number; t: (k: string) => string }) {
@@ -141,7 +143,7 @@ export default function Services() {
             <span className="text-xs font-bold uppercase tracking-widest text-slate-500">{t("services.additional.label")}</span>
             <div className="h-px flex-1 bg-white/[0.06]" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {workshopServices.map((svc, i) => {
               const Icon = svc.icon;
               return (
@@ -156,6 +158,16 @@ export default function Services() {
                   </div>
                   <h3 className="text-white font-bold text-lg mb-2">{t(svc.titleKey)}</h3>
                   <p className="text-slate-400 text-sm leading-relaxed flex-1">{t(svc.descKey)}</p>
+                  {"incKeys" in svc && svc.incKeys && (
+                    <ul className="mt-3 space-y-1.5">
+                      {svc.incKeys.map((k, j) => (
+                        <li key={j} className="flex items-center gap-2 text-xs text-slate-400">
+                          <Check size={11} className="text-emerald-500 shrink-0" />
+                          {t(k)}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <div className={`mt-5 inline-flex items-baseline gap-1.5 px-3 py-2 rounded-xl border ${svc.priceBg} w-full`}>
                     <span className="text-xs font-medium opacity-70">{t("services.local.from")}:</span>
                     <span className="text-xl font-bold">{svc.price}</span>
