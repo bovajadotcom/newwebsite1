@@ -336,9 +336,9 @@ export default function Home() {
             style={{ backdropFilter: "blur(4px)", background: "rgba(11,24,48,0.35)" }}
           >
             {[
-              { icon: BadgeCheck,      text: "Безопасная оплата", sub: "Официальный перевод по фактуре, в том числе из Беларуси" },
-              { icon: Truck,      text: "Самовывоз или доставка под ключ", sub: "Получение автомобиля за 20–45 дней" },
-              { icon: Award, text: "Аукционная цена",          sub: "Фиксированная комиссия 500€ без скрытых платежей" },
+              { icon: BadgeCheck, text: t("home.feature1.title"), sub: t("home.feature1.sub") },
+              { icon: Truck,      text: t("home.feature2.title"), sub: t("home.feature2.sub") },
+              { icon: Award,      text: t("home.feature3.title"), sub: t("home.feature3.sub") },
             ].map(({ icon: Icon, text, sub }, i) => (
               <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
                 <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
