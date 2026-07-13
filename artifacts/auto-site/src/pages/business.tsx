@@ -1,9 +1,7 @@
 import { motion } from "framer-motion";
 import {
-  Building2, TrendingUp, ShieldCheck, Briefcase,
-  CheckCircle, AlertCircle, Car, ArrowLeftRight, CreditCard,
-  Truck, Users, Store, ShoppingBag,
-  Send
+  Briefcase, CheckCircle, AlertCircle, Car, ArrowLeftRight, CreditCard,
+  Truck, Users, Store, ShoppingBag, Building2, Send
 } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { useState, useRef } from "react";
@@ -21,24 +19,6 @@ const segments = [
   { icon: Users,          label: "Commercial Buyers" },
 ];
 
-const benefits = [
-  {
-    icon: TrendingUp,
-    title: "Wholesale Margins",
-    desc: "Bypass local wholesale markup by sourcing directly from overseas auction houses at cost.",
-    color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20",
-    glow: "shadow-[0_0_28px_rgba(59,130,246,0.18)]",
-    iconGlow: "shadow-[0_0_16px_rgba(59,130,246,0.35)]",
-  },
-  {
-    icon: ShieldCheck,
-    title: "White Label Service",
-    desc: "We manage the supply chain in the background. The vehicles arrive ready for your showroom.",
-    color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/20",
-    glow: "shadow-[0_0_28px_rgba(16,185,129,0.18)]",
-    iconGlow: "shadow-[0_0_16px_rgba(16,185,129,0.35)]",
-  },
-];
 
 const audienceCards = [
   {
@@ -144,28 +124,6 @@ export default function Business() {
             ))}
           </div>
 
-          {/* Benefit cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {benefits.map((b, i) => {
-              const Icon = b.icon;
-              return (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                  className={`relative flex flex-col rounded-2xl border ${b.border} bg-white/[0.03] p-7 overflow-hidden ${b.glow}`}
-                >
-                  <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-20 blur-3xl pointer-events-none"
-                    style={{ background: b.color.includes("blue") ? "#3b82f6" : b.color.includes("violet") ? "#8b5cf6" : "#10b981" }} />
-                  <div className={`w-12 h-12 rounded-xl ${b.bg} border ${b.border} flex items-center justify-center mb-5 ${b.iconGlow}`}>
-                    <Icon className={b.color} size={22} />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-3">{b.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{b.desc}</p>
-                </motion.div>
-              );
-            })}
-          </div>
         </div>
       </section>
 
