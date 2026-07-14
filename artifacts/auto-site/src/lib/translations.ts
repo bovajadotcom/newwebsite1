@@ -66,6 +66,7 @@ export const translations = {
     // Sections
     "section.partners": "Trusted Auction Partners",
     "section.advantages": "Why Choose Us",
+    "section.advantagesTitle": "Why Work With BOVAJA",
     "section.process": "How It Works",
     "section.vehicles": "Featured Vehicles",
     "section.testimonials": "Client Testimonials",
@@ -482,6 +483,7 @@ export const translations = {
     // Sections
     "section.partners": "Trusted Auction Partners",
     "section.advantages": "Why Choose Us",
+    "section.advantagesTitle": "Why Work With BOVAJA",
     "section.process": "How It Works",
     "section.vehicles": "Featured Vehicles",
     "section.testimonials": "Client Testimonials",
@@ -898,6 +900,7 @@ export const translations = {
     // Sections
     "section.partners": "Zaufane Partnerskie Aukcje",
     "section.advantages": "Dlaczego My",
+    "section.advantagesTitle": "Dlaczego Warto Z Nami Pracować",
     "section.process": "Jak To Działa",
     "section.vehicles": "Polecane Pojazdy",
     "section.testimonials": "Opinie Klientów",
@@ -1314,6 +1317,7 @@ export const translations = {
     // Sections
     "section.partners": "Партнёрские Аукционы",
     "section.advantages": "Почему Мы",
+    "section.advantagesTitle": "Почему Стоит Работать с BOVAJA",
     "section.process": "Как Это Работает",
     "section.vehicles": "Избранные Автомобили",
     "section.testimonials": "Отзывы Клиентов",
