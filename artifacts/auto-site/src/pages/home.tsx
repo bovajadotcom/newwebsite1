@@ -964,8 +964,8 @@ export default function Home() {
                     <MessageSquare className="text-primary" size={20} />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Expert Support</p>
-                    <p className="font-bold text-white">24/7 Availability</p>
+                    <p className="text-sm text-muted-foreground">{t("cta.expertSupport")}</p>
+                    <p className="font-bold text-white">{t("cta.availability")}</p>
                   </div>
                 </div>
               </div>
@@ -982,15 +982,15 @@ export default function Home() {
                   <div className="w-14 h-14 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center">
                     <CheckCircle className="text-green-400" size={28} />
                   </div>
-                  <p className="text-white font-bold text-lg">Thank you.</p>
-                  <p className="text-muted-foreground text-center text-sm">Your request has been received. Our team will contact you shortly.</p>
+                  <p className="text-white font-bold text-lg">{t("form.thankYou")}</p>
+                  <p className="text-muted-foreground text-center text-sm">{t("form.successSub")}</p>
                 </div>
               ) : (
                 <form className="space-y-6" onSubmit={handleFooterSubmit}>
                   {footerFormStatus === "error" && (
                     <div className="flex items-center gap-3 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                       <AlertCircle size={16} />
-                      Your request could not be sent. Please try again later or contact us directly.
+                      {t("form.errorMsg")}
                     </div>
                   )}
                   <div className="grid grid-cols-2 gap-4">
@@ -1023,7 +1023,7 @@ export default function Home() {
                     disabled={footerFormStatus === "loading"}
                     className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 disabled:opacity-60"
                   >
-                    {footerFormStatus === "loading" ? "Sending…" : <>{t("cta.startNow")} <ArrowRight size={18} /></>}
+                    {footerFormStatus === "loading" ? t("form.sending") : <>{t("cta.startNow")} <ArrowRight size={18} /></>}
                   </button>
                 </form>
               )}
@@ -1032,7 +1032,7 @@ export default function Home() {
         </div>
       </section>
       <VehicleDetailModal vehicle={selectedVehicle} onClose={() => setSelectedVehicle(null)} />
-      <RelatedArticles title="Latest News & Articles" limit={3} />
+      <RelatedArticles title={t("articles.latestTitle")} limit={3} />
     </div>
   );
 }

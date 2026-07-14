@@ -156,7 +156,7 @@ function Gallery({ images, vehicleName }: { images: string[]; vehicleName: strin
 }
 
 function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: string }) {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [method, setMethod] = useState<ContactMethod>("WhatsApp");
   const [name, setName] = useState("");
   const [contact, setContact] = useState("");
@@ -207,9 +207,9 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
         <div className="w-14 h-14 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
           <CheckCircle className="text-green-400" size={28} />
         </div>
-        <h4 className="text-xl font-bold text-white">Thank you.</h4>
+        <h4 className="text-xl font-bold text-white">{t("form.thankYou")}</h4>
         <p className="text-muted-foreground text-sm max-w-sm mx-auto">
-          Your request has been received. Our team will contact you shortly.
+          {t("form.successSub")}
         </p>
       </motion.div>
     );
@@ -221,8 +221,8 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
         animate={{ opacity: 1, scale: 1 }}
         className="text-center py-10 space-y-4"
       >
-        <p className="text-red-400 text-sm">Your request could not be sent. Please try again later or contact us directly.</p>
-        <button onClick={() => setDone(null)} className="text-primary text-sm underline">Try again</button>
+        <p className="text-red-400 text-sm">{t("form.errorMsg")}</p>
+        <button onClick={() => setDone(null)} className="text-primary text-sm underline">{t("form.tryAgain")}</button>
       </motion.div>
     );
   }
@@ -231,7 +231,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
     <form onSubmit={submit} className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1.5">Full Name *</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1.5">{t("form.name")} *</label>
           <input
             required
             value={name}
@@ -241,7 +241,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-muted-foreground mb-1.5">Contact Information *</label>
+          <label className="block text-xs font-medium text-muted-foreground mb-1.5">{t("form.contactInfo")} *</label>
           <input
             required
             value={contact}
@@ -253,7 +253,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-2">Preferred Contact Method</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-2">{t("form.preferredContact")}</label>
         <div className="flex flex-wrap gap-2">
           {CONTACT_METHODS.map(m => (
             <button
@@ -271,7 +271,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-muted-foreground mb-1.5">Message (optional)</label>
+        <label className="block text-xs font-medium text-muted-foreground mb-1.5">{t("form.messageOptional")}</label>
         <textarea
           value={message}
           onChange={e => setMessage(e.target.value)}
@@ -293,7 +293,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
         ) : (
           <Send size={15} />
         )}
-        GET MORE INFORMATION
+        {t("form.getMoreInfo").toUpperCase()}
       </button>
     </form>
   );
@@ -301,7 +301,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
 
 export function VehicleDetailModal({ vehicle, onClose }: Props) {
   const { toggle, isFavorited } = useFavorites();
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [activeFormName, setActiveFormName] = useState<string | null>(null);
 
   const favKey = vehicle
@@ -332,12 +332,12 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
   const vehicleLabel = `${vehicle.year ? vehicle.year + " " : ""}${vehicle.make} ${vehicle.model}`;
 
   const statusText = isSold
-    ? "Sold"
+    ? t("status.sold")
     : isPopular
-    ? "Most Popular"
+    ? t("status.popular")
     : vehicle.status === "reserved"
-    ? "Reserved"
-    : "Available";
+    ? t("status.reserved")
+    : t("status.available");
 
   const statusKey = isSold
     ? "sold"
@@ -346,10 +346,10 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
     : vehicle.status ?? "available";
 
   const specsRows = [
-    vehicle.engine && { label: "Engine", value: vehicle.engine },
-    vehicle.fuel && { label: "Fuel", value: vehicle.fuel },
-    vehicle.transmission && { label: "Transmission", value: vehicle.transmission },
-    vehicle.mileage != null && { label: "Mileage", value: `${vehicle.mileage.toLocaleString()} km` },
+    vehicle.engine && { label: t("modal.specs.engine"), value: vehicle.engine },
+    vehicle.fuel && { label: t("modal.specs.fuel"), value: vehicle.fuel },
+    vehicle.transmission && { label: t("modal.specs.transmission"), value: vehicle.transmission },
+    vehicle.mileage != null && { label: t("modal.specs.mileage"), value: `${vehicle.mileage.toLocaleString()} km` },
   ].filter(Boolean) as { label: string; value: string }[];
 
   const content = (
@@ -430,7 +430,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                         )}
                         {isPopular && (
                           <div className="absolute top-4 left-4 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/90 text-white text-xs font-bold">
-                            <Star size={11} className="fill-white" /> MOST POPULAR
+                            <Star size={11} className="fill-white" /> {t("modal.mostPopular")}
                           </div>
                         )}
                       </div>
@@ -440,7 +440,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                     {(vehicle.location || vehicle.purchaseCountry || vehicle.estimatedDelivery) && (
                       <div className="mt-5 p-4 rounded-xl bg-white/5 border border-white/10 space-y-3">
                         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                          <Truck size={12} /> Vehicle Route
+                          <Truck size={12} /> {t("modal.vehicleRoute")}
                         </p>
                         <div className="flex items-center gap-3 text-sm">
                           {(vehicle.location || vehicle.purchaseCountry) && (
@@ -452,7 +452,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                               <ArrowRight size={14} className="text-muted-foreground shrink-0" />
                               <div className="flex items-center gap-1.5 text-white/80">
                                 <MapPin size={13} className="text-green-400 shrink-0" />
-                                <span>{vehicle.deliveredTo || "Your location"}</span>
+                                <span>{vehicle.deliveredTo || t("modal.yourLocation")}</span>
                               </div>
                             </>
                           )}
@@ -461,8 +461,8 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <Calendar size={11} />
                             {vehicle.deliveryDate
-                              ? `Delivered: ${vehicle.deliveryDate}`
-                              : `Est. delivery: ${vehicle.estimatedDelivery}`}
+                              ? `${t("modal.delivered")} ${vehicle.deliveryDate}`
+                              : `${t("modal.estDelivery")} ${vehicle.estimatedDelivery}`}
                           </div>
                         )}
                       </div>
@@ -520,22 +520,22 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                           onClick={() => setActiveFormName("Request This Vehicle")}
                           className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 text-sm"
                         >
-                          <Send size={15} /> Request This Vehicle
+                          <Send size={15} /> {t("form.requestVehicle")}
                         </button>
                       </div>
                     )}
 
                     {isSold && (
                       <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
-                        <p className="text-sm font-semibold text-white">Looking for a similar vehicle?</p>
+                        <p className="text-sm font-semibold text-white">{t("modal.similarVehicle")}</p>
                         <p className="text-xs text-muted-foreground">
-                          Leave your contact details and we will find similar options for you.
+                          {t("modal.similarVehicleSub")}
                         </p>
                         <button
                           onClick={() => setActiveFormName("Similar Vehicle Request")}
                           className="w-full py-2.5 bg-primary/90 text-white font-semibold rounded-lg hover:bg-primary transition-all flex items-center justify-center gap-2 text-sm"
                         >
-                          <ArrowRight size={14} /> Find Similar Vehicle
+                          <ArrowRight size={14} /> {t("form.findSimilar")}
                         </button>
                       </div>
                     )}
@@ -546,13 +546,13 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                           onClick={() => setActiveFormName("Similar Vehicle Request")}
                           className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 text-sm"
                         >
-                          <Send size={15} /> Request This Model
+                          <Send size={15} /> {t("form.requestModel")}
                         </button>
                         <button
                           onClick={() => setActiveFormName("Get More Information")}
                           className="w-full py-3 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-white/10"
                         >
-                          <MessageCircle size={15} /> Get More Information
+                          <MessageCircle size={15} /> {t("form.getMoreInfo")}
                         </button>
                       </div>
                     )}
@@ -573,10 +573,10 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                       </div>
                     )}
                     <h3 className="text-xl font-bold text-white mb-1">
-                      {activeFormName ? activeFormName : "Want to Buy a Similar Vehicle at Auction?"}
+                      {activeFormName ? activeFormName : t("modal.wantToBuy")}
                     </h3>
                     <p className="text-sm text-muted-foreground mb-6">
-                      Leave your WhatsApp, Telegram, Viber, phone number, or email and our team will contact you shortly.
+                      {t("modal.contactPrompt")}
                     </p>
                     <ContactForm
                       vehicle={vehicle}
