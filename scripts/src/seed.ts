@@ -219,7 +219,7 @@ async function seed() {
       answerEn: "Yes, we offer door-to-door delivery across all of Europe, including Poland, Lithuania, Latvia, Estonia, Belarus, and beyond. Delivery costs depend on the destination and are shown in the calculator.",
       answerPl: "Tak, oferujemy dostawę od drzwi do drzwi w całej Europie, w tym do Polski, Litwy, Łotwy, Estonii, Białorusi i innych krajów.",
       answerRu: "Да, мы предлагаем доставку «от двери до двери» по всей Европе, включая Польшу, Литву, Латвию, Эстонию, Беларусь и другие страны.",
-      answerLt: "Taip, siūlome „nuo durų iki durų" pristatymą visoje Europoje, įskaitant Lenkiją, Lietuvą, Latviją, Estiją, Baltarusiją ir kitas šalis.",
+      answerLt: "Taip, siulome nuo duru iki duru pristatymą visoje Europoje, iskaitant Lenkija, Lietuva, Latvija, Estija, Baltarusija ir kitas salis.",
       sortOrder: 7, isActive: true,
     },
     {
