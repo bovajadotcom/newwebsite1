@@ -1370,7 +1370,7 @@ export const translations = {
     "services.consultation.title": "Бесплатная Консультация",
     "services.consultation.price": "Бесплатно",
     "services.consultation.desc": "Свяжитесь с нашей командой и получите бесплатную консультацию по вопросам покупки автомобиля, импорта, финансирования, доставки, аукционных покупок, таможенных процедур и выбора автомобиля.",
-    "services.consultation.included": "Included:",
+    "services.consultation.included": "Включено:",
     "services.consultation.inc.1": "Первичная консультация",
     "services.consultation.inc.2": "Помощь в выборе автомобиля",
     "services.consultation.inc.3": "Объяснение процесса импорта",

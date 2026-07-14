@@ -1,3 +1,3 @@
-- [Auth/Session setup](auth-session.md) — bcryptjs (not bcrypt — native addons don't build), express-session + connect-pg-simple, SESSION_SECRET env var
+- [Auth/Session setup](auth-session.md) — bcryptjs (not bcrypt — native addons don't build), express-session + connect-pg-simple, SESSION_SECRET env var; session table NOT managed by Drizzle schema — never use --force on push or it gets dropped
 - [Calculator country config](calculator-config.md) — 7 countries, all settings in site_settings table with calculator.* keys, Belarus uses customs not VAT
 - [Admin panel credentials](admin-creds.md) — admin/admin123, seeded via scripts/src/seed.ts, bcryptjs hash
