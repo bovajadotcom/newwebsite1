@@ -5,7 +5,7 @@ export interface LeadPayload {
   email?: string;
   message?: string;
   preferredContact?: string;
-  preferredLanguage?: "Russian" | "Polish";
+  preferredLanguage?: "Russian" | "Polish" | "Lithuanian" | "English";
   whatsapp?: string;
   telegram?: string;
   viber?: string;

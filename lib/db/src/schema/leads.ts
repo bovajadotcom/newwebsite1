@@ -28,7 +28,7 @@ export const submitLeadSchema = z.object({
   email: z.string().optional(),
   message: z.string().optional(),
   preferredContact: z.string().optional(),
-  preferredLanguage: z.enum(["Russian", "Polish"]).optional(),
+  preferredLanguage: z.enum(["Russian", "Polish", "Lithuanian", "English"]).optional(),
   whatsapp: z.string().optional(),
   telegram: z.string().optional(),
   viber: z.string().optional(),
