@@ -27,7 +27,7 @@
 
 export type FuelType = "Petrol" | "Diesel" | "Hybrid" | "Electric";
 export type Transmission = "Automatic" | "Manual";
-export type VehicleStatus = "available" | "sold" | "reserved";
+export type VehicleStatus = "available" | "reserved" | "auction" | "sold";
 
 export interface Vehicle {
   id: string;

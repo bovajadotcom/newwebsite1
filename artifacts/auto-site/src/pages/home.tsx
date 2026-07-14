@@ -156,7 +156,10 @@ export default function Home() {
     fetch("/api/vehicles")
       .then(r => r.ok ? r.json() : [])
       .then((data: any[]) => {
-        const available = data.filter((v: any) => v.status === "available" || v.status === "reserved");
+        const statusOrder: Record<string, number> = { available: 0, reserved: 1, auction: 2, sold: 99 };
+        const available = data
+          .filter((v: any) => v.status === "available" || v.status === "reserved" || v.status === "auction")
+          .sort((a: any, b: any) => (statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99));
         setAvailableCars(available.slice(0, 4).map((v: any, i: number) => ({
           ...v, image: resolveImage(v.imageUrl ?? v.image, i),
         })));
@@ -667,8 +670,14 @@ export default function Home() {
                     {car.badge && (
                       <span className="px-2 py-1 rounded text-xs font-semibold bg-blue-600 text-white">{car.badge}</span>
                     )}
-                    <span className="px-2 py-1 rounded text-xs font-semibold text-white bg-[#76c297]">
-                      {car.status === "available" ? "Available" : "Reserved"}
+                    <span className={`px-2 py-1 rounded text-xs font-semibold text-white ${
+                      car.status === "available" ? "bg-[#76c297]" :
+                      car.status === "auction"   ? "bg-purple-600" :
+                      "bg-amber-500"
+                    }`}>
+                      {car.status === "available" ? t("status.available") :
+                       car.status === "auction"   ? t("status.auction") :
+                       t("status.reserved")}
                     </span>
                   </div>
                   <button onClick={(e) => { e.stopPropagation(); toggle(`available-${car.id}`); }} className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform">
@@ -684,7 +693,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-end justify-between mt-auto">
                     <p className="text-blue-600 font-bold text-lg">€{car.price.toLocaleString()}</p>
-                    <span className="text-xs text-slate-400">{car.status === "available" ? "In stock" : "Reserved"}</span>
+                    <span className="text-xs text-slate-400">{car.status === "available" ? t("status.available") : car.status === "auction" ? t("status.auction") : t("status.reserved")}</span>
                   </div>
                 </div>
               </motion.div>

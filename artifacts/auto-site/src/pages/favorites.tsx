@@ -140,7 +140,12 @@ export default function Favorites() {
                       )}
                     </div>
                     <div className="absolute top-4 right-4 flex items-center gap-2">
-                      <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md bg-blue-600 text-white">{car.status}</span>
+                      <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded backdrop-blur-md text-white ${
+                        car.status === "available" ? "bg-green-600" :
+                        car.status === "reserved"  ? "bg-amber-500" :
+                        car.status === "auction"   ? "bg-purple-600" :
+                        "bg-slate-700"
+                      }`}>{car.status}</span>
                     </div>
                     <button
                       onClick={() => toggle(`stock-${car.id}`)}

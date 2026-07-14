@@ -37,7 +37,7 @@ interface DisplaySold {
   image: string;
 }
 
-const STATUS_PRIORITY: Record<string, number> = { available: 0, reserved: 1, sold: 2 };
+const STATUS_PRIORITY: Record<string, number> = { available: 0, reserved: 1, auction: 2, sold: 3 };
 
 interface UnifiedVehicle {
   _type: "stock" | "sold";
@@ -314,8 +314,9 @@ export default function Inventory() {
                 >
                   <option value="all">{t("inventory.filter.status")}</option>
                   <option value="available">{t("inventory.filter.available")}</option>
-                  <option value="sold">{t("inventory.filter.sold")}</option>
                   <option value="reserved">{t("inventory.status.reserved")}</option>
+                  <option value="auction">{t("inventory.filter.auction")}</option>
+                  <option value="sold">{t("inventory.filter.sold")}</option>
                 </select>
                 <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
               </div>
@@ -388,6 +389,7 @@ export default function Inventory() {
                   const statusBadge =
                     car.status === "available" ? "bg-green-500 border-green-600 text-white" :
                     car.status === "reserved"  ? "bg-amber-500 border-amber-600 text-white" :
+                    car.status === "auction"   ? "bg-purple-600 border-purple-700 text-white" :
                                                  "bg-slate-800 border-slate-700 text-white";
                   return (
                   <motion.div
@@ -416,7 +418,7 @@ export default function Inventory() {
                       )}
 
                       <div className="absolute top-4 right-4">
-                        <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full backdrop-blur-md border ${statusBadge} ${car.status === "available" ? "shadow-[0_0_10px_rgba(34,197,94,0.6),0_0_20px_rgba(34,197,94,0.3)]" : ""}`}>
+                        <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider rounded-full backdrop-blur-md border ${statusBadge} ${car.status === "available" ? "shadow-[0_0_10px_rgba(34,197,94,0.6),0_0_20px_rgba(34,197,94,0.3)]" : car.status === "auction" ? "shadow-[0_0_10px_rgba(147,51,234,0.5),0_0_20px_rgba(147,51,234,0.25)]" : ""}`}>
                           {t(`inventory.status.${car.status}`) || car.status}
                         </span>
                       </div>

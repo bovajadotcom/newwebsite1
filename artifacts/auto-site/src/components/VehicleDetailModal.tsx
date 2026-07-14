@@ -59,6 +59,7 @@ const METHOD_COLORS: Record<ContactMethod, string> = {
 const STATUS_COLORS: Record<string, string> = {
   available: "bg-green-500/20 text-green-400 border border-green-500/40",
   reserved:  "bg-amber-500/20 text-amber-400 border border-amber-500/40",
+  auction:   "bg-purple-500/20 text-purple-400 border border-purple-500/40",
   sold:      "bg-red-500/20 text-red-400 border border-red-500/40",
   popular:   "bg-blue-500/20 text-blue-400 border border-blue-500/40",
 };
@@ -337,6 +338,8 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
     ? t("status.popular")
     : vehicle.status === "reserved"
     ? t("status.reserved")
+    : vehicle.status === "auction"
+    ? t("status.auction")
     : t("status.available");
 
   const statusKey = isSold

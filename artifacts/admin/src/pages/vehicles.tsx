@@ -322,6 +322,8 @@ export default function VehiclesPage() {
         return <Badge className="bg-green-500 hover:bg-green-600">Available</Badge>;
       case "reserved":
         return <Badge className="bg-amber-500 hover:bg-amber-600">Reserved</Badge>;
+      case "auction":
+        return <Badge className="bg-purple-600 hover:bg-purple-700">Auction</Badge>;
       case "sold":
         return <Badge className="bg-gray-500 hover:bg-gray-600">Sold</Badge>;
       default:
@@ -515,6 +517,7 @@ export default function VehiclesPage() {
                         <SelectContent>
                           <SelectItem value="available">Available</SelectItem>
                           <SelectItem value="reserved">Reserved</SelectItem>
+                          <SelectItem value="auction">Auction</SelectItem>
                           <SelectItem value="sold">Sold</SelectItem>
                         </SelectContent>
                       </Select>
