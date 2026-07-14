@@ -490,7 +490,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                       </h2>
                       {vehicle.price != null && (
                         <p className="text-3xl font-bold text-white mt-2">
-                          €{vehicle.price.toLocaleString()}
+                          <span className="text-lg font-normal text-white/60 mr-1">{t("modal.priceFrom")}</span>€{vehicle.price.toLocaleString()}
                         </p>
                       )}
                       {vehicle.priceRange && (
