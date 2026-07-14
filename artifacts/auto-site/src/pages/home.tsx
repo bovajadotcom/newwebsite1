@@ -412,7 +412,7 @@ export default function Home() {
               { to: 1000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "59,130,246" },
               { to: 500,  prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.clients"),   color: "99,102,241" },
               { to: 12,   prefix: "", suffix: "",  separator: "",  decimals: 0, label: t("stats.experience"),color: "59,130,246" },
-              { to: 40,   prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.countries"), color: "99,102,241" },
+              { to: 20,   prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.countries"), color: "99,102,241" },
               { to: 2.4,  prefix: "€", suffix: "B", separator: "", decimals: 1, label: t("stats.value"),    color: "59,130,246" },
             ].map((stat, i) => (
               <motion.div
