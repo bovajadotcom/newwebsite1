@@ -409,7 +409,7 @@ export default function Home() {
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
             {[
-              { to: 5000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "59,130,246" },
+              { to: 1000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "59,130,246" },
               { to: 98,   prefix: "", suffix: "%", separator: "",  decimals: 0, label: t("stats.clients"),   color: "99,102,241" },
               { to: 12,   prefix: "", suffix: "",  separator: "",  decimals: 0, label: t("stats.experience"),color: "59,130,246" },
               { to: 40,   prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.countries"), color: "99,102,241" },
