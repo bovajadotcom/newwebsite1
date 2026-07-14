@@ -407,13 +407,12 @@ export default function Home() {
             </span>
             <h2 className="text-3xl md:text-4xl font-bold">{t("section.statsTitle") || "Numbers That Define Us"}</h2>
           </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {[
               { to: 1000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "59,130,246" },
               { to: 500,  prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.clients"),   color: "99,102,241" },
               { to: 12,   prefix: "", suffix: "",  separator: "",  decimals: 0, label: t("stats.experience"),color: "59,130,246" },
               { to: 20,   prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.countries"), color: "99,102,241" },
-              { to: 2.4,  prefix: "€", suffix: "B", separator: "", decimals: 1, label: t("stats.value"),    color: "59,130,246" },
             ].map((stat, i) => (
               <motion.div
                 key={i}
