@@ -298,10 +298,10 @@ export default function Inventory() {
                   className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2.5 text-slate-900 text-sm outline-none cursor-pointer"
                 >
                   <option value="all">{t("inventory.filter.fuel")}</option>
-                  <option value="petrol">Petrol</option>
-                  <option value="diesel">Diesel</option>
-                  <option value="hybrid">Hybrid</option>
-                  <option value="electric">Electric</option>
+                  <option value="petrol">{t("calc.fuel.petrol")}</option>
+                  <option value="diesel">{t("calc.fuel.diesel")}</option>
+                  <option value="hybrid">{t("calc.fuel.hybrid")}</option>
+                  <option value="electric">{t("calc.fuel.electric")}</option>
                 </select>
                 <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" />
               </div>
@@ -346,7 +346,7 @@ export default function Inventory() {
                   onClick={clearFilters}
                   className="px-3 py-2.5 text-slate-500 hover:text-slate-900 text-sm flex items-center gap-1 transition-colors"
                 >
-                  <X size={14} /> Clear
+                  <X size={14} /> {t("inventory.clearFilters")}
                 </button>
               )}
             </div>
@@ -359,7 +359,7 @@ export default function Inventory() {
           <div className="flex justify-between items-end mb-8">
             <div>
               <h2 className="text-3xl font-bold text-slate-900 mb-2">{t("inventory.inStock")}</h2>
-              <p className="text-slate-600">{filtered.length} vehicles found</p>
+              <p className="text-slate-600">{filtered.length} {t("inventory.vehiclesFound")}</p>
             </div>
           </div>
 
@@ -372,13 +372,13 @@ export default function Inventory() {
                 className="py-20 text-center border border-slate-200 rounded-2xl bg-white shadow-sm"
               >
                 <SlidersHorizontal className="mx-auto text-slate-400 mb-4" size={48} />
-                <h3 className="text-xl font-bold text-slate-900 mb-2">No vehicles match your criteria</h3>
-                <p className="text-slate-500 mb-6">Try adjusting your filters or search terms.</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">{t("inventory.notFound")}</h3>
+                <p className="text-slate-500 mb-6">{t("inventory.notFoundSub")}</p>
                 <button 
                   onClick={clearFilters}
                   className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
                 >
-                  Clear All Filters
+                  {t("inventory.clearAllFilters")}
                 </button>
               </motion.div>
             ) : (

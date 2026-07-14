@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { Star, ArrowRight, Car } from "lucide-react";
 import { popularVehicles as staticPopular } from "@/data/inventory";
 import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
+import { useLanguage } from "@/lib/i18n";
 
 const FALLBACKS = ["vehicle-1.png", "vehicle-2.png", "vehicle-3.png", "vehicle-4.png"];
 
@@ -53,6 +54,7 @@ export function PopularCarsSection() {
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<ModalVehicle | null>(null);
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const { t } = useLanguage();
 
   useEffect(() => {
     fetch(`${base}/api/popular-vehicles`)
@@ -72,32 +74,29 @@ export function PopularCarsSection() {
 
   return (
     <section className="relative bg-background border-t-2 border-white/10 py-20">
-      {/* Top accent line */}
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
       <div className="container mx-auto px-4 max-w-6xl">
 
-        {/* Header */}
         <div className="flex items-end justify-between mb-10 gap-4 flex-wrap">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-3">
-              <Star size={12} className="fill-primary" /> Популярные автомобили
+              <Star size={12} className="fill-primary" /> {t("popular.badge")}
             </div>
             <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
-              Часто заказывают
+              {t("popular.heading")}
             </h2>
             <p className="text-muted-foreground mt-2 text-sm max-w-md">
-              Автомобили, которые мы чаще всего привозим. Цены ориентировочные.
+              {t("popular.sub")}
             </p>
           </div>
           <Link
             href="/popular"
             className="inline-flex items-center gap-2 text-primary text-sm font-semibold hover:gap-3 transition-all shrink-0"
           >
-            Все популярные <ArrowRight size={15} />
+            {t("popular.viewAll")} <ArrowRight size={15} />
           </Link>
         </div>
 
-        {/* Grid */}
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[...Array(6)].map((_, i) => (
@@ -113,7 +112,7 @@ export function PopularCarsSection() {
         ) : vehicles.length === 0 ? (
           <div className="text-center py-16 text-muted-foreground">
             <Car size={40} className="mx-auto mb-3 opacity-20" />
-            <p>Нет данных о популярных авто</p>
+            <p>{t("popular.empty")}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -127,7 +126,6 @@ export function PopularCarsSection() {
                 onClick={() => setSelected(toModal(car))}
                 className="group bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all cursor-pointer"
               >
-                {/* Image */}
                 <div className="h-44 overflow-hidden bg-secondary/30 relative shrink-0">
                   <img
                     src={car.image}
@@ -136,12 +134,11 @@ export function PopularCarsSection() {
                   />
                   <div className="absolute top-3 left-3">
                     <span className="px-2 py-0.5 rounded text-xs font-bold bg-primary/90 text-white">
-                      Popular
+                      {t("modal.mostPopular")}
                     </span>
                   </div>
                 </div>
 
-                {/* Body */}
                 <div className="p-5 flex-1 flex flex-col">
                   <h3 className="text-white font-bold text-base mb-1 group-hover:text-primary transition-colors">
                     {car.make} {car.model}
@@ -149,11 +146,11 @@ export function PopularCarsSection() {
 
                   <div className="flex justify-between text-xs mb-3 py-2 border-y border-border/40">
                     <div>
-                      <p className="text-muted-foreground uppercase mb-0.5">Цена</p>
+                      <p className="text-muted-foreground uppercase mb-0.5">{t("popular.price")}</p>
                       <p className="text-primary font-bold">{car.priceRange}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-muted-foreground uppercase mb-0.5">Доставка</p>
+                      <p className="text-muted-foreground uppercase mb-0.5">{t("popular.delivery")}</p>
                       <p className="text-white font-medium">{car.estimatedDelivery}</p>
                     </div>
                   </div>
@@ -163,7 +160,7 @@ export function PopularCarsSection() {
                   </p>
 
                   <div className="mt-3 flex items-center gap-1 text-primary text-xs font-semibold">
-                    Подробнее <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                    {t("popular.more")} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </motion.div>

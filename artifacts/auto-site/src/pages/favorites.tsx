@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Heart, Gauge, MapPin, Fuel, Settings2, ArrowRight, Calculator, CheckSquare, Trash2 } from "lucide-react";
 import { useFavorites } from "@/lib/FavoritesContext";
+import { useLanguage } from "@/lib/i18n";
 import {
   stockVehicles as staticStock,
   soldVehicles as staticSold,
@@ -34,6 +35,7 @@ interface PopularVehicle {
 
 export default function Favorites() {
   const { favorites, toggle, isFavorited, count } = useFavorites();
+  const { t } = useLanguage();
 
   const [stockAll, setStockAll]     = useState<StockVehicle[]>([]);
   const [soldAll, setSoldAll]       = useState<SoldVehicle[]>([]);
@@ -78,10 +80,10 @@ export default function Favorites() {
           <div className="w-20 h-20 rounded-full bg-white/[0.05] border border-white/10 flex items-center justify-center">
             <Heart size={32} className="text-slate-600" />
           </div>
-          <h2 className="text-2xl font-bold text-white">Нет избранных автомобилей</h2>
-          <p className="text-slate-400 max-w-xs">Нажимайте ♥ на любом автомобиле чтобы сохранить его здесь</p>
+          <h2 className="text-2xl font-bold text-white">{t("fav.empty.title")}</h2>
+          <p className="text-slate-400 max-w-xs">{t("fav.empty.sub")}</p>
           <Link href="/inventory" className="mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold transition-all flex items-center gap-2">
-            Перейти к каталогу <ArrowRight size={16} />
+            {t("fav.empty.cta")} <ArrowRight size={16} />
           </Link>
         </motion.div>
       </div>
@@ -102,16 +104,16 @@ export default function Favorites() {
           <div>
             <h1 className="text-3xl font-black text-white flex items-center gap-3">
               <Heart size={28} className="text-red-500 fill-red-500" />
-              Избранное
+              {t("fav.title")}
             </h1>
-            <p className="text-slate-400 mt-1">{total} {total === 1 ? "автомобиль" : total < 5 ? "автомобиля" : "автомобилей"} в списке</p>
+            <p className="text-slate-400 mt-1">{total} {t("fav.vehiclesInList")}</p>
           </div>
           {total > 0 && (
             <button
               onClick={() => [...favorites].forEach(id => toggle(id))}
               className="flex items-center gap-2 px-4 py-2 text-sm text-slate-400 hover:text-red-400 border border-white/10 hover:border-red-400/30 rounded-xl transition-all"
             >
-              <Trash2 size={14} /> Очистить всё
+              <Trash2 size={14} /> {t("fav.clearAll")}
             </button>
           )}
         </motion.div>
@@ -119,7 +121,7 @@ export default function Favorites() {
         {/* In Stock */}
         {favStock.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-lg font-bold text-slate-300 mb-5 uppercase tracking-wider">В наличии</h2>
+            <h2 className="text-lg font-bold text-slate-300 mb-5 uppercase tracking-wider">{t("fav.section.stock")}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {favStock.map((car, i) => (
                 <motion.div
@@ -162,7 +164,7 @@ export default function Favorites() {
                       <div className="flex items-center gap-2"><Settings2 size={14} className="text-blue-500" /> {car.transmission}</div>
                     </div>
                     <Link href="/contact" className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn">
-                      Запросить информацию <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                      {t("fav.requestInfo")} <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                     </Link>
                   </div>
                 </motion.div>
@@ -174,7 +176,7 @@ export default function Favorites() {
         {/* Sold */}
         {favSold.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-lg font-bold text-slate-300 mb-5 uppercase tracking-wider">Проданные</h2>
+            <h2 className="text-lg font-bold text-slate-300 mb-5 uppercase tracking-wider">{t("fav.section.sold")}</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {favSold.map((car, i) => (
                 <motion.div
@@ -212,7 +214,7 @@ export default function Favorites() {
         {/* Popular */}
         {favPopular.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-lg font-bold text-slate-300 mb-5 uppercase tracking-wider">Популярные модели</h2>
+            <h2 className="text-lg font-bold text-slate-300 mb-5 uppercase tracking-wider">{t("fav.section.popular")}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {favPopular.map((car, i) => (
                 <motion.div
@@ -236,17 +238,17 @@ export default function Favorites() {
                     <h3 className="text-xl font-bold text-white mb-2">{car.make} {car.model}</h3>
                     <div className="flex justify-between items-center mb-4 py-3 border-y border-border/50">
                       <div>
-                        <p className="text-xs text-muted-foreground uppercase">Цена</p>
+                        <p className="text-xs text-muted-foreground uppercase">{t("fav.price")}</p>
                         <p className="text-primary font-bold">{car.priceRange}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs text-muted-foreground uppercase">Срок</p>
+                        <p className="text-xs text-muted-foreground uppercase">{t("fav.timeline")}</p>
                         <p className="text-white font-medium">{car.estimatedDelivery}</p>
                       </div>
                     </div>
                     <p className="text-sm text-muted-foreground mb-6 flex-1">{car.description}</p>
                     <Link href="/calculator" className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2">
-                      <Calculator size={16} /> Рассчитать
+                      <Calculator size={16} /> {t("fav.calculate")}
                     </Link>
                   </div>
                 </motion.div>

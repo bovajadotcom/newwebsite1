@@ -11,9 +11,9 @@ export default function Contact() {
   const { t, lang } = useLanguage();
   const [status, setStatus] = useState<Status>("idle");
   const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
-  const nameRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
+  const nameRef    = useRef<HTMLInputElement>(null);
+  const phoneRef   = useRef<HTMLInputElement>(null);
+  const emailRef   = useRef<HTMLInputElement>(null);
   const subjectRef = useRef<HTMLInputElement>(null);
   const messageRef = useRef<HTMLTextAreaElement>(null);
 
@@ -58,17 +58,17 @@ export default function Contact() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="p-6 bg-card border border-border/50 rounded-xl">
                 <Phone className="text-primary mb-4" size={24} />
-                <h3 className="text-white font-bold mb-2">Phone</h3>
+                <h3 className="text-white font-bold mb-2">{t("contact.phone")}</h3>
                 <a href="tel:+37060000000" className="text-muted-foreground hover:text-primary transition-colors">+370 600 00000</a>
               </div>
               <div className="p-6 bg-card border border-border/50 rounded-xl">
                 <Mail className="text-primary mb-4" size={24} />
-                <h3 className="text-white font-bold mb-2">Email</h3>
+                <h3 className="text-white font-bold mb-2">{t("contact.email")}</h3>
                 <a href="mailto:bovaja.auctions@gmail.com" className="text-muted-foreground hover:text-primary transition-colors text-sm break-all">bovaja.auctions@gmail.com</a>
               </div>
               <div className="p-6 bg-card border border-border/50 rounded-xl sm:col-span-2">
                 <MapPin className="text-primary mb-4" size={24} />
-                <h3 className="text-white font-bold mb-2">Location</h3>
+                <h3 className="text-white font-bold mb-2">{t("contact.location")}</h3>
                 <p className="text-muted-foreground text-sm">
                   Gariūnai Car Market, Site 309A<br />
                   Gariūnų g. 49, Vilnius 02300<br />
@@ -99,22 +99,22 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             className="p-8 rounded-xl bg-card border border-border/50"
           >
-            <h3 className="text-2xl font-bold text-white mb-6">Send a Message</h3>
+            <h3 className="text-2xl font-bold text-white mb-6">{t("contact.sendMessage")}</h3>
 
             {status === "success" ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center">
                   <CheckCircle className="text-green-400" size={28} />
                 </div>
-                <p className="text-white font-bold text-lg">Thank you.</p>
-                <p className="text-muted-foreground text-center text-sm">Your request has been received. Our team will contact you shortly.</p>
+                <p className="text-white font-bold text-lg">{t("form.thankYou")}</p>
+                <p className="text-muted-foreground text-center text-sm">{t("form.successSub")}</p>
               </div>
             ) : (
               <form className="space-y-6" onSubmit={handleSubmit}>
                 {status === "error" && (
                   <div className="flex items-center gap-3 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                     <AlertCircle size={16} />
-                    Your request could not be sent. Please try again later or contact us directly.
+                    {t("form.errorMsg")}
                   </div>
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -132,7 +132,7 @@ export default function Contact() {
                   <input ref={emailRef} type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-2">Subject</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-2">{t("contact.subject")}</label>
                   <input ref={subjectRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
                 </div>
                 <div>
@@ -145,14 +145,13 @@ export default function Contact() {
                   disabled={status === "loading"}
                   className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all disabled:opacity-60"
                 >
-                  {status === "loading" ? "Sending…" : t("form.send")}
+                  {status === "loading" ? t("form.sending") : t("form.send")}
                 </button>
               </form>
             )}
           </motion.div>
         </div>
 
-        {/* ── Section divider ── */}
         <div className="relative mt-20 mb-20 max-w-6xl mx-auto">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t-2 border-white/10" />
@@ -162,7 +161,6 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* ── Location & Visit Us ── */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
@@ -171,23 +169,22 @@ export default function Contact() {
         >
           <div className="text-center mb-10">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-4 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.35)] hover:shadow-[0_0_20px_rgba(59,130,246,0.55)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
-              <MapPin size={13} /> Visit Us
+              <MapPin size={13} /> {t("contact.visitUs")}
             </span>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-3">Find Us at Gariūnai Car Market</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-3">{t("contact.findUs")}</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Our office is located at Europe's largest second-hand automotive market in Vilnius, Lithuania.
+              {t("contact.officeDesc")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            {/* Address card */}
             <div className="lg:col-span-1 space-y-5">
               <div className="p-6 rounded-2xl bg-card border border-border/50">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <MapPin size={18} className="text-primary" />
                   </div>
-                  <h3 className="text-white font-bold">Our Address</h3>
+                  <h3 className="text-white font-bold">{t("contact.ourAddress")}</h3>
                 </div>
                 <div className="space-y-1 text-sm text-muted-foreground mb-5">
                   <p className="text-white font-semibold">Gariūnai Car Market</p>
@@ -203,7 +200,7 @@ export default function Contact() {
                     rel="noreferrer"
                     className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors"
                   >
-                    <Navigation size={14} /> Open in Google Maps
+                    <Navigation size={14} /> {t("contact.openMaps")}
                   </a>
                   <a
                     href="https://maps.apple.com/?q=Gari%C5%ABn%C5%B3+g.+49,+Vilnius"
@@ -211,31 +208,30 @@ export default function Contact() {
                     rel="noreferrer"
                     className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-border text-muted-foreground text-sm font-medium hover:text-white hover:border-white/20 transition-colors"
                   >
-                    <MapPin size={14} /> Apple Maps
+                    <MapPin size={14} /> {t("contact.appleMaps")}
                   </a>
                 </div>
               </div>
 
               <div className="p-6 rounded-2xl bg-card border border-border/50">
-                <h3 className="text-white font-bold mb-4">Working Hours</h3>
+                <h3 className="text-white font-bold mb-4">{t("contact.workingHours")}</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Monday – Friday</span>
+                    <span className="text-muted-foreground">{t("contact.monFri")}</span>
                     <span className="text-white">9:00 – 18:00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Saturday</span>
+                    <span className="text-muted-foreground">{t("contact.saturday")}</span>
                     <span className="text-white">9:00 – 16:00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Sunday</span>
-                    <span className="text-muted-foreground">Closed</span>
+                    <span className="text-muted-foreground">{t("contact.sunday")}</span>
+                    <span className="text-muted-foreground">{t("contact.closed")}</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Google Maps embed */}
             <div className="lg:col-span-2 rounded-2xl overflow-hidden border border-border/50 min-h-[380px]">
               <iframe
                 title="BOVAJA location — Gariūnai Car Market, Vilnius"

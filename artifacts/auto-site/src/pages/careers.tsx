@@ -12,28 +12,28 @@ type ContactMethod = "WhatsApp" | "Telegram" | "Viber" | "Phone" | "Email";
 const CONTACT_METHODS: { id: ContactMethod; label: string; icon: React.ReactNode }[] = [
   { id: "WhatsApp", label: "WhatsApp", icon: <MessageCircle size={14} /> },
   { id: "Telegram", label: "Telegram", icon: <Send size={14} /> },
-  { id: "Viber", label: "Viber", icon: <Phone size={14} /> },
-  { id: "Phone", label: "Phone", icon: <Phone size={14} /> },
-  { id: "Email", label: "Email", icon: <Mail size={14} /> },
+  { id: "Viber",    label: "Viber",    icon: <Phone size={14} /> },
+  { id: "Phone",    label: "Phone",    icon: <Phone size={14} /> },
+  { id: "Email",    label: "Email",    icon: <Mail size={14} /> },
 ];
 
 const EMPLOYMENT_OPTIONS = [
-  "Full-time",
-  "Part-time",
-  "Freelance / Contract",
-  "Flexible Schedule",
-  "Remote Work",
-  "Open to Opportunities",
+  { value: "Full-time",             key: "careers.employment.fullTime" },
+  { value: "Part-time",             key: "careers.employment.partTime" },
+  { value: "Freelance / Contract",  key: "careers.employment.freelance" },
+  { value: "Flexible Schedule",     key: "careers.employment.flexible" },
+  { value: "Remote Work",           key: "careers.employment.remote" },
+  { value: "Open to Opportunities", key: "careers.employment.open" },
+];
+
+const benefits = [
+  { icon: <Globe size={20} />, titleKey: "careers.benefit.team.title",   descKey: "careers.benefit.team.desc" },
+  { icon: <Clock size={20} />, titleKey: "careers.benefit.flex.title",   descKey: "careers.benefit.flex.desc" },
+  { icon: <Star size={20} />,  titleKey: "careers.benefit.growth.title", descKey: "careers.benefit.growth.desc" },
+  { icon: <Heart size={20} />, titleKey: "careers.benefit.noCV.title",   descKey: "careers.benefit.noCV.desc" },
 ];
 
 const INPUT_CLS = "w-full bg-input border border-border rounded-lg px-4 py-3 text-white focus:border-primary outline-none transition-colors text-sm placeholder:text-muted-foreground/50";
-
-const benefits = [
-  { icon: <Globe size={20} />, title: "International Team", desc: "Work with clients from Poland, Russia, Belarus, and across Europe." },
-  { icon: <Clock size={20} />, title: "Flexible Arrangements", desc: "Open to full-time, part-time, freelance, and remote cooperation." },
-  { icon: <Star size={20} />, title: "Growing Company", desc: "Join us at an exciting stage of growth in the automotive import sector." },
-  { icon: <Heart size={20} />, title: "No CV Required", desc: "Tell us about yourself in your own words — no formal CV needed." },
-];
 
 export default function Careers() {
   const { t, lang } = useLanguage();
@@ -44,18 +44,18 @@ export default function Careers() {
   const [cvError, setCvError] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const nameRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const whatsappRef = useRef<HTMLInputElement>(null);
-  const telegramRef = useRef<HTMLInputElement>(null);
-  const viberRef = useRef<HTMLInputElement>(null);
-  const positionRef = useRef<HTMLInputElement>(null);
+  const nameRef      = useRef<HTMLInputElement>(null);
+  const phoneRef     = useRef<HTMLInputElement>(null);
+  const emailRef     = useRef<HTMLInputElement>(null);
+  const whatsappRef  = useRef<HTMLInputElement>(null);
+  const telegramRef  = useRef<HTMLInputElement>(null);
+  const viberRef     = useRef<HTMLInputElement>(null);
+  const positionRef  = useRef<HTMLInputElement>(null);
   const experienceRef = useRef<HTMLTextAreaElement>(null);
-  const skillsRef = useRef<HTMLTextAreaElement>(null);
+  const skillsRef    = useRef<HTMLTextAreaElement>(null);
   const languagesRef = useRef<HTMLInputElement>(null);
-  const introRef = useRef<HTMLTextAreaElement>(null);
-  const messageRef = useRef<HTMLTextAreaElement>(null);
+  const introRef     = useRef<HTMLTextAreaElement>(null);
+  const messageRef   = useRef<HTMLTextAreaElement>(null);
 
   const toggleMethod = (m: ContactMethod) => {
     setSelectedMethods((prev) =>
@@ -69,12 +69,12 @@ export default function Careers() {
     if (!file) { setCvFile(null); return; }
     const allowed = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
     if (!allowed.includes(file.type)) {
-      setCvError("Only PDF, DOC, and DOCX files are allowed.");
+      setCvError(t("careers.form.cvError.type"));
       setCvFile(null);
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      setCvError("File size must not exceed 5 MB.");
+      setCvError(t("careers.form.cvError.size"));
       setCvFile(null);
       return;
     }
@@ -84,7 +84,7 @@ export default function Careers() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (selectedMethods.length === 0) {
-      alert("Please select at least one preferred contact method.");
+      alert(t("careers.form.noContact"));
       return;
     }
     setStatus("loading");
@@ -121,24 +121,22 @@ export default function Careers() {
     <div className="pt-12 pb-24">
       <div className="container mx-auto px-4 max-w-6xl">
 
-        {/* Hero */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-5 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.35)] hover:shadow-[0_0_20px_rgba(59,130,246,0.55)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
-            <Users size={14} /> Join Our Team
+            <Users size={14} /> {t("careers.badge")}
           </span>
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-6">Careers at BOVAJA</h1>
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-6">{t("careers.title")}</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-            If you would like to join our team, you can send us your CV or simply tell us about your professional experience in your own words.
+            {t("careers.sub")}
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
 
-          {/* Left: Info */}
           <div className="lg:col-span-2 space-y-8">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -146,12 +144,12 @@ export default function Careers() {
               transition={{ delay: 0.1 }}
               className="p-6 rounded-2xl bg-card border border-border/50"
             >
-              <h2 className="text-xl font-bold text-white mb-3">Open to Everyone</h2>
+              <h2 className="text-xl font-bold text-white mb-3">{t("careers.open.title")}</h2>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
-                We are open not only to full-time employees but also to part-time, freelance, project-based, and flexible cooperation opportunities.
+                {t("careers.open.desc1")}
               </p>
               <p className="text-muted-foreground text-sm leading-relaxed">
-                If you are looking for part-time work, additional income, freelance projects, or flexible collaboration, feel free to contact us.
+                {t("careers.open.desc2")}
               </p>
             </motion.div>
 
@@ -168,15 +166,14 @@ export default function Careers() {
                     {b.icon}
                   </div>
                   <div>
-                    <div className="text-white font-semibold text-sm mb-1">{b.title}</div>
-                    <div className="text-muted-foreground text-xs leading-relaxed">{b.desc}</div>
+                    <div className="text-white font-semibold text-sm mb-1">{t(b.titleKey)}</div>
+                    <div className="text-muted-foreground text-xs leading-relaxed">{t(b.descKey)}</div>
                   </div>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* Right: Form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -184,9 +181,9 @@ export default function Careers() {
             className="lg:col-span-3"
           >
             <div className="p-8 rounded-2xl bg-card border border-border/50 shadow-2xl">
-              <h2 className="text-2xl font-bold text-white mb-2">Apply to Join Our Team</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">{t("careers.form.title")}</h2>
               <p className="text-muted-foreground text-sm mb-8">
-                No CV? No problem. Tell us about your experience, skills, and the type of work you are interested in.
+                {t("careers.form.sub")}
               </p>
 
               {status === "success" ? (
@@ -194,9 +191,9 @@ export default function Careers() {
                   <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
                     <CheckCircle className="text-green-400" size={32} />
                   </div>
-                  <h3 className="text-xl font-bold text-white">Application Received</h3>
+                  <h3 className="text-xl font-bold text-white">{t("careers.form.success.title")}</h3>
                   <p className="text-muted-foreground text-sm max-w-sm mx-auto">
-                    Thank you. Your application has been received. Our team will review it and contact you if there is a suitable opportunity.
+                    {t("careers.form.success.sub")}
                   </p>
                 </div>
               ) : (
@@ -204,30 +201,28 @@ export default function Careers() {
                   {status === "error" && (
                     <div className="flex items-center gap-3 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                       <AlertCircle size={16} />
-                      Your application could not be sent. Please try again or contact us directly.
+                      {t("careers.form.error")}
                     </div>
                   )}
 
-                  {/* Basic info */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Full Name *</label>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.name")} *</label>
                       <input ref={nameRef} required type="text" className={INPUT_CLS} placeholder="Your full name" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Position / Area of Interest</label>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("careers.form.position")}</label>
                       <input ref={positionRef} type="text" className={INPUT_CLS} placeholder="e.g. Sales, Marketing, Logistics…" />
                     </div>
                   </div>
 
-                  {/* Contact details */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Phone</label>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
                       <input ref={phoneRef} type="tel" className={INPUT_CLS} placeholder="+XX XXX XXX XXXX" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Email</label>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
                       <input ref={emailRef} type="email" className={INPUT_CLS} placeholder="your@email.com" />
                     </div>
                   </div>
@@ -247,9 +242,8 @@ export default function Careers() {
                     </div>
                   </div>
 
-                  {/* Preferred contact */}
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Preferred Contact Method *</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("careers.form.contactMethod")} *</label>
                     <div className="flex flex-wrap gap-2">
                       {CONTACT_METHODS.map((m) => (
                         <button
@@ -268,51 +262,49 @@ export default function Careers() {
                     </div>
                   </div>
 
-                  {/* Employment preference */}
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-1">Employment Preference</label>
-                    <p className="text-xs text-muted-foreground/70 mb-2">Looking for full-time, part-time, freelance, or flexible cooperation?</p>
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">{t("careers.form.employment")}</label>
+                    <p className="text-xs text-muted-foreground/70 mb-2">{t("careers.form.employmentSub")}</p>
                     <select
                       value={employment}
                       onChange={(e) => setEmployment(e.target.value)}
                       className={INPUT_CLS}
                     >
-                      {EMPLOYMENT_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+                      {EMPLOYMENT_OPTIONS.map((o) => (
+                        <option key={o.value} value={o.value}>{t(o.key)}</option>
+                      ))}
                     </select>
                   </div>
 
-                  {/* Experience */}
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Work Experience</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("careers.form.experience")}</label>
                     <textarea ref={experienceRef} rows={3} className={`${INPUT_CLS} resize-none`} placeholder="Describe your relevant work experience…" />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Skills</label>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("careers.form.skills")}</label>
                       <textarea ref={skillsRef} rows={2} className={`${INPUT_CLS} resize-none`} placeholder="Your key skills…" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Languages Spoken</label>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("careers.form.languages")}</label>
                       <input ref={languagesRef} type="text" className={INPUT_CLS} placeholder="e.g. Russian, Polish, English" />
                     </div>
                   </div>
 
-                  {/* Intro */}
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Short Introduction</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("careers.form.intro")}</label>
                     <textarea ref={introRef} rows={3} className={`${INPUT_CLS} resize-none`} placeholder="Tell us a bit about yourself and why you want to work with us…" />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">Additional Message</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-2">{t("careers.form.additional")}</label>
                     <textarea ref={messageRef} rows={2} className={`${INPUT_CLS} resize-none`} placeholder="Anything else you'd like us to know…" />
                   </div>
 
-                  {/* CV Upload */}
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">
-                      Upload CV <span className="text-xs text-muted-foreground/60">(optional — PDF, DOC, DOCX, max 5 MB)</span>
+                      {t("careers.form.cv")} <span className="text-xs text-muted-foreground/60">{t("careers.form.cvSub")}</span>
                     </label>
                     <div
                       onClick={() => fileRef.current?.click()}
@@ -322,7 +314,7 @@ export default function Careers() {
                     >
                       <Upload size={18} className={cvFile ? "text-primary" : "text-muted-foreground"} />
                       <span className={`text-sm ${cvFile ? "text-white" : "text-muted-foreground"}`}>
-                        {cvFile ? cvFile.name : "Click to upload your CV"}
+                        {cvFile ? cvFile.name : t("careers.form.cvClick")}
                       </span>
                       {cvFile && (
                         <button
@@ -330,7 +322,7 @@ export default function Careers() {
                           onClick={(e) => { e.stopPropagation(); setCvFile(null); if (fileRef.current) fileRef.current.value = ""; }}
                           className="ml-auto text-xs text-muted-foreground hover:text-destructive"
                         >
-                          Remove
+                          {t("careers.form.cvRemove")}
                         </button>
                       )}
                     </div>
@@ -352,12 +344,12 @@ export default function Careers() {
                     {status === "loading" ? (
                       <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                     ) : (
-                      <><Briefcase size={18} /> Submit Application</>
+                      <><Briefcase size={18} /> {t("careers.form.submit")}</>
                     )}
                   </button>
 
                   <p className="text-xs text-muted-foreground/60 text-center leading-relaxed">
-                    By submitting this form, you agree that we may use your information to review your application and contact you regarding employment opportunities.
+                    {t("careers.form.legal")}
                   </p>
                 </form>
               )}

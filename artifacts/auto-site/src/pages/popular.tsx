@@ -76,7 +76,7 @@ export default function Popular() {
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">{t("inventory.popular")}</h1>
             <p className="text-lg text-muted-foreground">
-              Автомобили, которые мы чаще всего привозим под заказ. Цены ориентировочные, основанные на актуальных рыночных трендах.
+              {t("popular.pageSub")}
             </p>
           </motion.div>
         </div>
@@ -146,7 +146,7 @@ export default function Popular() {
                     <p className="text-sm text-muted-foreground mb-6 flex-1">{car.description}</p>
 
                     <button className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2">
-                      <ArrowRight size={16} /> View Details
+                      <ArrowRight size={16} /> {t("popular.viewDetails")}
                     </button>
                   </div>
                 </motion.div>
@@ -162,9 +162,9 @@ export default function Popular() {
       <section className="py-16 bg-primary/10 border-t border-primary/20">
         <div className="container mx-auto px-4 text-center max-w-3xl">
           <MessageSquare className="mx-auto text-primary mb-6" size={48} />
-          <h2 className="text-3xl font-bold text-white mb-4">Не нашли нужный автомобиль?</h2>
+          <h2 className="text-3xl font-bold text-white mb-4">{t("popular.cta.title")}</h2>
           <p className="text-lg text-muted-foreground mb-8">
-            Это лишь часть того, что мы можем найти. Скажите, что вам нужно — наша команда найдёт его через глобальную дилерскую сеть.
+            {t("popular.cta.sub")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
