@@ -58,6 +58,11 @@ interface UnifiedVehicle {
   purchaseCountry?: string;
   deliveredTo?: string | null;
   deliveryDate?: string | null;
+  auctionEndDate?: string | null;
+  auctionStartDate?: string | null;
+  estimatedWinningPrice?: number | null;
+  auctionPlatform?: string | null;
+  auctionNotes?: string | null;
 }
 interface DisplayPopular {
   id: string | number;
@@ -114,6 +119,11 @@ function toModalUnified(car: UnifiedVehicle): ModalVehicle {
     engine: car.engine, fuel: car.fuel,
     transmission: car.transmission, mileage: car.mileage, location: car.location,
     images: [car.image, ...(car.photos ?? []).filter(Boolean)],
+    auctionEndDate: car.auctionEndDate ?? null,
+    auctionStartDate: car.auctionStartDate ?? null,
+    estimatedWinningPrice: car.estimatedWinningPrice ?? null,
+    auctionPlatform: car.auctionPlatform ?? null,
+    auctionNotes: car.auctionNotes ?? null,
   };
 }
 function toModalPopular(car: DisplayPopular): ModalVehicle {
@@ -473,9 +483,53 @@ export default function Inventory() {
                         </div>
                       )}
 
-                      <button className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn">
-                        View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                      </button>
+                      {car.status === "auction" && (
+                        <div className="mb-4 rounded-xl border border-purple-300 bg-purple-50 p-4 space-y-2.5">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-600 text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(147,51,234,0.4)]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-white/90 inline-block" />
+                              {t("auction.badge")}
+                            </span>
+                            {car.auctionEndDate && (
+                              <span className="text-xs text-purple-700 font-semibold">
+                                {t("auction.endsLabel")} {car.auctionEndDate}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-purple-900 leading-relaxed">
+                            {t("auction.notice")}
+                          </p>
+                          <p className="text-xs text-purple-700 leading-relaxed">
+                            {t("auction.noticeDetail")}
+                          </p>
+                          {car.estimatedWinningPrice && (
+                            <p className="text-xs font-semibold text-purple-800">
+                              {t("auction.estimatedPrice")}: €{car.estimatedWinningPrice.toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      {car.status === "auction" ? (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setSelectedVehicle(toModalUnified(car)); }}
+                            className="flex-1 py-3 bg-purple-600 hover:bg-purple-700 text-white text-center font-semibold rounded transition-colors flex items-center justify-center gap-2 shadow-[0_0_12px_rgba(147,51,234,0.35)]"
+                          >
+                            {t("auction.ctaContact")}
+                          </button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); setSelectedVehicle(toModalUnified(car)); }}
+                            className="flex-1 py-3 bg-purple-100 hover:bg-purple-200 text-purple-800 text-center font-medium rounded transition-colors flex items-center justify-center gap-2"
+                          >
+                            {t("auction.ctaDetails")}
+                          </button>
+                        </div>
+                      ) : (
+                        <button className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn">
+                          View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                   );

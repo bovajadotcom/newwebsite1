@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useWatch } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   useGetVehicles,
@@ -69,6 +70,11 @@ const vehicleSchema = z.object({
   badge: z.string().nullable().optional(),
   isPopular: z.boolean().default(false),
   sortOrder: z.coerce.number().default(0),
+  auctionEndDate: z.string().nullable().optional(),
+  auctionStartDate: z.string().nullable().optional(),
+  estimatedWinningPrice: z.coerce.number().nullable().optional(),
+  auctionPlatform: z.string().nullable().optional(),
+  auctionNotes: z.string().nullable().optional(),
 });
 
 type VehicleFormValues = z.infer<typeof vehicleSchema>;
@@ -240,6 +246,8 @@ export default function VehiclesPage() {
       sortOrder: 0,
     },
   });
+
+  const watchedStatus = useWatch({ control: form.control, name: "status" });
 
   const onSubmit = async (values: VehicleFormValues) => {
     try {
@@ -525,6 +533,74 @@ export default function VehiclesPage() {
                     </FormItem>
                   )}
                 />
+
+                {/* Auction fields — shown only when status is "auction" */}
+                {watchedStatus === "auction" && (
+                  <div className="rounded-lg border border-purple-500/40 bg-purple-500/5 p-4 space-y-4">
+                    <p className="text-sm font-semibold text-purple-400 flex items-center gap-2">
+                      🔨 Auction Details <span className="text-xs font-normal text-muted-foreground">(optional)</span>
+                    </p>
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="auctionStartDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Auction Start Date</FormLabel>
+                            <FormControl><Input type="date" {...field} value={field.value ?? ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="auctionEndDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Auction End Date</FormLabel>
+                            <FormControl><Input type="date" {...field} value={field.value ?? ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="estimatedWinningPrice"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Est. Winning Price (€)</FormLabel>
+                            <FormControl><Input type="number" placeholder="0" {...field} value={field.value ?? ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="auctionPlatform"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Auction Platform</FormLabel>
+                            <FormControl><Input placeholder="e.g. Copart, Manheim, BCA" {...field} value={field.value ?? ""} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="auctionNotes"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Auction Notes</FormLabel>
+                          <FormControl><Textarea rows={2} placeholder="Any additional auction notes..." {...field} value={field.value ?? ""} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                )}
 
                 {/* Main image */}
                 <FormField

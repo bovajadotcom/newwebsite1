@@ -38,6 +38,11 @@ export interface ModalVehicle {
   deliveredTo?: string | null;
   deliveryStatus?: string;
   images: string[];
+  auctionEndDate?: string | null;
+  auctionStartDate?: string | null;
+  estimatedWinningPrice?: number | null;
+  auctionPlatform?: string | null;
+  auctionNotes?: string | null;
 }
 
 interface Props {
@@ -326,7 +331,8 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
 
   if (!vehicle) return null;
 
-  const isAvailable = vehicle.type === "available";
+  const isAvailable = vehicle.type === "available" && vehicle.status !== "auction";
+  const isAuction = vehicle.type === "available" && vehicle.status === "auction";
   const isSold = vehicle.type === "sold";
   const isPopular = vehicle.type === "popular";
 
@@ -513,6 +519,69 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                             <p className="text-sm font-semibold text-white">{row.value}</p>
                           </div>
                         ))}
+                      </div>
+                    )}
+
+                    {/* Auction info block */}
+                    {isAuction && (
+                      <div className="rounded-xl border border-purple-500/40 bg-purple-500/10 p-5 space-y-4">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-600 text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_12px_rgba(147,51,234,0.5)]">
+                            <span className="w-1.5 h-1.5 rounded-full bg-white/90 inline-block" />
+                            {t("auction.badge")}
+                          </span>
+                        </div>
+                        <p className="text-sm text-white/90 leading-relaxed">
+                          {t("auction.notice")}
+                        </p>
+                        <p className="text-xs text-white/60 leading-relaxed">
+                          {t("auction.noticeDetail")}
+                        </p>
+                        {(vehicle.auctionStartDate || vehicle.auctionEndDate || vehicle.estimatedWinningPrice || vehicle.auctionPlatform) && (
+                          <div className="grid grid-cols-2 gap-2 pt-1">
+                            {vehicle.auctionStartDate && (
+                              <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+                                <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.startsLabel")}</p>
+                                <p className="text-sm font-semibold text-white">{vehicle.auctionStartDate}</p>
+                              </div>
+                            )}
+                            {vehicle.auctionEndDate && (
+                              <div className="bg-white/5 border border-purple-500/30 rounded-lg px-3 py-2">
+                                <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.endsLabel")}</p>
+                                <p className="text-sm font-semibold text-purple-300">{vehicle.auctionEndDate}</p>
+                              </div>
+                            )}
+                            {vehicle.estimatedWinningPrice && (
+                              <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+                                <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.estimatedPrice")}</p>
+                                <p className="text-sm font-semibold text-white">€{vehicle.estimatedWinningPrice.toLocaleString()}</p>
+                              </div>
+                            )}
+                            {vehicle.auctionPlatform && (
+                              <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+                                <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.platform")}</p>
+                                <p className="text-sm font-semibold text-white">{vehicle.auctionPlatform}</p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        {vehicle.auctionNotes && (
+                          <p className="text-xs text-white/50 italic border-t border-white/10 pt-3">{vehicle.auctionNotes}</p>
+                        )}
+                        <div className="flex flex-col gap-2 pt-1">
+                          <button
+                            onClick={() => setActiveFormName("Auction Inquiry")}
+                            className="w-full py-3 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition-all shadow-[0_0_20px_rgba(147,51,234,0.4)] flex items-center justify-center gap-2 text-sm"
+                          >
+                            <Send size={15} /> {t("auction.ctaContact")}
+                          </button>
+                          <button
+                            onClick={() => setActiveFormName("Get Auction Details")}
+                            className="w-full py-3 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-purple-500/30"
+                          >
+                            <MessageCircle size={15} /> {t("auction.ctaDetails")}
+                          </button>
+                        </div>
                       </div>
                     )}
 
