@@ -357,7 +357,7 @@ export const translations = {
     "popular.pageSub": "Vehicles we source most often by order. Prices are approximate, based on current market trends.",
     "popular.viewDetails": "View Details",
     "popular.cta.title": "Didn't find the car you need?",
-    "popular.cta.sub": "This is just a fraction of what we can find. Tell us what you need — our team will find it through our global dealer network.",
+    "popular.cta.sub": "Tell us what you're looking for, and we'll find the best option from thousands of offers across Europe",
     // Contact page additions
     "contact.location": "Location",
     "contact.sendMessage": "Send a Message",
