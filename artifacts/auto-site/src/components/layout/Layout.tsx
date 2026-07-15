@@ -277,7 +277,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               &copy; {new Date().getFullYear()} BOVAJA. {t("footer.rights")}
             </p>
             <div className="flex gap-5">
-              <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.privacy")}</a>
+              <a href="/privacy" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.privacy")}</a>
               <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.terms")}</a>
               <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">Cookies</a>
             </div>

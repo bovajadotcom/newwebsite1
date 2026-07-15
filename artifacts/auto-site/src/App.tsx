@@ -20,6 +20,7 @@ import Contact from "@/pages/contact";
 import Articles from "@/pages/articles";
 import Article from "@/pages/article";
 import Careers from "@/pages/careers";
+import Privacy from "@/pages/privacy";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ function Router() {
         <Route path="/articles/:slug" component={Article} />
         <Route path="/careers" component={Careers} />
         <Route path="/favorites" component={Favorites} />
+        <Route path="/privacy" component={Privacy} />
         <Route component={NotFound} />
       </Switch>
       <PageModal />
