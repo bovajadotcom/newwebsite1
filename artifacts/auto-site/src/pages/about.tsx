@@ -12,6 +12,29 @@ export default function About() {
     { name: "Sarah Jenkins", title: "Chief Compliance Officer", img: "team-4.png" }
   ];
 
+  const values = [
+    { icon: Target, titleKey: "about.val.precision.title", descKey: "about.val.precision.desc" },
+    { icon: Shield, titleKey: "about.val.integrity.title", descKey: "about.val.integrity.desc" },
+    { icon: Compass, titleKey: "about.val.reach.title",    descKey: "about.val.reach.desc" },
+  ];
+
+  const timeline = [
+    { year: "2012", titleKey: "about.tl.2012.title", descKey: "about.tl.2012.desc" },
+    { year: "2014", titleKey: "about.tl.2014.title", descKey: "about.tl.2014.desc" },
+    { year: "2016", titleKey: "about.tl.2016.title", descKey: "about.tl.2016.desc" },
+    { year: "2018", titleKey: "about.tl.2018.title", descKey: "about.tl.2018.desc" },
+    { year: "2020", titleKey: "about.tl.2020.title", descKey: "about.tl.2020.desc" },
+    { year: "2022", titleKey: "about.tl.2022.title", descKey: "about.tl.2022.desc" },
+    { year: "2024", titleKey: "about.tl.2024.title", descKey: "about.tl.2024.desc" },
+  ];
+
+  const diffItems = [
+    "about.diff.item1",
+    "about.diff.item2",
+    "about.diff.item3",
+    "about.diff.item4",
+  ];
+
   return (
     <div className="w-full">
       {/* Hero */}
@@ -31,7 +54,7 @@ export default function About() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">{t("about.title")}</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We built BOVAJA to bridge the gap between global automotive markets and local enthusiasts, turning complex international logistics into a frictionless experience.
+              {t("about.heroSub")}
             </p>
           </motion.div>
         </div>
@@ -48,17 +71,13 @@ export default function About() {
             className="text-center mb-14"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
-              <Target size={11} /> {t("about.mission") || "Our Values"}
+              <Target size={11} /> {t("about.mission")}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Core Principles</h2>
-            <p className="text-muted-foreground max-w-xl mx-auto">The principles that guide every vehicle we source and every deal we execute.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{t("about.corePrinciples")}</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">{t("about.corePrinciplesSub")}</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: Target, title: "Precision", desc: "Every document, every inspection, every logistical move is executed with absolute accuracy." },
-              { icon: Shield, title: "Integrity", desc: "Complete transparency in pricing and vehicle condition. We don't hide flaws; we expose them." },
-              { icon: Compass, title: "Reach", desc: "No vehicle is out of reach. We operate across 40+ countries and major global auction houses." }
-            ].map((v, i) => (
+            {values.map((v, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -70,8 +89,8 @@ export default function About() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <v.icon className="text-primary" size={32} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{v.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{v.desc}</p>
+                <h3 className="text-2xl font-bold text-white mb-4">{t(v.titleKey)}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t(v.descKey)}</p>
               </motion.div>
             ))}
           </div>
@@ -89,22 +108,14 @@ export default function About() {
             className="text-center mb-16"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
-              <Compass size={11} /> {t("about.timeline") || "Our Journey"}
+              <Compass size={11} /> {t("about.timeline")}
             </span>
-            <h2 className="text-3xl font-bold text-white mb-3">A Decade of Growth</h2>
-            <p className="text-muted-foreground">Over a decade of consistent growth and global expansion.</p>
+            <h2 className="text-3xl font-bold text-white mb-3">{t("about.decadeTitle")}</h2>
+            <p className="text-muted-foreground">{t("about.decadeSub")}</p>
           </motion.div>
           
           <div className="space-y-10">
-            {[
-              { year: "2012", title: "Founded in Miami", desc: "Started as a boutique broker for exotic European imports." },
-              { year: "2014", title: "First International Shipment", desc: "Successfully delivered our first bulk container of vehicles across the Atlantic." },
-              { year: "2016", title: "Asian Market Expansion", desc: "Opened direct access to USS Tokyo and Japanese domestic market." },
-              { year: "2018", title: "500th Vehicle Delivered", desc: "Scaled our operations and logistics infrastructure." },
-              { year: "2020", title: "US Market Entry", desc: "Established major presence in North American auctions (Copart, IAAI)." },
-              { year: "2022", title: "1000th Vehicle Delivered", desc: "Doubled our volume through B2B partnerships." },
-              { year: "2024", title: "5,000+ Vehicles Delivered", desc: "Recognized as a premier global import partner." }
-            ].map((item, i) => (
+            {timeline.map((item, i) => (
               <motion.div 
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
@@ -116,8 +127,8 @@ export default function About() {
                   {item.year}
                 </div>
                 <div className="pt-0.5">
-                  <h3 className="text-xl font-bold text-white mb-1.5">{item.title}</h3>
-                  <p className="text-muted-foreground">{item.desc}</p>
+                  <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
+                  <p className="text-muted-foreground">{t(item.descKey)}</p>
                 </div>
               </motion.div>
             ))}
@@ -157,10 +168,10 @@ export default function About() {
             className="text-center mb-14"
           >
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
-              <Shield size={11} /> {t("about.team") || "Our Team"}
+              <Shield size={11} /> {t("about.team")}
             </span>
-            <h2 className="text-3xl font-bold text-white mb-3">The People Behind BOVAJA</h2>
-            <p className="text-muted-foreground max-w-lg mx-auto">The experts behind every successful transaction.</p>
+            <h2 className="text-3xl font-bold text-white mb-3">{t("about.teamTitle")}</h2>
+            <p className="text-muted-foreground max-w-lg mx-auto">{t("about.teamSub")}</p>
           </motion.div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
@@ -199,23 +210,18 @@ export default function About() {
               viewport={{ once: true }}
             >
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-5 border border-primary/25">
-                <CheckCircle2 size={11} /> {t("about.whyUs") || "Why Choose Us"}
+                <CheckCircle2 size={11} /> {t("about.whyUs")}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">The BOVAJA Difference</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t("about.diffTitle")}</h2>
               <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
-                We combine deep automotive expertise with world-class logistics infrastructure. This isn't just about buying cars; it's about executing complex international transactions flawlessly.
+                {t("about.diffDesc")}
               </p>
               
               <div className="space-y-4">
-                {[
-                  "Fully Licensed & Bonded Import Brokerage",
-                  "Direct Auction Access Without Middlemen",
-                  "In-house Customs Clearance Specialists",
-                  "Comprehensive Marine Insurance Included"
-                ].map((item, i) => (
+                {diffItems.map((key, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <CheckCircle2 className="text-primary shrink-0" size={20} />
-                    <span className="text-white font-medium">{item}</span>
+                    <span className="text-white font-medium">{t(key)}</span>
                   </div>
                 ))}
               </div>
@@ -230,12 +236,12 @@ export default function About() {
               <div className="p-6 bg-card border border-border/40 rounded-2xl text-center hover:border-primary/30 transition-colors">
                 <Award className="text-primary mx-auto mb-4" size={32} />
                 <h4 className="font-bold text-white mb-2">ISO 9001</h4>
-                <p className="text-sm text-muted-foreground">Certified Quality Management</p>
+                <p className="text-sm text-muted-foreground">{t("about.cert.iso.desc")}</p>
               </div>
               <div className="p-6 bg-card border border-border/40 rounded-2xl text-center hover:border-primary/30 transition-colors">
                 <Zap className="text-primary mx-auto mb-4" size={32} />
                 <h4 className="font-bold text-white mb-2">FMC Licensed</h4>
-                <p className="text-sm text-muted-foreground">Federal Maritime Commission</p>
+                <p className="text-sm text-muted-foreground">{t("about.cert.fmc.desc")}</p>
               </div>
             </motion.div>
           </div>
@@ -246,7 +252,7 @@ export default function About() {
       <section className="relative py-14 border-b-2 border-white/10">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-10">Official Partners & Certifications</p>
+          <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-10">{t("about.partners")}</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-500">
             {["Copart", "IAAI", "Manheim", "USS Tokyo", "Lloyd's", "Maersk", "CBP"].map(partner => (
               <span key={partner} className="text-xl font-bold tracking-tighter">{partner}</span>
