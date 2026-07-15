@@ -464,12 +464,12 @@ export default function Home() {
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             {[
-              { icon: Globe, title: "Global Network", desc: "Direct access to dealer-only auctions in Japan, US, Europe, and UAE." },
-              { icon: Shield, title: "Full Transparency", desc: "No hidden fees. See exactly what you're paying for vehicle, shipping, and customs." },
-              { icon: Users, title: "Expert Team", desc: "Dedicated inspectors and logistics specialists operating in 15 countries." },
-              { icon: Zap, title: "End-to-End Service", desc: "From bidding to doorstep delivery. We handle all paperwork, shipping, and registration." },
-              { icon: Award, title: "Certified & Trusted", desc: "Fully licensed, bonded, and insured import brokerage." },
-              { icon: Clock, title: "Fast Delivery", desc: "Optimized shipping routes and priority customs clearance." }
+              { icon: Globe, title: t("adv.globalNetwork.title"), desc: t("adv.globalNetwork.desc") },
+              { icon: Shield, title: t("adv.transparency.title"), desc: t("adv.transparency.desc") },
+              { icon: Users, title: t("adv.expertTeam.title"), desc: t("adv.expertTeam.desc") },
+              { icon: Zap, title: t("adv.endToEnd.title"), desc: t("adv.endToEnd.desc") },
+              { icon: Award, title: t("adv.certified.title"), desc: t("adv.certified.desc") },
+              { icon: Clock, title: t("adv.fastDelivery.title"), desc: t("adv.fastDelivery.desc") },
             ].map((adv, i) => (
               <motion.div 
                 key={i} 
