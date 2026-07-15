@@ -254,7 +254,7 @@ export default function About() {
         <div className="container mx-auto px-4">
           <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-10">{t("about.partners")}</p>
           <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:opacity-80 hover:grayscale-0 transition-all duration-500">
-            {["Copart", "IAAI", "Manheim", "USS Tokyo", "Lloyd's", "Maersk", "CBP"].map(partner => (
+            {["BCA", "OPENLANE", "AUTO1", "ALCOPA", "ALPHABET", "ARVAL", "ATHLON", "AUTOROLA", "AYVENS", "AUTOMOTIVE", "KBC", "MOBILE.DE", "AUTOBID.DE"].map(partner => (
               <span key={partner} className="text-xl font-bold tracking-tighter">{partner}</span>
             ))}
           </div>
