@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Menu, X, ChevronRight, Heart, Phone, Mail, MessageCircle, MapPin } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n";
 import { useFavorites } from "@/lib/FavoritesContext";
@@ -21,6 +21,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { lang, setLang, t } = useLanguage();
   const { count: favCount } = useFavorites();
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
 
   return (
     <div className="min-h-screen bg-[#07111E] text-foreground flex flex-col font-sans selection:bg-primary/30">
@@ -101,8 +110,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Burger — visible below lg only */}
             <button
-              className="lg:hidden p-2 text-slate-400 hover:text-white rounded-xl hover:bg-white/5 transition-all"
+              className="lg:hidden p-2 text-slate-300 hover:text-white rounded-xl hover:bg-white/10 active:bg-white/20 transition-all touch-manipulation"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
             >
               {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -117,39 +128,46 @@ export function Layout({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            className="fixed inset-0 z-40 bg-[#07111E]/98 backdrop-blur-xl pt-[80px] px-6 lg:hidden overflow-y-auto"
+            className="fixed inset-0 z-40 bg-[#07111E]/98 backdrop-blur-xl pt-[80px] lg:hidden overflow-y-auto"
+            onClick={() => setMobileMenuOpen(false)}
           >
-            <div className="flex items-center gap-1 bg-white/[0.06] rounded-xl p-1 mb-6">
-              {(["en", "pl", "ru", "lt"] as const).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className={`flex-1 py-2 rounded-lg text-sm font-bold uppercase transition-all ${
-                    lang === l ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
-                  }`}
-                >
-                  {l}
-                </button>
-              ))}
+            <div className="px-6" onClick={(e) => e.stopPropagation()}>
+              <div className="flex items-center gap-1 bg-white/[0.06] rounded-xl p-1 mb-6">
+                {(["en", "pl", "ru", "lt"] as const).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLang(l)}
+                    className={`flex-1 py-2 rounded-lg text-sm font-bold uppercase transition-all ${
+                      lang === l ? "bg-blue-600 text-white" : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
+
+              <nav className="flex flex-col divide-y divide-white/[0.06] pb-28">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between py-4 text-lg font-medium transition-colors ${
+                      location === link.href ? "text-blue-400" : "text-slate-200"
+                    }`}
+                  >
+                    {t(link.labelKey)}
+                    <ChevronRight size={18} className="text-slate-600" />
+                  </Link>
+                ))}
+              </nav>
             </div>
 
-            <nav className="flex flex-col divide-y divide-white/[0.06] pb-28">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between py-4 text-lg font-medium transition-colors ${
-                    location === link.href ? "text-blue-400" : "text-slate-200"
-                  }`}
-                >
-                  {t(link.labelKey)}
-                  <ChevronRight size={18} className="text-slate-600" />
-                </Link>
-              ))}
-            </nav>
-
-            <div className="fixed bottom-0 left-0 right-0 p-4 bg-[#07111E] border-t border-white/[0.06]">
+            <div
+              className="fixed bottom-0 left-0 right-0 px-4 pt-4 bg-[#07111E] border-t border-white/[0.06]"
+              style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
+              onClick={(e) => e.stopPropagation()}
+            >
               <a
                 href="tel:+48000000000"
                 className="flex items-center justify-center gap-2 w-full py-4 bg-blue-600 text-white font-semibold rounded-2xl"

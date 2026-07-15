@@ -239,7 +239,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="relative rounded-[24px] overflow-hidden flex flex-col"
-          style={{ height: "580px" }}
+          style={{ minHeight: "580px" }}
         >
           {/* Background photo */}
           <motion.img
@@ -295,8 +295,8 @@ export default function Home() {
               transition={{ delay: 0.38, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="text-3xl md:text-4xl lg:text-[2.7rem] xl:text-5xl font-black text-white leading-[1.25] tracking-tight mb-5"
             >
-              <span className="block whitespace-nowrap">{t("home.hero.headline1")}</span>
-              <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug whitespace-nowrap mt-2">
+              <span className="block sm:whitespace-nowrap">{t("home.hero.headline1")}</span>
+              <span className="bg-blue-600 text-white px-3 py-0.5 rounded-xl inline-block leading-snug sm:whitespace-nowrap mt-2">
                 {t("home.hero.headline2")}
               </span>
             </motion.h1>
@@ -339,7 +339,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.82, duration: 0.6 }}
-            className="relative z-10 border-t border-white/[0.08] px-8 md:px-14 py-5 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-0"
+            className="relative z-10 border-t border-white/[0.08] px-4 sm:px-8 md:px-14 py-4 sm:py-5 grid grid-cols-3 gap-2 sm:gap-0"
             style={{ backdropFilter: "blur(4px)", background: "rgba(11,24,48,0.35)" }}
           >
             {[
@@ -347,13 +347,13 @@ export default function Home() {
               { icon: Truck,      text: t("home.feature2.title"), sub: t("home.feature2.sub") },
               { icon: Award,      text: t("home.feature3.title"), sub: t("home.feature3.sub") },
             ].map(({ icon: Icon, text, sub }, i) => (
-              <div key={i} className={`flex items-start gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
-                <div className="w-9 h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
-                  <Icon size={16} className="text-blue-400" />
+              <div key={i} className={`flex items-start gap-2 sm:gap-3 ${i > 0 ? "sm:border-l sm:border-white/[0.07] sm:pl-6" : ""}`}>
+                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-white/[0.07] flex items-center justify-center shrink-0 mt-0.5">
+                  <Icon size={14} className="text-blue-400" />
                 </div>
-                <div>
-                  <p className="text-white text-[13px] font-semibold leading-tight">{text}</p>
-                  <p className="text-slate-400 text-[12px] mt-0.5">{sub}</p>
+                <div className="min-w-0">
+                  <p className="text-white text-[11px] sm:text-[13px] font-semibold leading-tight">{text}</p>
+                  <p className="text-slate-400 text-[11px] mt-0.5 hidden sm:block">{sub}</p>
                 </div>
               </div>
             ))}
