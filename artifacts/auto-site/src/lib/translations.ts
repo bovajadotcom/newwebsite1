@@ -432,7 +432,6 @@ export const translations = {
     // Footer legal labels
     "footer.consent": "Consent",
     "footer.cookies": "Cookie Policy",
-    "privacy.title": "Privacy Policy",
     "privacy.lastUpdated": "Last updated: July 2026",
     // CTA labels
     "cta.expertSupport": "Expert Support",
@@ -999,7 +998,6 @@ export const translations = {
     // Footer legal labels
     "footer.consent": "Sutikimas",
     "footer.cookies": "Slapukų politika",
-    "privacy.title": "Privatumo politika",
     "privacy.lastUpdated": "Paskutinis atnaujinimas: 2026 m. liepa",
     // CTA labels
     "cta.expertSupport": "Profesionali pagalba",
@@ -1566,7 +1564,6 @@ export const translations = {
     // Footer legal labels
     "footer.consent": "Zgoda",
     "footer.cookies": "Polityka Cookies",
-    "privacy.title": "Polityka Prywatności",
     "privacy.lastUpdated": "Ostatnia aktualizacja: lipiec 2026",
     // CTA labels
     "cta.expertSupport": "Profesjonalne doradztwo",
@@ -2133,7 +2130,6 @@ export const translations = {
     // Footer legal labels
     "footer.consent": "Согласие",
     "footer.cookies": "Cookie-политика",
-    "privacy.title": "Политика конфиденциальности",
     "privacy.lastUpdated": "Последнее обновление: июль 2026",
     // CTA labels
     "cta.expertSupport": "Экспертная поддержка",

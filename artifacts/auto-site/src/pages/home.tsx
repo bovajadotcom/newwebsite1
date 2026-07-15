@@ -377,8 +377,7 @@ export default function Home() {
         <p className="text-center text-sm text-slate-500 uppercase tracking-widest mb-8">{t("section.partners")}</p>
         <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
           <div className="marquee-track">
-            {[...["BCA","OPENLANE","AUTO1","ALCOPA","ALPHABET","ARVAL","ATHLON","AUTOROLA","AYVENS","AUTOMOTIVE","KBC","MOBILE.DE","AUTOBID.DE"],
-              ...["Copart","IAAI","Manheim","USS Tokyo","TAA","JU Group","Adesa","Autorola"]
+            {[...["BCA","OPENLANE","AUTO1","ALCOPA","ALPHABET","ARVAL","ATHLON","AUTOROLA","AYVENS","AUTOMOTIVE","KBC","MOBILE.DE","AUTOBID.DE"]
             ].map((partner, i) => (
               <span
                 key={i}
