@@ -880,8 +880,8 @@ export default function Home() {
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
               <Star size={11} /> {t("section.testimonials")}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.testimonialsTitle") || "What Our Clients Say"}</h2>
-            <p className="text-muted-foreground">What our global clientele says about working with BOVAJA.</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.testimonialsTitle")}</h2>
+            <p className="text-muted-foreground">{t("testimonials.subtitle")}</p>
           </motion.div>
 
           <motion.div 
@@ -921,8 +921,8 @@ export default function Home() {
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-widest mb-4 border border-blue-200">
               <MessageSquare size={11} /> {t("section.faq")}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.faqTitle") || "Frequently Asked Questions"}</h2>
-            <p className="text-slate-600">Everything you need to know about the import process.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.faqTitle")}</h2>
+            <p className="text-slate-600">{t("faq.subtitle")}</p>
           </motion.div>
 
           <div className="space-y-4">
