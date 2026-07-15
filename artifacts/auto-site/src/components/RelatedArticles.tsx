@@ -42,7 +42,7 @@ export function RelatedArticles({
         <div className="flex items-center justify-between mb-8">
           <div>
             <span className="inline-flex items-center gap-1.5 text-primary text-xs font-semibold uppercase tracking-widest mb-2">
-              <Newspaper size={12} /> Articles
+              <Newspaper size={12} /> {t("articles.badge")}
             </span>
             <h2 className="text-2xl font-black text-white">{title}</h2>
           </div>
