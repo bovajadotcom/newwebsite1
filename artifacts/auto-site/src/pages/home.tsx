@@ -641,7 +641,7 @@ export default function Home() {
       {availableCars.length > 0 && (
       <section className="relative py-24 bg-white border-t-2 border-b-2 border-slate-200">
         <div className="container mx-auto px-4">
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-12">
             <motion.div {...fadeIn}>
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold uppercase mb-3 border border-green-200">
                 <CheckCircle size={12} /> {t("inventory.available") || "Available"}
@@ -649,8 +649,8 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("home.availableTitle") || "Available & Reserved Vehicles"}</h2>
               <p className="text-slate-600">{t("home.availableSub") || "Premium cars ready for sourcing right now."}</p>
             </motion.div>
-            <motion.div {...fadeIn}>
-              <Link href="/inventory" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
+            <motion.div {...fadeIn} className="shrink-0">
+              <Link href="/inventory" className="inline-flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
                 {t("home.viewAll")} <ArrowRight size={16} />
               </Link>
             </motion.div>
@@ -708,7 +708,7 @@ export default function Home() {
         {/* Charcoal accent stripe */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 opacity-60" />
         <div className="container mx-auto px-4">
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-12">
             <motion.div {...fadeIn}>
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 text-white text-xs font-semibold uppercase mb-3 border border-slate-700">
                 <CheckCircle size={12} /> {t("inventory.sold") || "Sold"}
@@ -716,8 +716,8 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("home.soldTitle") || "Recently Sold Vehicles"}</h2>
               <p className="text-slate-600">{t("home.soldSub") || "Cars we've successfully sourced and delivered to our clients."}</p>
             </motion.div>
-            <motion.div {...fadeIn}>
-              <Link href="/inventory" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
+            <motion.div {...fadeIn} className="shrink-0">
+              <Link href="/inventory" className="inline-flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
                 {t("home.viewAll")} <ArrowRight size={16} />
               </Link>
             </motion.div>
@@ -788,7 +788,7 @@ export default function Home() {
         {/* Blue accent stripe */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-blue-600 to-blue-400 opacity-75" />
         <div className="container mx-auto px-4">
-          <div className="flex items-end justify-between mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-12">
             <motion.div {...fadeIn}>
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold uppercase mb-3 border border-blue-200">
                 <Star size={12} /> {t("inventory.badge.popular") || "Most Requested"}
@@ -796,8 +796,8 @@ export default function Home() {
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("inventory.popular")}</h2>
               <p className="text-slate-600">{t("home.popularSub")}</p>
             </motion.div>
-            <motion.div {...fadeIn}>
-              <Link href="/popular" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
+            <motion.div {...fadeIn} className="shrink-0">
+              <Link href="/popular" className="inline-flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
                 {t("home.viewAll")} <ArrowRight size={16} />
               </Link>
             </motion.div>
