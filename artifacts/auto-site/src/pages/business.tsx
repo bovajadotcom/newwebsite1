@@ -80,7 +80,7 @@ export default function Business() {
       {/* ── HERO ── */}
       <section className="relative py-28 overflow-hidden">
         <img
-          src={`${import.meta.env.BASE_URL}fleet-cars.png`}
+          src={`${import.meta.env.BASE_URL}bovaja-fleet2.png`}
           alt="Fleet"
           className="absolute inset-0 w-full h-full object-cover object-center"
         />
