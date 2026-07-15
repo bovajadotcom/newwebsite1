@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Calculator as CalcIcon, ChevronRight, ChevronLeft, Send,
@@ -208,6 +209,7 @@ export default function Calculator() {
   ];
 
   const [prefLang, setPrefLang] = useState<PreferredLanguage>("Russian");
+  const [consent, setConsent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -665,11 +667,12 @@ export default function Calculator() {
                       <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="ваш@email.com" className={INPUT_CLS} />
                     </div>
                     <LanguageSelector value={prefLang} onChange={setPrefLang} />
+                    <ConsentCheckbox checked={consent} onChange={setConsent} />
                     <div className="flex gap-3 pt-2">
                       <button type="button" onClick={() => setStep(4)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                         <ChevronLeft size={18} /> Назад
                       </button>
-                      <button type="submit" className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                      <button type="submit" disabled={!consent} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] disabled:opacity-60 disabled:cursor-not-allowed">
                         <Send size={18} /> Отправить заявку
                       </button>
                     </div>

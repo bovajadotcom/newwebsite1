@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Mail, MessageCircle, Phone, Send, CheckCircle2, Bell } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 
 const STORAGE_KEY = "bovaja_subscribed";
 
@@ -36,6 +37,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
   const [loading, setLoading]   = useState(false);
   const [done, setDone]         = useState(false);
   const [error, setError]       = useState("");
+  const [consent, setConsent]   = useState(false);
 
   const showCountRef  = useRef(0);   // how many times shown this session
   const subscribedRef = useRef(false);
@@ -196,10 +198,12 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                         {error && <p className="text-red-400 text-xs mt-1.5">{error}</p>}
                       </div>
 
+                      <ConsentCheckbox checked={consent} onChange={setConsent} />
+
                       {/* Submit */}
                       <button
                         type="submit"
-                        disabled={loading}
+                        disabled={loading || !consent}
                         className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_28px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2"
                       >
                         {loading ? (

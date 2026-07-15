@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { submitLead } from "@/lib/submitLead";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { useLanguage } from "@/lib/i18n";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 import { motion, AnimatePresence } from "framer-motion";
@@ -170,6 +171,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
   const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<"success" | "error" | null>(null);
+  const [consent, setConsent] = useState(false);
 
   const vehicleLabel = `${vehicle.year ? vehicle.year + " " : ""}${vehicle.make} ${vehicle.model}`;
 
@@ -288,10 +290,10 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
       </div>
 
       <LanguageSelector value={prefLang} onChange={setPrefLang} />
-
+      <ConsentCheckbox checked={consent} onChange={setConsent} />
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || !consent}
         className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.25)] disabled:opacity-50 text-sm tracking-wide flex items-center justify-center gap-2"
       >
         {loading ? (

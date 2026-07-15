@@ -8,6 +8,7 @@ import { useFavorites } from "@/lib/FavoritesContext";
 import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
 import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { RelatedArticles } from "@/components/RelatedArticles";
 
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
@@ -122,6 +123,7 @@ export default function Home() {
   const [popularCars, setPopularCars] = useState<DisplayPopular[]>([]);
   const [footerFormStatus, setFooterFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [footerPrefLang, setFooterPrefLang] = useState<PreferredLanguage>("Russian");
+  const [footerConsent, setFooterConsent] = useState(false);
   const { t, lang } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
   const processRef = useRef<HTMLDivElement>(null);
@@ -1019,9 +1021,10 @@ export default function Home() {
                     <textarea ref={footerMessageRef} rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
                   </div>
                   <LanguageSelector value={footerPrefLang} onChange={setFooterPrefLang} />
+                  <ConsentCheckbox checked={footerConsent} onChange={setFooterConsent} />
                   <button
                     type="submit"
-                    disabled={footerFormStatus === "loading"}
+                    disabled={footerFormStatus === "loading" || !footerConsent}
                     className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 disabled:opacity-60"
                   >
                     {footerFormStatus === "loading" ? t("form.sending") : <>{t("cta.startNow")} <ArrowRight size={18} /></>}

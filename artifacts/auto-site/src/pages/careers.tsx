@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import {
   Briefcase, Phone, Mail, MessageCircle, Send, CheckCircle, AlertCircle,
   Upload, Users, Clock, Globe, Star, Heart
@@ -42,6 +43,7 @@ export default function Careers() {
   const [employment, setEmployment] = useState("Open to Opportunities");
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [cvError, setCvError] = useState("");
+  const [consent, setConsent] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const nameRef      = useRef<HTMLInputElement>(null);
@@ -336,9 +338,10 @@ export default function Careers() {
                     {cvError && <p className="text-red-400 text-xs mt-1">{cvError}</p>}
                   </div>
 
+                  <ConsentCheckbox checked={consent} onChange={setConsent} />
                   <button
                     type="submit"
-                    disabled={status === "loading"}
+                    disabled={status === "loading" || !consent}
                     className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 disabled:opacity-60"
                   >
                     {status === "loading" ? (

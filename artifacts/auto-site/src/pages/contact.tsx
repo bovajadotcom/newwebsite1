@@ -4,6 +4,7 @@ import { useLanguage } from "@/lib/i18n";
 import { useState, useRef } from "react";
 import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -11,6 +12,7 @@ export default function Contact() {
   const { t, lang } = useLanguage();
   const [status, setStatus] = useState<Status>("idle");
   const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
+  const [consent, setConsent] = useState(false);
   const nameRef    = useRef<HTMLInputElement>(null);
   const phoneRef   = useRef<HTMLInputElement>(null);
   const emailRef   = useRef<HTMLInputElement>(null);
@@ -140,9 +142,10 @@ export default function Contact() {
                   <textarea ref={messageRef} rows={5} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
                 </div>
                 <LanguageSelector value={prefLang} onChange={setPrefLang} />
+                <ConsentCheckbox checked={consent} onChange={setConsent} />
                 <button
                   type="submit"
-                  disabled={status === "loading"}
+                  disabled={status === "loading" || !consent}
                   className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all disabled:opacity-60"
                 >
                   {status === "loading" ? t("form.sending") : t("form.send")}

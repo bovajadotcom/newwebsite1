@@ -7,6 +7,7 @@ import { useLanguage } from "@/lib/i18n";
 import { useState, useRef } from "react";
 import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
+import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -45,6 +46,7 @@ export default function Business() {
   const { t, lang } = useLanguage();
   const [status, setStatus] = useState<Status>("idle");
   const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
+  const [consent, setConsent] = useState(false);
   const companyRef      = useRef<HTMLInputElement>(null);
   const nameRef         = useRef<HTMLInputElement>(null);
   const businessTypeRef = useRef<HTMLSelectElement>(null);
@@ -219,10 +221,10 @@ export default function Business() {
                 </div>
 
                 <LanguageSelector value={prefLang} onChange={setPrefLang} />
-
+                <ConsentCheckbox checked={consent} onChange={setConsent} />
                 <button
                   type="submit"
-                  disabled={status === "loading"}
+                  disabled={status === "loading" || !consent}
                   className="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all flex justify-center items-center gap-2 shadow-[0_0_24px_rgba(37,99,235,0.4)] hover:shadow-[0_0_32px_rgba(37,99,235,0.55)] disabled:opacity-60 disabled:shadow-none mt-2"
                 >
                   {status === "loading" ? "Sending…" : <><Send size={16} /> Submit Partnership Request</>}

@@ -292,6 +292,8 @@ export const translations = {
     "form.message": "Message",
     "form.send": "Send Message",
     "form.submit": "Submit",
+    "form.consentPre": "I agree to the processing of my personal data in accordance with the ",
+    "form.consentLink": "Personal Data Processing Policy",
     // Articles
     "articles.heading": "Latest News & Articles",
     "articles.sub": "Helpful guides, market insights, and tips for importing and buying vehicles from Europe",
@@ -797,6 +799,8 @@ export const translations = {
     "form.message": "Žinutė",
     "form.send": "Siųsti užklausą",
     "form.submit": "Pateikti",
+    "form.consentPre": "Sutinku, kad mano asmens duomenys būtų tvarkomi pagal ",
+    "form.consentLink": "Asmens duomenų tvarkymo politiką",
     // Articles (LT)
     "articles.heading": "Naujienos ir Straipsniai",
     "articles.sub": "Naudingi patarimai, rinkos įžvalgos ir rekomendacijos importuojant automobilius iš Europos",
@@ -1302,6 +1306,8 @@ export const translations = {
     "form.message": "Wiadomość",
     "form.send": "Wyślij",
     "form.submit": "Prześlij",
+    "form.consentPre": "Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ",
+    "form.consentLink": "Polityką Przetwarzania Danych Osobowych",
     // Articles
     "articles.heading": "Aktualności",
     "articles.sub": "Przydatne poradniki, analizy rynku oraz wskazówki dotyczące zakupu i importu samochodów z Europy",
@@ -1614,7 +1620,7 @@ export const translations = {
     "section.vehicles": "Избранные автомобили",
     "section.testimonials": "Отзывы клиентов",
     "section.testimonialsTitle": "Что говорят наши клиенты",
-    "testimonials.subtitle": "Что клиенты со всего мира говорят о работе с BOVAJA.",
+    "testimonials.subtitle": "Что клиенты говорят о работе с BOVAJA.",
     "section.faq": "Часто задаваемые вопросы",
     "section.faqTitle": "Часто задаваемые вопросы",
     "faq.subtitle": "Всё, что нужно знать о процессе импорта.",
@@ -1807,6 +1813,8 @@ export const translations = {
     "form.message": "Сообщение",
     "form.send": "Отправить",
     "form.submit": "Подтвердить",
+    "form.consentPre": "Я соглашаюсь на обработку моих персональных данных в соответствии с ",
+    "form.consentLink": "Политикой обработки персональных данных",
     // Articles
     "articles.heading": "Новости и статьи",
     "articles.sub": "Полезные руководства, анализ рынка и советы по импорту и покупке автомобилей из Европы",
