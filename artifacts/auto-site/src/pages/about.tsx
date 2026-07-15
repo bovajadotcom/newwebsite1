@@ -267,7 +267,7 @@ export default function About() {
         </div>
       </section>
 
-      <RelatedArticles title="Latest Articles" limit={3} />
+      <RelatedArticles title={t("articles.latestTitle")} limit={3} />
     </div>
   );
 }
