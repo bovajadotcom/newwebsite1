@@ -791,7 +791,7 @@ export const translations = {
     "contact.sunday":"Sekmadienis",
     "contact.closed":"Nedirbame",
     "contact.openMaps":"Atidaryti Google Maps",
-    "contact.appleMaps":"Apple Maps",
+   "contact.appleMaps":"Apple Maps",
     // Inventory page additions
     "inventory.notFound":"Pagal pasirinktus kriterijus automobilių nerasta",
     "inventory.notFoundSub":"Pabandykite pakeisti filtrus arba paieškos užklausą.",
@@ -1258,8 +1258,8 @@ export const translations = {
     "careers.employment.freelance":"Freelance / Umowa B2B",
     "careers.employment.flexible":"Elastyczny grafik",
     "careers.employment.remote":"Praca zdalna",
-    "careers.employment.open":"Otwarty na propozycje",
-    "inventory.filter.auction":"Aukcja",
+    "careers.employment.open":"Otwarty na propozycje"
+      "inventory.filter.auction":"Aukcja",
       "inventory.status.auction":"Aukcja",
       "status.auction":"Aukcja",
       "auction.badge":"Aukcja w tym tygodniu",
