@@ -15,7 +15,6 @@ export default function Cookies() {
       badgeKey="cookies.badge"
       titleKey="cookies.title"
       lastUpdatedKey="cookies.lastUpdated"
-      introKey="cookies.intro"
       sections={SECTIONS}
     />
   );

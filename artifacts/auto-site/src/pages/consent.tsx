@@ -10,7 +10,6 @@ export default function Consent() {
       badgeKey="consent.badge"
       titleKey="consent.title"
       lastUpdatedKey="consent.lastUpdated"
-      introKey="consent.intro"
       sections={SECTIONS}
     />
   );

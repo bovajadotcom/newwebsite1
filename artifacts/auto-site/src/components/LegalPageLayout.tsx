@@ -11,7 +11,6 @@ interface LegalPageLayoutProps {
   badgeKey: string;
   titleKey: string;
   lastUpdatedKey: string;
-  introKey: string;
   sections: Section[];
 }
 
@@ -26,7 +25,6 @@ export default function LegalPageLayout({
   badgeKey,
   titleKey,
   lastUpdatedKey,
-  introKey,
   sections,
 }: LegalPageLayoutProps) {
   const { t } = useLanguage();
@@ -41,10 +39,6 @@ export default function LegalPageLayout({
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{t(titleKey)}</h1>
           <p className="text-muted-foreground text-sm">{t(lastUpdatedKey)}</p>
         </motion.div>
-
-        <motion.p {...fadeIn} className="text-muted-foreground leading-relaxed mb-12 text-base border-b border-border/40 pb-10">
-          {t(introKey)}
-        </motion.p>
 
         <div className="space-y-10">
           {sections.map((s, i) => (

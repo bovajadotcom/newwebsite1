@@ -18,7 +18,6 @@ export default function Privacy() {
       badgeKey="privacy.badge"
       titleKey="privacy.title"
       lastUpdatedKey="privacy.lastUpdated"
-      introKey="privacy.intro"
       sections={SECTIONS}
     />
   );
