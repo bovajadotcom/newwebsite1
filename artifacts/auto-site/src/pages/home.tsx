@@ -406,6 +406,7 @@ export default function Home() {
               <Award size={11} /> {t("section.stats") || "Our Track Record"}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold">{t("section.statsTitle") || "Numbers That Define Us"}</h2>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">Numbers That Define Us</p>
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {[
