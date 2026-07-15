@@ -168,6 +168,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     <ChevronRight size={18} className="text-slate-600" />
                   </Link>
                 ))}
+                <Link
+                  href="/favorites"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between py-4 text-lg font-medium transition-colors ${
+                    location === "/favorites" ? "text-blue-400" : "text-slate-200"
+                  }`}
+                >
+                  <span className="flex items-center gap-3">
+                    <Heart size={18} className={favCount > 0 ? "text-red-400" : "text-slate-500"} />
+                    {t("nav.favorites")}
+                    {favCount > 0 && (
+                      <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-blue-600 text-white text-xs font-bold">
+                        {favCount}
+                      </span>
+                    )}
+                  </span>
+                  <ChevronRight size={18} className="text-slate-600" />
+                </Link>
               </nav>
             </div>
 

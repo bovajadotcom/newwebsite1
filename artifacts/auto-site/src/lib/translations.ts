@@ -28,6 +28,7 @@ export const translations = {
   en: {
     // Nav
     "nav.home": "Home",
+    "nav.favorites": "Favorites",
     "nav.inventory": "Cars in Stock",
     "nav.popular": "Most Popular",
     "nav.services": "Services",
@@ -720,6 +721,7 @@ export const translations = {
   lt: {
     // Nav
     "nav.home": "Pagrindinis",
+    "nav.favorites": "Mėgstamiausi",
     "nav.inventory": "Sandėlyje",
     "nav.popular": "Populiariausi",
     "nav.services": "Paslaugos",
@@ -1412,6 +1414,7 @@ export const translations = {
   pl: {
     // Nav
     "nav.home": "Strona Główna",
+    "nav.favorites": "Ulubione",
     "nav.inventory": "Auta",
     "nav.popular": "Popularne Auta",
     "nav.services": "Usługi",
@@ -2104,6 +2107,7 @@ export const translations = {
   ru: {
     // Nav
     "nav.home": "Главная",
+    "nav.favorites": "Избранное",
     "nav.inventory": "Авто в Наличии",
     "nav.popular": "Самые Популярные",
     "nav.services": "Услуги",
