@@ -496,7 +496,7 @@ export default function Home() {
               <Zap size={11} /> {t("section.process")}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.processTitle") || "How It Works"}</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">A streamlined, stress-free path to your perfect vehicle.</p>
+            <p className="text-muted-foreground max-w-2xl mx-auto">{t("process.subtitle")}</p>
           </motion.div>
 
           {/* Map-style route */}
@@ -527,11 +527,11 @@ export default function Home() {
               {/* 5 nodes */}
               <div className="grid grid-cols-5 gap-8 relative z-10">
                 {[
-                  { label: "Consultation",          icon: MessageSquare, desc: "Free expert call" },
-                  { label: "Vehicle Selection",     icon: Globe,         desc: "Global search" },
-                  { label: "Auction Bidding",       icon: Zap,           desc: "Live auctions" },
-                  { label: "Logistics & Shipping",  icon: Clock,         desc: "End-to-end" },
-                  { label: "Delivery",              icon: Award,         desc: "Door delivery" },
+                  { label: t("process.step1.label"), icon: MessageSquare, desc: t("process.step1.desc") },
+                  { label: t("process.step2.label"), icon: Globe,         desc: t("process.step2.desc") },
+                  { label: t("process.step3.label"), icon: Zap,           desc: t("process.step3.desc") },
+                  { label: t("process.step4.label"), icon: Clock,         desc: t("process.step4.desc") },
+                  { label: t("process.step5.label"), icon: Award,         desc: t("process.step5.desc") },
                 ].map((step, i) => (
                   <div key={i} className="flex flex-col items-center">
                     {/* Node */}
@@ -579,11 +579,11 @@ export default function Home() {
             {/* ── MOBILE: vertical animated route ── */}
             <div className="lg:hidden space-y-0">
               {[
-                { label: "Consultation",          icon: MessageSquare, desc: "Free expert call" },
-                { label: "Vehicle Selection",     icon: Globe,         desc: "Global search" },
-                { label: "Auction Bidding",       icon: Zap,           desc: "Live auctions" },
-                { label: "Logistics & Shipping",  icon: Clock,         desc: "End-to-end" },
-                { label: "Delivery",              icon: Award,         desc: "Door delivery" },
+                { label: t("process.step1.label"), icon: MessageSquare, desc: t("process.step1.desc") },
+                { label: t("process.step2.label"), icon: Globe,         desc: t("process.step2.desc") },
+                { label: t("process.step3.label"), icon: Zap,           desc: t("process.step3.desc") },
+                { label: t("process.step4.label"), icon: Clock,         desc: t("process.step4.desc") },
+                { label: t("process.step5.label"), icon: Award,         desc: t("process.step5.desc") },
               ].map((step, i) => (
                 <div key={i} className="relative flex gap-5 pb-8 last:pb-0">
                   {/* Vertical connector */}
@@ -624,7 +624,7 @@ export default function Home() {
                     animate={isProcessInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -12 }}
                     transition={{ duration: 0.4, delay: 0.65 + i * 0.4 }}
                   >
-                    <span className="text-xs font-bold text-primary/70 tracking-widest uppercase">Step {i + 1}</span>
+                    <span className="text-xs font-bold text-primary/70 tracking-widest uppercase">{t("process.stepPrefix")} {i + 1}</span>
                     <h3 className="text-base font-bold text-white mt-0.5">{step.label}</h3>
                     <p className="text-sm text-muted-foreground">{step.desc}</p>
                   </motion.div>
