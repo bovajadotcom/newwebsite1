@@ -224,11 +224,7 @@ export default function Contact() {
                     <span className="text-white">08:00 – 20:00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("contact.saturday")}</span>
-                    <span className="text-white">08:00 – 19:00</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">{t("contact.sunday")}</span>
+                    <span className="text-muted-foreground">{t("contact.satSun")}</span>
                     <span className="text-white">08:00 – 19:00</span>
                   </div>
                 </div>
