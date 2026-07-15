@@ -195,7 +195,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Navigation */}
             <div>
-              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">Navigation</h4>
+              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">{t("footer.navigation")}</h4>
               <ul className="space-y-3">
                 {navLinks.map((l) => (
                   <li key={l.href}>
@@ -250,7 +250,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Location */}
             <div>
-              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">Location</h4>
+              <h4 className="text-white font-semibold mb-5 text-sm uppercase tracking-wider">{t("footer.location")}</h4>
               <div className="flex items-start gap-2 text-sm text-muted-foreground mb-4">
                 <MapPin size={13} className="mt-0.5 shrink-0 text-primary" />
                 <div>
