@@ -204,7 +204,6 @@ export const stockVehicles: Vehicle[] = [
 // Добавляйте сюда авто после продажи (или удаляйте старые записи)
 export const soldVehicles: SoldVehicle[] = [
   { id: "s3", make: "Mercedes-Benz", model: "G63 AMG", year: 2020, purchaseCountry: "UAE", deliveryStatus: "Delivered", deliveryDate: "Jan 2024", image: "vehicle-3.png" },
-  { id: "s5", make: "Audi", model: "Q8 S-Line", year: 2022, finalPrice: 76000, purchaseCountry: "Germany", deliveryStatus: "Delivered", deliveryDate: "Nov 2023", image: "vehicle-1.png" },
 ];
 
 // ── САМЫЕ ПОПУЛЯРНЫЕ АВТО ───────────────────────────────
