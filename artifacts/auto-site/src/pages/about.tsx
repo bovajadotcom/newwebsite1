@@ -192,7 +192,7 @@ export default function About() {
             {[
               { value: "1,000+", label: t("stats.delivered") },
               { value: "500+", label: t("stats.clients") },
-              { value: "12", label: t("stats.experience") },
+              { value: "15", label: t("stats.experience") },
               { value: "15+", label: t("stats.countries") }
             ].map((stat, i) => (
               <div key={i} className="text-center">
