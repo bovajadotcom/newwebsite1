@@ -796,7 +796,7 @@ export default function Home() {
                 <Star size={12} /> {t("inventory.badge.popular") || "Most Requested"}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">{t("inventory.popular")}</h2>
-              <p className="text-slate-600">{t("home.popularSub") || "The vehicles we import most often for our clients."}</p>
+              <p className="text-slate-600">{t("home.popularSub")}</p>
             </motion.div>
             <motion.div {...fadeIn}>
               <Link href="/popular" className="flex items-center gap-2 text-blue-600 font-semibold text-sm hover:text-blue-500 transition-colors">
