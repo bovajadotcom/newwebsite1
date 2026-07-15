@@ -453,7 +453,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                     {(vehicle.location || vehicle.purchaseCountry || vehicle.estimatedDelivery) && (
                       <div className="mt-5 p-4 rounded-xl bg-white/5 border border-white/10 space-y-3">
                         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
-                          <Truck size={12} /> {t("modal.vehicleRoute")}
+                          <Truck size={12} /> {isSold ? t("modal.vehicleRoute") : t("modal.currentLocation")}
                         </p>
                         <div className="flex items-center gap-3 text-sm">
                           {(vehicle.location || vehicle.purchaseCountry) && (
