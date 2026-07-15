@@ -203,7 +203,6 @@ export const stockVehicles: Vehicle[] = [
 // Отображаются на странице /inventory во вкладке "Recently Sold"
 // Добавляйте сюда авто после продажи (или удаляйте старые записи)
 export const soldVehicles: SoldVehicle[] = [
-  { id: "s1", make: "Porsche", model: "911 Carrera S", year: 2021, finalPrice: 145000, purchaseCountry: "Japan", deliveryStatus: "Delivered", deliveryDate: "Mar 2024", image: "vehicle-1.png" },
   { id: "s2", make: "BMW", model: "M3 Competition", year: 2022, finalPrice: 82000, purchaseCountry: "Germany", deliveryStatus: "Delivered", deliveryDate: "Feb 2024", image: "vehicle-2.png" },
   { id: "s3", make: "Mercedes-Benz", model: "G63 AMG", year: 2020, purchaseCountry: "UAE", deliveryStatus: "Delivered", deliveryDate: "Jan 2024", image: "vehicle-3.png" },
   { id: "s4", make: "Lexus", model: "GX 460", year: 2021, finalPrice: 58000, purchaseCountry: "Japan", deliveryStatus: "Delivered", deliveryDate: "Dec 2023", image: "vehicle-4.png" },
