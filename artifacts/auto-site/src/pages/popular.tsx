@@ -62,9 +62,9 @@ export default function Popular() {
       <section className="relative py-20 border-b border-border/50 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src={`${import.meta.env.BASE_URL}fleet-cars.png`}
+            src={`${import.meta.env.BASE_URL}bovaja-fleet.png`}
             alt="Popular Cars"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
             style={{ filter: "brightness(0.4) saturate(0.85)" }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />

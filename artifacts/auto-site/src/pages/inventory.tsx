@@ -256,10 +256,10 @@ export default function Inventory() {
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden bg-card">
         <div className="absolute inset-0 z-0">
           <img 
-            src={`${import.meta.env.BASE_URL}fleet-cars.png`} 
+            src={`${import.meta.env.BASE_URL}bovaja-fleet.png`} 
             alt="Inventory" 
-            className="w-full h-full object-cover"
-            style={{ filter: "brightness(0.45) saturate(0.9)" }}
+            className="w-full h-full object-cover object-center"
+            style={{ filter: "brightness(0.4) saturate(0.85)" }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
         </div>
@@ -600,10 +600,10 @@ export default function Inventory() {
       <section className="relative py-16 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src={`${import.meta.env.BASE_URL}bg-cars-lineup.png`}
+            src={`${import.meta.env.BASE_URL}bovaja-fleet.png`}
             alt="Cars"
-            className="w-full h-full object-cover"
-            style={{ filter: "brightness(0.3) saturate(0.8)" }}
+            className="w-full h-full object-cover object-center"
+            style={{ filter: "brightness(0.25) saturate(0.8)" }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-background/40" />
         </div>
