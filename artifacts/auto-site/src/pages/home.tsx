@@ -862,7 +862,7 @@ export default function Home() {
                       </div>
                     </div>
                     <button className="mt-auto flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 text-sm font-semibold transition-all duration-200">
-                      <ArrowRight size={15} /> View Details
+                      <ArrowRight size={15} /> {t("inventory.viewDetails")}
                     </button>
                   </div>
                 </motion.div>
