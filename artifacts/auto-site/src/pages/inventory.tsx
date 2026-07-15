@@ -527,7 +527,7 @@ export default function Inventory() {
                         </div>
                       ) : (
                         <button className="w-full py-3 bg-slate-100 hover:bg-blue-600 text-slate-800 hover:text-white text-center font-medium rounded transition-colors flex items-center justify-center gap-2 group/btn">
-                          View Details <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                          {t("inventory.viewDetails")} <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
                         </button>
                       )}
                     </div>
@@ -545,7 +545,7 @@ export default function Inventory() {
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="mb-12 text-center max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t("inventory.popular")}</h2>
-            <p className="text-muted-foreground">Vehicles we frequently source on demand. Prices are estimates based on recent market trends.</p>
+            <p className="text-muted-foreground">{t("inventory.popularSub")}</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -593,7 +593,7 @@ export default function Inventory() {
                   <button
                     className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2"
                   >
-                    <ArrowRight size={16} /> View Details
+                    <ArrowRight size={16} /> {t("inventory.viewDetails")}
                   </button>
                 </div>
               </motion.div>
@@ -614,10 +614,8 @@ export default function Inventory() {
         </div>
         <div className="container mx-auto px-4 text-center max-w-3xl relative z-10">
           <MessageSquare className="mx-auto text-primary mb-6" size={48} />
-          <h2 className="text-3xl font-bold text-white mb-4">Don't see what you're looking for?</h2>
-          <p className="text-lg text-muted-foreground mb-8">
-            Our inventory is just a fraction of what we have access to. Tell us what you want, and our sourcing team will find it through our global dealer network.
-          </p>
+          <h2 className="text-3xl font-bold text-white mb-4">{t("inventory.ctaTitle")}</h2>
+          <p className="text-lg text-muted-foreground mb-8">{t("inventory.ctaSub")}</p>
           <Link 
             href="/contact"
             className="inline-flex px-8 py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] items-center gap-2"
