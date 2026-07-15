@@ -13,30 +13,29 @@ import belarusConfig from "@/config/customs-belarus.json";
 import { PopularCarsSection } from "@/components/PopularCarsSection";
 
 const COUNTRIES = [
-  { code: "PL", name: "Poland",         flag: "🇵🇱", region: "eastern" },
-  { code: "LT", name: "Lithuania",      flag: "🇱🇹", region: "eastern" },
-  { code: "LV", name: "Latvia",         flag: "🇱🇻", region: "eastern" },
-  { code: "EE", name: "Estonia",        flag: "🇪🇪", region: "eastern" },
-  { code: "DE", name: "Germany",        flag: "🇩🇪", region: "western" },
-  { code: "CZ", name: "Czech Republic", flag: "🇨🇿", region: "eastern" },
-  { code: "BY", name: "Беларусь",       flag: "🇧🇾", region: "belarus" },
+  { code: "PL", flag: "🇵🇱", region: "eastern" },
+  { code: "LT", flag: "🇱🇹", region: "eastern" },
+  { code: "LV", flag: "🇱🇻", region: "eastern" },
+  { code: "EE", flag: "🇪🇪", region: "eastern" },
+  { code: "DE", flag: "🇩🇪", region: "western" },
+  { code: "CZ", flag: "🇨🇿", region: "eastern" },
+  { code: "BY", flag: "🇧🇾", region: "belarus" },
 ];
 
 const SOURCE_COUNTRIES = [
-  { code: "FR", name: "Франция",  flag: "🇫🇷", region: "western" },
-  { code: "IT", name: "Италия",   flag: "🇮🇹", region: "western" },
-  { code: "DE", name: "Германия", flag: "🇩🇪", region: "western" },
-  { code: "BE", name: "Бельгия",  flag: "🇧🇪", region: "western" },
-  { code: "ES", name: "Испания",  flag: "🇪🇸", region: "western" },
-  { code: "PL", name: "Польша",   flag: "🇵🇱", region: "eastern" },
-  { code: "LV", name: "Латвия",   flag: "🇱🇻", region: "eastern" },
-  { code: "LT", name: "Литва",    flag: "🇱🇹", region: "eastern" },
-  { code: "XX", name: "Не знаю", flag: "🤷", region: "unknown" },
+  { code: "FR", flag: "🇫🇷", region: "western" },
+  { code: "IT", flag: "🇮🇹", region: "western" },
+  { code: "DE", flag: "🇩🇪", region: "western" },
+  { code: "BE", flag: "🇧🇪", region: "western" },
+  { code: "ES", flag: "🇪🇸", region: "western" },
+  { code: "PL", flag: "🇵🇱", region: "eastern" },
+  { code: "LV", flag: "🇱🇻", region: "eastern" },
+  { code: "LT", flag: "🇱🇹", region: "eastern" },
+  { code: "XX", flag: "🤷", region: "unknown" },
 ];
 
 const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric"];
 const TRANSMISSION_TYPES = ["Automatic", "Manual"];
-const BY_BENEFIT_TYPES = ["Инвалидность", "Многодетная семья", "Ветеран", "Другая льгота"];
 
 type Step = 1 | 2 | 3 | 4 | 5;
 type ByPersonType = "individual" | "benefit" | "company" | "";
@@ -47,7 +46,6 @@ interface FormState {
   sourceCountry: string;
   countryCode: string;
   vehicleType: VehicleType;
-  // Belarus-specific vehicle details
   year: number;
   fuel: string;
   transmission: string;
@@ -56,7 +54,6 @@ interface FormState {
   byBenefitType: string;
   byHasDocument: boolean;
   byDelivery: boolean;
-  // Lead
   name: string;
   phone: string;
   email: string;
@@ -80,7 +77,7 @@ interface ByResult {
   delivery: number;
   customsTotal: number;
   total: number;
-  ageLabel: string;
+  ageKey: string;
 }
 
 function getSettingValue(settings: { key: string; value: string }[], key: string, fallback: number): number {
@@ -133,12 +130,16 @@ function calculateBelarusResult(form: FormState): ByResult {
 
   const delivery = form.byDelivery ? belarusConfig.delivery_to_belarus : 0;
   const customsTotal = discountedDuty + utilizationFee + processingFee + vat;
-  const ageLabels: Record<string, string> = { under3: "до 3 лет", "3to5": "от 3 до 5 лет", over5: "старше 5 лет" };
+  const ageKeyMap: Record<string, string> = {
+    under3: "calc.byAge.under3",
+    "3to5": "calc.byAge.3to5",
+    over5: "calc.byAge.over5",
+  };
   return {
     customsDuty: rawDuty, discountedDuty, utilizationFee, processingFee, vat,
     delivery, customsTotal,
     total: form.vehiclePrice + customsTotal + delivery,
-    ageLabel: ageLabels[ageCategory],
+    ageKey: ageKeyMap[ageCategory],
   };
 }
 
@@ -169,7 +170,7 @@ const DEFAULT_FORM: FormState = {
   transmission: "Automatic",
   engineVolume: 1500,
   byPersonType: "",
-  byBenefitType: BY_BENEFIT_TYPES[0],
+  byBenefitType: "disability",
   byHasDocument: true,
   byDelivery: false,
   name: "", phone: "", email: "",
@@ -201,11 +202,11 @@ export default function Calculator() {
     setForm((f) => ({ ...f, [key]: value }));
 
   const steps = [
-    { icon: Car,      label: "Стоимость" },
-    { icon: MapPin,   label: "Направление" },
-    { icon: Tag,      label: "Тип" },
-    { icon: BarChart3, label: "Расчёт" },
-    { icon: Send,     label: "Заявка" },
+    { icon: Car,       label: t("calc.step.price") },
+    { icon: MapPin,    label: t("calc.step.destination") },
+    { icon: Tag,       label: t("calc.step.type") },
+    { icon: BarChart3, label: t("calc.step.result") },
+    { icon: Send,      label: t("calc.step.request") },
   ];
 
   const [prefLang, setPrefLang] = useState<PreferredLanguage>("Russian");
@@ -220,12 +221,46 @@ export default function Calculator() {
         name: form.name,
         phone: form.phone,
         email: form.email,
-        message: `Quote request: ${selectedCountry?.name}, vehicle price €${form.vehiclePrice}. Vehicle type: ${form.vehicleType || "catalog"}. Total: ${totalStr}`,
+        message: `Quote request: ${t(`calc.dest.${form.countryCode}`)}, vehicle price €${form.vehiclePrice}. Vehicle type: ${form.vehicleType || "catalog"}. Total: ${totalStr}`,
         preferredLanguage: prefLang,
       });
     } catch {}
     setSubmitted(true);
   };
+
+  const noticeItems = [
+    t("calc.noticeExcise"),
+    t("calc.noticeReg"),
+    t("calc.noticeEnv"),
+    t("calc.noticeRoad"),
+    t("calc.noticeLocal"),
+    t("calc.noticeOther"),
+  ];
+
+  const NoticeBlock = ({ footerKey }: { footerKey: string }) => (
+    <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3">
+      <div className="flex items-start gap-2">
+        <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
+        <p className="text-sm font-semibold text-amber-300">{t("calc.noticeTit")}</p>
+      </div>
+      <p className="text-xs text-amber-200/80 leading-relaxed">{t("calc.noticeP1")}</p>
+      <p className="text-xs text-amber-200/80 leading-relaxed">{t("calc.noticeP2")}</p>
+      <div className="pt-1">
+        <p className="text-xs font-semibold text-amber-300 mb-2">{t("calc.noticeExtras")}</p>
+        <ul className="text-xs text-amber-200/70 space-y-1">
+          {noticeItems.map(item => (
+            <li key={item} className="flex items-center gap-1.5">
+              <span className="w-1 h-1 rounded-full bg-amber-400/60 shrink-0" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="text-xs text-amber-200/60 leading-relaxed border-t border-amber-500/20 pt-3">
+        {t(footerKey)}
+      </p>
+    </div>
+  );
 
   return (
     <div className="pt-12 pb-24">
@@ -268,7 +303,7 @@ export default function Calculator() {
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Стоимость и откуда автомобиль</h3>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s1Title")}</h3>
 
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.vehiclePrice")}</label>
@@ -281,18 +316,18 @@ export default function Calculator() {
                         className="w-full bg-input border border-border rounded pl-8 pr-4 py-4 text-white focus:outline-none focus:border-primary transition-colors text-2xl font-medium"
                       />
                     </div>
-                    <p className="text-xs text-muted-foreground mt-2">Укажите стоимость автомобиля в евро</p>
+                    <p className="text-xs text-muted-foreground mt-2">{t("calc.priceHint")}</p>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-3">Откуда едет автомобиль?</label>
+                    <label className="block text-sm font-medium text-muted-foreground mb-3">{t("calc.sourceLabel")}</label>
                     <div className="grid grid-cols-4 gap-2">
                       {SOURCE_COUNTRIES.map((c) => (
                         <button key={c.code} onClick={() => update("sourceCountry", c.code)}
                           className={`p-3 rounded-lg border-2 flex flex-col items-center gap-1 transition-all
                             ${form.sourceCountry === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
                           <span className="text-xl">{c.flag}</span>
-                          <span className="text-xs font-medium leading-tight text-center">{c.name}</span>
+                          <span className="text-xs font-medium leading-tight text-center">{t(`calc.src.${c.code}`)}</span>
                           <span className="text-xs opacity-60">{c.region === "western" ? "€800" : c.region === "eastern" ? "€600" : "€600–800"}</span>
                         </button>
                       ))}
@@ -304,7 +339,7 @@ export default function Calculator() {
                     disabled={form.vehiclePrice <= 0}
                     className="w-full py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all disabled:opacity-40"
                   >
-                    Далее — выбрать страну назначения <ChevronRight size={18} />
+                    {t("calc.s1Next")} <ChevronRight size={18} />
                   </button>
                 </motion.div>
               )}
@@ -313,19 +348,19 @@ export default function Calculator() {
               {step === 2 && (
                 <motion.div key="step2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Куда прибудет автомобиль?</h3>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s2Title")}</h3>
 
                   <div className="grid grid-cols-2 gap-3">
                     {COUNTRIES.map((c) => {
                       const vatKey: Record<string, string> = { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" };
                       const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
-                      const subtitle = c.region === "belarus" ? "Таможенный расчёт" : `НДС ${getSettingValue(settings, vatKey[c.code] ?? "", fallbacks[c.code] ?? 21)}%`;
+                      const subtitle = c.region === "belarus" ? t("calc.bySubtitle") : `VAT ${getSettingValue(settings, vatKey[c.code] ?? "", fallbacks[c.code] ?? 21)}%`;
                       return (
                         <button key={c.code} onClick={() => update("countryCode", c.code)}
                           className={`p-4 rounded-lg border-2 flex items-center gap-3 transition-all text-left ${form.countryCode === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
                           <span className="text-2xl">{c.flag}</span>
                           <div>
-                            <div className="font-semibold text-sm">{c.name}</div>
+                            <div className="font-semibold text-sm">{t(`calc.dest.${c.code}`)}</div>
                             <div className="text-xs opacity-70">{subtitle}</div>
                           </div>
                         </button>
@@ -335,10 +370,10 @@ export default function Calculator() {
 
                   <div className="flex gap-3">
                     <button onClick={() => setStep(1)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
-                      <ChevronLeft size={18} /> Назад
+                      <ChevronLeft size={18} /> {t("calc.back")}
                     </button>
                     <button onClick={() => { update("byPersonType", ""); setStep(3); }} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
-                      Рассчитать <ChevronRight size={18} />
+                      {t("calc.calculate")} <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
@@ -348,8 +383,8 @@ export default function Calculator() {
               {step === 3 && (
                 <motion.div key="step3-type" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Тип запроса</h3>
-                  <p className="text-sm text-muted-foreground -mt-2">Выберите один из вариантов и нажмите «Продолжить»</p>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s3Title")}</h3>
+                  <p className="text-sm text-muted-foreground -mt-2">{t("calc.s3Hint")}</p>
 
                   <div className="grid grid-cols-1 gap-4">
                     <button
@@ -362,12 +397,12 @@ export default function Calculator() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white text-base">Автомобиль из нашего каталога</span>
+                          <span className="font-bold text-white text-base">{t("calc.catalogTitle")}</span>
                           {form.vehicleType === "catalog" && <span className="text-green-400 text-lg leading-none">✓</span>}
                         </div>
-                        <div className="text-sm text-muted-foreground leading-relaxed mt-1">Фиксированная цена — авто уже подобран и готов к оформлению.</div>
+                        <div className="text-sm text-muted-foreground leading-relaxed mt-1">{t("calc.catalogDesc")}</div>
                         <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold border border-green-500/30">
-                          ✓ Без сервисного сбора
+                          {t("calc.catalogBadge")}
                         </div>
                       </div>
                     </button>
@@ -382,12 +417,12 @@ export default function Calculator() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white text-base">Подбор автомобиля (авто-селекшн)</span>
+                          <span className="font-bold text-white text-base">{t("calc.sourcingTitle")}</span>
                           {form.vehicleType === "sourcing" && <span className="text-primary text-lg leading-none">✓</span>}
                         </div>
-                        <div className="text-sm text-muted-foreground leading-relaxed mt-1">Индивидуальный поиск и подбор под ваши требования с аукционов и дилеров.</div>
+                        <div className="text-sm text-muted-foreground leading-relaxed mt-1">{t("calc.sourcingDesc")}</div>
                         <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">
-                          + €500 сервисная комиссия
+                          {t("calc.sourcingBadge")}
                         </div>
                       </div>
                     </button>
@@ -400,11 +435,11 @@ export default function Calculator() {
                       ${form.vehicleType
                         ? "bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
                         : "bg-white/5 text-white/30 border border-border/30 cursor-not-allowed"}`}>
-                    {form.vehicleType ? <><ChevronRight size={18} /> Продолжить</> : <>Выберите вариант выше</>}
+                    {form.vehicleType ? <><ChevronRight size={18} /> {t("calc.continue")}</> : <>{t("calc.selectFirst")}</>}
                   </button>
 
                   <button onClick={() => setStep(2)} className="w-full py-3 border border-border/50 text-muted-foreground font-medium rounded flex items-center justify-center gap-2 hover:bg-card hover:text-white transition-all">
-                    <ChevronLeft size={18} /> Назад
+                    <ChevronLeft size={18} /> {t("calc.back")}
                   </button>
                 </motion.div>
               )}
@@ -413,24 +448,29 @@ export default function Calculator() {
               {step === 4 && !isBelarus && standardResult && (
                 <motion.div key="step3-std" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Расчёт стоимости</h3>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s4Title")}</h3>
 
                   <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/20 border border-border/30">
                     <span className="text-3xl">{selectedCountry?.flag}</span>
                     <div>
-                      <div className="text-white font-semibold">Назначение: {selectedCountry?.name}</div>
+                      <div className="text-white font-semibold">{t("calc.destination")} {t(`calc.dest.${form.countryCode}`)}</div>
                       <div className="text-muted-foreground text-sm">
-                        {selectedCountry?.region === "western" ? "Западная Европа" : "Восточная Европа"}
+                        {selectedCountry?.region === "western" ? t("calc.westEurope") : t("calc.eastEurope")}
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-3 text-sm">
                     {[
-                      { label: "Стоимость автомобиля", value: fmt(standardResult.vehiclePrice) },
+                      { label: t("calc.vehicleCost"), value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
-                      { label: form.sourceCountry === "XX" ? "Доставка (зависит от страны)" : `Доставка (${selectedCountry?.region === "western" ? "Западная" : "Восточная"} Европа)`, value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
-                      standardResult.serviceFee > 0 ? { label: "Сервисная комиссия (подбор)", value: fmt(standardResult.serviceFee) } : null,
+                      {
+                        label: form.sourceCountry === "XX"
+                          ? t("calc.deliveryUnknown")
+                          : selectedCountry?.region === "western" ? t("calc.deliveryWest") : t("calc.deliveryEast"),
+                        value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery),
+                      },
+                      standardResult.serviceFee > 0 ? { label: t("calc.serviceFeeRow"), value: fmt(standardResult.serviceFee) } : null,
                     ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
                         <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
@@ -441,57 +481,21 @@ export default function Calculator() {
 
                   {/* Total from us */}
                   <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
-                    <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-1">Estimated Total Vehicle Cost From Us</p>
+                    <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-1">{t("calc.totalFromUs")}</p>
                     <div className="flex items-end justify-between">
-                      <span className="text-sm text-muted-foreground">Включает авто, налоги и доставку</span>
+                      <span className="text-sm text-muted-foreground">{t("calc.totalInclStd")}</span>
                       <span className="text-4xl font-bold text-primary">{fmt(standardResult.total)}</span>
                     </div>
                   </div>
 
-                  {/* Government charges notice */}
-                  <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3">
-                    <div className="flex items-start gap-2">
-                      <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
-                      <p className="text-sm font-semibold text-amber-300">Важное уведомление</p>
-                    </div>
-                    <p className="text-xs text-amber-200/80 leading-relaxed">
-                      Показанная выше цена включает расходы, рассчитанные нашей системой, и представляет собой
-                      оценочную стоимость автомобиля от нашей компании.
-                    </p>
-                    <p className="text-xs text-amber-200/80 leading-relaxed">
-                      После регистрации автомобиля в вашей стране могут применяться дополнительные налоги,
-                      регистрационные сборы, акцизы, экологические сборы или иные государственные платежи.
-                    </p>
-                    <div className="pt-1">
-                      <p className="text-xs font-semibold text-amber-300 mb-2">Возможные дополнительные расходы:</p>
-                      <ul className="text-xs text-amber-200/70 space-y-1">
-                        {[
-                          "Акцизный налог (если применимо)",
-                          "Регистрационные сборы",
-                          "Экологические налоги",
-                          "Дорожный налог",
-                          "Местные государственные сборы",
-                          "Иные страновые платежи",
-                        ].map(item => (
-                          <li key={item} className="flex items-center gap-1.5">
-                            <span className="w-1 h-1 rounded-full bg-amber-400/60 shrink-0" />
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <p className="text-xs text-amber-200/60 leading-relaxed border-t border-amber-500/20 pt-3">
-                      Уточняйте актуальные требования и размеры платежей на официальных сайтах государственных
-                      органов вашей страны до принятия решения о покупке.
-                    </p>
-                  </div>
+                  <NoticeBlock footerKey="calc.noticeFooter" />
 
                   <div className="flex gap-3">
                     <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
-                      <ChevronLeft size={18} /> Назад
+                      <ChevronLeft size={18} /> {t("calc.back")}
                     </button>
                     <button onClick={() => setStep(5)} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-                      Получить расчёт <ChevronRight size={18} />
+                      {t("calc.getQuote")} <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
@@ -503,20 +507,20 @@ export default function Calculator() {
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">🇧🇾</span>
-                    <h3 className="text-xl font-bold text-white">Расчёт растаможки — Беларусь</h3>
+                    <h3 className="text-xl font-bold text-white">{t("calc.byTitle")}</h3>
                   </div>
 
-                  {/* Vehicle details — only shown here for Belarus */}
+                  {/* Vehicle details */}
                   <div className="space-y-4 p-4 rounded-lg bg-secondary/20 border border-border/30">
-                    <p className="text-sm font-medium text-white">Данные автомобиля</p>
+                    <p className="text-sm font-medium text-white">{t("calc.byVehicleData")}</p>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-2">Год выпуска</label>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">{t("calc.byYear")}</label>
                         <input type="number" value={form.year} onChange={(e) => update("year", Number(e.target.value))}
                           min={2000} max={new Date().getFullYear()} className={INPUT_CLS} />
                       </div>
                       <div>
-                        <label className="block text-xs font-medium text-muted-foreground mb-2">Объём двигателя (см³)</label>
+                        <label className="block text-xs font-medium text-muted-foreground mb-2">{t("calc.byEngineVol")}</label>
                         <input type="number" value={form.engineVolume} onChange={(e) => update("engineVolume", Number(e.target.value) || 0)}
                           min={0} max={9000} step={100} className={INPUT_CLS} />
                       </div>
@@ -525,16 +529,16 @@ export default function Calculator() {
 
                   {/* Person type */}
                   <div>
-                    <p className="text-sm font-medium text-muted-foreground mb-3">Кто ввозит автомобиль?</p>
+                    <p className="text-sm font-medium text-muted-foreground mb-3">{t("calc.byPersonType")}</p>
                     <div className="grid grid-cols-3 gap-3">
                       {([
-                        { key: "individual" as ByPersonType, label: "Физическое лицо" },
-                        { key: "benefit"    as ByPersonType, label: "Льготная категория" },
-                        { key: "company"    as ByPersonType, label: "Юридическое лицо" },
+                        { key: "individual" as ByPersonType, labelKey: "calc.byIndividual" },
+                        { key: "benefit"    as ByPersonType, labelKey: "calc.byBenefit" },
+                        { key: "company"    as ByPersonType, labelKey: "calc.byCompany" },
                       ]).map((opt) => (
                         <button key={opt.key} onClick={() => update("byPersonType", opt.key)}
                           className={`py-3 px-2 rounded-lg border-2 text-sm font-medium transition-all text-center ${form.byPersonType === opt.key ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
-                          {opt.label}
+                          {t(opt.labelKey)}
                         </button>
                       ))}
                     </div>
@@ -543,21 +547,21 @@ export default function Calculator() {
                   {/* Benefit note */}
                   {form.byPersonType === "benefit" && (
                     <div className="p-3 rounded-lg bg-primary/10 border border-primary/30 text-sm text-primary">
-                      Скидка {belarusConfig.discount_percent}% на таможенную пошлину применяется автоматически.
+                      {t("calc.byBenefitNote").replace("{pct}", String(belarusConfig.discount_percent))}
                     </div>
                   )}
 
                   {/* Delivery to Belarus toggle */}
                   <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/20 border border-border/30">
                     <div>
-                      <p className="text-sm font-medium text-white">Доставка в Беларусь</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{fmt(belarusConfig.delivery_to_belarus)} — включить в расчёт?</p>
+                      <p className="text-sm font-medium text-white">{t("calc.byDeliveryLabel")}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{fmt(belarusConfig.delivery_to_belarus)} — {t("calc.byDeliveryInclude")}</p>
                     </div>
                     <div className="flex gap-2">
-                      {[{ v: true, l: "Да" }, { v: false, l: "Нет" }].map(({ v, l }) => (
-                        <button key={l} onClick={() => update("byDelivery", v)}
+                      {[{ v: true, lKey: "calc.byYes" }, { v: false, lKey: "calc.byNo" }].map(({ v, lKey }) => (
+                        <button key={lKey} onClick={() => update("byDelivery", v)}
                           className={`px-4 py-2 rounded border-2 text-sm font-medium transition-all ${form.byDelivery === v ? "border-primary bg-primary/15 text-white" : "border-border/50 text-muted-foreground hover:text-white"}`}>
-                          {l}
+                          {t(lKey)}
                         </button>
                       ))}
                     </div>
@@ -566,16 +570,16 @@ export default function Calculator() {
                   {/* Result breakdown */}
                   {form.byPersonType && byResult && (
                     <div className="space-y-3 text-sm pt-1">
-                      <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">Возраст авто: {byResult.ageLabel}</p>
+                      <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{t("calc.byCarAge")} {t(byResult.ageKey)}</p>
                       {[
-                        { label: "Стоимость автомобиля", value: fmt(form.vehiclePrice) },
+                        { label: t("calc.vehicleCost"), value: fmt(form.vehiclePrice) },
                         form.byPersonType === "benefit" && byResult.customsDuty !== byResult.discountedDuty
-                          ? { label: `Таможенная пошлина (скидка ${belarusConfig.discount_percent}%)`, value: fmt(byResult.discountedDuty), accent: true }
-                          : { label: "Таможенная пошлина", value: fmt(byResult.discountedDuty), accent: true },
-                        form.byPersonType === "company" ? { label: `НДС ${belarusConfig.company.vat_percent}%`, value: fmt(byResult.vat) } : null,
-                        { label: "Утилизационный сбор", value: fmt(byResult.utilizationFee) },
-                        { label: "Таможенное оформление", value: fmt(byResult.processingFee) },
-                        byResult.delivery > 0 ? { label: "Доставка в Беларусь", value: fmt(byResult.delivery) } : null,
+                          ? { label: t("calc.byDutyDiscount").replace("{pct}", String(belarusConfig.discount_percent)), value: fmt(byResult.discountedDuty), accent: true }
+                          : { label: t("calc.byDuty"), value: fmt(byResult.discountedDuty), accent: true },
+                        form.byPersonType === "company" ? { label: `VAT ${belarusConfig.company.vat_percent}%`, value: fmt(byResult.vat) } : null,
+                        { label: t("calc.byUtilFee"), value: fmt(byResult.utilizationFee) },
+                        { label: t("calc.byProcessFee"), value: fmt(byResult.processingFee) },
+                        byResult.delivery > 0 ? { label: t("calc.byDeliveryRow"), value: fmt(byResult.delivery) } : null,
                       ].filter(Boolean).map((row) => row && (
                         <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
                           <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
@@ -583,65 +587,29 @@ export default function Calculator() {
                         </div>
                       ))}
                       <div className="pt-3 flex justify-between items-center border-t border-border/30">
-                        <span className="text-sm text-muted-foreground">Итого растаможка + доп. расходы</span>
+                        <span className="text-sm text-muted-foreground">{t("calc.byCustomsTotal")}</span>
                         <span className="text-lg font-semibold text-amber-200">{fmt(byResult.customsTotal + byResult.delivery)}</span>
                       </div>
                       {/* Total from us */}
                       <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
-                        <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-1">Estimated Total Vehicle Cost From Us</p>
+                        <p className="text-xs font-semibold text-primary/70 uppercase tracking-wider mb-1">{t("calc.totalFromUs")}</p>
                         <div className="flex items-end justify-between">
-                          <span className="text-sm text-muted-foreground">Включает авто, таможню и доставку</span>
+                          <span className="text-sm text-muted-foreground">{t("calc.totalInclBy")}</span>
                           <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
                         </div>
                       </div>
 
-                      {/* Government charges notice */}
-                      <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3">
-                        <div className="flex items-start gap-2">
-                          <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
-                          <p className="text-sm font-semibold text-amber-300">Важное уведомление</p>
-                        </div>
-                        <p className="text-xs text-amber-200/80 leading-relaxed">
-                          Показанная выше цена включает расходы, рассчитанные нашей системой, и представляет собой
-                          оценочную стоимость автомобиля от нашей компании.
-                        </p>
-                        <p className="text-xs text-amber-200/80 leading-relaxed">
-                          После регистрации автомобиля в вашей стране могут применяться дополнительные налоги,
-                          регистрационные сборы, акцизы, экологические сборы или иные государственные платежи.
-                        </p>
-                        <div className="pt-1">
-                          <p className="text-xs font-semibold text-amber-300 mb-2">Возможные дополнительные расходы:</p>
-                          <ul className="text-xs text-amber-200/70 space-y-1">
-                            {[
-                              "Акцизный налог (если применимо)",
-                              "Регистрационные сборы",
-                              "Экологические налоги",
-                              "Дорожный налог",
-                              "Местные государственные сборы",
-                              "Иные страновые платежи",
-                            ].map(item => (
-                              <li key={item} className="flex items-center gap-1.5">
-                                <span className="w-1 h-1 rounded-full bg-amber-400/60 shrink-0" />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <p className="text-xs text-amber-200/60 leading-relaxed border-t border-amber-500/20 pt-3">
-                          Расчёт является предварительным. Уточняйте актуальные требования и размеры платежей
-                          на официальных сайтах государственных органов вашей страны до принятия решения о покупке.
-                        </p>
-                      </div>
+                      <NoticeBlock footerKey="calc.noticeFooterBy" />
                     </div>
                   )}
 
                   <div className="flex gap-3">
                     <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
-                      <ChevronLeft size={18} /> Назад
+                      <ChevronLeft size={18} /> {t("calc.back")}
                     </button>
                     <button onClick={() => setStep(5)} disabled={!form.byPersonType}
                       className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] disabled:opacity-40 disabled:cursor-not-allowed">
-                      Получить расчёт <ChevronRight size={18} />
+                      {t("calc.getQuote")} <ChevronRight size={18} />
                     </button>
                   </div>
                 </motion.div>
@@ -651,29 +619,29 @@ export default function Calculator() {
               {step === 5 && !submitted && (
                 <motion.div key="step4" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">Получить детальный расчёт</h3>
-                  <p className="text-muted-foreground text-sm">Оставьте контакты — наш специалист пришлёт подробный расчёт с точными цифрами.</p>
+                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s5Title")}</h3>
+                  <p className="text-muted-foreground text-sm">{t("calc.s5Sub")}</p>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Имя *</label>
-                      <input value={form.name} onChange={(e) => update("name", e.target.value)} required placeholder="Ваше имя" className={INPUT_CLS} />
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.s5Name")}</label>
+                      <input value={form.name} onChange={(e) => update("name", e.target.value)} required placeholder={t("calc.s5NamePh")} className={INPUT_CLS} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Телефон *</label>
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.s5Phone")}</label>
                       <input value={form.phone} onChange={(e) => update("phone", e.target.value)} required placeholder="+XX XXX XXX XXXX" className={INPUT_CLS} />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-muted-foreground mb-2">Email *</label>
-                      <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="ваш@email.com" className={INPUT_CLS} />
+                      <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.s5Email")}</label>
+                      <input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} required placeholder="your@email.com" className={INPUT_CLS} />
                     </div>
                     <LanguageSelector value={prefLang} onChange={setPrefLang} />
                     <ConsentCheckbox checked={consent} onChange={setConsent} />
                     <div className="flex gap-3 pt-2">
                       <button type="button" onClick={() => setStep(4)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
-                        <ChevronLeft size={18} /> Назад
+                        <ChevronLeft size={18} /> {t("calc.back")}
                       </button>
                       <button type="submit" disabled={!consent} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] disabled:opacity-60 disabled:cursor-not-allowed">
-                        <Send size={18} /> Отправить заявку
+                        <Send size={18} /> {t("calc.s5Submit")}
                       </button>
                     </div>
                   </form>
@@ -687,11 +655,11 @@ export default function Calculator() {
                   <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
                     <CheckCircle className="text-green-400" size={32} />
                   </div>
-                  <h3 className="text-2xl font-bold text-white">Заявка отправлена!</h3>
-                  <p className="text-muted-foreground">Спасибо, {form.name}. Специалист свяжется с вами в течение 2 часов в рабочее время.</p>
+                  <h3 className="text-2xl font-bold text-white">{t("calc.successTitle")}</h3>
+                  <p className="text-muted-foreground">{t("calc.successBody").replace("{name}", form.name)}</p>
                   <button onClick={() => { setStep(1); setSubmitted(false); setForm(DEFAULT_FORM); }}
                     className="mt-4 px-6 py-3 bg-primary text-white rounded font-semibold hover:bg-primary/90 transition-all">
-                    Новый расчёт
+                    {t("calc.successNew")}
                   </button>
                 </motion.div>
               )}
@@ -705,7 +673,7 @@ export default function Calculator() {
               <div className="flex items-center gap-2 mb-5">
                 <span className="text-2xl">{selectedCountry?.flag ?? "🚗"}</span>
                 <h3 className="text-lg font-bold text-white">
-                  {isBelarus ? "Растаможка" : "Предварительный расчёт"}
+                  {isBelarus ? t("calc.sidebarBy") : t("calc.sidebarStd")}
                 </h3>
               </div>
 
@@ -713,10 +681,10 @@ export default function Calculator() {
                 <>
                   <div className="space-y-3 text-sm mb-5">
                     {[
-                      { label: "Стоимость авто",    value: fmt(standardResult.vehiclePrice) },
+                      { label: t("calc.sidebarVehicle"),   value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
-                      { label: "Доставка",           value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
-                      standardResult.serviceFee > 0 ? { label: "Сервисная комиссия", value: fmt(standardResult.serviceFee) } : null,
+                      { label: t("calc.sidebarDelivery"),  value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
+                      standardResult.serviceFee > 0 ? { label: t("calc.sidebarService"), value: fmt(standardResult.serviceFee) } : null,
                     ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between">
                         <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
@@ -726,64 +694,64 @@ export default function Calculator() {
                   </div>
                   <div className="border-t border-border/50 pt-4">
                     <div className="flex justify-between items-end">
-                      <span className="text-base font-bold text-white">Итого</span>
+                      <span className="text-base font-bold text-white">{t("calc.sidebarTotal")}</span>
                       <span className="text-3xl font-bold text-primary">{fmt(standardResult.total)}</span>
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-2">*Предварительный расчёт</p>
+                  <p className="text-xs text-muted-foreground mt-2">{t("calc.sidebarNote")}</p>
                 </>
               )}
 
               {isBelarus && (
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Стоимость авто</span>
+                    <span className="text-muted-foreground">{t("calc.sidebarVehicle")}</span>
                     <span className="text-white font-medium">{fmt(form.vehiclePrice)}</span>
                   </div>
                   {byResult && form.byPersonType ? (
                     <>
                       <div className="flex justify-between">
-                        <span className="text-muted-foreground">Год / объём</span>
-                        <span className="text-white font-medium">{form.year} / {form.engineVolume} см³</span>
+                        <span className="text-muted-foreground">{t("calc.sidebarYearVol")}</span>
+                        <span className="text-white font-medium">{form.year} / {form.engineVolume} cm³</span>
                       </div>
                       <div className="border-t border-border/30 pt-3 space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Таможенная пошлина</span>
+                          <span className="text-muted-foreground">{t("calc.sidebarDuty")}</span>
                           <span className="text-amber-200 font-medium">{fmt(byResult.discountedDuty)}</span>
                         </div>
                         {byResult.vat > 0 && (
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">НДС</span>
+                            <span className="text-muted-foreground">{t("calc.sidebarVat")}</span>
                             <span className="text-white font-medium">{fmt(byResult.vat)}</span>
                           </div>
                         )}
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Утилизационный сбор</span>
+                          <span className="text-muted-foreground">{t("calc.sidebarUtil")}</span>
                           <span className="text-white font-medium">{fmt(byResult.utilizationFee)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Оформление</span>
+                          <span className="text-muted-foreground">{t("calc.sidebarProcess")}</span>
                           <span className="text-white font-medium">{fmt(byResult.processingFee)}</span>
                         </div>
                         {byResult.delivery > 0 && (
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Доставка в Беларусь</span>
+                            <span className="text-muted-foreground">{t("calc.sidebarDelivBy")}</span>
                             <span className="text-white font-medium">{fmt(byResult.delivery)}</span>
                           </div>
                         )}
                       </div>
                       <div className="border-t border-border/50 pt-2 flex justify-between items-end">
-                        <span className="text-base font-bold text-white">Полная стоимость</span>
+                        <span className="text-base font-bold text-white">{t("calc.sidebarFullCost")}</span>
                         <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
                       </div>
                     </>
                   ) : (
-                    <p className="text-xs text-muted-foreground pt-1">Заполните данные авто и выберите тип импортёра</p>
+                    <p className="text-xs text-muted-foreground pt-1">{t("calc.sidebarFillData")}</p>
                   )}
                   <div className="mt-3 flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
                     <AlertTriangle size={14} className="text-amber-400 mt-0.5 shrink-0" />
                     <p className="text-xs text-amber-300 leading-relaxed">
-                      Расчет является предварительным. Итоговая сумма зависит от действующих ставок законодательства Республики Беларусь.
+                      {t("calc.sidebarByNote")}
                     </p>
                   </div>
                 </div>
@@ -791,9 +759,9 @@ export default function Calculator() {
 
               {!isBelarus && (
                 <div className="mt-5 space-y-1 border-t border-border/30 pt-4">
-                  <p className="text-xs text-muted-foreground">✓ Прозрачное ценообразование</p>
-                  <p className="text-xs text-muted-foreground">✓ Все налоги включены в расчёт</p>
-                  <p className="text-xs text-muted-foreground">✓ Бесплатная консультация специалиста</p>
+                  <p className="text-xs text-muted-foreground">{t("calc.sidebarTransp")}</p>
+                  <p className="text-xs text-muted-foreground">{t("calc.sidebarTaxes")}</p>
+                  <p className="text-xs text-muted-foreground">{t("calc.sidebarConsult")}</p>
                 </div>
               )}
             </div>
