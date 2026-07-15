@@ -142,7 +142,7 @@ export default function About() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { value: "5,000+", label: t("stats.delivered") },
-              { value: "98%", label: t("stats.clients") },
+              { value: "500+", label: t("stats.clients") },
               { value: "12", label: t("stats.experience") },
               { value: "40+", label: t("stats.countries") }
             ].map((stat, i) => (
