@@ -278,8 +278,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </p>
             <div className="flex gap-5">
               <a href="/privacy" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.privacy")}</a>
-              <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.terms")}</a>
-              <a href="#" className="text-muted-foreground hover:text-white text-xs transition-colors">Cookies</a>
+              <a href="/consent" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.consent")}</a>
+              <a href="/cookies" className="text-muted-foreground hover:text-white text-xs transition-colors">{t("footer.cookies")}</a>
             </div>
           </div>
         </div>

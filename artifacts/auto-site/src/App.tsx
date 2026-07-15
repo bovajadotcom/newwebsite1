@@ -21,6 +21,8 @@ import Articles from "@/pages/articles";
 import Article from "@/pages/article";
 import Careers from "@/pages/careers";
 import Privacy from "@/pages/privacy";
+import Consent from "@/pages/consent";
+import Cookies from "@/pages/cookies";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -55,6 +57,8 @@ function Router() {
         <Route path="/careers" component={Careers} />
         <Route path="/favorites" component={Favorites} />
         <Route path="/privacy" component={Privacy} />
+        <Route path="/consent" component={Consent} />
+        <Route path="/cookies" component={Cookies} />
         <Route component={NotFound} />
       </Switch>
       <PageModal />
