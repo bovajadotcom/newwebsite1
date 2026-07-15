@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Target, Shield, Compass, CheckCircle2, Award, Zap } from "lucide-react";
+import { Target, Shield, Compass, CheckCircle2, MapPin } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
 
@@ -231,15 +231,23 @@ export default function About() {
               viewport={{ once: true }}
               className="grid grid-cols-2 gap-6"
             >
-              <div className="p-6 bg-card border border-border/40 rounded-2xl text-center hover:border-primary/30 transition-colors">
-                <Award className="text-primary mx-auto mb-4" size={32} />
-                <h4 className="font-bold text-white mb-2">ISO 9001</h4>
-                <p className="text-sm text-muted-foreground">{t("about.cert.iso.desc")}</p>
+              <div className="p-6 bg-card border border-border/40 rounded-2xl hover:border-primary/30 transition-colors">
+                <MapPin className="text-primary mb-4" size={28} />
+                <h4 className="font-bold text-white mb-3">BOVAJA UAB</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Savanorių pr. 15A<br />
+                  LT-03126 Vilnius, Lithuania<br />
+                  <span className="text-white/60 text-xs mt-2 block">VAT ID: LT100015006418</span>
+                </p>
               </div>
-              <div className="p-6 bg-card border border-border/40 rounded-2xl text-center hover:border-primary/30 transition-colors">
-                <Zap className="text-primary mx-auto mb-4" size={32} />
-                <h4 className="font-bold text-white mb-2">FMC Licensed</h4>
-                <p className="text-sm text-muted-foreground">{t("about.cert.fmc.desc")}</p>
+              <div className="p-6 bg-card border border-border/40 rounded-2xl hover:border-primary/30 transition-colors">
+                <MapPin className="text-primary mb-4" size={28} />
+                <h4 className="font-bold text-white mb-3">BOVAJA Sp. z o.o.</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Aleje Jerozolimskie 109/70<br />
+                  02-011 Warsaw, Poland<br />
+                  <span className="text-white/60 text-xs mt-2 block">VAT ID: PL9462741244</span>
+                </p>
               </div>
             </motion.div>
           </div>
