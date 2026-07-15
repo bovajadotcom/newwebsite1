@@ -4,22 +4,31 @@ import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { useState } from "react";
 
-function TimelinePhoto({ src, label, vertical }: { src: string; label: string; vertical?: boolean }) {
+function TimelinePhoto({ src, label, vertical, fill }: { src: string; label: string; vertical?: boolean; fill?: boolean }) {
   const [broken, setBroken] = useState(false);
-  const aspect = vertical ? "aspect-[3/4]" : "aspect-[4/3]";
+
+  const wrapperClass = fill
+    ? "flex-1 min-w-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30"
+    : vertical
+    ? "w-[45%] shrink-0 aspect-[3/4] rounded-xl overflow-hidden border border-border/40 bg-secondary/30"
+    : "aspect-[4/3] rounded-xl overflow-hidden border border-border/40 bg-secondary/30";
+
+  const placeholderClass = fill
+    ? "flex-1 min-w-0 rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40"
+    : vertical
+    ? "w-[45%] shrink-0 aspect-[3/4] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40"
+    : "aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40";
+
   if (broken) {
     return (
-      <div
-        className={`${aspect} rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40`}
-        title={label}
-      >
+      <div className={placeholderClass} title={label}>
         <ImageIcon size={24} />
         <span className="text-[10px] uppercase tracking-widest font-medium">{label}</span>
       </div>
     );
   }
   return (
-    <div className={`${aspect} rounded-xl overflow-hidden border border-border/40 bg-secondary/30`}>
+    <div className={wrapperClass}>
       <img
         src={src}
         alt={label}
@@ -156,13 +165,14 @@ export default function About() {
                   <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
                   {item.photos && (
-                    <div className="grid grid-cols-2 gap-3 mt-4 max-w-sm items-start">
+                    <div className="flex gap-3 mt-4 items-stretch">
                       {item.photos.map((src, pi) => (
                         <TimelinePhoto
                           key={pi}
                           src={`${import.meta.env.BASE_URL}${src}`}
                           label={`Photo ${pi + 1}`}
                           vertical={pi === 0}
+                          fill={pi === 1}
                         />
                       ))}
                     </div>
