@@ -772,11 +772,6 @@ export default function Home() {
                     ) : (
                       <span />
                     )}
-                    {car.deliveryDate && (
-                      <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium">
-                        <CheckCircle size={11} /> {car.deliveryDate}
-                      </span>
-                    )}
                   </div>
                 </div>
               </motion.div>

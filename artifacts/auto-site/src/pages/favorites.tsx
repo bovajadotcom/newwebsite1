@@ -206,7 +206,6 @@ export default function Favorites() {
                       <h4 className="text-white font-bold text-sm mb-1">{car.year} {car.make} {car.model}</h4>
                       <div className="flex flex-col gap-0.5 text-xs text-muted-foreground">
                         <div className="flex items-center gap-1"><MapPin size={10} /> {car.purchaseCountry}</div>
-                        {car.deliveryDate && <div className="flex items-center gap-1 text-primary"><CheckSquare size={10} /> {car.deliveryDate}</div>}
                       </div>
                     </div>
                   </div>

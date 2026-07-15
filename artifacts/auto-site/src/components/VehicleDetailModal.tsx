@@ -466,12 +466,10 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                             </>
                           )}
                         </div>
-                        {(vehicle.deliveryDate || vehicle.estimatedDelivery) && (
+                        {vehicle.estimatedDelivery && (
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <Calendar size={11} />
-                            {vehicle.deliveryDate
-                              ? `${t("modal.delivered")} ${vehicle.deliveryDate}`
-                              : `${t("modal.estDelivery")} ${vehicle.estimatedDelivery}`}
+                            {`${t("modal.estDelivery")} ${vehicle.estimatedDelivery}`}
                           </div>
                         )}
                       </div>

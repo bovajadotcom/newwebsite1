@@ -477,11 +477,6 @@ export default function Inventory() {
                       <p className="text-sm text-slate-500 line-clamp-2 mb-3 min-h-[2.5rem]">
                         {car.description ?? ""}
                       </p>
-                      {car.deliveryDate && (
-                        <div className="flex items-center gap-2 text-green-600 text-xs font-medium mb-3">
-                          <CheckSquare size={12} /> Delivered: {car.deliveryDate}
-                        </div>
-                      )}
 
                       {car.status === "auction" && (
                         <div className="mb-4 rounded-xl border border-purple-300 bg-purple-50 p-4 space-y-2.5">

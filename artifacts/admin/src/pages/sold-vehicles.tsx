@@ -296,9 +296,6 @@ export default function SoldVehiclesPage() {
                   <FormField control={form.control} name="deliveryStatus" render={({ field }) => (
                     <FormItem><FormLabel>Delivery Status</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
-                  <FormField control={form.control} name="deliveryDate" render={({ field }) => (
-                    <FormItem><FormLabel>Delivery Date</FormLabel><FormControl><Input {...field} value={field.value ?? ""} placeholder="e.g. 2024-11" /></FormControl><FormMessage /></FormItem>
-                  )} />
                 </div>
 
                 {/* Media */}
