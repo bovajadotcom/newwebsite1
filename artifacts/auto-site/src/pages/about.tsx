@@ -4,12 +4,13 @@ import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { useState } from "react";
 
-function TimelinePhoto({ src, label }: { src: string; label: string }) {
+function TimelinePhoto({ src, label, vertical }: { src: string; label: string; vertical?: boolean }) {
   const [broken, setBroken] = useState(false);
+  const aspect = vertical ? "aspect-[3/4]" : "aspect-[4/3]";
   if (broken) {
     return (
       <div
-        className="aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40"
+        className={`${aspect} rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40`}
         title={label}
       >
         <ImageIcon size={24} />
@@ -18,7 +19,7 @@ function TimelinePhoto({ src, label }: { src: string; label: string }) {
     );
   }
   return (
-    <div className="aspect-[4/3] rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
+    <div className={`${aspect} rounded-xl overflow-hidden border border-border/40 bg-secondary/30`}>
       <img
         src={src}
         alt={label}
@@ -155,12 +156,13 @@ export default function About() {
                   <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
                   {item.photos && (
-                    <div className="grid grid-cols-2 gap-3 mt-4 max-w-sm">
+                    <div className="grid grid-cols-2 gap-3 mt-4 max-w-sm items-start">
                       {item.photos.map((src, pi) => (
                         <TimelinePhoto
                           key={pi}
                           src={`${import.meta.env.BASE_URL}${src}`}
                           label={`Photo ${pi + 1}`}
+                          vertical={pi === 0}
                         />
                       ))}
                     </div>
