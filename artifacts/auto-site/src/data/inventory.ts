@@ -203,11 +203,9 @@ export const stockVehicles: Vehicle[] = [
 // Отображаются на странице /inventory во вкладке "Recently Sold"
 // Добавляйте сюда авто после продажи (или удаляйте старые записи)
 export const soldVehicles: SoldVehicle[] = [
-  { id: "s2", make: "BMW", model: "M3 Competition", year: 2022, finalPrice: 82000, purchaseCountry: "Germany", deliveryStatus: "Delivered", deliveryDate: "Feb 2024", image: "vehicle-2.png" },
   { id: "s3", make: "Mercedes-Benz", model: "G63 AMG", year: 2020, purchaseCountry: "UAE", deliveryStatus: "Delivered", deliveryDate: "Jan 2024", image: "vehicle-3.png" },
   { id: "s4", make: "Lexus", model: "GX 460", year: 2021, finalPrice: 58000, purchaseCountry: "Japan", deliveryStatus: "Delivered", deliveryDate: "Dec 2023", image: "vehicle-4.png" },
   { id: "s5", make: "Audi", model: "Q8 S-Line", year: 2022, finalPrice: 76000, purchaseCountry: "Germany", deliveryStatus: "Delivered", deliveryDate: "Nov 2023", image: "vehicle-1.png" },
-  { id: "s6", make: "Toyota", model: "Alphard Executive", year: 2022, purchaseCountry: "Japan", deliveryStatus: "Delivered", deliveryDate: "Oct 2023", image: "vehicle-2.png" },
 ];
 
 // ── САМЫЕ ПОПУЛЯРНЫЕ АВТО ───────────────────────────────
