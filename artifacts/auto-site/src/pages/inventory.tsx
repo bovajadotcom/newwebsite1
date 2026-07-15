@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { 
@@ -243,6 +243,18 @@ export default function Inventory() {
 
   const hasActiveFilters = search || filterBrand !== "all" || filterFuel !== "all" || filterTransmission !== "all" || filterStatus !== "all" || filterPrice !== "all";
 
+  const filterRef = useRef<HTMLElement>(null);
+  const [filterHeight, setFilterHeight] = useState(0);
+
+  useEffect(() => {
+    const el = filterRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setFilterHeight(el.offsetHeight));
+    ro.observe(el);
+    setFilterHeight(el.offsetHeight);
+    return () => ro.disconnect();
+  }, []);
+
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -272,8 +284,14 @@ export default function Inventory() {
           </motion.div>
         </div>
       </section>
-      {/* Filters Sticky Bar */}
-      <section className="sticky top-20 z-40 bg-slate-100 border-b border-slate-200 py-4 shadow-sm">
+      {/* Spacer — compensates for fixed filter bar on mobile */}
+      <div className="lg:hidden" style={{ height: filterHeight }} />
+
+      {/* Filters Bar — fixed on mobile, sticky on desktop */}
+      <section
+        ref={filterRef}
+        className="fixed top-[80px] left-0 right-0 lg:sticky lg:top-20 lg:left-auto lg:right-auto z-40 bg-slate-100 border-b border-slate-200 py-4 shadow-sm"
+      >
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="relative flex-1">
