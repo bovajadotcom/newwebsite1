@@ -1,6 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Menu, X, ChevronRight, Heart, Phone, Mail, MessageCircle, MapPin } from "lucide-react";
 import { useState, useEffect } from "react";
+import logoIcon from "@assets/logo_2_1784128765857.png";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n";
 import { useFavorites } from "@/lib/FavoritesContext";
@@ -40,11 +41,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
                         shadow-[0_4px_32px_rgba(0,0,0,0.6)] border border-white/[0.06]">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center shrink-0 mr-6">
+          <Link href="/" className="flex items-center shrink-0 mr-3 lg:mr-6">
+            {/* Mobile: compact icon mark */}
+            <img
+              src={logoIcon}
+              alt="BOVAJA"
+              className="block lg:hidden h-8 w-auto"
+            />
+            {/* Desktop: full text logo */}
             <img
               src={`${import.meta.env.BASE_URL}bovaja-logo.png`}
               alt="BOVAJA"
-              className="h-8 w-auto"
+              className="hidden lg:block h-8 w-auto"
             />
           </Link>
 
