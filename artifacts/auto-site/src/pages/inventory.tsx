@@ -118,6 +118,7 @@ function toModalUnified(car: UnifiedVehicle): ModalVehicle {
     description: car.description,
     engine: car.engine, fuel: car.fuel,
     transmission: car.transmission, mileage: car.mileage, location: car.location,
+    deliveredTo: car.deliveredTo ?? null,
     images: [car.image, ...(car.photos ?? []).filter(Boolean)],
     auctionEndDate: car.auctionEndDate ?? null,
     auctionStartDate: car.auctionStartDate ?? null,

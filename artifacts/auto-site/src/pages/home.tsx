@@ -46,6 +46,7 @@ interface DisplayVehicle {
   make: string; model: string; year: number;
   price: number; fuel: string; transmission: string; mileage: number;
   status: string; badge?: string | null; image: string;
+  location?: string; deliveredTo?: string | null;
 }
 interface DisplaySold {
   id: string | number;
@@ -83,6 +84,7 @@ function toModalStock(car: DisplayVehicle): ModalVehicle {
     id: car.id, type: "available", make: car.make, model: car.model,
     year: car.year, price: car.price, status: car.status, badge: car.badge,
     fuel: car.fuel, transmission: car.transmission, mileage: car.mileage,
+    location: car.location, deliveredTo: car.deliveredTo ?? null,
     images: [car.image],
   };
 }
