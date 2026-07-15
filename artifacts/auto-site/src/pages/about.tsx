@@ -1,7 +1,33 @@
 import { motion } from "framer-motion";
-import { Target, Shield, Compass, CheckCircle2, MapPin } from "lucide-react";
+import { Target, Shield, Compass, CheckCircle2, MapPin, ImageIcon } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
+import { useState } from "react";
+
+function TimelinePhoto({ src, label }: { src: string; label: string }) {
+  const [broken, setBroken] = useState(false);
+  if (broken) {
+    return (
+      <div
+        className="aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40"
+        title={label}
+      >
+        <ImageIcon size={24} />
+        <span className="text-[10px] uppercase tracking-widest font-medium">{label}</span>
+      </div>
+    );
+  }
+  return (
+    <div className="aspect-[4/3] rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
+      <img
+        src={src}
+        alt={label}
+        onError={() => setBroken(true)}
+        className="w-full h-full object-cover"
+      />
+    </div>
+  );
+}
 
 export default function About() {
   const { t } = useLanguage();
@@ -18,14 +44,14 @@ export default function About() {
     { icon: Compass, titleKey: "about.val.reach.title",    descKey: "about.val.reach.desc" },
   ];
 
-  const timeline = [
-    { year: "2012", titleKey: "about.tl.2012.title", descKey: "about.tl.2012.desc" },
+  const timeline: { year: string; titleKey: string; descKey: string; photos?: string[] }[] = [
+    { year: "2012", titleKey: "about.tl.2012.title", descKey: "about.tl.2012.desc", photos: ["about-2012-1.jpg", "about-2012-2.jpg"] },
     { year: "2014", titleKey: "about.tl.2014.title", descKey: "about.tl.2014.desc" },
     { year: "2016", titleKey: "about.tl.2016.title", descKey: "about.tl.2016.desc" },
     { year: "2018", titleKey: "about.tl.2018.title", descKey: "about.tl.2018.desc" },
     { year: "2020", titleKey: "about.tl.2020.title", descKey: "about.tl.2020.desc" },
     { year: "2022", titleKey: "about.tl.2022.title", descKey: "about.tl.2022.desc" },
-    { year: "2024", titleKey: "about.tl.2024.title", descKey: "about.tl.2024.desc" },
+    { year: "2024", titleKey: "about.tl.2024.title", descKey: "about.tl.2024.desc", photos: ["about-2024-1.jpg", "about-2024-2.jpg"] },
   ];
 
   const diffItems = [
@@ -125,9 +151,20 @@ export default function About() {
                 <div className="w-24 shrink-0 text-primary font-bold text-xl pt-1 border-r-2 border-primary/30 pr-6 text-right">
                   {item.year}
                 </div>
-                <div className="pt-0.5">
+                <div className="pt-0.5 flex-1 min-w-0">
                   <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
+                  {item.photos && (
+                    <div className="grid grid-cols-2 gap-3 mt-4 max-w-sm">
+                      {item.photos.map((src, pi) => (
+                        <TimelinePhoto
+                          key={pi}
+                          src={`${import.meta.env.BASE_URL}${src}`}
+                          label={`Photo ${pi + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
