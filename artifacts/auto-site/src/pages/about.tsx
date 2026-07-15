@@ -55,13 +55,14 @@ export default function About() {
   ];
 
   const timeline: { year: string; titleKey: string; descKey: string; photos?: string[] }[] = [
-    { year: "2012", titleKey: "about.tl.2012.title", descKey: "about.tl.2012.desc", photos: ["about-2012-1.jpg", "about-2012-2.jpg"] },
-    { year: "2014", titleKey: "about.tl.2014.title", descKey: "about.tl.2014.desc" },
-    { year: "2016", titleKey: "about.tl.2016.title", descKey: "about.tl.2016.desc" },
+    { year: "2011", titleKey: "about.tl.2011.title", descKey: "about.tl.2011.desc", photos: ["about-2011-1.jpg", "about-2011-2.jpg"] },
+    { year: "2015", titleKey: "about.tl.2015.title", descKey: "about.tl.2015.desc" },
     { year: "2018", titleKey: "about.tl.2018.title", descKey: "about.tl.2018.desc" },
     { year: "2020", titleKey: "about.tl.2020.title", descKey: "about.tl.2020.desc" },
     { year: "2022", titleKey: "about.tl.2022.title", descKey: "about.tl.2022.desc" },
-    { year: "2024", titleKey: "about.tl.2024.title", descKey: "about.tl.2024.desc", photos: ["about-2024-1.jpg", "about-2024-2.jpg"] },
+    { year: "2023", titleKey: "about.tl.2023.title", descKey: "about.tl.2023.desc" },
+    { year: "2025", titleKey: "about.tl.2025.title", descKey: "about.tl.2025.desc" },
+    { year: "2026", titleKey: "about.tl.2026.title", descKey: "about.tl.2026.desc", photos: ["about-2026-1.jpg", "about-2026-2.jpg"] },
   ];
 
   const diffItems = [
