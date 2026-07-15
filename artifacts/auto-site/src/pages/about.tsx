@@ -6,10 +6,10 @@ import { RelatedArticles } from "@/components/RelatedArticles";
 export default function About() {
   const { t } = useLanguage();
   const team = [
-    { name: "James Sterling", title: "Founder & CEO", img: "team-1.png" },
-    { name: "Elena Rostova", title: "Head of Global Logistics", img: "team-2.png" },
-    { name: "Marcus Chen", title: "Director of Sourcing (APAC)", img: "team-3.png" },
-    { name: "Sarah Jenkins", title: "Chief Compliance Officer", img: "team-4.png" }
+    { name: "James Sterling", titleKey: "about.team1.title", img: "team-1.png" },
+    { name: "Elena Rostova",  titleKey: "about.team2.title", img: "team-2.png" },
+    { name: "Marcus Chen",    titleKey: "about.team3.title", img: "team-3.png" },
+    { name: "Sarah Jenkins",  titleKey: "about.team4.title", img: "team-4.png" },
   ];
 
   const values = [
@@ -190,7 +190,7 @@ export default function About() {
                   />
                 </div>
                 <h3 className="text-lg font-bold text-white">{member.name}</h3>
-                <p className="text-sm text-primary mt-1">{member.title}</p>
+                <p className="text-sm text-primary mt-1">{t(member.titleKey)}</p>
               </motion.div>
             ))}
           </div>
