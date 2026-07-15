@@ -405,7 +405,6 @@ export default function Home() {
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
               <Award size={11} /> {t("section.stats") || "Our Track Record"}
             </span>
-            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">Numbers That Define Us</p>
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {[
