@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { Calendar, ArrowRight, Newspaper } from "lucide-react";
 import { useGetArticles } from "@workspace/api-client-react";
+import { useLanguage } from "@/lib/i18n";
 
 function formatDate(dateStr: string | null) {
   if (!dateStr) return "";
@@ -18,6 +19,7 @@ export function RelatedArticles({
   limit = 3,
   excludeSlug,
 }: RelatedArticlesProps) {
+  const { t } = useLanguage();
   const { data: allArticles = [], isLoading } = useGetArticles();
 
   const articles = allArticles
@@ -41,7 +43,7 @@ export function RelatedArticles({
             href="/articles"
             className="hidden sm:inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:gap-2.5 transition-all"
           >
-            View All <ArrowRight size={14} />
+            {t("articles.viewAll")} <ArrowRight size={14} />
           </Link>
         </div>
 
@@ -74,7 +76,7 @@ export function RelatedArticles({
                     {article.title}
                   </h3>
                   <span className="inline-flex items-center gap-1 text-primary text-xs font-semibold group-hover:gap-1.5 transition-all">
-                    Read More <ArrowRight size={10} />
+                    {t("articles.readMore")} <ArrowRight size={10} />
                   </span>
                 </div>
               </div>
@@ -84,7 +86,7 @@ export function RelatedArticles({
 
         <div className="mt-6 text-center sm:hidden">
           <Link href="/articles" className="inline-flex items-center gap-1.5 text-primary text-sm font-semibold">
-            View All Articles <ArrowRight size={14} />
+            {t("articles.viewAll")} <ArrowRight size={14} />
           </Link>
         </div>
       </div>
