@@ -335,10 +335,10 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
 
   if (!vehicle) return null;
 
-  const isAvailable = vehicle.type === "available" && vehicle.status !== "auction";
-  const isAuction = vehicle.type === "available" && vehicle.status === "auction";
-  const isSold = vehicle.type === "sold";
+  const isSold = vehicle.type === "sold" || vehicle.status === "sold";
   const isPopular = vehicle.type === "popular";
+  const isAvailable = !isSold && !isPopular && vehicle.type === "available" && vehicle.status !== "auction";
+  const isAuction = !isSold && !isPopular && vehicle.type === "available" && vehicle.status === "auction";
 
   const vehicleLabel = `${vehicle.year ? vehicle.year + " " : ""}${vehicle.make} ${vehicle.model}`;
 
