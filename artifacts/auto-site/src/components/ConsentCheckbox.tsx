@@ -55,10 +55,10 @@ export function ConsentCheckbox({ checked, onChange, showError }: Props) {
         </span>
       </label>
 
-      {showError && !checked && (
-        <div className="flex items-start gap-2 text-red-400 text-xs">
+      {!checked && (
+        <div className={`flex items-start gap-2 text-xs ${showError ? "text-red-400" : "text-amber-400/90"}`}>
           <AlertCircle size={13} className="shrink-0 mt-0.5" />
-          <span>{t("form.consentRequired")}</span>
+          <span>{showError ? t("form.consentRequired") : t("form.submitHint")}</span>
         </div>
       )}
     </div>

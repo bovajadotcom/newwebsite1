@@ -357,6 +357,7 @@ export const translations = {
     "form.consentPre": "I agree to the processing of my personal data in accordance with the ",
     "form.consentLink": "Personal Data Processing Policy",
     "form.consentRequired": "Please agree to the Personal Data Processing Policy to submit your request.",
+    "form.submitHint": "To activate the Submit button, please check the Personal Data Processing consent box above.",
     // Articles
     "articles.heading": "Latest News & Articles",
     "articles.sub": "Helpful guides, market insights, and tips for importing and buying vehicles from Europe",
@@ -1046,6 +1047,7 @@ export const translations = {
     "form.consentPre": "Sutinku, kad mano asmens duomenys būtų tvarkomi pagal ",
     "form.consentLink": "Asmens duomenų tvarkymo politiką",
     "form.consentRequired": "Norėdami pateikti užklausą, prašome sutikti su Asmens duomenų tvarkymo politika.",
+    "form.submitHint": "Norėdami aktyvuoti mygtuką Siųsti, pažymėkite aukščiau esantį asmens duomenų tvarkymo sutikimo laukelį.",
     // Articles (LT)
     "articles.heading": "Naujienos ir Straipsniai",
     "articles.sub": "Naudingi patarimai, rinkos įžvalgos ir rekomendacijos importuojant automobilius iš Europos",
@@ -1735,6 +1737,7 @@ export const translations = {
     "form.consentPre": "Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ",
     "form.consentLink": "Polityką Przetwarzania Danych Osobowych",
     "form.consentRequired": "Aby przesłać formularz, musisz wyrazić zgodę na Politykę przetwarzania danych osobowych.",
+    "form.submitHint": "Aby aktywować przycisk Wyślij, zaznacz powyższe pole zgody na przetwarzanie danych osobowych.",
     // Articles
     "articles.heading": "Aktualności",
     "articles.sub": "Przydatne poradniki, analizy rynku oraz wskazówki dotyczące zakupu i importu samochodów z Europy",
@@ -2424,6 +2427,7 @@ export const translations = {
     "form.consentPre": "Я соглашаюсь на обработку моих персональных данных в соответствии с ",
     "form.consentLink": "Политикой обработки персональных данных",
     "form.consentRequired": "Чтобы отправить запрос, необходимо согласиться с Политикой обработки персональных данных.",
+    "form.submitHint": "Для активации кнопки отправки установите флажок согласия на обработку персональных данных выше.",
     // Articles
     "articles.heading": "Новости и статьи",
     "articles.sub": "Полезные руководства, анализ рынка и советы по импорту и покупке автомобилей из Европы",
