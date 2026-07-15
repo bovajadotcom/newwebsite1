@@ -65,6 +65,7 @@ export const translations = {
     "stats.value": "Vehicle Value",
     // Sections
     "section.partners": "Trusted Auction Partners",
+    "section.stats": "Our Track Record",
     "section.advantages": "Why Choose Us",
     "section.advantagesTitle": "Why Work With BOVAJA",
     "section.process": "How It Works",
@@ -482,6 +483,7 @@ export const translations = {
     "stats.value": "Automobilio vertė",
     // Sections
     "section.partners": "Partnerių Aukcionai",
+    "section.stats": "Mūsų Rezultatai",
     "section.advantages": "Kodėl Mes",
     "section.advantagesTitle": "Kodėl Verta Rinktis BOVAJA",
     "section.process": "Kaip Tai Veikia",
@@ -899,6 +901,7 @@ export const translations = {
     "stats.value": "Wartość Pojazdów",
     // Sections
     "section.partners": "Zaufane Partnerskie Aukcje",
+    "section.stats": "Nasze Wyniki",
     "section.advantages": "Dlaczego My",
     "section.advantagesTitle": "Dlaczego Warto Wybrać BOVAJA",
     "section.process": "Jak To Działa",
@@ -1316,6 +1319,7 @@ export const translations = {
     "stats.value": "Стоимость Автомобилей",
     // Sections
     "section.partners": "Партнёрские Аукционы",
+    "section.stats": "Наши Результаты",
     "section.advantages": "Почему Мы",
     "section.advantagesTitle": "Почему Стоит Работать с BOVAJA",
     "section.process": "Как Это Работает",
