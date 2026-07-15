@@ -140,9 +140,9 @@ export default function Inventory() {
   const { toggle, isFavorited } = useFavorites();
   const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
 
-  const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>([]);
-  const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>([]);
-  const [popularVehicles, setPopularVehicles] = useState<DisplayPopular[]>([]);
+  const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>(staticStock as DisplayVehicle[]);
+  const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>(staticSold.map(v => ({ ...v })) as DisplaySold[]);
+  const [popularVehicles, setPopularVehicles] = useState<DisplayPopular[]>(staticPopular.map(v => ({ ...v })) as DisplayPopular[]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -569,7 +569,7 @@ export default function Inventory() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ delay: i * 0.05 }}
                 onClick={() => setSelectedVehicle(toModalPopular(car))}
                 className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col cursor-pointer hover:border-primary/40 transition-colors"
               >
