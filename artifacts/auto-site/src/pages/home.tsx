@@ -124,6 +124,7 @@ export default function Home() {
   const [footerFormStatus, setFooterFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [footerPrefLang, setFooterPrefLang] = useState<PreferredLanguage>("Russian");
   const [footerConsent, setFooterConsent] = useState(false);
+  const [footerConsentError, setFooterConsentError] = useState(false);
   const { t, lang } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
   const processRef = useRef<HTMLDivElement>(null);
@@ -136,6 +137,7 @@ export default function Home() {
 
   const handleFooterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!footerConsent) { setFooterConsentError(true); return; }
     setFooterFormStatus("loading");
     try {
       await submitLead({
@@ -1020,7 +1022,7 @@ export default function Home() {
                     <textarea ref={footerMessageRef} rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
                   </div>
                   <LanguageSelector value={footerPrefLang} onChange={setFooterPrefLang} />
-                  <ConsentCheckbox checked={footerConsent} onChange={setFooterConsent} />
+                  <ConsentCheckbox checked={footerConsent} onChange={(v) => { setFooterConsent(v); if (v) setFooterConsentError(false); }} showError={footerConsentError} />
                   <button
                     type="submit"
                     disabled={footerFormStatus === "loading" || !footerConsent}

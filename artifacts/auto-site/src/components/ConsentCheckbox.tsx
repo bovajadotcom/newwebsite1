@@ -1,53 +1,66 @@
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/i18n";
+import { AlertCircle } from "lucide-react";
 
 interface Props {
   checked: boolean;
   onChange: (checked: boolean) => void;
+  showError?: boolean;
 }
 
-export function ConsentCheckbox({ checked, onChange }: Props) {
+export function ConsentCheckbox({ checked, onChange, showError }: Props) {
   const { t } = useLanguage();
   return (
-    <label className="flex items-start gap-3 cursor-pointer group select-none">
-      <div className="relative flex-shrink-0 mt-0.5">
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={e => onChange(e.target.checked)}
-          className="sr-only"
-        />
-        <div
-          className={`w-5 h-5 rounded border-2 transition-all duration-200 flex items-center justify-center ${
-            checked
-              ? "bg-primary border-primary shadow-[0_0_8px_rgba(59,130,246,0.4)]"
-              : "border-border/60 bg-input group-hover:border-primary/50"
-          }`}
-        >
-          {checked && (
-            <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
-              <path
-                d="M2 6l3 3 5-5"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          )}
+    <div className="space-y-2">
+      <label className="flex items-start gap-3 cursor-pointer group select-none">
+        <div className="relative flex-shrink-0 mt-0.5">
+          <input
+            type="checkbox"
+            checked={checked}
+            onChange={e => onChange(e.target.checked)}
+            className="sr-only"
+          />
+          <div
+            className={`w-5 h-5 rounded border-2 transition-all duration-200 flex items-center justify-center ${
+              showError && !checked
+                ? "border-red-500 bg-red-500/10"
+                : checked
+                ? "bg-primary border-primary shadow-[0_0_8px_rgba(59,130,246,0.4)]"
+                : "border-border/60 bg-input group-hover:border-primary/50"
+            }`}
+          >
+            {checked && (
+              <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
+                <path
+                  d="M2 6l3 3 5-5"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </div>
         </div>
-      </div>
-      <span className="text-xs text-muted-foreground leading-relaxed">
-        {t("form.consentPre")}
-        <Link
-          to="/consent"
-          className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
-          onClick={e => e.stopPropagation()}
-        >
-          {t("form.consentLink")}
-        </Link>
-        .
-      </span>
-    </label>
+        <span className="text-xs text-muted-foreground leading-relaxed">
+          {t("form.consentPre")}
+          <Link
+            to="/consent"
+            className="text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
+            onClick={e => e.stopPropagation()}
+          >
+            {t("form.consentLink")}
+          </Link>
+          .
+        </span>
+      </label>
+
+      {showError && !checked && (
+        <div className="flex items-start gap-2 text-red-400 text-xs">
+          <AlertCircle size={13} className="shrink-0 mt-0.5" />
+          <span>{t("form.consentRequired")}</span>
+        </div>
+      )}
+    </div>
   );
 }

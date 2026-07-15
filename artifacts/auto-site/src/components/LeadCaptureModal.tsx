@@ -38,6 +38,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
   const [done, setDone]         = useState(false);
   const [error, setError]       = useState("");
   const [consent, setConsent]   = useState(false);
+  const [consentError, setConsentError] = useState(false);
 
   const showCountRef  = useRef(0);   // how many times shown this session
   const subscribedRef = useRef(false);
@@ -76,6 +77,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
+    if (!consent) { setConsentError(true); return; }
     if (!contact.trim()) { setError("Please enter your contact details"); return; }
     setLoading(true);
     setError("");
@@ -198,7 +200,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                         {error && <p className="text-red-400 text-xs mt-1.5">{error}</p>}
                       </div>
 
-                      <ConsentCheckbox checked={consent} onChange={setConsent} />
+                      <ConsentCheckbox checked={consent} onChange={(v) => { setConsent(v); if (v) setConsentError(false); }} showError={consentError} />
 
                       {/* Submit */}
                       <button

@@ -13,6 +13,7 @@ export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
   const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const nameRef    = useRef<HTMLInputElement>(null);
   const phoneRef   = useRef<HTMLInputElement>(null);
   const emailRef   = useRef<HTMLInputElement>(null);
@@ -21,6 +22,7 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) { setConsentError(true); return; }
     setStatus("loading");
     try {
       await submitLead({
@@ -142,7 +144,7 @@ export default function Contact() {
                   <textarea ref={messageRef} rows={5} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
                 </div>
                 <LanguageSelector value={prefLang} onChange={setPrefLang} />
-                <ConsentCheckbox checked={consent} onChange={setConsent} />
+                <ConsentCheckbox checked={consent} onChange={(v) => { setConsent(v); if (v) setConsentError(false); }} showError={consentError} />
                 <button
                   type="submit"
                   disabled={status === "loading" || !consent}

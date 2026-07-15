@@ -44,6 +44,7 @@ export default function Careers() {
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [cvError, setCvError] = useState("");
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const nameRef      = useRef<HTMLInputElement>(null);
@@ -85,6 +86,7 @@ export default function Careers() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) { setConsentError(true); return; }
     if (selectedMethods.length === 0) {
       alert(t("careers.form.noContact"));
       return;
@@ -338,7 +340,7 @@ export default function Careers() {
                     {cvError && <p className="text-red-400 text-xs mt-1">{cvError}</p>}
                   </div>
 
-                  <ConsentCheckbox checked={consent} onChange={setConsent} />
+                  <ConsentCheckbox checked={consent} onChange={(v) => { setConsent(v); if (v) setConsentError(false); }} showError={consentError} />
                   <button
                     type="submit"
                     disabled={status === "loading" || !consent}

@@ -172,11 +172,13 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<"success" | "error" | null>(null);
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
 
   const vehicleLabel = `${vehicle.year ? vehicle.year + " " : ""}${vehicle.make} ${vehicle.model}`;
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) { setConsentError(true); return; }
     setLoading(true);
     try {
       await submitLead({
@@ -290,7 +292,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
       </div>
 
       <LanguageSelector value={prefLang} onChange={setPrefLang} />
-      <ConsentCheckbox checked={consent} onChange={setConsent} />
+      <ConsentCheckbox checked={consent} onChange={(v) => { setConsent(v); if (v) setConsentError(false); }} showError={consentError} />
       <button
         type="submit"
         disabled={loading || !consent}

@@ -47,6 +47,7 @@ export default function Business() {
   const [status, setStatus] = useState<Status>("idle");
   const [prefLang, setPrefLang] = useState<PreferredLanguage>(() => langFromLocale(lang));
   const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const companyRef      = useRef<HTMLInputElement>(null);
   const nameRef         = useRef<HTMLInputElement>(null);
   const businessTypeRef = useRef<HTMLSelectElement>(null);
@@ -56,6 +57,7 @@ export default function Business() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!consent) { setConsentError(true); return; }
     setStatus("loading");
     try {
       await submitLead({
@@ -221,7 +223,7 @@ export default function Business() {
                 </div>
 
                 <LanguageSelector value={prefLang} onChange={setPrefLang} />
-                <ConsentCheckbox checked={consent} onChange={setConsent} />
+                <ConsentCheckbox checked={consent} onChange={(v) => { setConsent(v); if (v) setConsentError(false); }} showError={consentError} />
                 <button
                   type="submit"
                   disabled={status === "loading" || !consent}
