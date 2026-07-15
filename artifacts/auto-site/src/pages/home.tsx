@@ -455,7 +455,6 @@ export default function Home() {
               <Shield size={11} /> {t("section.advantages")}
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.advantagesTitle") || "Why Work With BOVAJA"}</h2>
-            <p className="text-slate-600">The difference between a broker and a partner. We handle every detail so you can focus on the drive.</p>
           </motion.div>
 
           <motion.div 
