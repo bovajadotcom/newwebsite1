@@ -154,7 +154,7 @@ export default function Business() {
               <div className="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shadow-[0_0_14px_rgba(59,130,246,0.3)]">
                 <Briefcase className="text-blue-400" size={18} />
               </div>
-              <h2 className="text-2xl font-bold text-white">Corporate Partnership Inquiry</h2>
+              <h2 className="text-2xl font-bold text-white">{t("business.form.title")}</h2>
             </div>
 
             {status === "success" ? (
@@ -162,9 +162,9 @@ export default function Business() {
                 <div className="w-14 h-14 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center shadow-[0_0_20px_rgba(16,185,129,0.3)]">
                   <CheckCircle className="text-emerald-400" size={28} />
                 </div>
-                <p className="text-white font-bold text-lg">Thank you.</p>
+                <p className="text-white font-bold text-lg">{t("business.form.success")}</p>
                 <p className="text-slate-400 text-center text-sm max-w-sm">
-                  Your request has been received. Our team will contact you shortly.
+                  {t("business.form.successSub")}
                 </p>
               </div>
             ) : (
@@ -172,39 +172,39 @@ export default function Business() {
                 {status === "error" && (
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
                     <AlertCircle size={16} className="shrink-0" />
-                    Your request could not be sent. Please try again later or contact us directly.
+                    {t("business.form.error")}
                   </div>
                 )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Company Name</label>
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">{t("business.form.companyName")}</label>
                     <input ref={companyRef} type="text" className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white text-sm focus:border-blue-500/50 focus:shadow-[0_0_0_3px_rgba(59,130,246,0.08)] outline-none transition-all" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Contact Name</label>
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">{t("business.form.contactName")}</label>
                     <input ref={nameRef} type="text" className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white text-sm focus:border-blue-500/50 focus:shadow-[0_0_0_3px_rgba(59,130,246,0.08)] outline-none transition-all" />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Business Type</label>
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">{t("business.form.businessType")}</label>
                     <select ref={businessTypeRef} className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white text-sm focus:border-blue-500/50 outline-none transition-all">
-                      <option className="bg-[#0D1929]">Dealership</option>
-                      <option className="bg-[#0D1929]">Fleet Operator</option>
-                      <option className="bg-[#0D1929]">Reseller</option>
-                      <option className="bg-[#0D1929]">Leasing Company</option>
-                      <option className="bg-[#0D1929]">Other</option>
+                      <option value="Dealership" className="bg-[#0D1929]">{t("business.form.bt.dealership")}</option>
+                      <option value="Fleet Operator" className="bg-[#0D1929]">{t("business.form.bt.fleetOperator")}</option>
+                      <option value="Reseller" className="bg-[#0D1929]">{t("business.form.bt.reseller")}</option>
+                      <option value="Leasing Company" className="bg-[#0D1929]">{t("business.form.bt.leasingCompany")}</option>
+                      <option value="Other" className="bg-[#0D1929]">{t("business.form.bt.other")}</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">Estimated Annual Volume</label>
+                    <label className="block text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">{t("business.form.annualVolume")}</label>
                     <select ref={annualVolumeRef} className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-white text-sm focus:border-blue-500/50 outline-none transition-all">
-                      <option className="bg-[#0D1929]">1-10 Vehicles</option>
-                      <option className="bg-[#0D1929]">11-50 Vehicles</option>
-                      <option className="bg-[#0D1929]">50-100 Vehicles</option>
-                      <option className="bg-[#0D1929]">100+ Vehicles</option>
+                      <option value="1-10 Vehicles" className="bg-[#0D1929]">{t("business.form.av.1to10")}</option>
+                      <option value="11-50 Vehicles" className="bg-[#0D1929]">{t("business.form.av.11to50")}</option>
+                      <option value="50-100 Vehicles" className="bg-[#0D1929]">{t("business.form.av.50to100")}</option>
+                      <option value="100+ Vehicles" className="bg-[#0D1929]">{t("business.form.av.100plus")}</option>
                     </select>
                   </div>
                 </div>
@@ -227,7 +227,7 @@ export default function Business() {
                   disabled={status === "loading" || !consent}
                   className="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition-all flex justify-center items-center gap-2 shadow-[0_0_24px_rgba(37,99,235,0.4)] hover:shadow-[0_0_32px_rgba(37,99,235,0.55)] disabled:opacity-60 disabled:shadow-none mt-2"
                 >
-                  {status === "loading" ? "Sending…" : <><Send size={16} /> Submit Partnership Request</>}
+                  {status === "loading" ? t("form.sending") : <><Send size={16} /> {t("business.form.submit")}</>}
                 </button>
               </form>
             )}
