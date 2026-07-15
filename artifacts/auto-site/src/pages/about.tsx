@@ -6,10 +6,10 @@ import { RelatedArticles } from "@/components/RelatedArticles";
 export default function About() {
   const { t } = useLanguage();
   const team = [
-    { name: "James Sterling", titleKey: "about.team1.title", img: "team-1.png" },
-    { name: "Elena Rostova",  titleKey: "about.team2.title", img: "team-2.png" },
-    { name: "Marcus Chen",    titleKey: "about.team3.title", img: "team-3.png" },
-    { name: "Sarah Jenkins",  titleKey: "about.team4.title", img: "team-4.png" },
+    { nameKey: "about.team1.name", titleKey: "about.team1.title", img: "team-1.png" },
+    { nameKey: "about.team2.name", titleKey: "about.team2.title", img: "team-2.png" },
+    { nameKey: "about.team3.name", titleKey: "about.team3.title", img: "team-3.png" },
+    { nameKey: "about.team4.name", titleKey: "about.team4.title", img: "team-4.png" },
   ];
 
   const values = [
@@ -185,11 +185,11 @@ export default function About() {
                 <div className="aspect-[3/4] mb-6 overflow-hidden rounded-2xl border border-border/40 bg-secondary/50 group-hover:border-primary/30 transition-colors">
                   <img 
                     src={`${import.meta.env.BASE_URL}${member.img}`} 
-                    alt={member.name}
+                    alt={t(member.nameKey)}
                     className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                   />
                 </div>
-                <h3 className="text-lg font-bold text-white">{member.name}</h3>
+                <h3 className="text-lg font-bold text-white">{t(member.nameKey)}</h3>
                 <p className="text-sm text-primary mt-1">{t(member.titleKey)}</p>
               </motion.div>
             ))}
