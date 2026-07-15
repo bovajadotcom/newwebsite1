@@ -139,13 +139,12 @@ export default function About() {
       <section className="py-12 bg-primary text-white border-b-2 border-primary/40 relative">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { value: "5,000+", label: t("stats.delivered") },
               { value: "98%", label: t("stats.clients") },
               { value: "12", label: t("stats.experience") },
-              { value: "40+", label: t("stats.countries") },
-              { value: "€2.4B", label: t("stats.value") }
+              { value: "40+", label: t("stats.countries") }
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <h3 className="text-3xl md:text-5xl font-bold mb-2">{stat.value}</h3>
