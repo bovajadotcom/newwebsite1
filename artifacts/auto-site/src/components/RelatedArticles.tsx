@@ -3,9 +3,16 @@ import { Calendar, ArrowRight, Newspaper } from "lucide-react";
 import { useGetArticles } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/i18n";
 
-function formatDate(dateStr: string | null) {
+const LOCALE_MAP: Record<string, string> = {
+  en: "en-GB",
+  lt: "lt-LT",
+  pl: "pl-PL",
+  ru: "ru-RU",
+};
+
+function formatDate(dateStr: string | null, lang: string) {
   if (!dateStr) return "";
-  return new Date(dateStr).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+  return new Date(dateStr).toLocaleDateString(LOCALE_MAP[lang] ?? "en-GB", { year: "numeric", month: "short", day: "numeric" });
 }
 
 interface RelatedArticlesProps {
@@ -19,7 +26,7 @@ export function RelatedArticles({
   limit = 3,
   excludeSlug,
 }: RelatedArticlesProps) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { data: allArticles = [], isLoading } = useGetArticles();
 
   const articles = allArticles
@@ -69,7 +76,7 @@ export function RelatedArticles({
                   {article.publishedAt && (
                     <div className="flex items-center gap-1 text-xs text-muted-foreground mb-2">
                       <Calendar size={10} />
-                      {formatDate(article.publishedAt)}
+                      {formatDate(article.publishedAt, lang)}
                     </div>
                   )}
                   <h3 className="text-sm font-bold text-white group-hover:text-primary transition-colors line-clamp-2 mb-2 flex-1">
