@@ -57,6 +57,7 @@ export const translations = {
     "home.availableSub": "Vehicles available for order today",
     "home.soldTitle": "Recently Sold Vehicles",
     "home.soldSub": "Cars we've successfully sourced and delivered to our clients",
+    "home.popularSub": "Vehicles in Highest Demand",
     // Stats
     "stats.delivered": "Cars Delivered",
     "stats.clients": "Satisfied Clients",
@@ -505,6 +506,7 @@ export const translations = {
     "home.availableSub": "Automobiliai, kuriuos galite užsisakyti jau šiandien",
     "home.soldTitle": "Neseniai parduoti automobiliai",
     "home.soldSub": "Automobiliai, kuriuos sėkmingai suradome ir pristatėme savo klientams",
+    "home.popularSub": "Didžiausią paklausą turintys automobiliai",
     // Stats
     "stats.delivered": "pristatyti automobiliai",
     "stats.clients": "patenkintų klientų",
@@ -953,6 +955,7 @@ export const translations = {
     "home.availableSub": "Samochody dostępne do zamówienia już dziś",
     "home.soldTitle": "Ostatnio Sprzedane Pojazdy",
     "home.soldSub": "Samochody dostarczone naszym klientom",
+    "home.popularSub": "Samochody cieszące się największym zainteresowaniem",
     // Stats
     "stats.delivered": "Dostarczonych Aut",
     "stats.clients": "Zadowolonych Klientów",
@@ -1401,6 +1404,7 @@ export const translations = {
     "home.availableSub": "Автомобили, доступные для заказа уже сегодня",
     "home.soldTitle": "Недавно проданные авто",
     "home.soldSub": "Автомобили, доставленные нашим клиентам",
+    "home.popularSub": "Автомобили, пользующиеся наибольшим спросом",
     // Stats
     "stats.delivered": "Доставлено Авто",
     "stats.clients": "Довольных Клиентов",
