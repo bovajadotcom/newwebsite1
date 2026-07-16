@@ -26,7 +26,7 @@ function TimelinePhotoRow({ photos }: { photos: { src: string; portrait?: boolea
         const url = `${import.meta.env.BASE_URL}${photo.src}`;
         if (photo.portrait) {
           return (
-            <div key={pi} ref={portraitRef} className="w-[45%] shrink-0 aspect-[3/4] rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
+            <div key={pi} ref={portraitRef} className="w-[280px] h-[380px] shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
               <img src={url} alt={`Photo ${pi + 1}`} className="w-full h-full object-cover" />
             </div>
           );
@@ -72,7 +72,7 @@ export default function About() {
     { year: "2022", titleKey: "about.tl.2022.title", descKey: "about.tl.2022.desc" },
     { year: "2023", titleKey: "about.tl.2023.title", descKey: "about.tl.2023.desc" },
     { year: "2025", titleKey: "about.tl.2025.title", descKey: "about.tl.2025.desc" },
-    { year: "2026", titleKey: "about.tl.2026.title", descKey: "about.tl.2026.desc", photos: [{ src: "about-2026-1.jpg" }, { src: "about-2026-2.jpg" }] },
+    { year: "2026", titleKey: "about.tl.2026.title", descKey: "about.tl.2026.desc", photos: [{ src: "about-2026-1.jpg", portrait: true }] },
   ];
 
   const diffItems = [
