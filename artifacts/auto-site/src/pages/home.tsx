@@ -858,7 +858,7 @@ export default function Home() {
                       </div>
                       <div className="text-right">
                         <p className="text-xs text-slate-400 uppercase">{t("inventory.estDelivery")}</p>
-                        <p className="text-slate-700 font-medium">{car.estimatedDelivery}</p>
+                        <p className="text-slate-700 font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
                       </div>
                     </div>
                     <button className="mt-auto flex items-center justify-center gap-2 py-2.5 rounded-xl bg-slate-100 hover:bg-blue-600 hover:text-white text-slate-700 text-sm font-semibold transition-all duration-200">

@@ -282,7 +282,15 @@ export default function PopularVehiclesPage() {
                     <FormItem><FormLabel>Price Range</FormLabel><FormControl><Input placeholder="e.g. €25,000 – €35,000" {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
                   <FormField control={form.control} name="estimatedDelivery" render={({ field }) => (
-                    <FormItem><FormLabel>Estimated Delivery</FormLabel><FormControl><Input placeholder="e.g. 3–4 weeks" {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem>
+                      <FormLabel>Estimated Delivery</FormLabel>
+                      <div className="flex items-center gap-2">
+                        <FormControl><Input placeholder="e.g. 3–4" {...field} className="w-32" /></FormControl>
+                        <span className="text-sm font-medium text-foreground whitespace-nowrap">weeks</span>
+                        <span className="text-xs text-muted-foreground">/ tygodni / недель / savaitių</span>
+                      </div>
+                      <FormMessage />
+                    </FormItem>
                   )} />
                 </div>
 

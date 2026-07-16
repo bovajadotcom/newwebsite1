@@ -602,7 +602,7 @@ export default function Inventory() {
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-muted-foreground uppercase">{t("inventory.estDelivery")}</p>
-                      <p className="text-white font-medium">{car.estimatedDelivery}</p>
+                      <p className="text-white font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
                     </div>
                   </div>
                   

@@ -143,6 +143,7 @@ export const translations = {
     "inventory.deliveryDate": "Delivered",
     "inventory.purchaseCountry": "Origin",
     "inventory.estDelivery": "Est. Delivery",
+    "inventory.weeks": "weeks",
     "inventory.priceRange": "Price Range",
     // Services page
     "services.primary.label": "Primary Services",
@@ -837,6 +838,7 @@ export const translations = {
     "inventory.deliveryDate": "Pristatytas",
     "inventory.purchaseCountry": "Pirkimo Šalis",
     "inventory.estDelivery": "Numatomas Pristatymas",
+    "inventory.weeks": "savaitių",
     "inventory.priceRange": "Kainų Intervalas",
     // Services page
     "services.primary.label": "Pagrindinės Paslaugos",
@@ -1531,6 +1533,7 @@ export const translations = {
     "inventory.deliveryDate": "Dostarczone",
     "inventory.purchaseCountry": "Kraj Zakupu",
     "inventory.estDelivery": "Szac. Dostawa",
+    "inventory.weeks": "tygodni",
     "inventory.priceRange": "Przedział Cenowy",
     // Services
     "services.primary.label": "Usługi Podstawowe",
@@ -2225,6 +2228,7 @@ export const translations = {
     "inventory.deliveryDate": "Доставлен",
     "inventory.purchaseCountry": "Страна покупки",
     "inventory.estDelivery": "Оценка доставки",
+    "inventory.weeks": "недель",
     "inventory.priceRange": "Диапазон цен",
     // Services
     "services.primary.label": "Основные услуги",

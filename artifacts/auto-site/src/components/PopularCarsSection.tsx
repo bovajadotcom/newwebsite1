@@ -151,7 +151,7 @@ export function PopularCarsSection() {
                     </div>
                     <div className="text-right">
                       <p className="text-muted-foreground uppercase mb-0.5">{t("popular.delivery")}</p>
-                      <p className="text-white font-medium">{car.estimatedDelivery}</p>
+                      <p className="text-white font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
                     </div>
                   </div>
 
