@@ -202,9 +202,7 @@ export const stockVehicles: Vehicle[] = [
 // ── ПРОДАННЫЕ АВТО ──────────────────────────────────────
 // Отображаются на странице /inventory во вкладке "Recently Sold"
 // Добавляйте сюда авто после продажи (или удаляйте старые записи)
-export const soldVehicles: SoldVehicle[] = [
-  { id: "s3", make: "Mercedes-Benz", model: "G63 AMG", year: 2020, purchaseCountry: "UAE", deliveryStatus: "Delivered", deliveryDate: "Jan 2024", image: "vehicle-3.png" },
-];
+export const soldVehicles: SoldVehicle[] = [];
 
 // ── САМЫЕ ПОПУЛЯРНЫЕ АВТО ───────────────────────────────
 // Отображаются на странице /popular и в разделе "Most Popular" на /inventory
