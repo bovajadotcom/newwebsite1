@@ -30,8 +30,8 @@ function TimelinePhoto({ src, label, portrait }: { src: string; label: string; v
   }
 
   return (
-    <div className="self-stretch shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
-      <img src={src} alt={label} onError={() => setBroken(true)} className="h-full w-auto" />
+    <div className="w-full sm:w-auto sm:self-stretch shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
+      <img src={src} alt={label} onError={() => setBroken(true)} className="w-full h-auto sm:h-full sm:w-auto" />
     </div>
   );
 }
@@ -163,7 +163,7 @@ export default function About() {
                   <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
                   {item.photos && (
-                    <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:items-stretch">
+                    <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:items-start">
                       {item.photos.map((photo, pi) => (
                         <TimelinePhoto
                           key={pi}
