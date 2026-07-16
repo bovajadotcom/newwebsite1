@@ -4,24 +4,32 @@ import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { useState } from "react";
 
-function TimelinePhoto({ src, label }: { src: string; label: string; vertical?: boolean; fill?: boolean }) {
+function TimelinePhoto({ src, label, portrait }: { src: string; label: string; vertical?: boolean; fill?: boolean; portrait?: boolean }) {
   const [broken, setBroken] = useState(false);
+
+  const wrapperClass = portrait
+    ? "w-[45%] shrink-0 aspect-[3/4] rounded-xl overflow-hidden border border-border/40 bg-secondary/30"
+    : "w-full sm:w-auto sm:h-full shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30";
+
+  const placeholderClass = portrait
+    ? "w-[45%] shrink-0 aspect-[3/4] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40"
+    : "w-full sm:w-auto sm:h-full aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40 shrink-0";
 
   if (broken) {
     return (
-      <div className="w-full sm:w-auto sm:h-full aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40 shrink-0">
+      <div className={placeholderClass} title={label}>
         <ImageIcon size={24} />
         <span className="text-[10px] uppercase tracking-widest font-medium">{label}</span>
       </div>
     );
   }
   return (
-    <div className="w-full sm:w-auto sm:h-full shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
+    <div className={wrapperClass}>
       <img
         src={src}
         alt={label}
         onError={() => setBroken(true)}
-        className="w-full h-auto sm:w-auto sm:h-full"
+        className="w-full h-full object-cover"
       />
     </div>
   );
@@ -43,7 +51,7 @@ export default function About() {
   ];
 
   const timeline: { year: string; titleKey: string; descKey: string; photos?: string[] }[] = [
-    { year: "2011", titleKey: "about.tl.2011.title", descKey: "about.tl.2011.desc", photos: ["about-2011-1.jpg", "about-2011-2.jpg"] },
+    { year: "2011", titleKey: "about.tl.2011.title", descKey: "about.tl.2011.desc", photos: ["about-2011-1.jpg"] },
     { year: "2015", titleKey: "about.tl.2015.title", descKey: "about.tl.2015.desc" },
     { year: "2018", titleKey: "about.tl.2018.title", descKey: "about.tl.2018.desc" },
     { year: "2020", titleKey: "about.tl.2020.title", descKey: "about.tl.2020.desc" },
@@ -154,12 +162,13 @@ export default function About() {
                   <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
                   {item.photos && (
-                    <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:h-52">
+                    <div className={`flex flex-col sm:flex-row gap-3 mt-4${item.photos.length > 1 ? " sm:h-52" : ""}`}>
                       {item.photos.map((src, pi) => (
                         <TimelinePhoto
                           key={pi}
                           src={`${import.meta.env.BASE_URL}${src}`}
                           label={`Photo ${pi + 1}`}
+                          portrait={item.photos!.length === 1}
                         />
                       ))}
                     </div>
