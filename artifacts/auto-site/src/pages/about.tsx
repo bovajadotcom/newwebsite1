@@ -172,8 +172,8 @@ export default function About() {
                           key={pi}
                           src={`${import.meta.env.BASE_URL}${src}`}
                           label={`Photo ${pi + 1}`}
-                          vertical={pi === 0}
-                          fill={pi === 1}
+                          vertical={false}
+                          fill={true}
                         />
                       ))}
                     </div>
