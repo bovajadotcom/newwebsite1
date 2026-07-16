@@ -71,16 +71,18 @@ interface DisplayPopular {
   description: string; image: string;
 }
 
-// Resolve an imageUrl from the DB (may be a path like /images/x.jpg)
-// to a local public asset, or keep as-is if it's a full URL.
-const FALLBACKS = ["vehicle-1.png","vehicle-2.png","vehicle-3.png","vehicle-4.png"];
-function resolveImage(url: string | null | undefined, idx: number): string {
-  if (!url) return `${import.meta.env.BASE_URL}${FALLBACKS[idx % 4]}`;
-  if (url.startsWith("http")) return url;
-  // e.g. "vehicle-2.png" → use with BASE_URL
+// Inline SVG placeholder — used when no real image is available.
+// Renders instantly with zero network requests.
+const PLACEHOLDER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='225' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='%231e293b'/%3E%3Cpath d='M140 145 L180 105 L220 105 L240 125 L270 125 L290 145 Z' stroke='%2364748b' stroke-width='2' fill='none'/%3E%3Ccircle cx='165' cy='148' r='12' stroke='%2364748b' stroke-width='2' fill='none'/%3E%3Ccircle cx='255' cy='148' r='12' stroke='%2364748b' stroke-width='2' fill='none'/%3E%3C/svg%3E`;
+
+function resolveImage(url: string | null | undefined): string {
+  if (!url) return PLACEHOLDER_SVG;
+  if (url.startsWith("http") || url.startsWith("data:")) return url;
+  // Plain filename like "vehicle-2.png" — prepend base
   if (!url.startsWith("/")) return `${import.meta.env.BASE_URL}${url}`;
-  // Paths like /images/bmw-x5.jpg that aren't served — fallback
-  return `${import.meta.env.BASE_URL}${FALLBACKS[idx % 4]}`;
+  // Absolute path like /images/bmw-x5.jpg — check it's a known public asset
+  // (paths starting with /images/ are DB seeds that aren't served)
+  return PLACEHOLDER_SVG;
 }
 
 function toModalStock(car: DisplayVehicle): ModalVehicle {
@@ -153,24 +155,24 @@ export default function Inventory() {
     ]).then(([dbStock, dbSold, dbPopular]) => {
       // Use DB data if it has entries, otherwise fall back to static
       if (dbStock.length > 0) {
-        setStockVehicles(dbStock.map((v: any, i: number) => ({
-          ...v, image: resolveImage(v.imageUrl, i),
+        setStockVehicles(dbStock.map((v: any) => ({
+          ...v, image: resolveImage(v.imageUrl),
         })));
       } else {
         setStockVehicles(staticStock as DisplayVehicle[]);
       }
 
       if (dbSold.length > 0) {
-        setSoldVehicles(dbSold.map((v: any, i: number) => ({
-          ...v, image: resolveImage(v.imageUrl, i),
+        setSoldVehicles(dbSold.map((v: any) => ({
+          ...v, image: resolveImage(v.imageUrl),
         })));
       } else {
         setSoldVehicles(staticSold.map(v => ({ ...v })) as DisplaySold[]);
       }
 
       if (dbPopular.length > 0) {
-        setPopularVehicles(dbPopular.map((v: any, i: number) => ({
-          ...v, image: resolveImage(v.imageUrl, i),
+        setPopularVehicles(dbPopular.map((v: any) => ({
+          ...v, image: resolveImage(v.imageUrl),
         })));
       } else {
         setPopularVehicles(staticPopular.map(v => ({ ...v })) as DisplayPopular[]);
@@ -435,6 +437,8 @@ export default function Inventory() {
                       <img
                         src={car.image}
                         alt={`${car.make} ${car.model}`}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
 
@@ -574,9 +578,11 @@ export default function Inventory() {
                 className="bg-card rounded-2xl border border-border/50 overflow-hidden flex flex-col cursor-pointer hover:border-primary/40 transition-colors"
               >
                 <div className="h-48 overflow-hidden bg-secondary relative">
-                  <img 
-                    src={`${import.meta.env.BASE_URL}${car.image}`} 
+                  <img
+                    src={car.image.startsWith("data:") || car.image.startsWith("http") ? car.image : `${import.meta.env.BASE_URL}${car.image}`}
                     alt={`${car.make} ${car.model}`}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover opacity-80"
                   />
                   <button
