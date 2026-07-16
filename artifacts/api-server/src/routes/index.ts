@@ -14,6 +14,7 @@ import leadsRouter from "./leads";
 import contactRouter from "./contact";
 import articlesRouter from "./articles";
 import careersRouter from "./careers";
+import seedRouter from "./seed";
 
 const router: IRouter = Router();
 
@@ -32,5 +33,6 @@ router.use(leadsRouter);
 router.use(contactRouter);
 router.use(articlesRouter);
 router.use(careersRouter);
+router.use(seedRouter);
 
 export default router;
