@@ -4,7 +4,7 @@ import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { useState, useRef, useLayoutEffect } from "react";
 
-function TimelinePhotoRow({ photos }: { photos: { src: string; portrait?: boolean }[] }) {
+function TimelinePhotoRow({ photos }: { photos: { src: string; portrait?: boolean; fixedH?: number }[] }) {
   const portraitRef = useRef<HTMLDivElement>(null);
   const [matchH, setMatchH] = useState<number | undefined>();
   const hasPortrait = photos.some(p => p.portrait);
@@ -31,16 +31,17 @@ function TimelinePhotoRow({ photos }: { photos: { src: string; portrait?: boolea
             </div>
           );
         }
+        const lh = hasPortrait && matchH ? matchH : photo.fixedH;
         return (
           <div
             key={pi}
             className="w-full sm:w-auto shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30"
-            style={hasPortrait && matchH ? { height: `${matchH}px` } : {}}
+            style={lh ? { height: `${lh}px` } : {}}
           >
             <img
               src={url}
               alt={`Photo ${pi + 1}`}
-              className={hasPortrait && matchH ? "h-full w-auto max-w-none" : "w-full h-auto"}
+              className={lh ? "h-full w-auto max-w-none" : "w-full h-auto"}
             />
           </div>
         );
@@ -64,7 +65,7 @@ export default function About() {
     { icon: Compass, titleKey: "about.val.reach.title",    descKey: "about.val.reach.desc" },
   ];
 
-  const timeline: { year: string; titleKey: string; descKey: string; photos?: { src: string; portrait?: boolean }[] }[] = [
+  const timeline: { year: string; titleKey: string; descKey: string; photos?: { src: string; portrait?: boolean; fixedH?: number }[] }[] = [
     { year: "2011", titleKey: "about.tl.2011.title", descKey: "about.tl.2011.desc", photos: [{ src: "about-2011-1.jpg", portrait: true }, { src: "about-2011-2.jpg" }] },
     { year: "2015", titleKey: "about.tl.2015.title", descKey: "about.tl.2015.desc" },
     { year: "2018", titleKey: "about.tl.2018.title", descKey: "about.tl.2018.desc" },
@@ -72,7 +73,7 @@ export default function About() {
     { year: "2022", titleKey: "about.tl.2022.title", descKey: "about.tl.2022.desc" },
     { year: "2023", titleKey: "about.tl.2023.title", descKey: "about.tl.2023.desc" },
     { year: "2025", titleKey: "about.tl.2025.title", descKey: "about.tl.2025.desc" },
-    { year: "2026", titleKey: "about.tl.2026.title", descKey: "about.tl.2026.desc", photos: [{ src: "about-2026-1.jpg", portrait: true }] },
+    { year: "2026", titleKey: "about.tl.2026.title", descKey: "about.tl.2026.desc", photos: [{ src: "about-2026-1.jpg", fixedH: 380 }] },
   ];
 
   const diffItems = [
