@@ -1,37 +1,50 @@
 import { motion } from "framer-motion";
-import { Target, Shield, Compass, CheckCircle2, MapPin, ImageIcon } from "lucide-react";
+import { Target, Shield, Compass, CheckCircle2, MapPin } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
-import { useState } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 
-function TimelinePhoto({ src, label, portrait }: { src: string; label: string; vertical?: boolean; fill?: boolean; portrait?: boolean }) {
-  const [broken, setBroken] = useState(false);
+function TimelinePhotoRow({ photos }: { photos: { src: string; portrait?: boolean }[] }) {
+  const portraitRef = useRef<HTMLDivElement>(null);
+  const [matchH, setMatchH] = useState<number | undefined>();
+  const hasPortrait = photos.some(p => p.portrait);
 
-  if (broken) {
-    return portrait ? (
-      <div className="w-[45%] shrink-0 aspect-[3/4] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40">
-        <ImageIcon size={24} />
-        <span className="text-[10px] uppercase tracking-widest font-medium">{label}</span>
-      </div>
-    ) : (
-      <div className="self-stretch shrink-0 aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40">
-        <ImageIcon size={24} />
-        <span className="text-[10px] uppercase tracking-widest font-medium">{label}</span>
-      </div>
-    );
-  }
-
-  if (portrait) {
-    return (
-      <div className="w-[45%] shrink-0 aspect-[3/4] rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
-        <img src={src} alt={label} onError={() => setBroken(true)} className="w-full h-full object-cover" />
-      </div>
-    );
-  }
+  useLayoutEffect(() => {
+    if (!hasPortrait) return;
+    const el = portraitRef.current;
+    if (!el) return;
+    const update = () => setMatchH(el.offsetHeight);
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    update();
+    return () => ro.disconnect();
+  }, [hasPortrait]);
 
   return (
-    <div className="w-full sm:w-auto sm:self-stretch shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
-      <img src={src} alt={label} onError={() => setBroken(true)} className="w-full h-auto sm:h-full sm:w-auto" />
+    <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:items-start">
+      {photos.map((photo, pi) => {
+        const url = `${import.meta.env.BASE_URL}${photo.src}`;
+        if (photo.portrait) {
+          return (
+            <div key={pi} ref={portraitRef} className="w-[45%] shrink-0 aspect-[3/4] rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
+              <img src={url} alt={`Photo ${pi + 1}`} className="w-full h-full object-cover" />
+            </div>
+          );
+        }
+        return (
+          <div
+            key={pi}
+            className="w-full sm:w-auto shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30"
+            style={hasPortrait && matchH ? { height: `${matchH}px` } : {}}
+          >
+            <img
+              src={url}
+              alt={`Photo ${pi + 1}`}
+              className={hasPortrait && matchH ? "h-full w-auto max-w-none" : "w-full h-auto"}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -163,16 +176,7 @@ export default function About() {
                   <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
                   {item.photos && (
-                    <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:items-start">
-                      {item.photos.map((photo, pi) => (
-                        <TimelinePhoto
-                          key={pi}
-                          src={`${import.meta.env.BASE_URL}${photo.src}`}
-                          label={`Photo ${pi + 1}`}
-                          portrait={photo.portrait}
-                        />
-                      ))}
-                    </div>
+                    <TimelinePhotoRow photos={item.photos} />
                   )}
                 </div>
               </motion.div>
