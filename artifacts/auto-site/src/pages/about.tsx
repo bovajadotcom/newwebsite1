@@ -4,36 +4,24 @@ import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { useState } from "react";
 
-function TimelinePhoto({ src, label, vertical, fill }: { src: string; label: string; vertical?: boolean; fill?: boolean }) {
+function TimelinePhoto({ src, label }: { src: string; label: string; vertical?: boolean; fill?: boolean }) {
   const [broken, setBroken] = useState(false);
-
-  const wrapperClass = fill
-    ? "flex-1 min-w-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30"
-    : vertical
-    ? "w-[45%] shrink-0 aspect-[3/4] rounded-xl overflow-hidden border border-border/40 bg-secondary/30"
-    : "aspect-[4/3] rounded-xl overflow-hidden border border-border/40 bg-secondary/30";
-
-  const placeholderClass = fill
-    ? "flex-1 min-w-0 rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40"
-    : vertical
-    ? "w-[45%] shrink-0 aspect-[3/4] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40"
-    : "aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40";
 
   if (broken) {
     return (
-      <div className={placeholderClass} title={label}>
+      <div className="w-full sm:w-auto sm:h-full aspect-[4/3] rounded-xl border-2 border-dashed border-border/40 bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground/40 shrink-0">
         <ImageIcon size={24} />
         <span className="text-[10px] uppercase tracking-widest font-medium">{label}</span>
       </div>
     );
   }
   return (
-    <div className={wrapperClass}>
+    <div className="w-full sm:w-auto sm:h-full shrink-0 rounded-xl overflow-hidden border border-border/40 bg-secondary/30">
       <img
         src={src}
         alt={label}
         onError={() => setBroken(true)}
-        className="w-full h-full object-cover"
+        className="w-full h-auto sm:w-auto sm:h-full"
       />
     </div>
   );
@@ -166,14 +154,12 @@ export default function About() {
                   <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
                   {item.photos && (
-                    <div className="flex gap-3 mt-4 items-stretch">
+                    <div className="flex flex-col sm:flex-row gap-3 mt-4 sm:h-52">
                       {item.photos.map((src, pi) => (
                         <TimelinePhoto
                           key={pi}
                           src={`${import.meta.env.BASE_URL}${src}`}
                           label={`Photo ${pi + 1}`}
-                          vertical={false}
-                          fill={true}
                         />
                       ))}
                     </div>
