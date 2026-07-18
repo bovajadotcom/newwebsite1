@@ -122,6 +122,7 @@ export default function Home() {
   const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
   const [availableCars, setAvailableCars] = useState<DisplayVehicle[]>([]);
   const [soldCars, setSoldCars] = useState<DisplaySold[]>([]);
+  const [soldLoading, setSoldLoading] = useState(true);
   const [popularCars, setPopularCars] = useState<DisplayPopular[]>([]);
   const [footerFormStatus, setFooterFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [footerPrefLang, setFooterPrefLang] = useState<PreferredLanguage>("Russian");
@@ -191,7 +192,8 @@ export default function Home() {
           photos: Array.isArray(v.photos) ? v.photos : [],
         })));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setSoldLoading(false));
 
     // Popular vehicles
     fetch("/api/popular-vehicles")
@@ -705,7 +707,7 @@ export default function Home() {
       </section>
       )}
       {/* ② SOLD VEHICLES */}
-      {soldCars.length > 0 && (
+      {(soldLoading || soldCars.length > 0) && (
       <section className="relative py-24 bg-slate-100 border-b-2 border-slate-200">
         {/* Charcoal accent stripe */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 opacity-60" />
@@ -724,6 +726,21 @@ export default function Home() {
               </Link>
             </motion.div>
           </div>
+          {soldLoading && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl border border-slate-200 overflow-hidden animate-pulse">
+                  <div className="h-44 bg-slate-200" />
+                  <div className="p-5 space-y-3">
+                    <div className="h-4 bg-slate-200 rounded w-3/4" />
+                    <div className="h-3 bg-slate-200 rounded w-1/2" />
+                    <div className="h-3 bg-slate-200 rounded w-2/3" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          {!soldLoading && (
           <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {soldCars.map((car) => (
               <motion.div
@@ -732,11 +749,15 @@ export default function Home() {
                 onClick={() => setSelectedVehicle(toModalSold(car))}
                 className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
               >
-                <div className="h-44 overflow-hidden relative bg-slate-100">
+                <div className="h-44 overflow-hidden relative bg-slate-200">
                   <img
                     src={car.image}
                     alt={`${car.make} ${car.model}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
+                    width={400}
+                    height={176}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
                   <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-slate-800 text-white">
@@ -782,6 +803,7 @@ export default function Home() {
               </motion.div>
             ))}
           </motion.div>
+          )}
         </div>
       </section>
       )}
@@ -831,11 +853,15 @@ export default function Home() {
                   onClick={() => setSelectedVehicle(toModal(car))}
                   className="group bg-white rounded-2xl border border-slate-200 overflow-hidden flex flex-col hover:border-blue-300 hover:shadow-lg transition-all duration-300 cursor-pointer"
                 >
-                  <div className="h-44 overflow-hidden relative bg-slate-100">
+                  <div className="h-44 overflow-hidden relative bg-slate-200">
                     <img
                       src={car.image}
                       alt={`${car.make} ${car.model}`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                      decoding="async"
+                      width={400}
+                      height={176}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
                     <span className="absolute top-3 left-3 px-2 py-1 rounded text-xs font-semibold bg-blue-600 text-white">
