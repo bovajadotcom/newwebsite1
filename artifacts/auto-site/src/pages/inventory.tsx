@@ -420,7 +420,7 @@ export default function Inventory() {
               </motion.div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filtered.map((car) => {
+                {filtered.map((car, i) => {
                   const effectivePrice = car.price ?? car.finalPrice;
                   const statusBadge =
                     car.status === "available" ? "bg-green-500 border-green-600 text-white" :
@@ -442,8 +442,11 @@ export default function Inventory() {
                       <img
                         src={car.image}
                         alt={`${car.make} ${car.model}`}
-                        loading="lazy"
-                        decoding="async"
+                        width={800}
+                        height={450}
+                        loading={i < 3 ? "eager" : "lazy"}
+                        fetchPriority={i < 3 ? "high" : "auto"}
+                        decoding={i < 3 ? "sync" : "async"}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
 
