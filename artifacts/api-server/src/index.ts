@@ -1,7 +1,7 @@
 import app from "./app";
 import { logger } from "./lib/logger";
-import { db, usersTable, vehiclesTable, popularVehiclesTable } from "@workspace/db";
-import type { InsertVehicle, InsertPopularVehicle } from "@workspace/db";
+import { db, usersTable, vehiclesTable, popularVehiclesTable, soldVehiclesTable } from "@workspace/db";
+import type { InsertVehicle, InsertPopularVehicle, InsertSoldVehicle } from "@workspace/db";
 import bcrypt from "bcryptjs";
 
 const rawPort = process.env["PORT"];
@@ -76,6 +76,22 @@ async function seedIfEmpty() {
       ];
       await db.insert(popularVehiclesTable).values(rows);
       logger.info({ count: rows.length }, "Seeded popular vehicles");
+    }
+
+    const sold = await db.select().from(soldVehiclesTable);
+    if (sold.length === 0) {
+      const rows: InsertSoldVehicle[] = [
+        { make: "Peugeot", model: "3008", year: 2021, mileage: 118204, engine: "1.5", fuel: "Diesel", transmission: "Automatic", finalPrice: 14970, purchaseCountry: "Italy", deliveredTo: "Belarus", imageUrl: "https://images.openlane.eu/carimgs/4821473/general/b1cbf87e-5ebb-4cdf-935c-a3fdadcfeff0.jpg", photos: [] },
+        { make: "Volkswagen", model: "Tiguan", year: 2020, mileage: 137050, engine: "1.5", fuel: "Petrol", transmission: "Automatic", finalPrice: 20799, purchaseCountry: "Netherlands", deliveredTo: "Belarus", imageUrl: "https://images.openlane.eu/carimgs/4817784/general/0bb6b8e9-4e48-4b84-855e-abbcd5391473.jpg", photos: [] },
+        { make: "Mercedes-Benz", model: "A 180", year: 2018, mileage: 77720, engine: "1.3", fuel: "Petrol", transmission: "Automatic", finalPrice: 20675, purchaseCountry: "Belgium", deliveredTo: "Belarus", imageUrl: "https://images.openlane.eu/carimgs/4779035/general/b8ea3268-b32d-4145-8902-a2a55bff1ef0.jpg", photos: [] },
+        { make: "Volkswagen", model: "Passat Variant", year: 2021, mileage: 174195, engine: "1.5", fuel: "Petrol", transmission: "Automatic", finalPrice: 15805, purchaseCountry: "Netherlands", deliveredTo: "Belarus", imageUrl: "https://images.openlane.eu/carimgs/4767419/general/462cef03-04ab-4638-aed9-131f03834f1f.jpg", photos: [] },
+        { make: "Peugeot", model: "2008", year: 2021, mileage: 126000, engine: "1.5", fuel: "Petrol", transmission: "Automatic", finalPrice: 8299, purchaseCountry: "France", deliveredTo: "Kaunas, Lithuania", imageUrl: "https://autoplius-img.dgn.lt/ann_3_398691546/peugeot-2008-1-2-l-visureigis-krosoveris-2021-benzinas-0.jpg", photos: [] },
+        { make: "BMW", model: "2 Series", year: 2020, mileage: 100325, engine: "1.5", fuel: "Diesel", transmission: "Automatic", finalPrice: 20699, purchaseCountry: "Belgium", deliveredTo: "Belarus", imageUrl: "https://images.openlane.eu/carimgs/5212772/general/73b4ac29-0ea3-4e1d-aa46-35383238e14e.jpg", photos: [] },
+        { make: "Nissan", model: "Leaf", year: 2019, mileage: 134011, engine: "62 kWh", fuel: "Electric", transmission: "Automatic", finalPrice: 10999, purchaseCountry: "Netherlands", deliveredTo: "Belarus", imageUrl: "https://images.openlane.eu/carimgs/5026029/general/bfc8dd00-ad9b-4600-8e01-97eb86880e60.jpg", photos: [] },
+        { make: "DS7", model: "Crossback", year: 2017, mileage: 160400, engine: "1.5", fuel: "Diesel", transmission: "Automatic", finalPrice: 17475, purchaseCountry: "Belgium", deliveredTo: "Belarus", imageUrl: "https://images.openlane.eu/carimgs/4909071/general/a818dc51-9018-4e70-8ae6-a19242fda9fe.jpg", photos: [] },
+      ];
+      await db.insert(soldVehiclesTable).values(rows);
+      logger.info({ count: rows.length }, "Seeded sold vehicles");
     }
   } catch (err) {
     logger.error({ err }, "Startup seed failed");
