@@ -194,7 +194,12 @@ export default function Inventory() {
   const [filterPrice, setFilterPrice] = useState("all"); 
 
   const allVehicles = useMemo<UnifiedVehicle[]>(() => {
-    const stock: UnifiedVehicle[] = stockVehicles.map(v => ({ ...v, _type: "stock" as const }));
+    // Sold vehicles come exclusively from soldVehicles (sold_vehicles table).
+    // Exclude status="sold" from stockVehicles to prevent duplicates when both
+    // sources contain the same physical car.
+    const stock: UnifiedVehicle[] = stockVehicles
+      .filter(v => v.status !== "sold")
+      .map(v => ({ ...v, _type: "stock" as const }));
     const sold: UnifiedVehicle[] = soldVehicles.map(v => ({
       _type: "sold" as const,
       id: v.id, make: v.make, model: v.model, year: v.year,
