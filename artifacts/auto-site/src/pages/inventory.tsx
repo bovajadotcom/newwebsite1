@@ -8,11 +8,6 @@ import {
 import { useLanguage } from "@/lib/i18n";
 import { useFavorites } from "@/lib/FavoritesContext";
 import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
-import {
-  stockVehicles as staticStock,
-  soldVehicles as staticSold,
-  popularVehicles as staticPopular,
-} from "@/data/inventory";
 
 // Normalised shape used by the render layer
 interface DisplayVehicle {
@@ -142,47 +137,41 @@ export default function Inventory() {
   const { toggle, isFavorited } = useFavorites();
   const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
 
-  const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>(staticStock as DisplayVehicle[]);
-  const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>(staticSold.map(v => ({ ...v })) as DisplaySold[]);
-  const [popularVehicles, setPopularVehicles] = useState<DisplayPopular[]>(staticPopular.map(v => ({ ...v })) as DisplayPopular[]);
+  const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>([]);
+  const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>([]);
+  const [popularVehicles, setPopularVehicles] = useState<DisplayPopular[]>([]);
   const [loading, setLoading] = useState(true);
+  const initialLoadDone = useRef(false);
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/vehicles").then(r => r.ok ? r.json() : []),
-      fetch("/api/sold-vehicles").then(r => r.ok ? r.json() : []),
-      fetch("/api/popular-vehicles").then(r => r.ok ? r.json() : []),
-    ]).then(([dbStock, dbSold, dbPopular]) => {
-      // Use DB data if it has entries, otherwise fall back to static
-      if (dbStock.length > 0) {
-        setStockVehicles(dbStock.map((v: any) => ({
+    function loadData() {
+      if (!initialLoadDone.current) setLoading(true);
+      Promise.all([
+        fetch("/api/vehicles").then(r => r.ok ? r.json() : []),
+        fetch("/api/sold-vehicles").then(r => r.ok ? r.json() : []),
+        fetch("/api/popular-vehicles").then(r => r.ok ? r.json() : []),
+      ]).then(([dbStock, dbSold, dbPopular]) => {
+        setStockVehicles((dbStock as any[]).map((v: any) => ({
           ...v, image: resolveImage(v.imageUrl),
         })));
-      } else {
-        setStockVehicles(staticStock as DisplayVehicle[]);
-      }
+        setSoldVehicles((dbSold as any[]).map((v: any) => ({
+          ...v, image: resolveImage(v.imageUrl),
+        })));
+        setPopularVehicles((dbPopular as any[]).map((v: any) => ({
+          ...v, image: resolveImage(v.imageUrl),
+        })));
+      }).catch(() => {
+        // Keep existing state on error — never fall back to hardcoded data
+      }).finally(() => {
+        setLoading(false);
+        initialLoadDone.current = true;
+      });
+    }
 
-      if (dbSold.length > 0) {
-        setSoldVehicles(dbSold.map((v: any) => ({
-          ...v, image: resolveImage(v.imageUrl),
-        })));
-      } else {
-        setSoldVehicles(staticSold.map(v => ({ ...v })) as DisplaySold[]);
-      }
-
-      if (dbPopular.length > 0) {
-        setPopularVehicles(dbPopular.map((v: any) => ({
-          ...v, image: resolveImage(v.imageUrl),
-        })));
-      } else {
-        setPopularVehicles(staticPopular.map(v => ({ ...v })) as DisplayPopular[]);
-      }
-    }).catch(() => {
-      // On any network error, keep static data
-      setStockVehicles(staticStock as DisplayVehicle[]);
-      setSoldVehicles(staticSold.map(v => ({ ...v })) as DisplaySold[]);
-      setPopularVehicles(staticPopular.map(v => ({ ...v })) as DisplayPopular[]);
-    }).finally(() => setLoading(false));
+    loadData();
+    const onVisible = () => { if (document.visibilityState === "visible") loadData(); };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
   }, []);
 
   // Filter state
@@ -400,6 +389,20 @@ export default function Inventory() {
             </div>
           </div>
 
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="rounded-2xl bg-white border border-slate-200 overflow-hidden animate-pulse">
+                  <div className="aspect-video bg-slate-200" />
+                  <div className="p-6 space-y-3">
+                    <div className="h-3 bg-slate-200 rounded w-1/4" />
+                    <div className="h-5 bg-slate-200 rounded w-3/4" />
+                    <div className="h-3 bg-slate-200 rounded w-1/2" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
           <AnimatePresence mode="popLayout">
             {filtered.length === 0 ? (
               <motion.div 
@@ -563,6 +566,7 @@ export default function Inventory() {
               </div>
             )}
           </AnimatePresence>
+          )}
         </div>
       </section>
 

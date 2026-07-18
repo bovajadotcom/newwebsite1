@@ -6,11 +6,13 @@ import { requireAuth } from "../middlewares/requireAuth";
 const router: IRouter = Router();
 
 router.get("/sold-vehicles", async (_req, res): Promise<void> => {
+  res.set("Cache-Control", "no-cache");
   const items = await db.select().from(soldVehiclesTable).orderBy(desc(soldVehiclesTable.createdAt));
   res.json(items);
 });
 
 router.get("/sold-vehicles/:id", async (req, res): Promise<void> => {
+  res.set("Cache-Control", "no-cache");
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }

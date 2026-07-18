@@ -1,0 +1,55 @@
+The CMS also does not correctly update Testimonials and Frequently Asked Questions (FAQ). Please investigate and fix the synchronization issues.
+
+Current problems:
+
+- Editing a testimonial in the CMS does not update it on the website.
+- Editing an FAQ question or answer does not update it on the website.
+- Changes appear to save successfully in the CMS, but the frontend continues displaying old data.
+- In some cases, changes only appear after restarting the application, rebuilding, or clearing the cache.
+
+Please audit the complete data flow:
+
+CMS → Save Request → API → Database → Frontend API → Website Components
+
+Check:
+
+- The correct API endpoint is called.
+- The update request returns success.
+- The database record is actually updated.
+- The frontend fetches fresh data after saving.
+- React Query, SWR, browser cache, server cache, or CDN cache is not serving stale data.
+- There are no hardcoded testimonials or FAQ data overriding the CMS.
+- Static generation or build-time fetching is not preventing live updates.
+- Components correctly re-render after data changes.
+- Translation fields (EN, PL, RU, LT) are saved and loaded correctly.
+
+Fix requirements:
+
+- Any change made in the CMS must appear on the website immediately after saving.
+- Editing, creating, deleting, or reordering testimonials must instantly update the Testimonials section.
+- Editing, creating, deleting, or reordering FAQ items must instantly update the FAQ section.
+- No application restart, rebuild, or manual cache clearing should be required.
+- Remove any hardcoded fallback data that overrides valid CMS content.
+- If caching is used, properly invalidate and refetch the affected data after every successful save.
+
+Test:
+
+- Edit an existing testimonial.
+- Add a new testimonial.
+- Delete a testimonial.
+- Edit an FAQ question.
+- Edit an FAQ answer.
+- Add a new FAQ item.
+- Delete an FAQ item.
+- Verify all changes in EN, PL, RU, and LT.
+
+After fixing, provide a report:
+
+- Root cause
+- Files changed
+- API endpoints checked
+- Database update confirmed
+- Cache invalidation implemented
+- Hardcoded data removed
+- Testimonials synchronization verified
+- FAQ synchronization verified

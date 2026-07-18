@@ -1,0 +1,65 @@
+The website does not react to changes made in the CMS vehicle cards. Please investigate and fix the CMS-to-frontend synchronization.
+
+Current problem:
+
+- Vehicle information is changed in the CMS and saved successfully.
+- The website continues showing the old vehicle card data.
+- Changes may appear only after a rebuild, restart, or manual cache clearing.
+- Some cards may use hardcoded or duplicated data instead of the current CMS record.
+
+Please check the complete data flow:
+
+CMS form → save request → API → database → vehicles API → frontend state → vehicle card.
+
+Verify:
+
+- The CMS sends the correct updated vehicle ID and fields.
+- The API performs an update instead of creating another vehicle.
+- The updated data is actually saved in the database.
+- Vehicle cards use live API/CMS data and not hardcoded arrays.
+- The frontend is calling the correct production API endpoint.
+- The vehicle list is refreshed after a CMS save.
+- React Query, SWR, server cache, CDN cache, or browser cache is not returning stale data.
+- Static generation or build-time fetching is not preventing updates.
+- The card component is not storing old props in local state.
+- Memoization is not preventing the card from re-rendering.
+- Each card uses a stable key such as `vehicle.id`, not the array index.
+- The same vehicle is not being merged from multiple data sources.
+
+Required fix:
+
+- After saving a vehicle in the CMS, invalidate and refetch the vehicles query.
+- The website must display the updated card data automatically.
+- Do not require a new deployment or application restart.
+- Editing a vehicle must not create a duplicate record.
+- Creating, updating, deleting, or changing a vehicle status must immediately update all relevant sections.
+- Available, Reserved, Auction, Sold, and Most Popular cards must all use the same current CMS data source.
+- Remove hardcoded fallback vehicle data that overrides valid CMS data.
+- Keep fallback content only for genuine API errors, and never merge it with successful API results.
+
+Test these fields:
+
+- Vehicle status
+- Title, brand, and model
+- Price
+- Year
+- Mileage
+- Main image
+- Gallery images
+- Description
+- Delivered To
+- Auction information
+- Most Popular setting
+
+Test the update in EN, PL, RU, and LT.
+
+After fixing, provide a technical report:
+
+Root cause:
+CMS save endpoint checked:
+Database update confirmed:
+Cache invalidation added:
+Hardcoded data removed:
+Duplicate creation prevented:
+Files changed:
+Vehicle sections tested:

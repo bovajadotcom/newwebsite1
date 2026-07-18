@@ -3,7 +3,6 @@ import { Link } from "wouter";
 import { ArrowRight, Globe, Shield, Users, Zap, Award, Clock, Star, ChevronDown, MessageSquare, Truck, BadgeCheck, Calculator, Heart, CheckCircle, AlertCircle, MapPin, Gauge, Fuel, Settings2, CheckSquare } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "@/lib/i18n";
-import { popularVehicles as staticPopular } from "@/data/inventory";
 import { useFavorites } from "@/lib/FavoritesContext";
 import { VehicleDetailModal, type ModalVehicle } from "@/components/VehicleDetailModal";
 import { submitLead } from "@/lib/submitLead";
@@ -159,54 +158,58 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Available vehicles
-    fetch("/api/vehicles")
-      .then(r => r.ok ? r.json() : [])
-      .then((data: any[]) => {
-        const statusOrder: Record<string, number> = { available: 0, reserved: 1, auction: 2, sold: 99 };
-        const available = data
-          .filter((v: any) => v.status === "available" || v.status === "reserved" || v.status === "auction")
-          .sort((a: any, b: any) => (statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99));
-        setAvailableCars(available.slice(0, 4).map((v: any, i: number) => ({
-          ...v, image: resolveImage(v.imageUrl ?? v.image, i),
-        })));
-      })
-      .catch(() => {});
+    function loadData() {
+      // Available vehicles
+      fetch("/api/vehicles")
+        .then(r => r.ok ? r.json() : [])
+        .then((data: any[]) => {
+          const statusOrder: Record<string, number> = { available: 0, reserved: 1, auction: 2, sold: 99 };
+          const available = data
+            .filter((v: any) => v.status === "available" || v.status === "reserved" || v.status === "auction")
+            .sort((a: any, b: any) => (statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99));
+          setAvailableCars(available.slice(0, 4).map((v: any, i: number) => ({
+            ...v, image: resolveImage(v.imageUrl ?? v.image, i),
+          })));
+        })
+        .catch(() => {});
 
-    // Recently sold vehicles
-    fetch("/api/sold-vehicles")
-      .then(r => r.ok ? r.json() : [])
-      .then((data: any[]) => {
-        setSoldCars(data.slice(0, 4).map((v: any, i: number) => ({
-          id: v.id, make: v.make, model: v.model, year: v.year,
-          mileage: v.mileage ?? null, engine: v.engine ?? null,
-          fuel: v.fuel ?? null, transmission: v.transmission ?? null,
-          description: v.description ?? null,
-          descriptionPl: v.descriptionPl ?? null,
-          descriptionRu: v.descriptionRu ?? null,
-          descriptionLt: v.descriptionLt ?? null,
-          finalPrice: v.finalPrice ?? null,
-          purchaseCountry: v.purchaseCountry, deliveredTo: v.deliveredTo ?? null,
-          deliveryDate: v.deliveryDate ?? null,
-          image: resolveImage(v.imageUrl ?? v.image, i),
-          photos: Array.isArray(v.photos) ? v.photos : [],
-        })));
-      })
-      .catch(() => {})
-      .finally(() => setSoldLoading(false));
+      // Recently sold vehicles
+      fetch("/api/sold-vehicles")
+        .then(r => r.ok ? r.json() : [])
+        .then((data: any[]) => {
+          setSoldCars(data.slice(0, 4).map((v: any, i: number) => ({
+            id: v.id, make: v.make, model: v.model, year: v.year,
+            mileage: v.mileage ?? null, engine: v.engine ?? null,
+            fuel: v.fuel ?? null, transmission: v.transmission ?? null,
+            description: v.description ?? null,
+            descriptionPl: v.descriptionPl ?? null,
+            descriptionRu: v.descriptionRu ?? null,
+            descriptionLt: v.descriptionLt ?? null,
+            finalPrice: v.finalPrice ?? null,
+            purchaseCountry: v.purchaseCountry, deliveredTo: v.deliveredTo ?? null,
+            deliveryDate: v.deliveryDate ?? null,
+            image: resolveImage(v.imageUrl ?? v.image, i),
+            photos: Array.isArray(v.photos) ? v.photos : [],
+          })));
+        })
+        .catch(() => {})
+        .finally(() => setSoldLoading(false));
 
-    // Popular vehicles
-    fetch("/api/popular-vehicles")
-      .then(r => r.ok ? r.json() : [])
-      .then((data: any[]) => {
-        const list = data.length > 0 ? data : staticPopular;
-        setPopularCars(list.slice(0, 4).map((v: any, i: number) => ({
-          ...v, image: resolveImage(v.imageUrl ?? v.image, i),
-        })));
-      })
-      .catch(() => {
-        setPopularCars(staticPopular.slice(0, 4).map((v, i) => ({ ...v, image: resolveImage(v.image, i) })));
-      });
+      // Popular vehicles — always from API, no static fallback
+      fetch("/api/popular-vehicles")
+        .then(r => r.ok ? r.json() : [])
+        .then((data: any[]) => {
+          setPopularCars(data.slice(0, 4).map((v: any, i: number) => ({
+            ...v, image: resolveImage(v.imageUrl ?? v.image, i),
+          })));
+        })
+        .catch(() => {});
+    }
+
+    loadData();
+    const onVisible = () => { if (document.visibilityState === "visible") loadData(); };
+    document.addEventListener("visibilitychange", onVisible);
+    return () => document.removeEventListener("visibilitychange", onVisible);
   }, []);
 
   const fadeIn = {
