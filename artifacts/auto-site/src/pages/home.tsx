@@ -9,6 +9,7 @@ import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { RelatedArticles } from "@/components/RelatedArticles";
+import { useGetTestimonials } from "@workspace/api-client-react";
 
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
   to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
@@ -129,6 +130,7 @@ export default function Home() {
   const [footerConsentError, setFooterConsentError] = useState(false);
   const { t, lang } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
+  const { data: dbTestimonials = [] } = useGetTestimonials();
   const processRef = useRef<HTMLDivElement>(null);
   const isProcessInView = useInView(processRef, { once: true, margin: "-120px" });
   const footerNameRef = useRef<HTMLInputElement>(null);
@@ -940,23 +942,23 @@ export default function Home() {
             whileInView="whileInView"
             className="grid grid-cols-1 md:grid-cols-3 gap-8"
           >
-            {[
-              { name: "Robert Harrison", country: "United Kingdom", car: "Nissan Skyline GT-R R34", quote: "The level of communication was unprecedented. They handled the Tokyo auction bidding masterfully and the car arrived exactly as described in the 100-point inspection." },
-              { name: "Michael Chen", country: "Australia", car: "Porsche 911 GT3", quote: "I was hesitant about importing a high-value car, but the Premium tier service was truly white-glove. They navigated the complex Australian compliance effortlessly." },
-              { name: "David Al-Fayed", country: "UAE", car: "Mercedes-Benz G63 AMG", quote: "Flawless transaction. Sourced a rare spec from the US and had it in Dubai within 4 weeks. The customs clearance was handled entirely by their team." }
-            ].map((t, i) => (
-              <motion.div key={i} variants={fadeIn} className="p-8 rounded-xl bg-card border border-border/50 relative">
+            {dbTestimonials.map((item, i) => (
+              <motion.div key={item.id ?? i} variants={fadeIn} className="p-8 rounded-xl bg-card border border-border/50 relative">
                 <div className="flex gap-1 mb-6">
-                  {[...Array(5)].map((_, j) => <Star key={j} className="text-primary fill-primary" size={16} />)}
+                  {[...Array(item.rating ?? 5)].map((_, j) => <Star key={j} className="text-primary fill-primary" size={16} />)}
                 </div>
-                <p className="text-muted-foreground italic mb-6 leading-relaxed">"{t.quote}"</p>
+                <p className="text-muted-foreground italic mb-6 leading-relaxed">"{item.content}"</p>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-bold">
-                    {t.name.charAt(0)}
-                  </div>
+                  {item.avatarUrl ? (
+                    <img src={item.avatarUrl} alt={item.name} className="w-12 h-12 rounded-full object-cover" />
+                  ) : (
+                    <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-bold">
+                      {item.name.charAt(0)}
+                    </div>
+                  )}
                   <div>
-                    <h4 className="text-white font-bold">{t.name}</h4>
-                    <p className="text-xs text-muted-foreground">{t.country} • {t.car}</p>
+                    <h4 className="text-white font-bold">{item.name}</h4>
+                    <p className="text-xs text-muted-foreground">{item.country}{item.vehicleName ? ` • ${item.vehicleName}` : ""}</p>
                   </div>
                 </div>
               </motion.div>

@@ -6,6 +6,7 @@ import { requireAuth } from "../middlewares/requireAuth";
 const router: IRouter = Router();
 
 router.get("/testimonials", async (_req, res): Promise<void> => {
+  res.setHeader("Cache-Control", "no-store");
   const items = await db.select().from(testimonialsTable)
     .where(eq(testimonialsTable.isActive, true))
     .orderBy(desc(testimonialsTable.createdAt));
