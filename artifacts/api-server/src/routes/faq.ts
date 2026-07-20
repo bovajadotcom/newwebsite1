@@ -7,6 +7,7 @@ const router = Router();
 
 router.get("/faq", async (req, res) => {
   try {
+    res.setHeader("Cache-Control", "no-store");
     const items = await db
       .select()
       .from(faqItemsTable)

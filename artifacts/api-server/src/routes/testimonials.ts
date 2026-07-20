@@ -14,6 +14,7 @@ router.get("/testimonials", async (_req, res): Promise<void> => {
 });
 
 router.get("/testimonials/all", requireAuth, async (_req, res): Promise<void> => {
+  res.setHeader("Cache-Control", "no-store");
   const items = await db.select().from(testimonialsTable).orderBy(desc(testimonialsTable.createdAt));
   res.json(items);
 });

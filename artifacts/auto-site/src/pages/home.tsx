@@ -11,6 +11,13 @@ import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { useGetTestimonials } from "@workspace/api-client-react";
 
+interface FaqItem {
+  id: number;
+  questionEn: string; questionPl: string; questionRu: string; questionLt: string;
+  answerEn: string; answerPl: string; answerRu: string; answerLt: string;
+  sortOrder: number; isActive: boolean;
+}
+
 function CountUp({ to, prefix = "", suffix = "", decimals = 0, separator = "" }: {
   to: number; prefix?: string; suffix?: string; decimals?: number; separator?: string;
 }) {
@@ -131,6 +138,10 @@ export default function Home() {
   const { t, lang } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
   const { data: dbTestimonials = [] } = useGetTestimonials();
+  const [dbFaqs, setDbFaqs] = useState<FaqItem[]>([]);
+  useEffect(() => {
+    fetch("/api/faq").then(r => r.json()).then(setDbFaqs).catch(() => {});
+  }, []);
   const processRef = useRef<HTMLDivElement>(null);
   const isProcessInView = useInView(processRef, { once: true, margin: "-120px" });
   const footerNameRef = useRef<HTMLInputElement>(null);
@@ -249,16 +260,11 @@ export default function Home() {
     transition: { staggerChildren: 0.1 }
   };
 
-  const faqs = [
-    { q: "How long does shipping take?", a: "Shipping times vary by origin and destination. Typically, Japan to US takes 3-5 weeks, while Europe to US takes 2-4 weeks. We provide real-time tracking for all shipments." },
-    { q: "What auctions do you work with?", a: "We have direct access to USS Tokyo, TAA, Copart, IAAI, Manheim, Adesa, and exclusive European dealer networks." },
-    { q: "How do I track my vehicle?", a: "Every client receives a secure tracking portal link once the vehicle boards the vessel, providing GPS-based maritime tracking." },
-    { q: "What documents do I need?", a: "Generally, you need a valid ID/Passport and proof of address. We handle all complex export/import certificates, EPA/DOT forms, and title translations." },
-    { q: "Do you offer financing?", a: "While we don't offer direct financing for international purchases, we work with specialized lenders who finance imported vehicles." },
-    { q: "Is marine insurance included?", a: "It is included in our Professional and Premium tiers, and available as an add-on for our Basic tier." },
-    { q: "Can I inspect the car before bidding?", a: "Yes. We mandate pre-purchase physical inspections by our local teams for all vehicles sourced through our Professional and Premium tiers." },
-    { q: "What about customs duties?", a: "Our team calculates all estimated duties upfront. We handle the clearance process and payment of duties to ensure no delays at the port." }
-  ];
+  const faqLangKey = lang === "pl" ? "Pl" : lang === "ru" ? "Ru" : lang === "lt" ? "Lt" : "En";
+  const faqs = dbFaqs.map(f => ({
+    q: (f[`question${faqLangKey}` as keyof FaqItem] as string) || f.questionEn,
+    a: (f[`answer${faqLangKey}` as keyof FaqItem] as string) || f.answerEn,
+  }));
 
   return (
     <div className="flex flex-col w-full">

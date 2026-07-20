@@ -187,15 +187,15 @@ export default function ArticlesPage() {
       slug: a.slug,
       excerpt: a.excerpt,
       content: a.content,
-      titlePl: (a as Record<string, unknown>).titlePl as string ?? "",
-      excerptPl: (a as Record<string, unknown>).excerptPl as string ?? "",
-      contentPl: (a as Record<string, unknown>).contentPl as string ?? "",
-      titleRu: (a as Record<string, unknown>).titleRu as string ?? "",
-      excerptRu: (a as Record<string, unknown>).excerptRu as string ?? "",
-      contentRu: (a as Record<string, unknown>).contentRu as string ?? "",
-      titleLt: (a as Record<string, unknown>).titleLt as string ?? "",
-      excerptLt: (a as Record<string, unknown>).excerptLt as string ?? "",
-      contentLt: (a as Record<string, unknown>).contentLt as string ?? "",
+      titlePl: (a as unknown as Record<string, string>).titlePl ?? "",
+      excerptPl: (a as unknown as Record<string, string>).excerptPl ?? "",
+      contentPl: (a as unknown as Record<string, string>).contentPl ?? "",
+      titleRu: (a as unknown as Record<string, string>).titleRu ?? "",
+      excerptRu: (a as unknown as Record<string, string>).excerptRu ?? "",
+      contentRu: (a as unknown as Record<string, string>).contentRu ?? "",
+      titleLt: (a as unknown as Record<string, string>).titleLt ?? "",
+      excerptLt: (a as unknown as Record<string, string>).excerptLt ?? "",
+      contentLt: (a as unknown as Record<string, string>).contentLt ?? "",
       coverImage: a.coverImage,
       publishedAt: a.publishedAt ? a.publishedAt.split("T")[0] : new Date().toISOString().split("T")[0],
       status: a.status,
@@ -308,7 +308,7 @@ export default function ArticlesPage() {
                   </Badge>
                   <span className="text-xs text-muted-foreground">
                     {["pl", "ru", "lt"].map((l) => {
-                      const hasTitle = !!((a as Record<string, unknown>)[`title${l.charAt(0).toUpperCase() + l.slice(1)}`] as string);
+                      const hasTitle = !!((a as unknown as Record<string, string>)[`title${l.charAt(0).toUpperCase() + l.slice(1)}`]);
                       return (
                         <span key={l} className={hasTitle ? "text-green-500 mr-1" : "text-muted-foreground/40 mr-1"}>
                           {l.toUpperCase()}

@@ -46,7 +46,7 @@ const testimonialSchema = z.object({
   vehicleName: z.string().min(1, "Vehicle name is required"),
   rating: z.coerce.number().min(1).max(5),
   content: z.string().min(1, "Content is required"),
-  avatarUrl: z.string().url("Valid image URL is required").nullable().optional(),
+  avatarUrl: z.union([z.string().url(), z.literal(""), z.null()]).optional(),
   isActive: z.boolean().default(true),
 });
 
