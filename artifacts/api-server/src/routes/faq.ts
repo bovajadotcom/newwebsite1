@@ -46,9 +46,10 @@ router.post("/faq", requireAuth, async (req, res) => {
 router.put("/faq/:id", requireAuth, async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
+    const { id: _id, createdAt: _c, updatedAt: _u, ...data } = req.body;
     const [item] = await db
       .update(faqItemsTable)
-      .set({ ...req.body, updatedAt: new Date() })
+      .set({ ...data, updatedAt: new Date() })
       .where(eq(faqItemsTable.id, id))
       .returning();
     if (!item) return res.status(404).json({ error: "Not found" });

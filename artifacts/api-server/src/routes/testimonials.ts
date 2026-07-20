@@ -28,7 +28,8 @@ router.put("/testimonials/:id", requireAuth, async (req, res): Promise<void> => 
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
-  const [v] = await db.update(testimonialsTable).set(req.body).where(eq(testimonialsTable.id, id)).returning();
+  const { id: _id, createdAt: _c, ...data } = req.body;
+  const [v] = await db.update(testimonialsTable).set(data).where(eq(testimonialsTable.id, id)).returning();
   if (!v) { res.status(404).json({ error: "Not found" }); return; }
   res.json(v);
 });

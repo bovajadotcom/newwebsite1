@@ -30,7 +30,8 @@ router.put("/sold-vehicles/:id", requireAuth, async (req, res): Promise<void> =>
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
-  const [v] = await db.update(soldVehiclesTable).set(req.body).where(eq(soldVehiclesTable.id, id)).returning();
+  const { id: _id, createdAt: _c, updatedAt: _u, ...data } = req.body;
+  const [v] = await db.update(soldVehiclesTable).set(data).where(eq(soldVehiclesTable.id, id)).returning();
   if (!v) { res.status(404).json({ error: "Not found" }); return; }
   res.json(v);
 });
