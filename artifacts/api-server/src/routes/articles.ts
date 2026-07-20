@@ -6,6 +6,7 @@ import { requireAuth } from "../middlewares/requireAuth";
 const router: IRouter = Router();
 
 router.get("/articles", async (_req, res): Promise<void> => {
+  res.set("Cache-Control", "no-store");
   const articles = await db
     .select()
     .from(articlesTable)
@@ -23,6 +24,7 @@ router.get("/articles/all", requireAuth, async (_req, res): Promise<void> => {
 });
 
 router.get("/articles/:slug", async (req, res): Promise<void> => {
+  res.set("Cache-Control", "no-store");
   const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
   const [article] = await db
     .select()
