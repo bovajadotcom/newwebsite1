@@ -159,51 +159,72 @@ export default function Home() {
 
   useEffect(() => {
     function loadData() {
-      // Available vehicles
-      fetch("/api/vehicles")
-        .then(r => r.ok ? r.json() : [])
-        .then((data: any[]) => {
-          const statusOrder: Record<string, number> = { available: 0, reserved: 1, auction: 2, sold: 99 };
-          const available = data
-            .filter((v: any) => v.status === "available" || v.status === "reserved" || v.status === "auction")
-            .sort((a: any, b: any) => (statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99));
-          setAvailableCars(available.slice(0, 4).map((v: any, i: number) => ({
-            ...v, image: resolveImage(v.imageUrl ?? v.image, i),
-          })));
-        })
-        .catch(() => {});
+      Promise.all([
+        fetch("/api/vehicles").then(r => r.ok ? r.json() : []),
+        fetch("/api/sold-vehicles").then(r => r.ok ? r.json() : []),
+        fetch("/api/popular-vehicles").then(r => r.ok ? r.json() : []),
+      ]).then(([vehicleData, soldData, popularData]: [any[], any[], any[]]) => {
+        const statusOrder: Record<string, number> = { available: 0, reserved: 1, auction: 2, sold: 99 };
 
-      // Recently sold vehicles
-      fetch("/api/sold-vehicles")
-        .then(r => r.ok ? r.json() : [])
-        .then((data: any[]) => {
-          setSoldCars(data.slice(0, 4).map((v: any, i: number) => ({
-            id: v.id, make: v.make, model: v.model, year: v.year,
+        // Available section — exclude sold vehicles
+        const available = vehicleData
+          .filter((v: any) => v.status !== "sold")
+          .sort((a: any, b: any) => (statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99));
+        setAvailableCars(available.slice(0, 4).map((v: any, i: number) => ({
+          ...v, image: resolveImage(v.imageUrl ?? v.image, i),
+        })));
+
+        // Sold showcase — curated sold_vehicles entries (rich data) take priority.
+        // Vehicles marked sold in the vehicles table also appear here if they don't
+        // already have a matching sold_vehicles entry (matched by make+model+year).
+        const soldFromTable: DisplaySold[] = soldData.map((v: any, i: number) => ({
+          id: v.id, make: v.make, model: v.model, year: v.year,
+          mileage: v.mileage ?? null, engine: v.engine ?? null,
+          fuel: v.fuel ?? null, transmission: v.transmission ?? null,
+          description: v.description ?? null,
+          descriptionPl: v.descriptionPl ?? null,
+          descriptionRu: v.descriptionRu ?? null,
+          descriptionLt: v.descriptionLt ?? null,
+          finalPrice: v.finalPrice ?? null,
+          purchaseCountry: v.purchaseCountry ?? "",
+          deliveredTo: v.deliveredTo ?? null, deliveryDate: v.deliveryDate ?? null,
+          image: resolveImage(v.imageUrl ?? v.image, i),
+          photos: Array.isArray(v.photos) ? v.photos : [],
+        }));
+
+        const soldTableKeys = new Set(
+          soldFromTable.map(v => `${v.make.toLowerCase()}|${v.model.toLowerCase()}|${v.year}`)
+        );
+
+        const soldFromVehicles: DisplaySold[] = vehicleData
+          .filter((v: any) =>
+            v.status === "sold" &&
+            !soldTableKeys.has(`${String(v.make).toLowerCase()}|${String(v.model).toLowerCase()}|${v.year}`)
+          )
+          .map((v: any, i: number) => ({
+            id: `v${v.id}`,
+            make: v.make, model: v.model, year: v.year,
             mileage: v.mileage ?? null, engine: v.engine ?? null,
             fuel: v.fuel ?? null, transmission: v.transmission ?? null,
             description: v.description ?? null,
             descriptionPl: v.descriptionPl ?? null,
             descriptionRu: v.descriptionRu ?? null,
             descriptionLt: v.descriptionLt ?? null,
-            finalPrice: v.finalPrice ?? null,
-            purchaseCountry: v.purchaseCountry, deliveredTo: v.deliveredTo ?? null,
-            deliveryDate: v.deliveryDate ?? null,
+            finalPrice: v.price ?? null,
+            purchaseCountry: v.location ?? "",
+            deliveredTo: v.deliveredTo ?? null, deliveryDate: null,
             image: resolveImage(v.imageUrl ?? v.image, i),
             photos: Array.isArray(v.photos) ? v.photos : [],
-          })));
-        })
-        .catch(() => {})
-        .finally(() => setSoldLoading(false));
+          }));
 
-      // Popular vehicles — always from API, no static fallback
-      fetch("/api/popular-vehicles")
-        .then(r => r.ok ? r.json() : [])
-        .then((data: any[]) => {
-          setPopularCars(data.slice(0, 4).map((v: any, i: number) => ({
-            ...v, image: resolveImage(v.imageUrl ?? v.image, i),
-          })));
-        })
-        .catch(() => {});
+        setSoldCars([...soldFromTable, ...soldFromVehicles].slice(0, 4));
+        setSoldLoading(false);
+
+        // Popular vehicles
+        setPopularCars(popularData.slice(0, 4).map((v: any, i: number) => ({
+          ...v, image: resolveImage(v.imageUrl ?? v.image, i),
+        })));
+      }).catch(() => { setSoldLoading(false); });
     }
 
     loadData();

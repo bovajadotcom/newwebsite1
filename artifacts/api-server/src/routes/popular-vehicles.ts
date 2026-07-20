@@ -6,7 +6,7 @@ import { requireAuth } from "../middlewares/requireAuth";
 const router: IRouter = Router();
 
 router.get("/popular-vehicles", async (_req, res): Promise<void> => {
-  res.set("Cache-Control", "no-cache");
+  res.set("Cache-Control", "no-store");
   const items = await db.select().from(popularVehiclesTable).orderBy(asc(popularVehiclesTable.sortOrder));
   res.json(items);
 });

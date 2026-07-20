@@ -24,13 +24,13 @@ function coerceVehicle(body: Record<string, unknown>): Record<string, unknown> {
 }
 
 router.get("/vehicles", async (_req, res): Promise<void> => {
-  res.set("Cache-Control", "no-cache");
+  res.set("Cache-Control", "no-store");
   const vehicles = await db.select().from(vehiclesTable).orderBy(asc(vehiclesTable.sortOrder), asc(vehiclesTable.id));
   res.json(vehicles);
 });
 
 router.get("/vehicles/:id", async (req, res): Promise<void> => {
-  res.set("Cache-Control", "no-cache");
+  res.set("Cache-Control", "no-store");
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }

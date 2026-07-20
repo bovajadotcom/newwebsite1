@@ -183,12 +183,7 @@ export default function Inventory() {
   const [filterPrice, setFilterPrice] = useState("all"); 
 
   const allVehicles = useMemo<UnifiedVehicle[]>(() => {
-    // Sold vehicles come exclusively from soldVehicles (sold_vehicles table).
-    // Exclude status="sold" from stockVehicles to prevent duplicates when both
-    // sources contain the same physical car.
-    const stock: UnifiedVehicle[] = stockVehicles
-      .filter(v => v.status !== "sold")
-      .map(v => ({ ...v, _type: "stock" as const }));
+    // Curated sold records from sold_vehicles table (rich data: purchaseCountry, finalPrice).
     const sold: UnifiedVehicle[] = soldVehicles.map(v => ({
       _type: "sold" as const,
       id: v.id, make: v.make, model: v.model, year: v.year,
@@ -204,6 +199,24 @@ export default function Inventory() {
       deliveredTo: v.deliveredTo,
       deliveryDate: v.deliveryDate,
     }));
+
+    // Index sold_vehicles by make|model|year so we can deduplicate: if the same
+    // physical car already has a curated sold_vehicles entry (richer data), skip
+    // the vehicles-table entry to prevent it showing twice.
+    const soldKeys = new Set(sold.map(v =>
+      `${v.make.toLowerCase()}|${v.model.toLowerCase()}|${v.year}`
+    ));
+
+    // All vehicles from the main vehicles table.
+    // Sold-status entries without a matching sold_vehicles record are included —
+    // this is the fix for vehicles "disappearing" when marked sold in the CMS.
+    const stock: UnifiedVehicle[] = stockVehicles
+      .filter(v =>
+        v.status !== "sold" ||
+        !soldKeys.has(`${v.make.toLowerCase()}|${v.model.toLowerCase()}|${v.year}`)
+      )
+      .map(v => ({ ...v, _type: "stock" as const }));
+
     return [...stock, ...sold].sort(
       (a, b) => (STATUS_PRIORITY[a.status] ?? 99) - (STATUS_PRIORITY[b.status] ?? 99)
     );
