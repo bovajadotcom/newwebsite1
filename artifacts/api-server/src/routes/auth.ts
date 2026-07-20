@@ -24,7 +24,13 @@ router.post("/auth/login", async (req, res): Promise<void> => {
   req.session.userId = user.id;
   req.session.username = user.username;
   req.session.role = user.role;
-  res.json({ id: user.id, username: user.username, role: user.role });
+  req.session.save((err) => {
+    if (err) {
+      res.status(500).json({ error: "Session save failed" });
+      return;
+    }
+    res.json({ id: user.id, username: user.username, role: user.role });
+  });
 });
 
 router.post("/auth/logout", (req, res): void => {
