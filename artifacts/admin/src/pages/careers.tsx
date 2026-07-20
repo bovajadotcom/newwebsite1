@@ -83,7 +83,7 @@ export default function CareersPage() {
             </div>
             <div>
               <div className="text-white font-semibold text-sm mb-1">Email Delivery</div>
-              <div className="text-muted-foreground text-xs">Applications sent to <span className="text-white">bovaja.auctions@gmail.com</span> with CV attached.</div>
+              <div className="text-muted-foreground text-xs">Applications sent to <span className="text-white">info@bovaja.com</span> with CV attached.</div>
             </div>
           </div>
           <div className="p-5 rounded-xl bg-card border border-border/50 flex items-start gap-4">

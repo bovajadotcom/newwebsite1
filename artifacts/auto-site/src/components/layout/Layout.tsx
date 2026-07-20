@@ -195,10 +195,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
               onClick={(e) => e.stopPropagation()}
             >
               <a
-                href="tel:+48000000000"
+                href="tel:+48512698857"
                 className="flex items-center justify-center gap-2 w-full py-4 bg-blue-600 text-white font-semibold rounded-2xl"
               >
-                <Phone size={16} /> +48 000 000 000
+                <Phone size={16} /> +48 512 698 857
               </a>
             </div>
           </motion.div>
@@ -222,15 +222,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
               <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t("footer.tagline")}</p>
               <div className="flex gap-2">
-                <a href="https://wa.me/37060000000" target="_blank" rel="noreferrer"
+                <a href="https://wa.me/48512698857" target="_blank" rel="noreferrer"
                   className="w-8 h-8 rounded-lg bg-[#25D366]/10 flex items-center justify-center text-[#25D366] hover:bg-[#25D366]/20 transition-colors" title="WhatsApp">
                   <MessageCircle size={14} />
                 </a>
-                <a href="https://t.me/bovaja" target="_blank" rel="noreferrer"
+                <a href="https://t.me/bovajacars" target="_blank" rel="noreferrer"
                   className="w-8 h-8 rounded-lg bg-[#0088cc]/10 flex items-center justify-center text-[#0088cc] hover:bg-[#0088cc]/20 transition-colors" title="Telegram">
                   <MessageCircle size={14} />
                 </a>
-                <a href="viber://chat?number=37060000000"
+                <a href="viber://chat?number=%2B48512698857"
                   className="w-8 h-8 rounded-lg bg-[#7360F2]/10 flex items-center justify-center text-[#7360F2] hover:bg-[#7360F2]/20 transition-colors" title="Viber">
                   <MessageCircle size={14} />
                 </a>
@@ -279,11 +279,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <ul className="space-y-3 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2 hover:text-white transition-colors">
                   <Phone size={13} />
-                  <a href="tel:+37060000000">+370 600 00000</a>
+                  <a href="tel:+48512698857">+48 512 698 857</a>
                 </li>
                 <li className="flex items-center gap-2 hover:text-white transition-colors">
                   <Mail size={13} />
-                  <a href="mailto:bovaja.auctions@gmail.com">bovaja.auctions@gmail.com</a>
+                  <a href="mailto:info@bovaja.com">info@bovaja.com</a>
                 </li>
                 <li className="flex items-start gap-2">
                   <MessageCircle size={13} className="mt-0.5 shrink-0" />

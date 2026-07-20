@@ -108,7 +108,7 @@ This application was submitted automatically by BOVAJA website.
 
     await transport.sendMail({
       from: `"BOVAJA Website" <${process.env.GMAIL_USER}>`,
-      to: "bovaja.auctions@gmail.com",
+      to: "info@bovaja.com",
       subject: `New Website Application — Careers — ${b.name || "Anonymous"}`,
       text: body,
       attachments,

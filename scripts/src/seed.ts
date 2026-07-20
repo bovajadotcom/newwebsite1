@@ -111,16 +111,16 @@ async function seed() {
     // General
     { key: "general.company_name", value: "BOVAJA", label: "Company Name", group: "general" },
     // Contact
-    { key: "contact.phone", value: "+370 600 00000", label: "Phone Number", group: "contact" },
-    { key: "contact.email", value: "bovaja.auctions@gmail.com", label: "Email Address", group: "contact" },
+    { key: "contact.phone", value: "+48 512 698 857", label: "Phone Number", group: "contact" },
+    { key: "contact.email", value: "info@bovaja.com", label: "Email Address", group: "contact" },
     { key: "contact.address_line1", value: "Gariūnai Car Market, Site 309A", label: "Address Line 1", group: "contact" },
     { key: "contact.address_line2", value: "Gariūnų g. 49, Vilnius 02300", label: "Address Line 2", group: "contact" },
     { key: "contact.country", value: "Lithuania", label: "Country", group: "contact" },
     { key: "contact.maps_url", value: "https://maps.google.com/?q=Gariu%CC%B3nu%CC%B3+g.+49,+Vilnius", label: "Google Maps URL", group: "contact" },
     // Social
-    { key: "social.whatsapp", value: "37060000000", label: "WhatsApp Number (digits only)", group: "social" },
-    { key: "social.telegram", value: "bovaja", label: "Telegram Handle (without @)", group: "social" },
-    { key: "social.viber", value: "37060000000", label: "Viber Number (digits only)", group: "social" },
+    { key: "social.whatsapp", value: "48512698857", label: "WhatsApp Number (digits only)", group: "social" },
+    { key: "social.telegram", value: "bovajacars", label: "Telegram Handle (without @)", group: "social" },
+    { key: "social.viber", value: "+48512698857", label: "Viber Number (digits only)", group: "social" },
     // Stats (homepage counters)
     { key: "stats.vehicles_delivered", value: "5000", label: "Vehicles Delivered", group: "stats" },
     { key: "stats.satisfaction_rate", value: "98", label: "Client Satisfaction Rate (%)", group: "stats" },

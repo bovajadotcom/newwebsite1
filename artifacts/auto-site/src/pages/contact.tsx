@@ -63,12 +63,12 @@ export default function Contact() {
               <div className="p-6 bg-card border border-border/50 rounded-xl">
                 <Phone className="text-primary mb-4" size={24} />
                 <h3 className="text-white font-bold mb-2">{t("contact.phone")}</h3>
-                <a href="tel:+37060000000" className="text-muted-foreground hover:text-primary transition-colors">+370 600 00000</a>
+                <a href="tel:+48512698857" className="text-muted-foreground hover:text-primary transition-colors">+48 512 698 857</a>
               </div>
               <div className="p-6 bg-card border border-border/50 rounded-xl">
                 <Mail className="text-primary mb-4" size={24} />
                 <h3 className="text-white font-bold mb-2">{t("contact.email")}</h3>
-                <a href="mailto:bovaja.auctions@gmail.com" className="text-muted-foreground hover:text-primary transition-colors text-sm break-all">bovaja.auctions@gmail.com</a>
+                <a href="mailto:info@bovaja.com" className="text-muted-foreground hover:text-primary transition-colors text-sm break-all">info@bovaja.com</a>
               </div>
               <div className="p-6 bg-card border border-border/50 rounded-xl sm:col-span-2">
                 <MapPin className="text-primary mb-4" size={24} />
@@ -82,15 +82,15 @@ export default function Contact() {
             </div>
 
             <div className="flex gap-4">
-              <a href="https://wa.me/37060000000" target="_blank" rel="noreferrer"
+              <a href="https://wa.me/48512698857" target="_blank" rel="noreferrer"
                 className="flex-1 py-3 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/20 rounded font-medium flex items-center justify-center gap-2 hover:bg-[#25D366]/20 transition-colors">
                 <MessageCircle size={18} /> WhatsApp
               </a>
-              <a href="https://t.me/bovaja" target="_blank" rel="noreferrer"
+              <a href="https://t.me/bovajacars" target="_blank" rel="noreferrer"
                 className="flex-1 py-3 bg-[#0088cc]/10 text-[#0088cc] border border-[#0088cc]/20 rounded font-medium flex items-center justify-center gap-2 hover:bg-[#0088cc]/20 transition-colors">
                 <MessageCircle size={18} /> Telegram
               </a>
-              <a href="viber://chat?number=37060000000"
+              <a href="viber://chat?number=%2B48512698857"
                 className="flex-1 py-3 bg-[#7360F2]/10 text-[#7360F2] border border-[#7360F2]/20 rounded font-medium flex items-center justify-center gap-2 hover:bg-[#7360F2]/20 transition-colors">
                 <MessageCircle size={18} /> Viber
               </a>
