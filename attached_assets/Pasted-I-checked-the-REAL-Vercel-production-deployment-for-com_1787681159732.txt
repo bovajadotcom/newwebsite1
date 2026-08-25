@@ -1,0 +1,66 @@
+I checked the REAL Vercel production deployment for commit 933f723 directly through the Vercel API.
+
+The previous Express Application and Router typing errors are gone.
+
+The deployment now fails with:
+
+artifacts/api-server/src/routes/health.ts(6,25):
+TS7006: Parameter '_req' implicitly has an 'any' type.
+
+artifacts/api-server/src/routes/health.ts(6,31):
+TS7006: Parameter 'res' implicitly has an 'any' type.
+
+Vercel error code: lint_or_type_error
+Error step: buildStep.
+
+DO NOT fix only health.ts and stop.
+
+We have already lost multiple deployments because each local audit stopped after the currently visible error class.
+
+Your task now is to perform a COMPLETE strict-TypeScript audit of the ENTIRE transitive graph compiled by BOTH Vercel root Functions.
+
+Reproduce Vercel's actual compilation semantics as closely as possible:
+- Node.js 24
+- TypeScript 5.9.3
+- NodeNext module/moduleResolution
+- strict mode
+- both api/index.ts and api/[...path].ts
+- complete transitive API graph
+- without relying on a custom resolver that Vercel does not have
+
+Find and fix ALL remaining TypeScript diagnostics of ANY code, not only TS7006 and not only Express-related diagnostics.
+
+Specifically audit:
+- implicit any parameters
+- unresolved/incorrect inferred callback parameters
+- incompatible request/response/middleware types
+- missing properties
+- callable-signature errors
+- import/export errors
+- NodeNext/ESM issues
+- session augmentation issues
+- database/schema typing
+- all route handlers
+- all middleware
+- all transitive workspace packages reached by the Functions
+
+The acceptance criterion is NOT "health.ts passes".
+
+The acceptance criterion is:
+
+TOTAL_VERCEL_FUNCTION_TYPESCRIPT_DIAGNOSTICS=0
+
+for the complete dependency graph under Vercel-equivalent strict NodeNext compilation.
+
+After that:
+1. pnpm run typecheck
+2. exact production frontend build
+3. bundle BOTH root Functions targeting Node 24
+4. execute BOTH bundles
+5. /api/healthz -> 200 JSON
+6. /api/vehicles -> 200 and existing 25 Neon vehicles
+7. perform a final static scan of every route and middleware for untyped handler parameters
+8. commit the complete fix
+9. DO NOT PUSH
+
+Report every diagnostic found and fixed and give me the commit hash.
