@@ -1,0 +1,62 @@
+The website has been migrated to Vercel.
+
+Current structure:
+- Frontend: artifacts/auto-site
+- Backend/API: artifacts/api-server
+- Database: Neon PostgreSQL
+- The frontend is deployed on Vercel with Root Directory: artifacts/auto-site
+- SPA routing is already fixed and routes such as /inventory work correctly.
+
+PROBLEM:
+The frontend loads correctly, but vehicles are not displayed.
+
+The existing backend contains:
+artifacts/api-server/src/app.ts
+artifacts/api-server/src/routes/vehicles.ts
+
+app.ts mounts the router with:
+app.use("/api", router);
+
+vehicles.ts contains:
+router.get("/vehicles", ...)
+
+Therefore the intended endpoint is:
+/api/vehicles
+
+However, on Vercel /api/vehicles is currently handled by the frontend SPA instead of the Express API, because only artifacts/auto-site is being deployed.
+
+TASK:
+Make the existing API work correctly on Vercel together with the frontend.
+
+Requirements:
+
+1. DO NOT redesign or modify the frontend.
+2. DO NOT remove or recreate the existing database.
+3. Keep the existing Neon PostgreSQL database and existing vehicle data.
+4. Reuse the existing Express routes and database schema wherever possible.
+5. Configure the project so that Vercel can serve the API as serverless functions.
+6. The production endpoint:
+   /api/vehicles
+   must return JSON from the existing vehicles database.
+7. Make sure SPA rewrites do NOT intercept /api/* requests.
+8. Keep normal frontend routes such as:
+   /inventory
+   working on direct browser refresh.
+9. Preserve the existing admin functionality for creating, editing and deleting vehicles.
+10. Preserve authentication/session functionality if possible in the Vercel environment.
+11. Make all necessary code/configuration changes in the repository.
+12. Do NOT deploy to Replit hosting. Production hosting must remain Vercel.
+13. Do NOT create a second database.
+
+IMPORTANT:
+Before changing anything, inspect the current monorepo structure, existing API server, database configuration, Vercel configuration, and frontend API calls.
+
+Then implement the minimum changes necessary for Vercel compatibility.
+
+After implementation:
+- run the build
+- verify there are no TypeScript/build errors
+- tell me exactly which files you changed
+- tell me whether any environment variables need to be added to Vercel
+- tell me exactly what I need to do next in Vercel
+- do not make unrelated changes.
