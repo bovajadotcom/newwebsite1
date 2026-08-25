@@ -1,0 +1,51 @@
+I checked the REAL runtime logs for production commit 39756ce.
+
+Good: ERR_REQUIRE_ESM is completely gone. The root "type": "module" fix worked.
+
+The new exact production runtime failure is:
+
+Error [ERR_MODULE_NOT_FOUND]:
+Cannot find module
+'/var/task/artifacts/api-server/node_modules/@workspace/db/src/index.ts'
+imported from
+'/var/task/artifacts/api-server/src/app.js'
+
+code: ERR_MODULE_NOT_FOUND
+
+So the Vercel Function now runs as ESM correctly, but the production serverless artifact is resolving the @workspace/db workspace package to its TypeScript source entrypoint:
+
+@workspace/db/src/index.ts
+
+That TypeScript source is not present/resolvable in the deployed runtime artifact at that location.
+
+Do NOT revert the ESM fix.
+Do NOT change frontend, routing, Neon, sessions, CRUD or the strict typing fixes.
+
+Fix the Vercel production packaging/resolution of internal workspace packages.
+
+Audit ALL internal @workspace/* packages reachable from the root Functions, not only @workspace/db, because fixing db alone may expose the same runtime failure in the next workspace package.
+
+Specifically inspect:
+- package.json exports/main/module fields for @workspace/db
+- package.json exports/main/module fields for @workspace/api-zod and every other reachable @workspace/* package
+- pnpm workspace symlinks in the Vercel serverless artifact
+- whether runtime package exports point to src/*.ts instead of deployable JS
+- Vercel dependency tracing for monorepo workspace packages
+- whether these packages need compiled JS outputs or need to be bundled into the Function
+
+Acceptance criterion is NOT merely "db import works".
+
+Acceptance criteria:
+1. Audit every transitive @workspace/* runtime dependency.
+2. No deployed Function runtime import may resolve to a missing src/*.ts file.
+3. Preserve root ESM execution.
+4. TOTAL_VERCEL_FUNCTION_TYPESCRIPT_DIAGNOSTICS=0.
+5. Production build passes.
+6. Test using a Vercel-like traced/deployed artifact, not only an esbuild bundle that inlines workspace packages and hides packaging problems.
+7. Both Function entrypoints must start successfully from that artifact.
+8. /api/healthz -> 200 JSON.
+9. /api/vehicles -> 200 and 25 Neon vehicles.
+10. Audit final runtime dependency graph for both ERR_MODULE_NOT_FOUND and ERR_REQUIRE_ESM.
+11. Commit but DO NOT PUSH.
+
+Explain exactly how @workspace/* packages will exist/resolved in the actual Vercel serverless runtime artifact and give me the commit hash.
