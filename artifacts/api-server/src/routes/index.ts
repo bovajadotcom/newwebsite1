@@ -1,20 +1,20 @@
 import { Router, type IRouter } from "express";
-import healthRouter from "./health";
-import authRouter from "./auth";
-import vehiclesRouter from "./vehicles";
-import soldVehiclesRouter from "./sold-vehicles";
-import popularVehiclesRouter from "./popular-vehicles";
-import servicesRouter from "./services";
-import pricingRouter from "./pricing";
-import testimonialsRouter from "./testimonials";
-import faqRouter from "./faq";
-import pageContentRouter from "./page-content";
-import siteSettingsRouter from "./site-settings";
-import leadsRouter from "./leads";
-import contactRouter from "./contact";
-import articlesRouter from "./articles";
-import careersRouter from "./careers";
-import seedRouter from "./seed";
+import healthRouter from "./health.js";
+import authRouter from "./auth.js";
+import vehiclesRouter from "./vehicles.js";
+import soldVehiclesRouter from "./sold-vehicles.js";
+import popularVehiclesRouter from "./popular-vehicles.js";
+import servicesRouter from "./services.js";
+import pricingRouter from "./pricing.js";
+import testimonialsRouter from "./testimonials.js";
+import faqRouter from "./faq.js";
+import pageContentRouter from "./page-content.js";
+import siteSettingsRouter from "./site-settings.js";
+import leadsRouter from "./leads.js";
+import contactRouter from "./contact.js";
+import articlesRouter from "./articles.js";
+import careersRouter from "./careers.js";
+import seedRouter from "./seed.js";
 
 const router: IRouter = Router();
 

@@ -1,7 +1,7 @@
 import { Router, type IRouter } from "express";
 import { db } from "@workspace/db";
 import { leadsTable } from "@workspace/db";
-import { sendLeadEmail } from "../lib/email";
+import { sendLeadEmail } from "../lib/email.js";
 
 const router: IRouter = Router();
 

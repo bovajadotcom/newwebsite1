@@ -1,6 +1,11 @@
 {
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true
+  },
   "include": [
     "api/**/*.ts",
     "artifacts/api-server/src/types/**/*.d.ts"

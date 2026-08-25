@@ -2,8 +2,8 @@ import { Router, type IRouter } from "express";
 import { db } from "@workspace/db";
 import { leadsTable, insertLeadSchema, submitLeadSchema } from "@workspace/db";
 import { desc } from "drizzle-orm";
-import { requireAuth } from "../middlewares/requireAuth";
-import { sendLeadEmail } from "../lib/email";
+import { requireAuth } from "../middlewares/requireAuth.js";
+import { sendLeadEmail } from "../lib/email.js";
 
 const router: IRouter = Router();
 
