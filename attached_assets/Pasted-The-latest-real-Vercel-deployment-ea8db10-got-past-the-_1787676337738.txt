@@ -1,0 +1,66 @@
+The latest real Vercel deployment ea8db10 got past the rewrite validation, but failed during Vercel's TypeScript compilation of the root serverless function.
+
+Do NOT change the rewrite again. It is accepted now.
+
+The actual Vercel errors are in artifacts/api-server/src/app.ts:
+
+TS2834 / TS2835:
+Relative import paths need explicit file extensions under the NodeNext/Node16 resolution used by Vercel.
+
+TS2339:
+Property 'set' does not exist on type 'Express'.
+Property 'use' does not exist on type 'Express'.
+
+TS2349:
+pino-http import has no call signatures.
+
+TS7006:
+req/res parameters are implicitly any.
+
+This means the previous local verification is NOT reproducing the TypeScript compilation environment Vercel actually uses for root /api functions.
+
+I do not want another one-error-at-a-time patch.
+
+Please audit the COMPLETE TypeScript/ESM configuration used by Vercel for:
+
+api/index.ts
+api/[...path].ts
+artifacts/api-server/src/app.ts
+and all modules transitively imported by app.ts.
+
+Determine which tsconfig Vercel's root API functions actually inherit and make that configuration Vercel-compatible.
+
+Requirements:
+
+1. Fix ALL NodeNext/ESM relative imports transitively reachable from the Vercel functions, not only app.ts.
+2. Fix the Express typing/import issue properly.
+3. Fix the pino-http ESM/type import issue properly.
+4. Fix all strict TypeScript errors including implicit any.
+5. Do NOT weaken type safety globally just to hide errors.
+6. Do NOT change database behavior, frontend behavior, vehicle data, sessions, admin CRUD, or API semantics.
+7. Keep the currently accepted Vercel rewrite unchanged unless absolutely necessary.
+
+CRITICAL:
+Reproduce Vercel's function TypeScript compilation, not merely `pnpm run build`.
+
+Use Vercel CLI/build tooling if available so that the actual root /api functions are compiled the way Vercel compiles them.
+
+Before committing, there must be ZERO TypeScript errors across the entire dependency graph of both root API functions.
+
+Then run:
+- production frontend build
+- Vercel-equivalent function compilation
+- bundle api/index.ts
+- bundle api/[...path].ts
+- runtime /api/healthz
+- runtime /api/vehicles against the existing Neon database
+
+Also inspect the full dependency graph proactively for the same NodeNext extension/import/type issues so the next Vercel deployment does not reveal them one by one.
+
+Commit only after ALL of those checks pass.
+
+Give me:
+- root cause
+- files changed
+- exact verification commands
+- commit hash
