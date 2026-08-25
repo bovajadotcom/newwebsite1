@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { db, articlesTable } from "@workspace/db";
+import { db, articlesTable, type InsertArticle } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth";
 
@@ -35,19 +35,17 @@ router.get("/articles/:slug", async (req, res): Promise<void> => {
   res.json(article);
 });
 
-function parseDates(body: Record<string, unknown>): Record<string, unknown> {
-  const dateFields = ["publishedAt", "createdAt", "updatedAt"];
-  const result = { ...body };
-  for (const field of dateFields) {
-    if (result[field] && typeof result[field] === "string") {
-      result[field] = new Date(result[field] as string);
-    }
+function parseDates(body: Record<string, unknown>): Partial<InsertArticle> {
+  const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...editableFields } = body;
+  const result = { ...editableFields };
+  if (typeof result.publishedAt === "string") {
+    result.publishedAt = result.publishedAt ? new Date(result.publishedAt) : null;
   }
-  return result;
+  return result as Partial<InsertArticle>;
 }
 
 router.post("/articles", requireAuth, async (req, res): Promise<void> => {
-  const [article] = await db.insert(articlesTable).values(parseDates(req.body)).returning();
+  const [article] = await db.insert(articlesTable).values(parseDates(req.body) as InsertArticle).returning();
   res.status(201).json(article);
 });
 

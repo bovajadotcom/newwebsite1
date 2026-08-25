@@ -1,12 +1,13 @@
 import { Router, type IRouter } from "express";
-import { db, vehiclesTable } from "@workspace/db";
+import { db, vehiclesTable, type InsertVehicle } from "@workspace/db";
 import { eq, asc } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
 
-function coerceVehicle(body: Record<string, unknown>): Record<string, unknown> {
-  const result = { ...body };
+function coerceVehicle(body: Record<string, unknown>): Partial<InsertVehicle> {
+  const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...editableFields } = body;
+  const result = { ...editableFields };
   if (result.year !== undefined) result.year = parseInt(String(result.year), 10) || 0;
   if (result.mileage !== undefined) result.mileage = Math.round(parseFloat(String(result.mileage))) || 0;
   if (result.price !== undefined) result.price = Math.round(parseFloat(String(result.price))) || 0;
@@ -20,7 +21,7 @@ function coerceVehicle(body: Record<string, unknown>): Record<string, unknown> {
   for (const f of ["descriptionPl", "descriptionRu", "descriptionLt", "deliveredTo"] as const) {
     if (result[f] === "" || result[f] === undefined) result[f] = null;
   }
-  return result;
+  return result as Partial<InsertVehicle>;
 }
 
 router.get("/vehicles", async (_req, res): Promise<void> => {
@@ -40,7 +41,7 @@ router.get("/vehicles/:id", async (req, res): Promise<void> => {
 });
 
 router.post("/vehicles", requireAuth, async (req, res): Promise<void> => {
-  const [v] = await db.insert(vehiclesTable).values(coerceVehicle(req.body)).returning();
+  const [v] = await db.insert(vehiclesTable).values(coerceVehicle(req.body) as InsertVehicle).returning();
   res.status(201).json(v);
 });
 
