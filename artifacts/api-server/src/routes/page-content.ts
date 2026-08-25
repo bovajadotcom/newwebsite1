@@ -1,22 +1,27 @@
 import { Router } from "express";
-import { db, pageContentTable } from "@workspace/db";
-import { eq, and } from "drizzle-orm";
+import { and, db, eq, pageContentTable } from "@workspace/db";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
 const router = Router();
 
-router.get("/page-content", async (_req, res): Promise<void> => {
+type PageContentBody = {
+  valueEn?: string;
+  valuePl?: string;
+  valueRu?: string;
+};
+
+router.get("/page-content", async (_req: ApiRequest, res: ApiResponse): Promise<void> => {
   const items = await db.select().from(pageContentTable);
   res.json(items);
 });
 
-router.get("/page-content/:page", async (req, res): Promise<void> => {
+router.get("/page-content/:page", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const page = Array.isArray(req.params.page) ? req.params.page[0] : req.params.page;
   const items = await db.select().from(pageContentTable).where(eq(pageContentTable.page, page));
   res.json(items);
 });
 
-router.put("/page-content/:page/:key", requireAuth, async (req, res): Promise<void> => {
+router.put("/page-content/:page/:key", requireAuth, async (req: ApiRequest<PageContentBody>, res: ApiResponse): Promise<void> => {
   const page = Array.isArray(req.params.page) ? req.params.page[0] : req.params.page;
   const key = Array.isArray(req.params.key) ? req.params.key[0] : req.params.key;
   const { valueEn, valuePl, valueRu } = req.body;

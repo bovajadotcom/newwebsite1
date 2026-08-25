@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { db, faqItemsTable } from "@workspace/db";
-import { eq, asc } from "drizzle-orm";
+import { asc, db, eq, faqItemsTable } from "@workspace/db";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
 const router = Router();
 
-router.get("/faq", async (req, res) => {
+router.get("/faq", async (req: ApiRequest, res: ApiResponse) => {
   try {
     res.setHeader("Cache-Control", "no-store");
     const items = await db
@@ -20,7 +19,7 @@ router.get("/faq", async (req, res) => {
   }
 });
 
-router.get("/faq/all", requireAuth, async (req, res) => {
+router.get("/faq/all", requireAuth, async (req: ApiRequest, res: ApiResponse) => {
   try {
     const items = await db
       .select()
@@ -33,7 +32,7 @@ router.get("/faq/all", requireAuth, async (req, res) => {
   }
 });
 
-router.post("/faq", requireAuth, async (req, res) => {
+router.post("/faq", requireAuth, async (req: ApiRequest, res: ApiResponse) => {
   try {
     const [item] = await db.insert(faqItemsTable).values(req.body).returning();
     res.status(201).json(item);
@@ -43,7 +42,7 @@ router.post("/faq", requireAuth, async (req, res) => {
   }
 });
 
-router.put("/faq/:id", requireAuth, async (req, res): Promise<void> => {
+router.put("/faq/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   try {
     const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     const id = parseInt(raw, 10);
@@ -64,7 +63,7 @@ router.put("/faq/:id", requireAuth, async (req, res): Promise<void> => {
   }
 });
 
-router.delete("/faq/:id", requireAuth, async (req, res): Promise<void> => {
+router.delete("/faq/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   try {
     const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
     await db.delete(faqItemsTable).where(eq(faqItemsTable.id, parseInt(raw, 10)));

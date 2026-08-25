@@ -1,17 +1,16 @@
 import { Router } from "express";
-import { db, soldVehiclesTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { db, desc, eq, soldVehiclesTable } from "@workspace/db";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
 const router = Router();
 
-router.get("/sold-vehicles", async (_req, res): Promise<void> => {
+router.get("/sold-vehicles", async (_req: ApiRequest, res: ApiResponse): Promise<void> => {
   res.set("Cache-Control", "no-store");
   const items = await db.select().from(soldVehiclesTable).orderBy(desc(soldVehiclesTable.createdAt));
   res.json(items);
 });
 
-router.get("/sold-vehicles/:id", async (req, res): Promise<void> => {
+router.get("/sold-vehicles/:id", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   res.set("Cache-Control", "no-store");
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
@@ -21,12 +20,12 @@ router.get("/sold-vehicles/:id", async (req, res): Promise<void> => {
   res.json(v);
 });
 
-router.post("/sold-vehicles", requireAuth, async (req, res): Promise<void> => {
-  const [v] = await db.insert(soldVehiclesTable).values(req.body).returning();
+router.post("/sold-vehicles", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
+  const [v] = await db.insert(soldVehiclesTable).values(req.body as typeof soldVehiclesTable.$inferInsert).returning();
   res.status(201).json(v);
 });
 
-router.put("/sold-vehicles/:id", requireAuth, async (req, res): Promise<void> => {
+router.put("/sold-vehicles/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
@@ -36,7 +35,7 @@ router.put("/sold-vehicles/:id", requireAuth, async (req, res): Promise<void> =>
   res.json(v);
 });
 
-router.delete("/sold-vehicles/:id", requireAuth, async (req, res): Promise<void> => {
+router.delete("/sold-vehicles/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }

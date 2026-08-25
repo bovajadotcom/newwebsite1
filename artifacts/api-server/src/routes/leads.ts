@@ -1,13 +1,11 @@
 import { Router } from "express";
-import { db } from "@workspace/db";
-import { leadsTable, insertLeadSchema, submitLeadSchema } from "@workspace/db";
-import { desc } from "drizzle-orm";
+import { db, desc, insertLeadSchema, leadsTable, submitLeadSchema } from "@workspace/db";
 import { requireAuth } from "../middlewares/requireAuth.js";
 import { sendLeadEmail } from "../lib/email.js";
 
 const router = Router();
 
-router.post("/leads", async (req, res): Promise<void> => {
+router.post("/leads", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const body = req.body as Record<string, unknown>;
   const isRichSubmission = Boolean(body.formName);
 
@@ -67,7 +65,7 @@ router.post("/leads", async (req, res): Promise<void> => {
   res.status(201).json(lead);
 });
 
-router.get("/leads", requireAuth, async (_req, res): Promise<void> => {
+router.get("/leads", requireAuth, async (_req: ApiRequest, res: ApiResponse): Promise<void> => {
   const leads = await db.select().from(leadsTable).orderBy(desc(leadsTable.createdAt));
   res.json(leads);
 });

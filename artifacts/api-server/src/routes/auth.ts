@@ -1,11 +1,15 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
-import { db, usersTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { db, eq, usersTable } from "@workspace/db";
 
 const router = Router();
 
-router.post("/auth/login", async (req, res): Promise<void> => {
+type LoginBody = {
+  username?: string;
+  password?: string;
+};
+
+router.post("/auth/login", async (req: ApiRequest<LoginBody>, res: ApiResponse): Promise<void> => {
   const { username, password } = req.body;
   if (!username || !password) {
     res.status(400).json({ error: "Username and password required" });
@@ -24,7 +28,7 @@ router.post("/auth/login", async (req, res): Promise<void> => {
   req.session.userId = user.id;
   req.session.username = user.username;
   req.session.role = user.role;
-  req.session.save((err) => {
+  req.session.save((err?: unknown) => {
     if (err) {
       res.status(500).json({ error: "Session save failed" });
       return;
@@ -33,13 +37,13 @@ router.post("/auth/login", async (req, res): Promise<void> => {
   });
 });
 
-router.post("/auth/logout", (req, res): void => {
+router.post("/auth/logout", (req: ApiRequest, res: ApiResponse): void => {
   req.session.destroy(() => {
     res.json({ ok: true });
   });
 });
 
-router.get("/auth/me", (req, res): void => {
+router.get("/auth/me", (req: ApiRequest, res: ApiResponse): void => {
   if (!req.session.userId) {
     res.status(401).json({ error: "Not authenticated" });
     return;

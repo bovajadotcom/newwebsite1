@@ -5,7 +5,7 @@ import { sendLeadEmail } from "../lib/email.js";
 
 const router = Router();
 
-router.post("/contact", async (req, res): Promise<void> => {
+router.post("/contact", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const body = req.body as {
     name?: string;
     phone?: string;

@@ -98,7 +98,7 @@ async function seedIfEmpty() {
   }
 }
 
-app.listen(port, async (err) => {
+app.listen(port, async (err?: Error) => {
   if (err) {
     logger.error({ err }, "Error listening on port");
     process.exit(1);

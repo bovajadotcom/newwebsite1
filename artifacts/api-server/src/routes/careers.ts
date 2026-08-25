@@ -1,15 +1,18 @@
 import { Router } from "express";
 import multer from "multer";
 import nodemailer from "nodemailer";
-import { db } from "@workspace/db";
-import { careerApplicationsTable } from "@workspace/db";
+import { careerApplicationsTable, db, desc } from "@workspace/db";
 
 const router = Router();
 
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
+  fileFilter: (
+    _req: ApiRequest,
+    file: ApiUploadFile,
+    cb: (error: Error | null, acceptFile?: boolean) => void,
+  ) => {
     const allowed = [
       "application/pdf",
       "application/msword",
@@ -40,7 +43,7 @@ function row(label: string, value: string | undefined | null): string {
   return `  • ${label}: ${value}\n`;
 }
 
-router.post("/careers", upload.single("cv"), async (req, res): Promise<void> => {
+router.post("/careers", upload.single("cv"), async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const b = req.body as Record<string, string>;
   const langLabel = b.lang === "pl" ? "🇵🇱 PL" : b.lang === "ru" ? "🇷🇺 RU" : b.lang === "lt" ? "🇱🇹 LT" : "🇬🇧 EN";
 
@@ -123,9 +126,8 @@ This application was submitted automatically by BOVAJA website.
 });
 
 // Admin: list career applications
-router.get("/admin/careers", async (req, res): Promise<void> => {
+router.get("/admin/careers", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   try {
-    const { desc } = await import("drizzle-orm");
     const apps = await db
       .select()
       .from(careerApplicationsTable)

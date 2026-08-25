@@ -1,16 +1,19 @@
 import { Router } from "express";
-import { db, siteSettingsTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { db, eq, siteSettingsTable } from "@workspace/db";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
 const router = Router();
 
-router.get("/site-settings", async (_req, res): Promise<void> => {
+type SiteSettingBody = {
+  value?: string;
+};
+
+router.get("/site-settings", async (_req: ApiRequest, res: ApiResponse): Promise<void> => {
   const settings = await db.select().from(siteSettingsTable);
   res.json(settings);
 });
 
-router.put("/site-settings/:key", requireAuth, async (req, res): Promise<void> => {
+router.put("/site-settings/:key", requireAuth, async (req: ApiRequest<SiteSettingBody>, res: ApiResponse): Promise<void> => {
   const key = Array.isArray(req.params.key) ? req.params.key[0] : req.params.key;
   const { value } = req.body;
   const existing = await db.select().from(siteSettingsTable).where(eq(siteSettingsTable.key, key));

@@ -7,7 +7,7 @@ const router = Router();
 
 const SEED_TOKEN = "bovaja-seed-2026-one-time";
 
-router.post("/seed", async (req, res): Promise<void> => {
+router.post("/seed", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   if (req.headers["x-seed-token"] !== SEED_TOKEN) {
     res.status(403).json({ error: "Forbidden" });
     return;

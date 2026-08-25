@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { db, articlesTable, type InsertArticle } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { db, articlesTable, desc, eq, type InsertArticle } from "@workspace/db";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
 const router = Router();
 
-router.get("/articles", async (_req, res): Promise<void> => {
+router.get("/articles", async (_req: ApiRequest, res: ApiResponse): Promise<void> => {
   res.set("Cache-Control", "no-store");
   const articles = await db
     .select()
@@ -15,7 +14,7 @@ router.get("/articles", async (_req, res): Promise<void> => {
   res.json(articles);
 });
 
-router.get("/articles/all", requireAuth, async (_req, res): Promise<void> => {
+router.get("/articles/all", requireAuth, async (_req: ApiRequest, res: ApiResponse): Promise<void> => {
   const articles = await db
     .select()
     .from(articlesTable)
@@ -23,7 +22,7 @@ router.get("/articles/all", requireAuth, async (_req, res): Promise<void> => {
   res.json(articles);
 });
 
-router.get("/articles/:slug", async (req, res): Promise<void> => {
+router.get("/articles/:slug", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   res.set("Cache-Control", "no-store");
   const slug = Array.isArray(req.params.slug) ? req.params.slug[0] : req.params.slug;
   const [article] = await db
@@ -44,12 +43,12 @@ function parseDates(body: Record<string, unknown>): Partial<InsertArticle> {
   return result as Partial<InsertArticle>;
 }
 
-router.post("/articles", requireAuth, async (req, res): Promise<void> => {
+router.post("/articles", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const [article] = await db.insert(articlesTable).values(parseDates(req.body) as InsertArticle).returning();
   res.status(201).json(article);
 });
 
-router.put("/articles/:id", requireAuth, async (req, res): Promise<void> => {
+router.put("/articles/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
@@ -58,7 +57,7 @@ router.put("/articles/:id", requireAuth, async (req, res): Promise<void> => {
   res.json(article);
 });
 
-router.delete("/articles/:id", requireAuth, async (req, res): Promise<void> => {
+router.delete("/articles/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }

@@ -1,21 +1,20 @@
 import { Router } from "express";
-import { db, pricingPackagesTable } from "@workspace/db";
-import { eq, asc } from "drizzle-orm";
+import { asc, db, eq, pricingPackagesTable } from "@workspace/db";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
 const router = Router();
 
-router.get("/pricing", async (_req, res): Promise<void> => {
+router.get("/pricing", async (_req: ApiRequest, res: ApiResponse): Promise<void> => {
   const items = await db.select().from(pricingPackagesTable).orderBy(asc(pricingPackagesTable.sortOrder));
   res.json(items);
 });
 
-router.post("/pricing", requireAuth, async (req, res): Promise<void> => {
-  const [v] = await db.insert(pricingPackagesTable).values(req.body).returning();
+router.post("/pricing", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
+  const [v] = await db.insert(pricingPackagesTable).values(req.body as typeof pricingPackagesTable.$inferInsert).returning();
   res.status(201).json(v);
 });
 
-router.put("/pricing/:id", requireAuth, async (req, res): Promise<void> => {
+router.put("/pricing/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
@@ -25,7 +24,7 @@ router.put("/pricing/:id", requireAuth, async (req, res): Promise<void> => {
   res.json(v);
 });
 
-router.delete("/pricing/:id", requireAuth, async (req, res): Promise<void> => {
+router.delete("/pricing/:id", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   const raw = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
   const id = parseInt(raw, 10);
   if (isNaN(id)) { res.status(400).json({ error: "Invalid id" }); return; }
