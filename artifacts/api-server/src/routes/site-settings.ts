@@ -1,9 +1,9 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import { db, siteSettingsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 router.get("/site-settings", async (_req, res): Promise<void> => {
   const settings = await db.select().from(siteSettingsTable);

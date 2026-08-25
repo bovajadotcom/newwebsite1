@@ -1,9 +1,9 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { db, usersTable, vehiclesTable, popularVehiclesTable } from "@workspace/db";
 import type { InsertVehicle, InsertPopularVehicle } from "@workspace/db";
 
-const router: IRouter = Router();
+const router = Router();
 
 const SEED_TOKEN = "bovaja-seed-2026-one-time";
 

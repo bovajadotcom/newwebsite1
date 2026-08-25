@@ -1,6 +1,14 @@
-import { type Request, type Response, type NextFunction } from "express";
+interface SessionRequest {
+  session: { userId?: number };
+}
 
-export function requireAuth(req: Request, res: Response, next: NextFunction): void {
+interface UnauthorizedResponse {
+  status(statusCode: number): { json<T>(body: T): void };
+}
+
+type Continue = () => void;
+
+export function requireAuth(req: SessionRequest, res: UnauthorizedResponse, next: Continue): void {
   if (!req.session.userId) {
     res.status(401).json({ error: "Unauthorized" });
     return;

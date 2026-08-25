@@ -1,9 +1,9 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import { db, vehiclesTable, type InsertVehicle } from "@workspace/db";
 import { eq, asc } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 function coerceVehicle(body: Record<string, unknown>): Partial<InsertVehicle> {
   const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...editableFields } = body;

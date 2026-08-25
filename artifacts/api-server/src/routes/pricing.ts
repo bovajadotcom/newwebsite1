@@ -1,9 +1,9 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import { db, pricingPackagesTable } from "@workspace/db";
 import { eq, asc } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 router.get("/pricing", async (_req, res): Promise<void> => {
   const items = await db.select().from(pricingPackagesTable).orderBy(asc(pricingPackagesTable.sortOrder));

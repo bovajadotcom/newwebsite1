@@ -1,9 +1,9 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import { db, pageContentTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 router.get("/page-content", async (_req, res): Promise<void> => {
   const items = await db.select().from(pageContentTable);

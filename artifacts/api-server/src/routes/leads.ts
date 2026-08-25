@@ -1,11 +1,11 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import { db } from "@workspace/db";
 import { leadsTable, insertLeadSchema, submitLeadSchema } from "@workspace/db";
 import { desc } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth.js";
 import { sendLeadEmail } from "../lib/email.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 router.post("/leads", async (req, res): Promise<void> => {
   const body = req.body as Record<string, unknown>;

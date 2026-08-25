@@ -1,4 +1,4 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import healthRouter from "./health.js";
 import authRouter from "./auth.js";
 import vehiclesRouter from "./vehicles.js";
@@ -16,7 +16,7 @@ import articlesRouter from "./articles.js";
 import careersRouter from "./careers.js";
 import seedRouter from "./seed.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 router.use(healthRouter);
 router.use(authRouter);

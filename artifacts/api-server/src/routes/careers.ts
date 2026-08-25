@@ -1,10 +1,10 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import multer from "multer";
 import nodemailer from "nodemailer";
 import { db } from "@workspace/db";
 import { careerApplicationsTable } from "@workspace/db";
 
-const router: IRouter = Router();
+const router = Router();
 
 const upload = multer({
   storage: multer.memoryStorage(),

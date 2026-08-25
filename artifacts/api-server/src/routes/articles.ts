@@ -1,9 +1,9 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import { db, articlesTable, type InsertArticle } from "@workspace/db";
 import { eq, desc } from "drizzle-orm";
 import { requireAuth } from "../middlewares/requireAuth.js";
 
-const router: IRouter = Router();
+const router = Router();
 
 router.get("/articles", async (_req, res): Promise<void> => {
   res.set("Cache-Control", "no-store");

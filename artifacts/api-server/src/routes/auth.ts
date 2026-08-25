@@ -1,9 +1,9 @@
-import { Router, type IRouter } from "express";
+import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { db, usersTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 
-const router: IRouter = Router();
+const router = Router();
 
 router.post("/auth/login", async (req, res): Promise<void> => {
   const { username, password } = req.body;
