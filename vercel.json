@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run typecheck && PORT=3000 BASE_PATH=/ NODE_ENV=production pnpm --filter @workspace/auto-site run build",
+  "buildCommand": "pnpm run typecheck && pnpm run build:runtime-packages && PORT=3000 BASE_PATH=/ NODE_ENV=production pnpm --filter @workspace/auto-site run build",
   "outputDirectory": "artifacts/auto-site/dist/public",
   "framework": null,
   "rewrites": [
