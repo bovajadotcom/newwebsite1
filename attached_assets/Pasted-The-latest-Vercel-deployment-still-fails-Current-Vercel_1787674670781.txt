@@ -1,0 +1,60 @@
+The latest Vercel deployment still fails.
+
+Current Vercel error:
+Error: api/index.ts: Emit skipped
+
+Do NOT make another single-line fix.
+
+Please perform a complete Vercel compatibility audit of the current monorepo/serverless setup before changing anything.
+
+Current structure:
+- Vercel Root Directory: artifacts/auto-site
+- Frontend: artifacts/auto-site
+- Existing Express backend: artifacts/api-server
+- Database: existing Neon PostgreSQL
+- Serverless entrypoints currently live in artifacts/auto-site/api/
+- Frontend SPA routing already works.
+- /api/vehicles must return JSON from the existing Neon database.
+
+Important:
+The current approach imports the Express app from outside the Vercel Root Directory:
+../../api-server/src/app.js
+
+Vercel is now failing with:
+Error: api/index.ts: Emit skipped
+
+TASK:
+
+1. Reproduce the actual Vercel TypeScript/serverless compilation locally as closely as possible.
+2. Inspect all relevant tsconfig files, module/moduleResolution settings, package.json files, workspace dependencies, Vercel Root Directory assumptions, and vercel.json.
+3. Determine whether importing TypeScript source from artifacts/api-server outside artifacts/auto-site is actually supported and reliable with the current Vercel configuration.
+4. Do NOT just patch the current import error.
+5. Choose the simplest robust architecture that works on Vercel.
+
+Preferred solutions, in order:
+A. If reliable, make the existing shared API-server import work correctly.
+B. If not reliable, move or create a thin Vercel-compatible backend entry/package inside artifacts/auto-site that reuses the existing database/schema/routes without duplicating business logic.
+C. If necessary, restructure the Vercel project root to the monorepo root and configure frontend + API explicitly.
+
+Requirements:
+- Keep the existing Neon database.
+- Do not create a new database.
+- Preserve /inventory SPA refresh routing.
+- Preserve /api/vehicles.
+- Preserve admin CRUD.
+- Preserve auth/session if technically possible.
+- Do not change frontend design.
+- Do not use Replit hosting.
+- Do not make unrelated changes.
+
+Before committing:
+- run TypeScript compilation for the serverless entrypoints
+- run the frontend production build
+- verify the serverless bundle can actually resolve all imported backend files
+- test /api/healthz
+- test /api/vehicles and confirm it returns the existing 25 vehicles
+- check that Vercel would detect the functions under the chosen Root Directory
+- inspect for any additional build-time errors that Vercel is likely to hit next
+
+Then:
+- make ONE complete
