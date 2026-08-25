@@ -1,8 +1,14 @@
 {
-  "rewrites": [
+  "buildCommand": "pnpm run typecheck && PORT=3000 BASE_PATH=/ NODE_ENV=production pnpm --filter @workspace/auto-site run build",
+  "outputDirectory": "artifacts/auto-site/dist/public",
+  "framework": null,
+  "routes": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
