@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { useLogin } from "@workspace/api-client-react";
+import { ApiError, useLogin } from "@workspace/api-client-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,6 +24,31 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
+function getLoginErrorMessage(error: unknown): string {
+  if (error instanceof ApiError) {
+    const data = error.data;
+
+    if (data && typeof data === "object") {
+      const errorData = data as Record<string, unknown>;
+
+      for (const key of ["message", "error", "detail"] as const) {
+        const value = errorData[key];
+        if (typeof value === "string" && value.trim() !== "") {
+          return value;
+        }
+      }
+    }
+
+    return error.message;
+  }
+
+  if (error instanceof Error && error.message.trim() !== "") {
+    return error.message;
+  }
+
+  return "Unable to sign in. Please try again.";
+}
+
 export default function LoginPage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
@@ -45,11 +70,11 @@ export default function LoginPage() {
         description: "Welcome back!",
       });
       setLocation("/");
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast({
         variant: "destructive",
         title: "Login failed",
-        description: error.response?.data?.message || "Invalid credentials",
+        description: getLoginErrorMessage(error),
       });
     }
   };
