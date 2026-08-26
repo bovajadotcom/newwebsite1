@@ -1,0 +1,126 @@
+We are continuing the Bovaja migration.
+
+CURRENT VERIFIED PRODUCTION STATE:
+
+1. Main production site is working on:
+   https://www.bovaja.com
+
+2. Main production API is working:
+   GET /api/healthz -> HTTP 200
+   GET /api/vehicles -> HTTP 200 with 25 Neon vehicles
+
+3. Production Neon database is working.
+
+4. Admin user password has already been reset successfully in production Neon.
+   bcrypt.compare verification passed.
+
+5. The admin frontend login currently uses the relative URL:
+   /api/auth/login
+
+6. The old standalone admin deployment is hosted on a separate
+   newwebsite1-admin-*.vercel.app origin.
+
+Therefore a relative /api request from the standalone admin deployment
+targets the ADMIN origin instead of the working API at www.bovaja.com.
+
+GOAL:
+
+Make the admin CMS work reliably with the production API and Neon database.
+
+Do NOT perform another narrow login-only patch.
+
+Audit the COMPLETE admin frontend API graph and implement one coherent production solution.
+
+Requirements:
+
+- Audit every API request used by artifacts/admin, not only login.
+- Identify all generated API client calls used by the CMS:
+  authentication,
+  vehicles,
+  articles,
+  FAQs,
+  services,
+  pricing,
+  testimonials,
+  page content,
+  site settings,
+  sold/popular vehicles,
+  leads,
+  careers,
+  uploads,
+  and every other admin CRUD endpoint actually reachable from the admin frontend.
+
+- All CMS API calls must resolve to the SAME working production API.
+
+Preferred architecture:
+  production CMS frontend -> https://www.bovaja.com/api/* -> production Neon
+
+Do not hardcode individual endpoints separately.
+
+Use the existing API client base URL mechanism (setBaseUrl or equivalent)
+to configure the admin application centrally.
+
+IMPORTANT: authentication uses credentials: "include".
+
+Because the CMS may run on a different *.vercel.app origin from
+www.bovaja.com, audit cross-origin session-cookie/CORS behavior too.
+
+Determine whether the cleanest final architecture is:
+
+A) serve the admin frontend under https://www.bovaja.com/admin/
+   so CMS and API are same-origin,
+
+OR
+
+B) keep the standalone admin Vercel domain and correctly configure
+   CORS + credentialed cookies + API base URL.
+
+Prefer A if it materially simplifies and secures session authentication.
+
+Do not break the already-working public website or production API.
+
+Before changing code:
+- inspect the current Vite admin base path,
+- SPA routing,
+- public Vercel rewrites,
+- API exclusion rewrite,
+- admin build output,
+- session cookie settings,
+- CORS configuration,
+- generated API client base URL behavior.
+
+Then implement the complete solution.
+
+Acceptance criteria:
+
+1. Main public website remains unchanged and working.
+2. GET https://www.bovaja.com/api/healthz -> 200.
+3. GET https://www.bovaja.com/api/vehicles -> 200 with 25 vehicles.
+4. Admin login reaches the production /api/auth/login endpoint.
+5. Admin login works with the existing production Neon admin account.
+6. Session persists after login and page refresh.
+7. Protected admin API calls recognize the authenticated session.
+8. Vehicle READ works.
+9. Vehicle CREATE works.
+10. Vehicle UPDATE works.
+11. Vehicle DELETE works.
+12. Created/updated vehicle data is immediately visible through the
+    production public API.
+13. Deleted test data is removed afterwards.
+14. Audit all other CMS API calls to ensure none still target a wrong origin.
+15. No regression to the existing Vercel Function ESM/runtime-package fixes.
+16. TOTAL_VERCEL_FUNCTION_TYPESCRIPT_DIAGNOSTICS remains 0.
+17. Full workspace typecheck passes.
+18. Production builds pass.
+19. Test the final architecture in a production-like environment.
+20. Do not leave test records in Neon.
+
+Commit the complete fix but DO NOT PUSH.
+
+Report:
+- which architecture you chose (same-origin /admin or standalone CMS),
+- why,
+- every file changed,
+- how authentication/session cookies now work,
+- CRUD verification results,
+- final commit hash.
