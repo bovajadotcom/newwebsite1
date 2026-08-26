@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import nodemailer from "nodemailer";
 import { careerApplicationsTable, db, desc } from "@workspace/db";
+import { requireAuth } from "../middlewares/requireAuth.js";
 
 const router = Router();
 
@@ -126,7 +127,7 @@ This application was submitted automatically by BOVAJA website.
 });
 
 // Admin: list career applications
-router.get("/admin/careers", async (req: ApiRequest, res: ApiResponse): Promise<void> => {
+router.get("/admin/careers", requireAuth, async (req: ApiRequest, res: ApiResponse): Promise<void> => {
   try {
     const apps = await db
       .select()

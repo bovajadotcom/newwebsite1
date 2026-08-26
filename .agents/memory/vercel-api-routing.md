@@ -1,9 +1,15 @@
 ---
-name: Vercel API routing
-description: How the Vercel deployment serves the static site and the existing Express API from the monorepo root without a second backend or database.
+name: Vercel API and admin routing
+description: How one Vercel deployment serves the public site, same-origin admin CMS, and existing Express API from the monorepo root.
 ---
 
 The Vercel project must use the monorepo root as its Root Directory. Root-level `api/` serverless entrypoints reuse the existing Express application and its Neon PostgreSQL connection; do not recreate API routes or databases for Vercel.
+
+The production CMS belongs under `https://www.bovaja.com/admin/`, packaged into the public site's Vercel output as a separate SPA. All CMS requests use the shared API client's base URL configured to the browser's current origin, including bespoke FAQ and careers requests.
+
+**Why:** Hosting the CMS on a separate `*.vercel.app` origin turns its relative `/api` calls into requests to the wrong deployment. Pointing those calls across origins would require `SameSite=None` cookies, credentialed CORS, CSRF defenses, and acceptance of third-party-cookie blocking. A same-origin `/admin/` deployment keeps the secure HTTP-only session first-party with `SameSite=Lax`.
+
+**How to apply:** Build the admin with `/admin/` as its Vite base, copy its output under the public deployment's `admin/` directory, and keep dedicated `/admin` SPA rewrites ahead of the public SPA fallback. Exclude both `/api` and `/admin` from the public fallback. Route every admin request through the shared client rather than direct browser fetch calls.
 
 **Why:** A frontend-only Root Directory makes Vercel compile function entries with the SPA's `noEmit` TypeScript config and leaves backend imports outside the project boundary. Vercel's Node runtime also does not support TypeScript project references and checks Function source with NodeNext semantics, which rejects bundler-only extensionless ESM imports. Its compiler discovers the nearest tsconfig for each source module and can resolve explicitly imported Express namespace types (including application, router, request, response, and next types) to incomplete global interfaces; factory values still resolve correctly. Under strict compilation it can also lose contextual request/response callback types. It treats direct Drizzle route imports as a separate type identity from tables supplied by the workspace DB package. The root Function files import an ESM Express app, so the root package itself must declare ESM; otherwise Vercel executes generated `.js` Functions as CommonJS and attempts an unsupported `require()` of that app. Workspace packages exporting TypeScript source also fail at runtime because Vercel traces the source export without a deployable JavaScript file. The legacy `routes` override can bypass automatic Function routing, while a blanket SPA rewrite sends `/api/*` to the frontend document and causes data endpoints such as vehicle inventory to return HTML instead of JSON.
 

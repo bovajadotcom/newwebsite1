@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Briefcase, Mail, Phone, MessageCircle, Send, Calendar, User, FileText, Inbox } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { apiFetch } from "@/api";
+import { useToast } from "@/hooks/use-toast";
 
 interface Application {
   id: number;
@@ -41,17 +43,18 @@ export default function CareersPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [expanded, setExpanded] = useState<number | null>(null);
+  const { toast } = useToast();
 
   const loadApplications = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/admin/careers");
-      if (res.ok) {
-        const data = await res.json();
-        setApplications(data);
-      }
+      const data = await apiFetch<Application[]>("/api/admin/careers");
+      setApplications(data);
     } catch {
-      // silently fail if endpoint not ready
+      toast({
+        variant: "destructive",
+        title: "Failed to load career applications",
+      });
     } finally {
       setIsLoading(false);
       setLoaded(true);
@@ -105,7 +108,7 @@ export default function CareersPage() {
           </p>
           <div className="flex gap-3">
             <a
-              href="/translations"
+              href={`${import.meta.env.BASE_URL}translations`}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-colors"
             >
               Edit Translations

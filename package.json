@@ -6,6 +6,7 @@
   "scripts": {
     "preinstall": "sh -c 'rm -f package-lock.json yarn.lock; case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
     "build:runtime-packages": "pnpm --filter @workspace/db run build && pnpm --filter @workspace/api-zod run build",
+    "build:vercel": "pnpm run typecheck && pnpm run build:runtime-packages && PORT=3000 BASE_PATH=/ NODE_ENV=production pnpm --filter @workspace/auto-site run build && PORT=3001 BASE_PATH=/admin/ NODE_ENV=production pnpm --filter @workspace/admin run build && rm -rf artifacts/auto-site/dist/public/admin && mkdir -p artifacts/auto-site/dist/public/admin && cp -R artifacts/admin/dist/public/. artifacts/auto-site/dist/public/admin/",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build lib/db lib/api-client-react lib/api-zod",
     "typecheck": "tsc -p tsconfig.json --noEmit && pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"

@@ -1,10 +1,18 @@
 {
-  "buildCommand": "pnpm run typecheck && pnpm run build:runtime-packages && PORT=3000 BASE_PATH=/ NODE_ENV=production pnpm --filter @workspace/auto-site run build",
+  "buildCommand": "pnpm run build:vercel",
   "outputDirectory": "artifacts/auto-site/dist/public",
   "framework": null,
   "rewrites": [
     {
-      "source": "/((?!api(?:/|$)).*)",
+      "source": "/admin",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/admin/(.*)",
+      "destination": "/admin/index.html"
+    },
+    {
+      "source": "/((?!api(?:/|$)|admin(?:/|$)).*)",
       "destination": "/index.html"
     }
   ]

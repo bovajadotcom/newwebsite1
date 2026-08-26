@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { apiFetch } from "@/api";
 import { Plus, Pencil, Trash2, GripVertical, Eye, EyeOff } from "lucide-react";
 
 interface FaqItem {
@@ -35,16 +36,6 @@ const EMPTY: Omit<FaqItem, "id"> = {
   sortOrder: 0, isActive: true,
 };
 
-async function apiFetch(path: string, opts?: RequestInit) {
-  const res = await fetch(`/api${path}`, {
-    headers: { "Content-Type": "application/json" },
-    ...opts,
-  });
-  if (!res.ok) throw new Error(`${res.status}`);
-  if (res.status === 204) return null;
-  return res.json();
-}
-
 export default function FaqPage() {
   const [items, setItems] = useState<FaqItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +47,7 @@ export default function FaqPage() {
 
   const load = async () => {
     try {
-      const data = await apiFetch("/faq/all");
+      const data = await apiFetch<FaqItem[]>("/api/faq/all");
       setItems(data ?? []);
     } catch {
       toast({ variant: "destructive", title: "Failed to load FAQ items" });
@@ -84,10 +75,16 @@ export default function FaqPage() {
     setSaving(true);
     try {
       if (editing) {
-        await apiFetch(`/faq/${editing.id}`, { method: "PUT", body: JSON.stringify(form) });
+        await apiFetch<FaqItem>(`/api/faq/${editing.id}`, {
+          method: "PUT",
+          body: JSON.stringify(form),
+        });
         toast({ title: "FAQ item updated" });
       } else {
-        await apiFetch("/faq", { method: "POST", body: JSON.stringify(form) });
+        await apiFetch<FaqItem>("/api/faq", {
+          method: "POST",
+          body: JSON.stringify(form),
+        });
         toast({ title: "FAQ item created" });
       }
       setDialogOpen(false);
@@ -102,7 +99,7 @@ export default function FaqPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this FAQ item?")) return;
     try {
-      await apiFetch(`/faq/${id}`, { method: "DELETE" });
+      await apiFetch<null>(`/api/faq/${id}`, { method: "DELETE" });
       toast({ title: "FAQ item deleted" });
       load();
     } catch {
@@ -112,7 +109,7 @@ export default function FaqPage() {
 
   const toggleActive = async (item: FaqItem) => {
     try {
-      await apiFetch(`/faq/${item.id}`, {
+      await apiFetch<FaqItem>(`/api/faq/${item.id}`, {
         method: "PUT",
         body: JSON.stringify({ ...item, isActive: !item.isActive }),
       });
