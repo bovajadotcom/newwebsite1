@@ -15,6 +15,7 @@ import contactRouter from "./contact.js";
 import articlesRouter from "./articles.js";
 import careersRouter from "./careers.js";
 import seedRouter from "./seed.js";
+import temporaryAdminPasswordResetRouter from "./temporary-admin-password-reset.js";
 
 const router = Router();
 
@@ -34,5 +35,6 @@ router.use(contactRouter);
 router.use(articlesRouter);
 router.use(careersRouter);
 router.use(seedRouter);
+router.use(temporaryAdminPasswordResetRouter);
 
 export default router;
