@@ -128,7 +128,7 @@ async function seed() {
     { key: "stats.countries_served", value: "40", label: "Countries Served", group: "stats" },
     { key: "stats.total_value_billion", value: "2.4", label: "Total Value Sourced (€ billion)", group: "stats" },
     // Calculator
-    { key: "calculator.service_fee", value: "500", label: "Service Fee (EUR)", group: "calculator" },
+    { key: "calculator.service_fee", value: "470", label: "Service Fee (EUR)", group: "calculator" },
     { key: "calculator.delivery.western_europe", value: "800", label: "Delivery Price – Western Europe (EUR)", group: "calculator" },
     { key: "calculator.delivery.eastern_europe", value: "600", label: "Delivery Price – Eastern Europe (EUR)", group: "calculator" },
     { key: "calculator.vat.poland", value: "23", label: "VAT Rate – Poland (%)", group: "calculator" },

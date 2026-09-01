@@ -802,7 +802,7 @@ COPY public.site_settings (id, key, value, label, "group", updated_at) FROM stdi
 13	stats.years_experience	12	Years of Experience	stats	2026-07-14 08:09:03.620946+00
 14	stats.countries_served	40	Countries Served	stats	2026-07-14 08:09:03.620946+00
 15	stats.total_value_billion	2.4	Total Value Sourced (€ billion)	stats	2026-07-14 08:09:03.620946+00
-16	calculator.service_fee	500	Service Fee (EUR)	calculator	2026-07-14 08:09:03.620946+00
+16	calculator.service_fee	470	Service Fee (EUR)	calculator	2026-07-14 08:09:03.620946+00
 17	calculator.delivery.western_europe	800	Delivery Price – Western Europe (EUR)	calculator	2026-07-14 08:09:03.620946+00
 18	calculator.delivery.eastern_europe	600	Delivery Price – Eastern Europe (EUR)	calculator	2026-07-14 08:09:03.620946+00
 19	calculator.vat.poland	23	VAT Rate – Poland (%)	calculator	2026-07-14 08:09:03.620946+00

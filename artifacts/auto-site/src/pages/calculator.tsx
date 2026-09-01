@@ -144,7 +144,7 @@ function calculateBelarusResult(form: FormState): ByResult {
 }
 
 function calculateStandardResult(form: FormState, settings: { key: string; value: string }[]): StandardResult {
-  const serviceFee = form.vehicleType === "catalog" ? 0 : getSettingValue(settings, "calculator.service_fee", 500);
+  const serviceFee = form.vehicleType === "catalog" ? 0 : getSettingValue(settings, "calculator.service_fee", 470);
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
   const source = SOURCE_COUNTRIES.find((c) => c.code === form.sourceCountry);
