@@ -52,12 +52,7 @@ function TimelinePhotoRow({ photos }: { photos: { src: string; portrait?: boolea
 
 export default function About() {
   const { t } = useLanguage();
-  const team = [
-    { nameKey: "about.team1.name", titleKey: "about.team1.title", img: "team-1.png" },
-    { nameKey: "about.team2.name", titleKey: "about.team2.title", img: "team-2.png" },
-    { nameKey: "about.team3.name", titleKey: "about.team3.title", img: "team-3.png" },
-    { nameKey: "about.team4.name", titleKey: "about.team4.title", img: "team-4.png" },
-  ];
+ 
 
   const values = [
     { icon: Target, titleKey: "about.val.precision.title", descKey: "about.val.precision.desc" },
@@ -206,47 +201,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* Team */}
-      <section className="relative py-20 border-b-2 border-white/10">
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-14"
-          >
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
-              <Shield size={11} /> {t("about.team")}
-            </span>
-            <h2 className="text-3xl font-bold text-white mb-3">{t("about.teamTitle")}</h2>
-            <p className="text-muted-foreground max-w-lg mx-auto">{t("about.teamSub")}</p>
-          </motion.div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-            {team.map((member, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="text-center group"
-              >
-                <div className="aspect-[3/4] mb-6 overflow-hidden rounded-2xl border border-border/40 bg-secondary/50 group-hover:border-primary/30 transition-colors">
-                  <img 
-                    src={`${import.meta.env.BASE_URL}${member.img}`} 
-                    alt={t(member.nameKey)}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                  />
-                </div>
-                <h3 className="text-lg font-bold text-white">{t(member.nameKey)}</h3>
-                <p className="text-sm text-primary mt-1">{t(member.titleKey)}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
 
       {/* Why Choose Us & Achievements */}
       <section className="relative py-20 bg-secondary/15 border-b-2 border-white/10">

@@ -9,7 +9,6 @@ import { submitLead } from "@/lib/submitLead";
 import { LanguageSelector, type PreferredLanguage, langFromLocale } from "@/components/LanguageSelector";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 import { RelatedArticles } from "@/components/RelatedArticles";
-import { useGetTestimonials } from "@workspace/api-client-react";
 
 interface FaqItem {
   id: number;
@@ -137,7 +136,6 @@ export default function Home() {
   const [footerConsentError, setFooterConsentError] = useState(false);
   const { t, lang } = useLanguage();
   const { toggle, isFavorited } = useFavorites();
-  const { data: dbTestimonials = [] } = useGetTestimonials();
   const [dbFaqs, setDbFaqs] = useState<FaqItem[]>([]);
   useEffect(() => {
     fetch("/api/faq").then(r => r.json()).then(setDbFaqs).catch(() => {});
@@ -187,9 +185,9 @@ export default function Home() {
           ...v, image: resolveImage(v.imageUrl ?? v.image, i),
         })));
 
-        // Sold showcase — curated sold_vehicles entries (rich data) take priority.
-        // Vehicles marked sold in the vehicles table also appear here if they don't
-        // already have a matching sold_vehicles entry (matched by make+model+year).
+        // Sold showcase has one authoritative source: the curated sold_vehicles endpoint.
+        // Do not merge sold rows from /api/vehicles here; the two tables have independent
+        // IDs, so cross-table text matching can both duplicate cars and hide distinct cars.
         const soldFromTable: DisplaySold[] = soldData.map((v: any, i: number) => ({
           id: v.id, make: v.make, model: v.model, year: v.year,
           mileage: v.mileage ?? null, engine: v.engine ?? null,
@@ -205,32 +203,7 @@ export default function Home() {
           photos: Array.isArray(v.photos) ? v.photos : [],
         }));
 
-        const soldTableKeys = new Set(
-          soldFromTable.map(v => `${v.make.toLowerCase()}|${v.model.toLowerCase()}|${v.year}`)
-        );
-
-        const soldFromVehicles: DisplaySold[] = vehicleData
-          .filter((v: any) =>
-            v.status === "sold" &&
-            !soldTableKeys.has(`${String(v.make).toLowerCase()}|${String(v.model).toLowerCase()}|${v.year}`)
-          )
-          .map((v: any, i: number) => ({
-            id: `v${v.id}`,
-            make: v.make, model: v.model, year: v.year,
-            mileage: v.mileage ?? null, engine: v.engine ?? null,
-            fuel: v.fuel ?? null, transmission: v.transmission ?? null,
-            description: v.description ?? null,
-            descriptionPl: v.descriptionPl ?? null,
-            descriptionRu: v.descriptionRu ?? null,
-            descriptionLt: v.descriptionLt ?? null,
-            finalPrice: v.price ?? null,
-            purchaseCountry: v.location ?? "",
-            deliveredTo: v.deliveredTo ?? null, deliveryDate: null,
-            image: resolveImage(v.imageUrl ?? v.image, i),
-            photos: Array.isArray(v.photos) ? v.photos : [],
-          }));
-
-        setSoldCars([...soldFromTable, ...soldFromVehicles].slice(0, 4));
+        setSoldCars(soldFromTable.slice(0, 4));
         setSoldLoading(false);
 
         // Popular vehicles
@@ -929,49 +902,7 @@ export default function Home() {
           )}
         </div>
       </section>
-      {/* TESTIMONIALS */}
-      <section className="relative py-24 border-b-2 border-white/10">
-        {/* Top accent line */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
-        <div className="container mx-auto px-4">
-          <motion.div {...fadeIn} className="text-center mb-16">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
-              <Star size={11} /> {t("section.testimonials")}
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">{t("section.testimonialsTitle")}</h2>
-            <p className="text-muted-foreground">{t("testimonials.subtitle")}</p>
-          </motion.div>
-
-          <motion.div 
-            variants={staggerContainer}
-            initial="initial"
-            whileInView="whileInView"
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {dbTestimonials.map((item, i) => (
-              <motion.div key={item.id ?? i} variants={fadeIn} className="p-8 rounded-xl bg-card border border-border/50 relative">
-                <div className="flex gap-1 mb-6">
-                  {[...Array(item.rating ?? 5)].map((_, j) => <Star key={j} className="text-primary fill-primary" size={16} />)}
-                </div>
-                <p className="text-muted-foreground italic mb-6 leading-relaxed">"{item.content}"</p>
-                <div className="flex items-center gap-4">
-                  {item.avatarUrl ? (
-                    <img src={item.avatarUrl} alt={item.name} className="w-12 h-12 rounded-full object-cover" />
-                  ) : (
-                    <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white font-bold">
-                      {item.name.charAt(0)}
-                    </div>
-                  )}
-                  <div>
-                    <h4 className="text-white font-bold">{item.name}</h4>
-                    <p className="text-xs text-muted-foreground">{item.country}{item.vehicleName ? ` • ${item.vehicleName}` : ""}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      
       {/* FAQ */}
       <section className="py-24 bg-slate-100 border-t-2 border-b-2 border-slate-200">
         <div className="container mx-auto px-4 max-w-4xl">
