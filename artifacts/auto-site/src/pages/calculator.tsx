@@ -143,8 +143,9 @@ function calculateBelarusResult(form: FormState): ByResult {
   };
 }
 
-function calculateStandardResult(form: FormState, settings: { key: string; value: string }[]): StandardResult {
-  const serviceFee = form.vehicleType === "catalog" ? 0 : getSettingValue(settings, "calculator.service_fee", 300);
+function calculateStandardResult(form: FormState, settings: { key: string; value: string }[], lang: "en" | "pl" | "ru" | "lt"): StandardResult {
+  // Service commission is shown in the visitor's language/currency.
+  const serviceFee = form.vehicleType === "catalog" ? 0 : (lang === "ru" ? 900 : 300);
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
   const source = SOURCE_COUNTRIES.find((c) => c.code === form.sourceCountry);
@@ -157,6 +158,7 @@ function calculateStandardResult(form: FormState, settings: { key: string; value
 }
 
 const fmt = (n: number) => `€${n.toLocaleString("en-EU")}`;
+const fmtServiceFee = (n: number, lang: "en" | "pl" | "ru" | "lt") => lang === "ru" ? `${n.toLocaleString("ru-RU")} BYN` : `€${n.toLocaleString("en-EU")}`;
 const INPUT_CLS = "w-full bg-white border border-border rounded px-4 py-3 text-brand-black focus:outline-none focus:border-primary transition-colors";
 const SELECT_CLS = "w-full bg-white border border-border rounded px-4 py-3 text-brand-black focus:outline-none focus:border-primary transition-colors";
 
@@ -177,7 +179,7 @@ const DEFAULT_FORM: FormState = {
 };
 
 export default function Calculator() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [step, setStep] = useState<Step>(1);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormState>(DEFAULT_FORM);
@@ -189,8 +191,8 @@ export default function Calculator() {
   const selectedCountry = COUNTRIES.find((c) => c.code === form.countryCode);
 
   const standardResult = useMemo(
-    () => (!isBelarus ? calculateStandardResult(form, settings) : null),
-    [form, settings, isBelarus],
+    () => (!isBelarus ? calculateStandardResult(form, settings, lang) : null),
+    [form, settings, isBelarus, lang],
   );
 
   const byResult = useMemo(
@@ -470,7 +472,7 @@ export default function Calculator() {
                           : selectedCountry?.region === "western" ? t("calc.deliveryWest") : t("calc.deliveryEast"),
                         value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery),
                       },
-                      standardResult.serviceFee > 0 ? { label: t("calc.serviceFeeRow"), value: fmt(standardResult.serviceFee) } : null,
+                      standardResult.serviceFee > 0 ? { label: t("calc.serviceFeeRow"), value: fmtServiceFee(standardResult.serviceFee, lang) } : null,
                     ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
                         <span className={row.accent ? "text-amber-800" : "text-muted-foreground"}>{row.label}</span>
