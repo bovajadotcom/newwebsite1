@@ -29,8 +29,6 @@ const SOURCE_COUNTRIES = [
   { code: "DE", flag: "🇩🇪", region: "western", delivery: 700 },
   { code: "BE", flag: "🇧🇪", region: "western", delivery: 700 },
   { code: "LV", flag: "🇱🇻", region: "eastern", delivery: 500 },
-  { code: "PL", flag: "🇵🇱", region: "eastern", delivery: 600 },
-  { code: "LT", flag: "🇱🇹", region: "eastern", delivery: 600 },
   { code: "XX", flag: "🤷", region: "unknown", delivery: 800 },
 ];
 
