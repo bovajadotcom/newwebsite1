@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Target, Shield, Compass, CheckCircle2, MapPin } from "lucide-react";
+import { Target, Shield, Compass, CheckCircle2, MapPin, Building2, Sparkles } from "lucide-react";
 import { useLanguage } from "@/lib/i18n";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { useState, useRef, useLayoutEffect } from "react";
@@ -51,7 +51,7 @@ function TimelinePhotoRow({ photos }: { photos: { src: string; portrait?: boolea
 }
 
 export default function About() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
  
 
   const values = [
@@ -236,7 +236,7 @@ export default function About() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="grid grid-cols-2 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
             >
               <div className="p-6 bg-card border border-border/40 rounded-2xl hover:border-primary/30 transition-colors">
                 <MapPin className="text-primary mb-4" size={28} />
@@ -254,6 +254,23 @@ export default function About() {
                   Aleje Jerozolimskie 109/70<br />
                   02-011 Warsaw, Poland<br />
                   <span className="text-slate-500 text-xs mt-2 block">VAT ID: PL9462741244</span>
+                </p>
+              </div>
+              <div className="p-6 bg-card border border-border/40 rounded-2xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+                <Building2 className="text-primary mb-4" size={28} />
+                <h4 className="font-bold text-brand-black mb-2">{({ ru: "Офис в Витебске", en: "Vitebsk Office", pl: "Biuro w Witebsku", lt: "Biuras Vitebske" } as Record<string, string>)[lang] || "Vitebsk Office"}</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {({ ru: "Наш офис в Беларуси. Свяжитесь с нами, чтобы узнать подробности.", en: "Our office in Belarus. Contact us for more information.", pl: "Nasze biuro na Białorusi. Skontaktuj się z nami, aby uzyskać szczegóły.", lt: "Mūsų biuras Baltarusijoje. Susisiekite dėl išsamesnės informacijos." } as Record<string, string>)[lang] || "Our office in Belarus. Contact us for more information."}
+                </p>
+              </div>
+              <div className="relative overflow-hidden p-6 rounded-2xl border border-dashed border-primary/50 bg-gradient-to-br from-primary/10 via-card to-card hover:border-primary transition-colors">
+                <div className="absolute top-4 right-4 rounded-full bg-primary/10 text-primary px-3 py-1 text-[10px] font-bold uppercase tracking-wider">
+                  {({ ru: "Скоро", en: "Coming soon", pl: "Wkrótce", lt: "Netrukus" } as Record<string, string>)[lang] || "Coming soon"}
+                </div>
+                <Sparkles className="text-primary mb-4" size={28} />
+                <h4 className="font-bold text-brand-black mb-2">{({ ru: "Минск", en: "Minsk", pl: "Mińsk", lt: "Minskas" } as Record<string, string>)[lang] || "Minsk"}</h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {({ ru: "Скоро открытие нового офиса в столице Беларуси.", en: "A new office in the capital of Belarus is opening soon.", pl: "Wkrótce otwarcie nowego biura w stolicy Białorusi.", lt: "Netrukus atidarysime naują biurą Baltarusijos sostinėje." } as Record<string, string>)[lang] || "A new office in the capital of Belarus is opening soon."}
                 </p>
               </div>
             </motion.div>
