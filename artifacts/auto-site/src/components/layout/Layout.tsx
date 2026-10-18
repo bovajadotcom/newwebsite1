@@ -209,8 +209,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Brand */}
             <div className="lg:col-span-1">
-              <Link href="/" className="inline-flex items-center bg-white rounded-md px-2 py-1.5 mb-5">
-                <img src={`${import.meta.env.BASE_URL}vin-euro-car-logo.png`} alt="VIN EURO CAR" className="h-8 w-auto max-w-[190px] object-contain" />
+              <Link href="/" className="inline-flex items-center mb-5">
+                <img src={`${import.meta.env.BASE_URL}vin-euro-car-logo.png`} alt="VIN EURO CAR" className="h-8 w-auto max-w-[190px] object-contain brightness-0 invert" />
               </Link>
               <p className="text-muted-foreground text-sm leading-relaxed mb-5">{t("footer.tagline")}</p>
               <div className="flex gap-2">
