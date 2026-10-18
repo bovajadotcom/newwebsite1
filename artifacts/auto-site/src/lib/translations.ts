@@ -2599,7 +2599,7 @@ export const translations = {
     "calc.catalogBadge": "✓ Без сервисного сбора",
     "calc.sourcingTitle": "Подбор автомобиля (авто-селекшн)",
     "calc.sourcingDesc": "Индивидуальный поиск и подбор под ваши требования с аукционов и дилеров.",
-    "calc.sourcingBadge": "+ 900 BYN сервисная комиссия",
+    "calc.sourcingBadge": "+ 300 € сервисная комиссия",
     "calc.s4Title": "Расчёт стоимости",
     "calc.destination": "Назначение:",
     "calc.westEurope": "Западная Европа",
