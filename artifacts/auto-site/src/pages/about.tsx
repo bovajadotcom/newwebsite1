@@ -268,9 +268,9 @@ export default function About() {
                   {({ ru: "Скоро", en: "Coming soon", pl: "Wkrótce", lt: "Netrukus" } as Record<string, string>)[lang] || "Coming soon"}
                 </div>
                 <Sparkles className="text-primary mb-4" size={28} />
-                <h4 className="font-bold text-brand-black mb-2">{({ ru: "Минск", en: "Minsk", pl: "Mińsk", lt: "Minskas" } as Record<string, string>)[lang] || "Minsk"}</h4>
+                <h4 className="font-bold text-brand-black mb-2">{({ ru: "Минск и Брест", en: "Minsk & Brest", pl: "Mińsk i Brześć", lt: "Minskas ir Brestas" } as Record<string, string>)[lang] || "Minsk & Brest"}</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  {({ ru: "Скоро открытие нового офиса в столице Беларуси.", en: "A new office in the capital of Belarus is opening soon.", pl: "Wkrótce otwarcie nowego biura w stolicy Białorusi.", lt: "Netrukus atidarysime naują biurą Baltarusijos sostinėje." } as Record<string, string>)[lang] || "A new office in the capital of Belarus is opening soon."}
+                  {({ ru: "Скоро открытие офисов в Минске и Бресте.", en: "New offices in Minsk and Brest are opening soon.", pl: "Wkrótce otwarcie biur w Mińsku i Brześciu.", lt: "Netrukus atidarysime biurus Minske ir Breste." } as Record<string, string>)[lang] || "New offices in Minsk and Brest are opening soon."}
                 </p>
               </div>
             </motion.div>
