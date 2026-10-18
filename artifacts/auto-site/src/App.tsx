@@ -35,8 +35,7 @@ const MODAL_PAGES: Record<string, string> = {
 
 function PageModal() {
   const [location] = useLocation();
-  const source = MODAL_PAGES[location];
-  if (!source) return null;
+  const source = MODAL_PAGES[location] ?? "site";
   return <LeadCaptureModal source={source} />;
 }
 

@@ -19,19 +19,6 @@ interface DisplayVehicle {
   image: string; badge?: string | null;
   photos?: string[];
 }
-interface DisplaySold {
-  id: string | number;
-  make: string; model: string; year: number;
-  mileage?: number | null;
-  engine?: string | null;
-  fuel?: string | null;
-  transmission?: string | null;
-  finalPrice?: number | null;
-  description?: string | null;
-  purchaseCountry: string; deliveredTo?: string | null; deliveryDate?: string | null;
-  image: string;
-}
-
 const STATUS_PRIORITY: Record<string, number> = { available: 0, reserved: 1, auction: 2, sold: 3 };
 
 interface UnifiedVehicle {
@@ -95,18 +82,18 @@ function toModalStock(car: DisplayVehicle): ModalVehicle {
   };
 }
 function toModalUnified(car: UnifiedVehicle): ModalVehicle {
-  if (car._type === "sold") {
+  if (car.status === "sold") {
     return {
       id: car.id, type: "sold", make: car.make, model: car.model, year: car.year,
-      price: car.finalPrice ?? undefined,
+      price: car.price ?? car.finalPrice ?? undefined,
       mileage: car.mileage,
       fuel: car.fuel ?? undefined,
       transmission: car.transmission ?? undefined,
       description: car.description ?? undefined,
-      purchaseCountry: car.purchaseCountry ?? "",
+      purchaseCountry: car.purchaseCountry ?? car.location ?? "",
       deliveredTo: car.deliveredTo ?? null,
       deliveryDate: car.deliveryDate ?? null,
-      images: [car.image],
+      images: [car.image, ...(car.photos ?? []).filter(Boolean)],
     };
   }
   return {
@@ -138,7 +125,6 @@ export default function Inventory() {
   const [selectedVehicle, setSelectedVehicle] = useState<ModalVehicle | null>(null);
 
   const [stockVehicles, setStockVehicles] = useState<DisplayVehicle[]>([]);
-  const [soldVehicles, setSoldVehicles]   = useState<DisplaySold[]>([]);
   const [popularVehicles, setPopularVehicles] = useState<DisplayPopular[]>([]);
   const [loading, setLoading] = useState(true);
   const initialLoadDone = useRef(false);
@@ -148,13 +134,9 @@ export default function Inventory() {
       if (!initialLoadDone.current) setLoading(true);
       Promise.all([
         fetch("/api/vehicles").then(r => r.ok ? r.json() : []),
-        fetch("/api/sold-vehicles").then(r => r.ok ? r.json() : []),
         fetch("/api/popular-vehicles").then(r => r.ok ? r.json() : []),
-      ]).then(([dbStock, dbSold, dbPopular]) => {
+      ]).then(([dbStock, dbPopular]) => {
         setStockVehicles((dbStock as any[]).map((v: any) => ({
-          ...v, image: resolveImage(v.imageUrl),
-        })));
-        setSoldVehicles((dbSold as any[]).map((v: any) => ({
           ...v, image: resolveImage(v.imageUrl),
         })));
         setPopularVehicles((dbPopular as any[]).map((v: any) => ({
@@ -183,44 +165,12 @@ export default function Inventory() {
   const [filterPrice, setFilterPrice] = useState("all"); 
 
   const allVehicles = useMemo<UnifiedVehicle[]>(() => {
-    // Curated sold records from sold_vehicles table (rich data: purchaseCountry, finalPrice).
-    const sold: UnifiedVehicle[] = soldVehicles.map(v => ({
-      _type: "sold" as const,
-      id: v.id, make: v.make, model: v.model, year: v.year,
-      status: "sold",
-      image: v.image,
-      mileage: v.mileage ?? undefined,
-      engine: v.engine ?? undefined,
-      fuel: v.fuel ?? undefined,
-      transmission: v.transmission ?? undefined,
-      finalPrice: v.finalPrice,
-      description: v.description ?? undefined,
-      purchaseCountry: v.purchaseCountry,
-      deliveredTo: v.deliveredTo,
-      deliveryDate: v.deliveryDate,
-    }));
-
-    // Index sold_vehicles by make|model|year so we can deduplicate: if the same
-    // physical car already has a curated sold_vehicles entry (richer data), skip
-    // the vehicles-table entry to prevent it showing twice.
-    const soldKeys = new Set(sold.map(v =>
-      `${v.make.toLowerCase()}|${v.model.toLowerCase()}|${v.year}`
-    ));
-
-    // All vehicles from the main vehicles table.
-    // Sold-status entries without a matching sold_vehicles record are included —
-    // this is the fix for vehicles "disappearing" when marked sold in the CMS.
-    const stock: UnifiedVehicle[] = stockVehicles
-      .filter(v =>
-        v.status !== "sold" ||
-        !soldKeys.has(`${v.make.toLowerCase()}|${v.model.toLowerCase()}|${v.year}`)
-      )
-      .map(v => ({ ...v, _type: "stock" as const }));
-
-    return [...stock, ...sold].sort(
+    // The inventory grid has one authoritative source: /api/vehicles.
+    // Each CMS vehicle keeps its unique ID and appears once regardless of status.
+    return stockVehicles.map(v => ({ ...v, _type: "stock" as const })).sort(
       (a, b) => (STATUS_PRIORITY[a.status] ?? 99) - (STATUS_PRIORITY[b.status] ?? 99)
     );
-  }, [stockVehicles, soldVehicles]);
+  }, [stockVehicles]);
 
   const brands = useMemo(() => [
     "all",

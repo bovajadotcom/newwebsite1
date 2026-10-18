@@ -1,0 +1,122 @@
+# Task: Rebrand the VIN EURO CAR Website
+
+Update the existing VIN EURO CAR website to match the new brand identity. This is a redesign of the existing website, not a rebuild from scratch.
+
+## 1. New Brand Identity
+
+Use the following official brand colors throughout the entire website:
+
+- **Primary Red:** `#D12732`
+- **Dark Burgundy:** `#7D000B`
+- **Black:** `#111111`
+- **Light Gray:** `#D9D9D9`
+- **White:** `#FFFFFF`
+- **Soft Background:** `#F5F5F5`
+
+The visual direction should be modern, premium, automotive-focused, European, professional, and trustworthy.
+
+Use red as the main accent color, black for typography and important interface elements, burgundy for hover states and secondary accents, and gray for borders and dividers. Keep the overall design clean and predominantly white.
+
+## 2. Replace the Logo
+
+Replace the current logo everywhere with the new VIN EURO CAR logo that I provide.
+
+Update the logo in:
+- Website header and navigation
+- Footer
+- Mobile navigation
+- Login and registration pages
+- User dashboard
+- Admin panel, where applicable
+- Browser favicon and website icons
+- Loading screens and other locations where the old logo appears
+
+Use the supplied logo files rather than recreating the logo with text or CSS. Preserve the original proportions, colors, and transparent background. Do not stretch, crop, or distort the logo.
+
+If different logo versions are available, use the appropriate version for each background and screen size. Make sure the logo remains readable on desktop and mobile devices.
+
+## 3. Redesign the Website UI
+
+Apply the new visual identity consistently across ALL existing pages and components.
+
+### Header and navigation
+- Use a clean white background.
+- Place the new logo prominently in the header.
+- Use black navigation text.
+- Use the primary red for important buttons and active navigation states.
+- Ensure the mobile navigation is responsive and visually consistent.
+
+### Buttons
+- Primary buttons: red `#D12732` with white text.
+- Hover states: burgundy `#7D000B`.
+- Secondary buttons: white background, black text, subtle gray border.
+- Use consistent sizing, spacing, border radius, and typography.
+
+### Typography
+- Use Montserrat where available, preferably Bold or ExtraBold for headings and Regular or Medium for body text.
+- Maintain a clear hierarchy between page titles, section headings, body text, prices, and labels.
+- Use black `#111111` as the primary text color.
+
+### Cards and forms
+- Use white backgrounds and subtle gray borders.
+- Keep vehicle cards clean, with vehicle photography as the main visual focus.
+- Highlight vehicle prices and important actions using the primary red.
+- Update all form fields, dropdowns, filters, checkboxes, tabs, badges, alerts, and pagination to match the new design system.
+
+### Backgrounds and layout
+- Use white and soft gray backgrounds.
+- Avoid excessive red backgrounds, unnecessary gradients, heavy shadows, and decorative effects.
+- Maintain generous whitespace, consistent alignment, and a professional grid system.
+
+## 4. Update Every Existing Page
+
+Apply the new branding to the entire website, including:
+- Homepage
+- Vehicle catalog and search results
+- Vehicle detail pages
+- Search filters
+- Login and registration
+- User dashboard and account pages
+- Favorites, orders, bids, documents, messages, and settings
+- Contact and information pages
+- FAQ and other content pages
+- Footer
+- Admin interface, if it shares the same branding system
+
+Keep all existing content, translations, routes, forms, API integrations, database connections, authentication, and business logic intact.
+
+The website must continue to work in all currently supported languages. Do not remove or rewrite existing functionality as part of the redesign.
+
+## 5. Implementation Requirements
+
+Before making changes:
+1. Inspect the existing project structure and identify the current styling system, shared components, and logo assets.
+2. Identify all locations where the current logo, colors, and typography are defined.
+3. Reuse existing components and centralize the new colors in the existing theme or CSS variables where possible.
+
+Implement the changes consistently rather than applying isolated CSS overrides to individual pages.
+
+Create reusable design tokens for the brand colors and apply them across the project. Replace outdated brand colors and old logo references throughout the codebase.
+
+Do not introduce unnecessary dependencies or rebuild working components from scratch.
+
+## 6. Quality Assurance
+
+After implementation:
+- Check the website on desktop, tablet, and mobile.
+- Verify that the logo displays correctly at all sizes.
+- Check text contrast, spacing, alignment, and button states.
+- Verify that all pages use the new color palette consistently.
+- Test navigation, authentication, forms, vehicle filters, and other existing interactive functionality.
+- Confirm that no old logo or outdated brand colors remain unintentionally.
+- Fix any layout issues introduced by the redesign.
+
+Do not modify environment variables, API endpoints, database schemas, or deployment settings unless absolutely necessary.
+
+## Final Goal
+
+Deliver a cohesive, polished VIN EURO CAR website that looks like a professional European automotive brand, using the new logo and exact brand colors specified above.
+
+Prioritize visual consistency, usability, responsive design, and preservation of all existing functionality.
+
+When finished, provide a concise summary of the changes made and list any remaining issues or assets that require my input.

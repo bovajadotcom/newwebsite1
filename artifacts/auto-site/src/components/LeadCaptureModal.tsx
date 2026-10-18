@@ -5,10 +5,13 @@ import { useLanguage } from "@/lib/i18n";
 import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 
 const STORAGE_KEY = "bovaja_subscribed";
+const SESSION_FIRST_SHOWN_KEY = "bovaja_notification_first_shown";
+const SESSION_SECOND_SHOWN_KEY = "bovaja_notification_second_shown";
+const SESSION_FIRST_SHOWN_AT_KEY = "bovaja_notification_first_shown_at";
 
-// Delays between each display (ms): 1st after 15s, 2nd after 30s, 3rd after 60s
-const SHOW_DELAYS = [15_000, 30_000, 60_000];
-const MAX_SHOWS   = 3;
+const FIRST_DISPLAY_DELAY = 25_000;
+const SECOND_DISPLAY_DELAY = 60_000;
+const MODAL_RETRY_DELAY = 5_000;
 
 const CHANNELS = [
   { id: "telegram",  label: "Telegram",  icon: Send,          hint: "@username or +XX XXX XXX XXXX" },
@@ -23,6 +26,31 @@ function isModalOpen(): boolean {
     document.querySelector('.modal-open') ||
     document.querySelector('[data-state="open"]')
   );
+}
+
+function hasStorageFlag(storage: Storage, key: string): boolean {
+  try {
+    return storage.getItem(key) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function setStorageFlag(storage: Storage, key: string): void {
+  try {
+    storage.setItem(key, "1");
+  } catch {
+    // Storage can be unavailable in private browsing; the in-memory refs still protect this session.
+  }
+}
+
+function getFirstShownAt(): number | null {
+  try {
+    const value = Number(sessionStorage.getItem(SESSION_FIRST_SHOWN_AT_KEY));
+    return Number.isFinite(value) && value > 0 ? value : null;
+  } catch {
+    return null;
+  }
 }
 
 interface LeadCaptureModalProps {
@@ -40,40 +68,99 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
   const [consent, setConsent]   = useState(false);
   const [consentError, setConsentError] = useState(false);
 
-  const showCountRef  = useRef(0);   // how many times shown this session
   const subscribedRef = useRef(false);
-  const timerRef      = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const firstShownRef = useRef(false);
+  const secondShownRef = useRef(false);
+  const visibleRef = useRef(false);
+  const firstTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const secondTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const scheduleNext = useCallback((delayIndex: number) => {
-    if (subscribedRef.current) return;
-    if (delayIndex >= MAX_SHOWS) return;
-
-    const delay = SHOW_DELAYS[delayIndex];
-    timerRef.current = setTimeout(() => {
-      if (subscribedRef.current) return;
-      if (isModalOpen()) {
-        // Another modal is open — reschedule after 5s
-        timerRef.current = setTimeout(() => scheduleNext(delayIndex), 5_000);
-        return;
-      }
-      showCountRef.current = delayIndex + 1;
-      setVisible(true);
-    }, delay);
+  const clearTimer = useCallback((timerRef: { current: ReturnType<typeof setTimeout> | null }) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
   }, []);
 
+  const isSubscribed = useCallback(() => {
+    if (subscribedRef.current) return true;
+    const subscribed = hasStorageFlag(localStorage, STORAGE_KEY);
+    if (subscribed) subscribedRef.current = true;
+    return subscribed;
+  }, []);
+
+  const scheduleSecond = useCallback((delay: number) => {
+    if (isSubscribed() || secondShownRef.current) return;
+
+    clearTimer(secondTimerRef);
+    secondTimerRef.current = setTimeout(() => {
+      if (isSubscribed() || secondShownRef.current) return;
+      if (visibleRef.current || isModalOpen()) {
+        scheduleSecond(MODAL_RETRY_DELAY);
+        return;
+      }
+
+      secondShownRef.current = true;
+      setStorageFlag(sessionStorage, SESSION_SECOND_SHOWN_KEY);
+      visibleRef.current = true;
+      setVisible(true);
+    }, delay);
+  }, [clearTimer, isSubscribed]);
+
+  const scheduleFirst = useCallback((delay: number) => {
+    if (isSubscribed() || firstShownRef.current || secondShownRef.current) return;
+
+    clearTimer(firstTimerRef);
+    firstTimerRef.current = setTimeout(() => {
+      if (isSubscribed() || firstShownRef.current || secondShownRef.current) return;
+      if (visibleRef.current || isModalOpen()) {
+        scheduleFirst(MODAL_RETRY_DELAY);
+        return;
+      }
+
+      firstShownRef.current = true;
+      setStorageFlag(sessionStorage, SESSION_FIRST_SHOWN_KEY);
+      try {
+        sessionStorage.setItem(SESSION_FIRST_SHOWN_AT_KEY, String(Date.now()));
+      } catch {
+        // The in-memory state still prevents duplicate displays in this mounted app.
+      }
+      visibleRef.current = true;
+      setVisible(true);
+      scheduleSecond(SECOND_DISPLAY_DELAY);
+    }, delay);
+  }, [clearTimer, isSubscribed, scheduleSecond]);
+
   useEffect(() => {
-    if (localStorage.getItem(STORAGE_KEY)) return;
-    scheduleNext(0);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [scheduleNext]);
+    subscribedRef.current = isSubscribed();
+    firstShownRef.current = hasStorageFlag(sessionStorage, SESSION_FIRST_SHOWN_KEY);
+    secondShownRef.current = hasStorageFlag(sessionStorage, SESSION_SECOND_SHOWN_KEY);
+
+    if (subscribedRef.current || secondShownRef.current) {
+      return;
+    }
+
+    if (firstShownRef.current) {
+      const firstShownAt = getFirstShownAt();
+      const elapsed = firstShownAt ? Date.now() - firstShownAt : SECOND_DISPLAY_DELAY;
+      scheduleSecond(Math.max(0, SECOND_DISPLAY_DELAY - elapsed));
+    } else {
+      scheduleFirst(FIRST_DISPLAY_DELAY);
+    }
+
+    return () => {
+      clearTimer(firstTimerRef);
+      clearTimer(secondTimerRef);
+      clearTimer(hideTimerRef);
+    };
+  }, [clearTimer, isSubscribed, scheduleFirst, scheduleSecond]);
 
   const dismiss = useCallback(() => {
+    clearTimer(hideTimerRef);
+    visibleRef.current = false;
     setVisible(false);
-    const nextIndex = showCountRef.current; // 1-indexed count = next delay index
-    if (!subscribedRef.current && nextIndex < MAX_SHOWS) {
-      scheduleNext(nextIndex);
-    }
-  }, [scheduleNext]);
+  }, [clearTimer]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -89,11 +176,16 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
         body: JSON.stringify({ contact: contact.trim(), channel, source }),
       });
       if (!res.ok) throw new Error("Server error");
-      localStorage.setItem(STORAGE_KEY, "1");
+      setStorageFlag(localStorage, STORAGE_KEY);
       subscribedRef.current = true;
-      if (timerRef.current) clearTimeout(timerRef.current);
+      clearTimer(firstTimerRef);
+      clearTimer(secondTimerRef);
       setDone(true);
-      setTimeout(() => setVisible(false), 2800);
+      clearTimer(hideTimerRef);
+      hideTimerRef.current = setTimeout(() => {
+        visibleRef.current = false;
+        setVisible(false);
+      }, 2800);
     } catch {
       setError("Could not save. Please try again.");
     } finally {
@@ -110,7 +202,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 bg-black/35 backdrop-blur-[1px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
