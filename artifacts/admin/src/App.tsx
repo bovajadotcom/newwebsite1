@@ -50,6 +50,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/login" component={LoginPage} />
+      <Route path="/admin/login" component={LoginPage} />
       <Route>
         <AuthGuard>
           <AdminLayout>
