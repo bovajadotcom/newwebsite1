@@ -84,7 +84,7 @@ export default function About() {
       <section className="relative h-[65vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img 
-            src={`${import.meta.env.BASE_URL}bovaja-fleet2.png`} 
+            src={`${import.meta.env.BASE_URL}kartinka.png`} 
             alt="Car Lineup" 
             className="w-full h-full object-cover object-center"
             style={{ filter: "brightness(0.65) saturate(0.9)" }}
