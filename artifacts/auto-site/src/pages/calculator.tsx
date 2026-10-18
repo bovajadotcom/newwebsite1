@@ -424,7 +424,7 @@ export default function Calculator() {
                         </div>
                         <div className="text-sm text-muted-foreground leading-relaxed mt-1">{t("calc.sourcingDesc")}</div>
                         <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-red-50 text-brand-burgundy text-xs font-semibold border border-red-100">
-                          {t("calc.sourcingBadge")}
+                          {isBelarus ? `+ 900 BYN ${t("calc.serviceFeeRow")}` : t("calc.sourcingBadge")}
                         </div>
                       </div>
                     </button>
