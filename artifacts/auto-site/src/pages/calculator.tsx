@@ -329,7 +329,7 @@ export default function Calculator() {
                           className={`p-3 rounded-lg border-2 flex flex-col items-center gap-1 transition-all
                             ${form.sourceCountry === c.code ? "border-primary bg-primary/10 text-brand-black" : "border-border/50 hover:border-border text-muted-foreground hover:text-brand-black"}`}>
                           <span className="text-xl">{c.flag}</span>
-                          <span className="text-xs font-medium leading-tight text-center">{t(`calc.src.${c.code}`)}</span>
+                          <span className="text-xs font-medium leading-tight text-center">{c.code === "XX" ? ({ ru: "Не определено", en: "Not specified", pl: "Nie określono", lt: "Nenurodyta" } as const)[lang] : t(`calc.src.${c.code}`)}</span>
                           <span className="text-xs opacity-60">{c.code === "XX" ? "€700–900" : fmt(c.delivery)}</span>
                         </button>
                       ))}
