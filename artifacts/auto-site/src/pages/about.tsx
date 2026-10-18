@@ -75,6 +75,7 @@ export default function About() {
     "about.diff.item1",
     "about.diff.item2",
     "about.diff.item3",
+    "about.diff.item4",
   ];
 
   return (
