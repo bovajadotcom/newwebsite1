@@ -61,7 +61,7 @@ export default function ArticlePage() {
 
   useEffect(() => {
     if (title) {
-      document.title = `${title} | BOVAJA`;
+      document.title = `${title} | VIN EURO CAR`;
       const metaDesc = document.querySelector('meta[name="description"]');
       if (metaDesc) metaDesc.setAttribute("content", excerpt || title);
     }
@@ -81,8 +81,8 @@ export default function ArticlePage() {
     return (
       <div className="pt-12 pb-24 text-center">
         <div className="container mx-auto px-4">
-          <Newspaper size={48} className="mx-auto mb-4 opacity-20 text-white" />
-          <h1 className="text-2xl font-bold text-white mb-2">{t("articles.notFound")}</h1>
+          <Newspaper size={48} className="mx-auto mb-4 opacity-40 text-slate-400" />
+          <h1 className="text-2xl font-bold text-brand-black mb-2">{t("articles.notFound")}</h1>
           <Link href="/articles" className="text-primary hover:underline">← {t("articles.backToAll")}</Link>
         </div>
       </div>
@@ -93,11 +93,11 @@ export default function ArticlePage() {
     <div className="pt-12 pb-24">
       <div className="container mx-auto px-4 max-w-3xl">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <Link href="/articles" className="inline-flex items-center gap-2 text-muted-foreground hover:text-white text-sm mb-8 transition-colors">
+          <Link href="/articles" className="inline-flex items-center gap-2 text-muted-foreground hover:text-brand-black text-sm mb-8 transition-colors">
             <ArrowLeft size={14} /> {t("articles.backToAll")}
           </Link>
 
-          <h1 className="text-3xl md:text-4xl font-black text-white leading-tight mb-4">{title}</h1>
+          <h1 className="text-3xl md:text-4xl font-black text-brand-black leading-tight mb-4">{title}</h1>
 
           {article.publishedAt && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
@@ -125,12 +125,12 @@ export default function ArticlePage() {
 
           {html ? (
             <div
-              className="prose prose-invert prose-sm md:prose-base max-w-none
-                prose-headings:text-white prose-headings:font-bold
-                prose-p:text-slate-300 prose-p:leading-relaxed
-                prose-strong:text-white
+              className="prose prose-sm md:prose-base max-w-none
+                prose-headings:text-brand-black prose-headings:font-bold
+                prose-p:text-slate-700 prose-p:leading-relaxed
+                prose-strong:text-brand-black
                 prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                prose-ul:text-slate-300 prose-ol:text-slate-300
+                prose-ul:text-slate-700 prose-ol:text-slate-700
                 prose-li:marker:text-primary
                 prose-blockquote:border-primary/50 prose-blockquote:text-muted-foreground
                 prose-img:rounded-xl prose-img:border prose-img:border-border/50"

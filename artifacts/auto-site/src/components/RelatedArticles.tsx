@@ -36,7 +36,7 @@ export function RelatedArticles({
   if (isLoading || articles.length === 0) return null;
 
   return (
-    <section className="py-16 border-t-2 border-white/10 relative">
+    <section className="py-16 border-t-2 border-brand-gray relative">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
@@ -44,7 +44,7 @@ export function RelatedArticles({
             <span className="inline-flex items-center gap-1.5 text-primary text-xs font-semibold uppercase tracking-widest mb-2">
               <Newspaper size={12} /> {t("articles.badge")}
             </span>
-            <h2 className="text-2xl font-black text-white">{title}</h2>
+            <h2 className="text-2xl font-black text-brand-black">{title}</h2>
           </div>
           <Link
             href="/articles"
@@ -57,7 +57,7 @@ export function RelatedArticles({
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {articles.map((article) => (
             <Link key={article.id} href={`/articles/${article.slug}`} className="block group">
-              <div className="rounded-xl bg-card border border-border/50 overflow-hidden hover:border-primary/40 transition-all duration-300 hover:shadow-[0_0_20px_rgba(59,130,246,0.08)] h-full flex flex-col">
+              <div className="rounded-xl bg-card border border-border/50 overflow-hidden hover:border-primary/40 transition-all duration-300 hover:shadow-[0_0_20px_rgba(209,39,50,0.08)] h-full flex flex-col">
                 <div className="h-36 overflow-hidden bg-secondary/30">
                   {article.coverImage ? (
                     <img
@@ -68,7 +68,7 @@ export function RelatedArticles({
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Newspaper size={24} className="text-white/10" />
+                      <Newspaper size={24} className="text-slate-300" />
                     </div>
                   )}
                 </div>
@@ -79,7 +79,7 @@ export function RelatedArticles({
                       {formatDate(article.publishedAt, lang)}
                     </div>
                   )}
-                  <h3 className="text-sm font-bold text-white group-hover:text-primary transition-colors line-clamp-2 mb-2 flex-1">
+                  <h3 className="text-sm font-bold text-brand-black group-hover:text-primary transition-colors line-clamp-2 mb-2 flex-1">
                     {article.title}
                   </h3>
                   <span className="inline-flex items-center gap-1 text-primary text-xs font-semibold group-hover:gap-1.5 transition-all">

@@ -29,8 +29,8 @@ export function LanguageSelector({
             key={v}
             className={`flex items-center gap-2.5 px-4 py-2.5 rounded-lg border cursor-pointer transition-all select-none ${
               value === v
-                ? "border-primary bg-primary/10 text-white"
-                : "border-border/40 text-muted-foreground hover:border-border hover:text-white"
+                ? "border-primary bg-primary/10 text-brand-black"
+                : "border-border/40 text-muted-foreground hover:border-border hover:text-brand-black"
             }`}
           >
             <input

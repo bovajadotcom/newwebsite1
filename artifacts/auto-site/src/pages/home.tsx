@@ -263,15 +263,15 @@ export default function Home() {
 
           {/* Gradient overlay: dark left → transparent right */}
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: "linear-gradient(to right, #0B1830 0%, #0B1830ee 22%, #0B183099 45%, #0B183044 65%, transparent 85%)" }} />
+            style={{ background: "linear-gradient(to right, #111111 0%, #111111ee 22%, #11111199 45%, #11111144 65%, transparent 85%)" }} />
 
           {/* Subtle top vignette */}
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: "linear-gradient(to bottom, rgba(11,24,48,0.5) 0%, transparent 30%, transparent 70%, rgba(11,24,48,0.6) 100%)" }} />
+            style={{ background: "linear-gradient(to bottom, rgba(17,17,17,0.5) 0%, transparent 30%, transparent 70%, rgba(17,17,17,0.6) 100%)" }} />
 
           {/* Ambient blue glow on left where text sits */}
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: "radial-gradient(ellipse 50% 80% at 10% 45%, rgba(37,99,235,0.12) 0%, transparent 70%)" }} />
+            style={{ background: "radial-gradient(ellipse 50% 80% at 10% 45%, rgba(209,39,50,0.14) 0%, transparent 70%)" }} />
 
           {/* Text content */}
           <div className="relative flex flex-col justify-center flex-1 px-8 md:px-14 pt-10 pb-6 lg:py-14 z-10 max-w-2xl">
@@ -284,9 +284,9 @@ export default function Home() {
               className="inline-flex items-center self-start mb-6"
             >
               <motion.span
-                animate={{ boxShadow: ["0 0 8px rgba(59,130,246,0.4), 0 0 0px rgba(59,130,246,0)", "0 0 18px rgba(59,130,246,0.75), 0 0 32px rgba(59,130,246,0.25)", "0 0 8px rgba(59,130,246,0.4), 0 0 0px rgba(59,130,246,0)"] }}
+                animate={{ boxShadow: ["0 0 8px rgba(209,39,50,0.35), 0 0 0px rgba(209,39,50,0)", "0 0 18px rgba(209,39,50,0.65), 0 0 32px rgba(209,39,50,0.2)", "0 0 8px rgba(209,39,50,0.35), 0 0 0px rgba(209,39,50,0)"] }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wide text-blue-300 border border-blue-500/50 bg-blue-500/10 backdrop-blur-sm"
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-wide text-white border border-brand-red/50 bg-brand-red/10 backdrop-blur-sm"
               >
                 <motion.span
                   className="w-2 h-2 rounded-full bg-blue-400 shrink-0"
@@ -329,7 +329,7 @@ export default function Home() {
             >
               <Link
                 href="/calculator"
-                className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-2xl text-[14px] transition-all shadow-[0_0_22px_rgba(37,99,235,0.45)] hover:shadow-[0_0_32px_rgba(37,99,235,0.65)] flex items-center gap-2 group"
+              className="px-6 py-3 bg-brand-red hover:bg-brand-burgundy text-white font-semibold rounded-2xl text-[14px] transition-all shadow-[0_0_22px_rgba(209,39,50,0.3)] hover:shadow-[0_0_32px_rgba(209,39,50,0.45)] flex items-center gap-2 group"
               >
                 {t("home.hero.cta1")}
                 <ArrowRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
@@ -349,7 +349,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.82, duration: 0.6 }}
             className="relative z-10 border-t border-white/[0.08] px-4 sm:px-8 md:px-14 py-4 sm:py-5 grid grid-cols-3 gap-2 sm:gap-0"
-            style={{ backdropFilter: "blur(4px)", background: "rgba(11,24,48,0.35)" }}
+            style={{ backdropFilter: "blur(4px)", background: "rgba(17,17,17,0.35)" }}
           >
             {[
               { icon: BadgeCheck, text: t("home.feature1.title"), sub: t("home.feature1.sub") },
@@ -401,15 +401,15 @@ export default function Home() {
         </div>
       </section>
       {/* STATS */}
-      <section className="relative py-20 overflow-hidden border-b-2 border-white/10">
+      <section className="relative py-20 overflow-hidden border-b-2 border-brand-gray">
         {/* Top accent line */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         {/* Subtle static glow behind content */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-20"
-            style={{ background: "radial-gradient(ellipse, rgba(37,99,235,0.5) 0%, transparent 70%)", filter: "blur(60px)" }} />
+            style={{ background: "radial-gradient(ellipse, rgba(209,39,50,0.28) 0%, transparent 70%)", filter: "blur(60px)" }} />
           <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[400px] h-[250px] rounded-full opacity-15"
-            style={{ background: "radial-gradient(ellipse, rgba(99,102,241,0.4) 0%, transparent 70%)", filter: "blur(60px)" }} />
+            style={{ background: "radial-gradient(ellipse, rgba(125,0,11,0.2) 0%, transparent 70%)", filter: "blur(60px)" }} />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -420,10 +420,10 @@ export default function Home() {
           </motion.div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             {[
-              { to: 1000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "59,130,246" },
-              { to: 500,  prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.clients"),   color: "99,102,241" },
-              { to: 15,   prefix: "", suffix: "",  separator: "",  decimals: 0, label: t("stats.experience"),color: "59,130,246" },
-              { to: 15,   prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.countries"), color: "99,102,241" },
+              { to: 1000, prefix: "", suffix: "+", separator: ",", decimals: 0, label: t("stats.delivered"), color: "209,39,50" },
+              { to: 500,  prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.clients"),   color: "125,0,11" },
+              { to: 15,   prefix: "", suffix: "",  separator: "",  decimals: 0, label: t("stats.experience"),color: "209,39,50" },
+              { to: 15,   prefix: "", suffix: "+", separator: "",  decimals: 0, label: t("stats.countries"), color: "125,0,11" },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -434,9 +434,8 @@ export default function Home() {
                 whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 className="group relative text-center py-8 px-5 rounded-2xl cursor-default"
                 style={{
-                  background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  backdropFilter: "blur(16px)",
+                  background: "linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%)",
+                  border: "1px solid #D9D9D9",
                 }}
               >
                 {/* Hover border glow */}
@@ -448,8 +447,8 @@ export default function Home() {
                   style={{ background: `linear-gradient(to right, transparent, rgba(${stat.color},0.7), transparent)` }} />
 
                 <h3
-                  className="text-4xl md:text-5xl font-black text-white tracking-tight mb-2"
-                  style={{ textShadow: `0 0 30px rgba(${stat.color},0.5)` }}
+                  className="text-4xl md:text-5xl font-black text-brand-black tracking-tight mb-2"
+                  style={{ textShadow: `0 4px 14px rgba(${stat.color},0.12)` }}
                 >
                   <CountUp to={stat.to} prefix={stat.prefix} suffix={stat.suffix} separator={stat.separator} decimals={stat.decimals} />
                 </h3>
@@ -466,7 +465,7 @@ export default function Home() {
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-widest mb-4 border border-blue-200">
               <Shield size={11} /> {t("section.advantages")}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.advantagesTitle") || "Why Work With BOVAJA"}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">{t("section.advantagesTitle") || "Why Work With VIN EURO CAR"}</h2>
           </motion.div>
 
           <motion.div 
@@ -499,7 +498,7 @@ export default function Home() {
         </div>
       </section>
       {/* PROCESS */}
-      <section className="relative py-24 border-b-2 border-white/10">
+      <section className="relative py-24 border-b-2 border-brand-gray">
         {/* Top accent line */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="container mx-auto px-4">
@@ -528,7 +527,7 @@ export default function Home() {
                     left: `calc(10% + ${seg * 20}% + 24px)`,
                     right: `calc(10% + ${(3 - seg) * 20}% + 24px)`,
                     transformOrigin: "left",
-                    boxShadow: "0 0 8px rgba(59,130,246,0.6)",
+                    boxShadow: "0 0 8px rgba(209,39,50,0.4)",
                   }}
                   initial={{ scaleX: 0 }}
                   animate={isProcessInView ? { scaleX: 1 } : { scaleX: 0 }}
@@ -563,7 +562,7 @@ export default function Home() {
                         }}
                       />
                       <motion.div
-                        className="w-12 h-12 rounded-full bg-background border-2 border-primary flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.35)] relative z-10"
+                        className="w-12 h-12 rounded-full bg-background border-2 border-primary flex items-center justify-center shadow-[0_0_20px_rgba(209,39,50,0.25)] relative z-10"
                         initial={{ scale: 0, opacity: 0 }}
                         animate={isProcessInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
                         transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.55 + i * 0.45 }}
@@ -580,7 +579,7 @@ export default function Home() {
                       transition={{ duration: 0.4, delay: 0.7 + i * 0.45 }}
                     >
                       <span className="text-xs font-bold text-primary/80 tracking-widest uppercase block mb-1">{i + 1}</span>
-                      <h3 className="text-sm font-bold text-white leading-tight">{step.label}</h3>
+                      <h3 className="text-sm font-bold text-brand-black leading-tight">{step.label}</h3>
                       <p className="text-xs text-muted-foreground mt-1">{step.desc}</p>
                     </motion.div>
                   </div>
@@ -602,7 +601,7 @@ export default function Home() {
                   {i < 4 && (
                     <motion.div
                       className="absolute left-6 top-12 w-[2px] bg-gradient-to-b from-primary to-blue-400/30"
-                      style={{ bottom: 0, transformOrigin: "top", boxShadow: "0 0 6px rgba(59,130,246,0.4)" }}
+                      style={{ bottom: 0, transformOrigin: "top", boxShadow: "0 0 6px rgba(209,39,50,0.3)" }}
                       initial={{ scaleY: 0 }}
                       animate={isProcessInView ? { scaleY: 1 } : { scaleY: 0 }}
                       transition={{ duration: 0.4, delay: 0.7 + i * 0.4, ease: [0.22, 1, 0.36, 1] }}
@@ -620,7 +619,7 @@ export default function Home() {
                       transition={{ duration: 2, delay: 0.8 + i * 0.4, repeat: Infinity }}
                     />
                     <motion.div
-                      className="w-12 h-12 rounded-full bg-background border-2 border-primary flex items-center justify-center shadow-[0_0_16px_rgba(59,130,246,0.3)] relative z-10"
+                      className="w-12 h-12 rounded-full bg-background border-2 border-primary flex items-center justify-center shadow-[0_0_16px_rgba(209,39,50,0.24)] relative z-10"
                       initial={{ scale: 0, opacity: 0 }}
                       animate={isProcessInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
                       transition={{ type: "spring", stiffness: 250, damping: 18, delay: 0.5 + i * 0.4 }}
@@ -637,7 +636,7 @@ export default function Home() {
                     transition={{ duration: 0.4, delay: 0.65 + i * 0.4 }}
                   >
                     <span className="text-xs font-bold text-primary/70 tracking-widest uppercase">{t("process.stepPrefix")} {i + 1}</span>
-                    <h3 className="text-base font-bold text-white mt-0.5">{step.label}</h3>
+                    <h3 className="text-base font-bold text-brand-black mt-0.5">{step.label}</h3>
                     <p className="text-sm text-muted-foreground">{step.desc}</p>
                   </motion.div>
                 </div>
@@ -941,7 +940,7 @@ export default function Home() {
         </div>
       </section>
       {/* CONTACT FORM & CTA */}
-      <section className="relative py-24 overflow-hidden border-b-2 border-white/10">
+      <section className="relative py-24 overflow-hidden border-b-2 border-brand-gray">
         {/* Top accent line */}
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent pointer-events-none" aria-hidden="true" />
         <div className="absolute inset-0 bg-primary/5" />
@@ -950,7 +949,7 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             <motion.div {...fadeIn}>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{t("section.cta")}</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-brand-black mb-6">{t("section.cta")}</h2>
               <p className="text-xl text-muted-foreground mb-10">{t("section.ctaSub")}</p>
               
               <div className="flex gap-4">
@@ -960,7 +959,7 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">{t("cta.expertSupport")}</p>
-                    <p className="font-bold text-white">{t("cta.availability")}</p>
+                    <p className="font-bold text-brand-black">{t("cta.availability")}</p>
                   </div>
                 </div>
               </div>
@@ -977,7 +976,7 @@ export default function Home() {
                   <div className="w-14 h-14 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center">
                     <CheckCircle className="text-green-400" size={28} />
                   </div>
-                  <p className="text-white font-bold text-lg">{t("form.thankYou")}</p>
+                  <p className="text-brand-black font-bold text-lg">{t("form.thankYou")}</p>
                   <p className="text-muted-foreground text-center text-sm">{t("form.successSub")}</p>
                 </div>
               ) : (
@@ -991,33 +990,33 @@ export default function Home() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.name")}</label>
-                      <input ref={footerNameRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                      <input ref={footerNameRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
-                      <input ref={footerPhoneRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                      <input ref={footerPhoneRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
-                      <input ref={footerEmailRef} type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                      <input ref={footerEmailRef} type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.country")}</label>
-                      <input ref={footerCountryRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                      <input ref={footerCountryRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                     </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
-                    <textarea ref={footerMessageRef} rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
+                    <textarea ref={footerMessageRef} rows={4} className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none resize-none" />
                   </div>
                   <LanguageSelector value={footerPrefLang} onChange={setFooterPrefLang} />
                   <ConsentCheckbox checked={footerConsent} onChange={(v) => { setFooterConsent(v); if (v) setFooterConsentError(false); }} showError={footerConsentError} />
                   <button
                     type="submit"
                     disabled={footerFormStatus === "loading" || !footerConsent}
-                    className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 disabled:opacity-60"
+                    className="w-full py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(209,39,50,0.24)] flex items-center justify-center gap-2 disabled:opacity-60"
                   >
                     {footerFormStatus === "loading" ? t("form.sending") : <>{t("cta.startNow")} <ArrowRight size={18} /></>}
                   </button>

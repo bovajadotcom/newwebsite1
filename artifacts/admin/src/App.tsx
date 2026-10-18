@@ -34,7 +34,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
-        <div className="animate-pulse">Loading AutoImport CMS...</div>
+        <div className="animate-pulse">Loading VIN EURO CAR CMS...</div>
       </div>
     );
   }

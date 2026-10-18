@@ -36,7 +36,7 @@ export default function LegalPageLayout({
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
             <Shield size={11} /> {t(badgeKey)}
           </span>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{t(titleKey)}</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-brand-black mb-4">{t(titleKey)}</h1>
           <p className="text-muted-foreground text-sm">{t(lastUpdatedKey)}</p>
         </motion.div>
 
@@ -49,7 +49,7 @@ export default function LegalPageLayout({
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.05 }}
             >
-              <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+              <h2 className="text-lg font-bold text-brand-black mb-3 flex items-center gap-2">
                 <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs flex items-center justify-center font-bold shrink-0">
                   {i + 1}
                 </span>

@@ -48,7 +48,7 @@ export default function Contact() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">{t("contact.title")}</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-brand-black mb-6">{t("contact.title")}</h1>
           <p className="text-xl text-muted-foreground">{t("contact.sub")}</p>
         </motion.div>
 
@@ -62,17 +62,17 @@ export default function Contact() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="p-6 bg-card border border-border/50 rounded-xl">
                 <Phone className="text-primary mb-4" size={24} />
-                <h3 className="text-white font-bold mb-2">{t("contact.phone")}</h3>
+                <h3 className="text-brand-black font-bold mb-2">{t("contact.phone")}</h3>
                 <a href="tel:+48512698857" className="text-muted-foreground hover:text-primary transition-colors">+48 512 698 857</a>
               </div>
               <div className="p-6 bg-card border border-border/50 rounded-xl">
                 <Mail className="text-primary mb-4" size={24} />
-                <h3 className="text-white font-bold mb-2">{t("contact.email")}</h3>
+                <h3 className="text-brand-black font-bold mb-2">{t("contact.email")}</h3>
                 <a href="mailto:info@bovaja.com" className="text-muted-foreground hover:text-primary transition-colors text-sm break-all">info@bovaja.com</a>
               </div>
               <div className="p-6 bg-card border border-border/50 rounded-xl sm:col-span-2">
                 <MapPin className="text-primary mb-4" size={24} />
-                <h3 className="text-white font-bold mb-2">{t("contact.location")}</h3>
+                <h3 className="text-brand-black font-bold mb-2">{t("contact.location")}</h3>
                 <p className="text-muted-foreground text-sm">
                   Gariūnai Car Market, Site 309A<br />
                   Gariūnų g. 49, Vilnius 02300<br />
@@ -103,14 +103,14 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             className="p-8 rounded-xl bg-card border border-border/50"
           >
-            <h3 className="text-2xl font-bold text-white mb-6">{t("contact.sendMessage")}</h3>
+            <h3 className="text-2xl font-bold text-brand-black mb-6">{t("contact.sendMessage")}</h3>
 
             {status === "success" ? (
               <div className="flex flex-col items-center justify-center py-16 gap-4">
                 <div className="w-14 h-14 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center">
                   <CheckCircle className="text-green-400" size={28} />
                 </div>
-                <p className="text-white font-bold text-lg">{t("form.thankYou")}</p>
+                <p className="text-brand-black font-bold text-lg">{t("form.thankYou")}</p>
                 <p className="text-muted-foreground text-center text-sm">{t("form.successSub")}</p>
               </div>
             ) : (
@@ -124,24 +124,24 @@ export default function Contact() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.name")}</label>
-                    <input ref={nameRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                    <input ref={nameRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.phone")}</label>
-                    <input ref={phoneRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                    <input ref={phoneRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.email")}</label>
-                  <input ref={emailRef} type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                  <input ref={emailRef} type="email" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-2">{t("contact.subject")}</label>
-                  <input ref={subjectRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none" />
+                  <input ref={subjectRef} type="text" className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-muted-foreground mb-2">{t("form.message")}</label>
-                  <textarea ref={messageRef} rows={5} className="w-full bg-input border border-border rounded px-4 py-3 text-white focus:border-primary outline-none resize-none" />
+                  <textarea ref={messageRef} rows={5} className="w-full bg-input border border-border rounded px-4 py-3 text-brand-black focus:border-primary outline-none resize-none" />
                 </div>
                 <LanguageSelector value={prefLang} onChange={setPrefLang} />
                 <ConsentCheckbox checked={consent} onChange={(v) => { setConsent(v); if (v) setConsentError(false); }} showError={consentError} />
@@ -159,7 +159,7 @@ export default function Contact() {
 
         <div className="relative mt-20 mb-20 max-w-6xl mx-auto">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t-2 border-white/10" />
+            <div className="w-full border-t-2 border-brand-gray" />
           </div>
           <div className="relative flex justify-center">
             <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-primary/60 to-transparent absolute top-0 left-1/2 -translate-x-1/2" />
@@ -173,10 +173,10 @@ export default function Contact() {
           className="max-w-6xl mx-auto"
         >
           <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-4 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.35)] hover:shadow-[0_0_20px_rgba(59,130,246,0.55)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-4 animate-pulse shadow-[0_0_12px_rgba(209,39,50,0.2)] hover:shadow-[0_0_20px_rgba(209,39,50,0.32)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
               <MapPin size={13} /> {t("contact.visitUs")}
             </span>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-3">{t("contact.findUs")}</h2>
+            <h2 className="text-3xl md:text-4xl font-black text-brand-black mb-3">{t("contact.findUs")}</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               {t("contact.officeDesc")}
             </p>
@@ -189,10 +189,10 @@ export default function Contact() {
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
                     <MapPin size={18} className="text-primary" />
                   </div>
-                  <h3 className="text-white font-bold">{t("contact.ourAddress")}</h3>
+                  <h3 className="text-brand-black font-bold">{t("contact.ourAddress")}</h3>
                 </div>
                 <div className="space-y-1 text-sm text-muted-foreground mb-5">
-                  <p className="text-white font-semibold">Gariūnai Car Market</p>
+                  <p className="text-brand-black font-semibold">Gariūnai Car Market</p>
                   <p>Site 309A</p>
                   <p>Gariūnų g. 49</p>
                   <p>Vilnius, 02300 Vilniaus m. sav.</p>
@@ -211,7 +211,7 @@ export default function Contact() {
                     href="https://maps.apple.com/?q=Gari%C5%ABn%C5%B3+g.+49,+Vilnius"
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-border text-muted-foreground text-sm font-medium hover:text-white hover:border-white/20 transition-colors"
+                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-border text-muted-foreground text-sm font-medium hover:text-brand-black hover:border-brand-black/20 transition-colors"
                   >
                     <MapPin size={14} /> {t("contact.appleMaps")}
                   </a>
@@ -219,15 +219,15 @@ export default function Contact() {
               </div>
 
               <div className="p-6 rounded-2xl bg-card border border-border/50">
-                <h3 className="text-white font-bold mb-4">{t("contact.workingHours")}</h3>
+                <h3 className="text-brand-black font-bold mb-4">{t("contact.workingHours")}</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("contact.monFri")}</span>
-                    <span className="text-white">08:00 – 20:00</span>
+                    <span className="text-brand-black">08:00 – 20:00</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("contact.satSun")}</span>
-                    <span className="text-white">08:00 – 19:00</span>
+                    <span className="text-brand-black">08:00 – 19:00</span>
                   </div>
                 </div>
               </div>
@@ -235,7 +235,7 @@ export default function Contact() {
 
             <div className="lg:col-span-2 rounded-2xl overflow-hidden border border-border/50 min-h-[380px]">
               <iframe
-                title="BOVAJA location — Gariūnai Car Market, Vilnius"
+                title="VIN EURO CAR location — Gariūnai Car Market, Vilnius"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2306.6!2d25.1795!3d54.6702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46dd9415fce4c605%3A0x3b0daedf5c07d34d!2sGari%C5%ABn%C5%B3+g.+49%2C+Vilnius+02300!5e0!3m2!1sen!2slt!4v1720000000000"
                 width="100%"
                 height="100%"

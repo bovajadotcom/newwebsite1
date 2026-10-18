@@ -222,18 +222,17 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
             <div
               role="dialog"
               data-bovaja-lead
-              className="relative pointer-events-auto w-full max-w-md rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
-              style={{ background: "linear-gradient(135deg, #0d1628 0%, #0a0f1e 100%)" }}
+              className="relative pointer-events-auto w-full max-w-md rounded-2xl border border-brand-gray bg-white shadow-2xl overflow-hidden"
               onClick={e => e.stopPropagation()}
             >
               {/* Top accent bar */}
-              <div className="h-1 bg-gradient-to-r from-blue-600 via-blue-400 to-blue-600" />
+              <div className="h-1 bg-gradient-to-r from-brand-burgundy via-brand-red to-brand-burgundy" />
 
               <div className="p-7">
                 {/* Close */}
                 <button
                   onClick={dismiss}
-                  className="absolute top-5 right-5 text-slate-500 hover:text-white transition-colors"
+                  className="absolute top-5 right-5 text-slate-500 hover:text-brand-black transition-colors"
                   aria-label="Close"
                 >
                   <X size={20} />
@@ -243,12 +242,12 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                   <>
                     {/* Header */}
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-10 h-10 rounded-full bg-blue-500/15 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
-                        <Bell className="text-blue-400" size={18} />
+                      <div className="w-10 h-10 rounded-full bg-red-50 border border-red-100 flex items-center justify-center flex-shrink-0">
+                        <Bell className="text-brand-red" size={18} />
                       </div>
                       <div>
-                        <h2 className="text-white font-bold text-lg leading-tight">{t("modal.alert.title")}</h2>
-                        <p className="text-slate-400 text-sm">{t("modal.alert.sub")}</p>
+                        <h2 className="text-brand-black font-bold text-lg leading-tight">{t("modal.alert.title")}</h2>
+                        <p className="text-slate-600 text-sm">{t("modal.alert.sub")}</p>
                       </div>
                     </div>
 
@@ -267,8 +266,8 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                                 onClick={() => setChannel(ch.id)}
                                 className={`flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border text-xs font-medium transition-all duration-200 ${
                                   active
-                                    ? "border-blue-500 bg-blue-500/15 text-blue-400 shadow-[0_0_12px_rgba(59,130,246,0.2)]"
-                                    : "border-white/8 bg-white/[0.03] text-slate-400 hover:border-white/20 hover:text-white"
+                                    ? "border-brand-red bg-red-50 text-brand-burgundy"
+                                    : "border-brand-gray bg-brand-soft text-slate-600 hover:border-brand-red/40 hover:text-brand-black"
                                 }`}
                               >
                                 <Icon size={18} />
@@ -287,7 +286,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                           value={contact}
                           onChange={e => { setContact(e.target.value); setError(""); }}
                           placeholder={activeChannel.hint}
-                          className="w-full bg-white/[0.05] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition-all text-sm"
+                          className="w-full bg-white border border-brand-gray rounded-xl px-4 py-3 text-brand-black placeholder-slate-500 focus:border-brand-red focus:outline-none focus:ring-1 focus:ring-brand-red/20 transition-all text-sm"
                         />
                         {error && <p className="text-red-400 text-xs mt-1.5">{error}</p>}
                       </div>
@@ -298,7 +297,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                       <button
                         type="submit"
                         disabled={loading || !consent}
-                        className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all duration-200 shadow-[0_0_20px_rgba(59,130,246,0.25)] hover:shadow-[0_0_28px_rgba(59,130,246,0.4)] flex items-center justify-center gap-2"
+                        className="w-full py-3.5 bg-brand-red hover:bg-brand-burgundy disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
                       >
                         {loading ? (
                           <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -310,7 +309,7 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                         )}
                       </button>
 
-                      <p className="text-center text-xs text-slate-600">
+                      <p className="text-center text-xs text-slate-500">
                         {t("modal.alert.nospam")}
                       </p>
                     </form>
@@ -322,13 +321,13 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    <div className="w-16 h-16 rounded-full bg-green-500/15 border border-green-500/30 flex items-center justify-center">
-                      <CheckCircle2 className="text-green-400" size={32} />
+                    <div className="w-16 h-16 rounded-full bg-green-50 border border-green-200 flex items-center justify-center">
+                      <CheckCircle2 className="text-green-600" size={32} />
                     </div>
                     <div>
-                      <h3 className="text-white font-bold text-xl mb-1">{t("modal.alert.done")}</h3>
-                      <p className="text-slate-400 text-sm">
-                        {t("modal.alert.doneVia")} <span className="text-blue-400 font-medium">{activeChannel.label}</span>.
+                      <h3 className="text-brand-black font-bold text-xl mb-1">{t("modal.alert.done")}</h3>
+                      <p className="text-slate-600 text-sm">
+                        {t("modal.alert.doneVia")} <span className="text-brand-red font-medium">{activeChannel.label}</span>.
                         <br />{t("modal.alert.doneMsg")}
                       </p>
                     </div>

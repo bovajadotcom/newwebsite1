@@ -36,7 +36,7 @@ export default function Articles() {
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-5">
             <Newspaper size={14} /> {t("nav.articles")}
           </span>
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-4">{t("articles.heading")}</h1>
+          <h1 className="text-4xl md:text-5xl font-black text-brand-black mb-4">{t("articles.heading")}</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             {t("articles.sub")}
           </p>
@@ -72,7 +72,7 @@ export default function Articles() {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.08 }}
-                  className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:border-primary/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.1)] flex flex-col"
+                  className="group rounded-2xl bg-card border border-border/50 overflow-hidden hover:border-primary/40 transition-all duration-300 hover:shadow-[0_0_30px_rgba(209,39,50,0.08)] flex flex-col"
                 >
                   <Link href={`/articles/${article.slug}`} className="block">
                     <div className="relative overflow-hidden h-48 bg-secondary/30">
@@ -85,7 +85,7 @@ export default function Articles() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Newspaper size={40} className="text-white/10" />
+                          <Newspaper size={40} className="text-slate-300" />
                         </div>
                       )}
                     </div>
@@ -98,7 +98,7 @@ export default function Articles() {
                       </div>
                     )}
                     <Link href={`/articles/${article.slug}`} className="block">
-                      <h2 className="text-lg font-bold text-white group-hover:text-primary transition-colors line-clamp-2 mb-2">
+                      <h2 className="text-lg font-bold text-brand-black group-hover:text-primary transition-colors line-clamp-2 mb-2">
                         {title}
                       </h2>
                     </Link>

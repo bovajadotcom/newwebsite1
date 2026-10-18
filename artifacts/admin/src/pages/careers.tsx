@@ -76,7 +76,7 @@ export default function CareersPage() {
               <Briefcase size={18} className="text-primary" />
             </div>
             <div>
-              <div className="text-white font-semibold text-sm mb-1">Careers Page</div>
+              <div className="text-brand-black font-semibold text-sm mb-1">Careers Page</div>
               <div className="text-muted-foreground text-xs">Live at <code className="bg-muted px-1 rounded">/careers</code> on the website.</div>
             </div>
           </div>
@@ -85,8 +85,8 @@ export default function CareersPage() {
               <Mail size={18} className="text-green-400" />
             </div>
             <div>
-              <div className="text-white font-semibold text-sm mb-1">Email Delivery</div>
-              <div className="text-muted-foreground text-xs">Applications sent to <span className="text-white">info@bovaja.com</span> with CV attached.</div>
+              <div className="text-brand-black font-semibold text-sm mb-1">Email Delivery</div>
+              <div className="text-muted-foreground text-xs">Applications sent to <span className="text-brand-black">info@bovaja.com</span> with CV attached.</div>
             </div>
           </div>
           <div className="p-5 rounded-xl bg-card border border-border/50 flex items-start gap-4">
@@ -94,7 +94,7 @@ export default function CareersPage() {
               <FileText size={18} className="text-blue-400" />
             </div>
             <div>
-              <div className="text-white font-semibold text-sm mb-1">CV Upload</div>
+              <div className="text-brand-black font-semibold text-sm mb-1">CV Upload</div>
               <div className="text-muted-foreground text-xs">Accepts PDF, DOC, DOCX up to 5 MB. Optional — applicants may apply without a CV.</div>
             </div>
           </div>
@@ -102,7 +102,7 @@ export default function CareersPage() {
 
         {/* Content settings note */}
         <div className="p-5 rounded-xl bg-card border border-border/50">
-          <h2 className="text-white font-semibold mb-2">Page Content</h2>
+          <h2 className="text-brand-black font-semibold mb-2">Page Content</h2>
           <p className="text-muted-foreground text-sm mb-4">
             Careers page copy and translations can be edited in the Translations section. The form fields and structure are defined in the frontend template.
           </p>
@@ -116,7 +116,7 @@ export default function CareersPage() {
             <a
               href="/"
               target="_blank"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border text-muted-foreground text-sm font-medium hover:text-white hover:border-white/20 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border text-muted-foreground text-sm font-medium hover:text-brand-black hover:border-brand-black/20 transition-colors"
             >
               Preview Website
             </a>
@@ -125,7 +125,7 @@ export default function CareersPage() {
 
         {/* Load applications button */}
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-white">Recent Applications</h2>
+          <h2 className="text-lg font-bold text-brand-black">Recent Applications</h2>
           <Button onClick={loadApplications} disabled={isLoading} size="sm">
             {isLoading ? "Loading…" : "Load Applications"}
           </Button>
@@ -162,7 +162,7 @@ export default function CareersPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-semibold text-white">{app.name || "Anonymous"}</span>
+                    <span className="font-semibold text-brand-black">{app.name || "Anonymous"}</span>
                     <LangBadge lang={app.lang} />
                     {app.cvFilename && <Badge variant="secondary" className="text-xs">CV attached</Badge>}
                     {app.employmentPreference && (
@@ -182,12 +182,12 @@ export default function CareersPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
                     {app.phone && (
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <Phone size={12} /> <a href={`tel:${app.phone}`} className="hover:text-white">{app.phone}</a>
+                        <Phone size={12} /> <a href={`tel:${app.phone}`} className="hover:text-brand-black">{app.phone}</a>
                       </div>
                     )}
                     {app.email && (
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <Mail size={12} /> <a href={`mailto:${app.email}`} className="hover:text-white">{app.email}</a>
+                        <Mail size={12} /> <a href={`mailto:${app.email}`} className="hover:text-brand-black">{app.email}</a>
                       </div>
                     )}
                     {app.whatsapp && (

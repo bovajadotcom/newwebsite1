@@ -103,7 +103,7 @@ export default function About() {
       </section>
 
       {/* Mission & Values */}
-      <section className="relative py-24 bg-secondary/10 border-b-2 border-white/10">
+      <section className="relative py-24 bg-brand-soft/50 border-b-2 border-brand-gray">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <motion.div
@@ -115,7 +115,7 @@ export default function About() {
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
               <Target size={11} /> {t("about.mission")}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">{t("about.corePrinciples")}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-3">{t("about.corePrinciples")}</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">{t("about.corePrinciplesSub")}</p>
           </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -131,7 +131,7 @@ export default function About() {
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
                   <v.icon className="text-primary" size={32} />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{t(v.titleKey)}</h3>
+                <h3 className="text-2xl font-bold text-brand-black mb-4">{t(v.titleKey)}</h3>
                 <p className="text-muted-foreground leading-relaxed">{t(v.descKey)}</p>
               </motion.div>
             ))}
@@ -140,7 +140,7 @@ export default function About() {
       </section>
 
       {/* Timeline */}
-      <section className="relative py-20 border-b-2 border-white/10">
+      <section className="relative py-20 border-b-2 border-brand-gray">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4 max-w-4xl">
           <motion.div
@@ -152,7 +152,7 @@ export default function About() {
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-4 border border-primary/25">
               <Compass size={11} /> {t("about.timeline")}
             </span>
-            <h2 className="text-3xl font-bold text-white mb-3">{t("about.decadeTitle")}</h2>
+            <h2 className="text-3xl font-bold text-brand-black mb-3">{t("about.decadeTitle")}</h2>
             <p className="text-muted-foreground">{t("about.decadeSub")}</p>
           </motion.div>
           
@@ -169,7 +169,7 @@ export default function About() {
                   {item.year}
                 </div>
                 <div className="pt-0.5 flex-1 min-w-0">
-                  <h3 className="text-xl font-bold text-white mb-1.5">{t(item.titleKey)}</h3>
+                  <h3 className="text-xl font-bold text-brand-black mb-1.5">{t(item.titleKey)}</h3>
                   <p className="text-muted-foreground">{t(item.descKey)}</p>
                   {item.photos && (
                     <TimelinePhotoRow photos={item.photos} />
@@ -204,7 +204,7 @@ export default function About() {
      
 
       {/* Why Choose Us & Achievements */}
-      <section className="relative py-20 bg-secondary/15 border-b-2 border-white/10">
+      <section className="relative py-20 bg-brand-soft/50 border-b-2 border-brand-gray">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -216,7 +216,7 @@ export default function About() {
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-semibold uppercase tracking-widest mb-5 border border-primary/25">
                 <CheckCircle2 size={11} /> {t("about.whyUs")}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t("about.diffTitle")}</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-6">{t("about.diffTitle")}</h2>
               <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
                 {t("about.diffDesc")}
               </p>
@@ -225,7 +225,7 @@ export default function About() {
                 {diffItems.map((key, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <CheckCircle2 className="text-primary shrink-0" size={20} />
-                    <span className="text-white font-medium">{t(key)}</span>
+                    <span className="text-brand-black font-medium">{t(key)}</span>
                   </div>
                 ))}
               </div>
@@ -239,20 +239,20 @@ export default function About() {
             >
               <div className="p-6 bg-card border border-border/40 rounded-2xl hover:border-primary/30 transition-colors">
                 <MapPin className="text-primary mb-4" size={28} />
-                <h4 className="font-bold text-white mb-3">BOVAJA UAB</h4>
+                <h4 className="font-bold text-brand-black mb-3">BOVAJA UAB</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Savanorių pr. 15A<br />
                   LT-03126 Vilnius, Lithuania<br />
-                  <span className="text-white/60 text-xs mt-2 block">VAT ID: LT100015006418</span>
+                  <span className="text-slate-500 text-xs mt-2 block">VAT ID: LT100015006418</span>
                 </p>
               </div>
               <div className="p-6 bg-card border border-border/40 rounded-2xl hover:border-primary/30 transition-colors">
                 <MapPin className="text-primary mb-4" size={28} />
-                <h4 className="font-bold text-white mb-3">BOVAJA Sp. z o.o.</h4>
+                <h4 className="font-bold text-brand-black mb-3">BOVAJA Sp. z o.o.</h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Aleje Jerozolimskie 109/70<br />
                   02-011 Warsaw, Poland<br />
-                  <span className="text-white/60 text-xs mt-2 block">VAT ID: PL9462741244</span>
+                  <span className="text-slate-500 text-xs mt-2 block">VAT ID: PL9462741244</span>
                 </p>
               </div>
             </motion.div>
@@ -261,7 +261,7 @@ export default function About() {
       </section>
 
       {/* Partner Logos */}
-      <section className="relative py-14 border-b-2 border-white/10">
+      <section className="relative py-14 border-b-2 border-brand-gray">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent pointer-events-none" />
         <div className="container mx-auto px-4">
           <p className="text-center text-sm text-muted-foreground uppercase tracking-widest mb-10">{t("about.partners")}</p>

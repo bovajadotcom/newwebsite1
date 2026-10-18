@@ -82,8 +82,13 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background dark p-4">
       <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">AutoImport Admin</CardTitle>
+        <CardHeader className="space-y-3">
+          <img
+            src={`${import.meta.env.BASE_URL}vin-euro-car-logo.png`}
+            alt="VIN EURO CAR"
+            className="w-full max-w-[240px] h-auto mx-auto mb-2"
+          />
+          <CardTitle className="text-2xl font-bold text-center">VIN EURO CAR CMS</CardTitle>
           <CardDescription className="text-center">
             Enter your credentials to access the CMS
           </CardDescription>

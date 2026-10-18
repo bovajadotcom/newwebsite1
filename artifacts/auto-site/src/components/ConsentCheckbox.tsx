@@ -25,7 +25,7 @@ export function ConsentCheckbox({ checked, onChange, showError }: Props) {
               showError && !checked
                 ? "border-red-500 bg-red-500/10"
                 : checked
-                ? "bg-primary border-primary shadow-[0_0_8px_rgba(59,130,246,0.4)]"
+                ? "bg-primary border-primary shadow-[0_0_8px_rgba(209,39,50,0.24)]"
                 : "border-border/60 bg-input group-hover:border-primary/50"
             }`}
           >

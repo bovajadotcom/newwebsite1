@@ -64,15 +64,22 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
   const getPageTitle = () => {
     const current = navItems.find((item) => item.href === location);
-    return current ? current.title : "AutoImport CMS";
+    return current ? current.title : "VIN EURO CAR CMS";
   };
 
   return (
     <div className="flex h-screen bg-background overflow-hidden dark">
       {/* Sidebar */}
       <aside className="w-64 border-r border-border bg-sidebar flex flex-col">
-        <div className="p-6">
-          <h1 className="text-xl font-bold text-sidebar-foreground">AutoImport CMS</h1>
+        <div className="p-5">
+          <img
+            src={`${import.meta.env.BASE_URL}vin-euro-car-logo.png`}
+            alt="VIN EURO CAR"
+            className="w-full max-w-[190px] h-auto rounded-md bg-white p-2"
+          />
+          <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-sidebar-foreground/60">
+            Content management
+          </p>
         </div>
         <Separator className="bg-sidebar-border" />
         <ScrollArea className="flex-1 px-3 py-4">

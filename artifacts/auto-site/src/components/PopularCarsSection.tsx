@@ -73,7 +73,7 @@ export function PopularCarsSection() {
   }, []);
 
   return (
-    <section className="relative bg-background border-t-2 border-white/10 py-20">
+    <section className="relative bg-background border-t-2 border-brand-gray py-20">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/50 to-transparent pointer-events-none" aria-hidden="true" />
       <div className="container mx-auto px-4 max-w-6xl">
 
@@ -82,7 +82,7 @@ export function PopularCarsSection() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-3">
               <Star size={12} className="fill-primary" /> {t("popular.badge")}
             </div>
-            <h2 className="text-3xl md:text-4xl font-black text-white leading-tight">
+            <h2 className="text-3xl md:text-4xl font-black text-brand-black leading-tight">
               {t("popular.heading")}
             </h2>
             <p className="text-muted-foreground mt-2 text-sm max-w-md">
@@ -140,7 +140,7 @@ export function PopularCarsSection() {
                 </div>
 
                 <div className="p-5 flex-1 flex flex-col">
-                  <h3 className="text-white font-bold text-base mb-1 group-hover:text-primary transition-colors">
+                  <h3 className="text-brand-black font-bold text-base mb-1 group-hover:text-primary transition-colors">
                     {car.make} {car.model}
                   </h3>
 
@@ -151,7 +151,7 @@ export function PopularCarsSection() {
                     </div>
                     <div className="text-right">
                       <p className="text-muted-foreground uppercase mb-0.5">{t("popular.delivery")}</p>
-                      <p className="text-white font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
+                      <p className="text-brand-black font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
                     </div>
                   </div>
 

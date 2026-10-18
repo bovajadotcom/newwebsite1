@@ -537,7 +537,7 @@ export default function Inventory() {
       <section id="popular" className="py-24">
         <div className="container mx-auto px-4">
           <motion.div {...fadeIn} className="mb-12 text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">{t("inventory.popular")}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-brand-black mb-4">{t("inventory.popular")}</h2>
             <p className="text-muted-foreground">{t("inventory.popularSub")}</p>
           </motion.div>
 
@@ -564,11 +564,11 @@ export default function Inventory() {
                     onClick={(e) => { e.stopPropagation(); toggle(`popular-${car.id}`); }}
                     className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform"
                   >
-                    <Heart size={13} className={isFavorited(`popular-${car.id}`) ? "text-red-500 fill-red-500" : "text-white/60"} />
+                    <Heart size={13} className={isFavorited(`popular-${car.id}`) ? "text-brand-red fill-brand-red" : "text-white/80"} />
                   </button>
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
-                  <h3 className="text-xl font-bold text-white mb-2">{car.make} {car.model}</h3>
+                  <h3 className="text-xl font-bold text-brand-black mb-2">{car.make} {car.model}</h3>
                   
                   <div className="flex justify-between items-center mb-4 py-3 border-y border-border/50">
                     <div>
@@ -577,7 +577,7 @@ export default function Inventory() {
                     </div>
                     <div className="text-right">
                       <p className="text-xs text-muted-foreground uppercase">{t("inventory.estDelivery")}</p>
-                      <p className="text-white font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
+                      <p className="text-brand-black font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
                     </div>
                   </div>
                   
@@ -586,7 +586,7 @@ export default function Inventory() {
                   </p>
 
                   <button
-                    className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-secondary border border-border rounded text-center text-brand-black hover:bg-primary hover:text-white hover:border-primary transition-colors flex items-center justify-center gap-2"
                   >
                     <ArrowRight size={16} /> {t("inventory.viewDetails")}
                   </button>
@@ -613,7 +613,7 @@ export default function Inventory() {
           <p className="text-lg text-muted-foreground mb-8">{t("inventory.ctaSub")}</p>
           <Link 
             href="/contact"
-            className="inline-flex px-8 py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] items-center gap-2"
+            className="inline-flex px-8 py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(209,39,50,0.24)] items-center gap-2"
           >
             {t("cta.requestInfo")} <ArrowRight size={18} />
           </Link>

@@ -34,7 +34,7 @@ const benefits = [
   { icon: <Heart size={20} />, titleKey: "careers.benefit.noCV.title",   descKey: "careers.benefit.noCV.desc" },
 ];
 
-const INPUT_CLS = "w-full bg-input border border-border rounded-lg px-4 py-3 text-white focus:border-primary outline-none transition-colors text-sm placeholder:text-muted-foreground/50";
+const INPUT_CLS = "w-full bg-white border border-border rounded-lg px-4 py-3 text-brand-black focus:border-primary outline-none transition-colors text-sm placeholder:text-muted-foreground/70";
 
 export default function Careers() {
   const { t, lang } = useLanguage();
@@ -130,10 +130,10 @@ export default function Careers() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-5 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.35)] hover:shadow-[0_0_20px_rgba(59,130,246,0.55)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-semibold mb-5 animate-pulse shadow-[0_0_12px_rgba(209,39,50,0.2)] hover:shadow-[0_0_20px_rgba(209,39,50,0.32)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
             <Users size={14} /> {t("careers.badge")}
           </span>
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-6">{t("careers.title")}</h1>
+          <h1 className="text-4xl md:text-5xl font-black text-brand-black mb-6">{t("careers.title")}</h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
             {t("careers.sub")}
           </p>
@@ -148,7 +148,7 @@ export default function Careers() {
               transition={{ delay: 0.1 }}
               className="p-6 rounded-2xl bg-card border border-border/50"
             >
-              <h2 className="text-xl font-bold text-white mb-3">{t("careers.open.title")}</h2>
+              <h2 className="text-xl font-bold text-brand-black mb-3">{t("careers.open.title")}</h2>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                 {t("careers.open.desc1")}
               </p>
@@ -170,7 +170,7 @@ export default function Careers() {
                     {b.icon}
                   </div>
                   <div>
-                    <div className="text-white font-semibold text-sm mb-1">{t(b.titleKey)}</div>
+                    <div className="text-brand-black font-semibold text-sm mb-1">{t(b.titleKey)}</div>
                     <div className="text-muted-foreground text-xs leading-relaxed">{t(b.descKey)}</div>
                   </div>
                 </motion.div>
@@ -185,7 +185,7 @@ export default function Careers() {
             className="lg:col-span-3"
           >
             <div className="p-8 rounded-2xl bg-card border border-border/50 shadow-2xl">
-              <h2 className="text-2xl font-bold text-white mb-2">{t("careers.form.title")}</h2>
+              <h2 className="text-2xl font-bold text-brand-black mb-2">{t("careers.form.title")}</h2>
               <p className="text-muted-foreground text-sm mb-8">
                 {t("careers.form.sub")}
               </p>
@@ -195,7 +195,7 @@ export default function Careers() {
                   <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
                     <CheckCircle className="text-green-400" size={32} />
                   </div>
-                  <h3 className="text-xl font-bold text-white">{t("careers.form.success.title")}</h3>
+                  <h3 className="text-xl font-bold text-brand-black">{t("careers.form.success.title")}</h3>
                   <p className="text-muted-foreground text-sm max-w-sm mx-auto">
                     {t("careers.form.success.sub")}
                   </p>
@@ -257,7 +257,7 @@ export default function Careers() {
                           className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border text-sm font-medium transition-all ${
                             selectedMethods.includes(m.id)
                               ? "bg-primary border-primary text-white"
-                              : "border-border text-muted-foreground hover:border-primary/50 hover:text-white"
+                              : "border-border text-muted-foreground hover:border-primary/50 hover:text-brand-black"
                           }`}
                         >
                           {m.icon} {m.label}
@@ -317,7 +317,7 @@ export default function Careers() {
                       }`}
                     >
                       <Upload size={18} className={cvFile ? "text-primary" : "text-muted-foreground"} />
-                      <span className={`text-sm ${cvFile ? "text-white" : "text-muted-foreground"}`}>
+                      <span className={`text-sm ${cvFile ? "text-brand-black" : "text-muted-foreground"}`}>
                         {cvFile ? cvFile.name : t("careers.form.cvClick")}
                       </span>
                       {cvFile && (
@@ -344,7 +344,7 @@ export default function Careers() {
                   <button
                     type="submit"
                     disabled={status === "loading" || !consent}
-                    className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 disabled:opacity-60"
+                    className="w-full py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(209,39,50,0.24)] flex items-center justify-center gap-2 disabled:opacity-60"
                   >
                     {status === "loading" ? (
                       <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

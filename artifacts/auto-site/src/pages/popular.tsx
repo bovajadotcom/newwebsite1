@@ -71,7 +71,7 @@ export default function Popular() {
         </div>
         <div className="container mx-auto px-4 text-center max-w-3xl relative z-10">
           <motion.div {...fadeIn}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.35)] hover:shadow-[0_0_20px_rgba(59,130,246,0.55)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6 animate-pulse shadow-[0_0_12px_rgba(209,39,50,0.2)] hover:shadow-[0_0_20px_rgba(209,39,50,0.32)] transition-shadow duration-500" style={{ animationDuration: "3s" }}>
               <Star size={14} className="fill-primary" /> {t("inventory.popular")}
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">{t("inventory.popular")}</h1>
@@ -130,7 +130,7 @@ export default function Popular() {
                   </div>
 
                   <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="text-xl font-bold text-white mb-2">{car.make} {car.model}</h3>
+                    <h3 className="text-xl font-bold text-brand-black mb-2">{car.make} {car.model}</h3>
 
                     <div className="flex justify-between items-center mb-4 py-3 border-y border-border/50">
                       <div>
@@ -139,13 +139,13 @@ export default function Popular() {
                       </div>
                       <div className="text-right">
                         <p className="text-xs text-muted-foreground uppercase">{t("inventory.estDelivery")}</p>
-                        <p className="text-white font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
+                        <p className="text-brand-black font-medium">{car.estimatedDelivery.replace(/\s*weeks$/i, "")} {t("inventory.weeks")}</p>
                       </div>
                     </div>
 
                     <p className="text-sm text-muted-foreground mb-6 flex-1">{car.description}</p>
 
-                    <button className="w-full py-3 bg-secondary border border-border rounded text-center text-white hover:bg-primary hover:border-primary transition-colors flex items-center justify-center gap-2">
+                    <button className="w-full py-3 bg-secondary border border-border rounded text-center text-brand-black hover:bg-primary hover:text-white hover:border-primary transition-colors flex items-center justify-center gap-2">
                       <ArrowRight size={16} /> {t("popular.viewDetails")}
                     </button>
                   </div>
@@ -162,20 +162,20 @@ export default function Popular() {
       <section className="py-16 bg-primary/10 border-t border-primary/20">
         <div className="container mx-auto px-4 text-center max-w-3xl">
           <MessageSquare className="mx-auto text-primary mb-6" size={48} />
-          <h2 className="text-3xl font-bold text-white mb-4">{t("popular.cta.title")}</h2>
+          <h2 className="text-3xl font-bold text-brand-black mb-4">{t("popular.cta.title")}</h2>
           <p className="text-lg text-muted-foreground mb-8">
             {t("popular.cta.sub")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="inline-flex px-8 py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] items-center gap-2"
+              className="inline-flex px-8 py-4 bg-primary text-white font-bold rounded hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(209,39,50,0.24)] items-center gap-2"
             >
               {t("cta.requestInfo")} <ArrowRight size={18} />
             </Link>
             <Link
               href="/inventory"
-              className="inline-flex px-8 py-4 border border-border text-white font-medium rounded hover:bg-card transition-all items-center gap-2"
+              className="inline-flex px-8 py-4 border border-border text-brand-black font-medium rounded hover:bg-card transition-all items-center gap-2"
             >
               {t("nav.inventory")} <ArrowRight size={18} />
             </Link>

@@ -157,8 +157,8 @@ function calculateStandardResult(form: FormState, settings: { key: string; value
 }
 
 const fmt = (n: number) => `€${n.toLocaleString("en-EU")}`;
-const INPUT_CLS = "w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors";
-const SELECT_CLS = "w-full bg-input border border-border rounded px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors";
+const INPUT_CLS = "w-full bg-white border border-border rounded px-4 py-3 text-brand-black focus:outline-none focus:border-primary transition-colors";
+const SELECT_CLS = "w-full bg-white border border-border rounded px-4 py-3 text-brand-black focus:outline-none focus:border-primary transition-colors";
 
 const DEFAULT_FORM: FormState = {
   vehiclePrice: 25000,
@@ -238,25 +238,25 @@ export default function Calculator() {
   ];
 
   const NoticeBlock = ({ footerKey }: { footerKey: string }) => (
-    <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 p-5 space-y-3">
+    <div className="rounded-xl border border-amber-200 bg-amber-50 p-5 space-y-3">
       <div className="flex items-start gap-2">
-        <AlertTriangle size={16} className="text-amber-400 mt-0.5 shrink-0" />
-        <p className="text-sm font-semibold text-amber-300">{t("calc.noticeTit")}</p>
+        <AlertTriangle size={16} className="text-amber-700 mt-0.5 shrink-0" />
+        <p className="text-sm font-semibold text-amber-800">{t("calc.noticeTit")}</p>
       </div>
-      <p className="text-xs text-amber-200/80 leading-relaxed">{t("calc.noticeP1")}</p>
-      <p className="text-xs text-amber-200/80 leading-relaxed">{t("calc.noticeP2")}</p>
+      <p className="text-xs text-amber-800/90 leading-relaxed">{t("calc.noticeP1")}</p>
+      <p className="text-xs text-amber-800/90 leading-relaxed">{t("calc.noticeP2")}</p>
       <div className="pt-1">
-        <p className="text-xs font-semibold text-amber-300 mb-2">{t("calc.noticeExtras")}</p>
-        <ul className="text-xs text-amber-200/70 space-y-1">
+        <p className="text-xs font-semibold text-amber-800 mb-2">{t("calc.noticeExtras")}</p>
+        <ul className="text-xs text-amber-800 space-y-1">
           {noticeItems.map(item => (
             <li key={item} className="flex items-center gap-1.5">
-              <span className="w-1 h-1 rounded-full bg-amber-400/60 shrink-0" />
+              <span className="w-1 h-1 rounded-full bg-amber-700 shrink-0" />
               {item}
             </li>
           ))}
         </ul>
       </div>
-      <p className="text-xs text-amber-200/60 leading-relaxed border-t border-amber-500/20 pt-3">
+      <p className="text-xs text-amber-800/80 leading-relaxed border-t border-amber-200 pt-3">
         {t(footerKey)}
       </p>
     </div>
@@ -269,7 +269,7 @@ export default function Calculator() {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
           <div className="flex items-center gap-3 mb-4">
             <CalcIcon className="text-primary" size={32} />
-            <h1 className="text-4xl md:text-5xl font-bold text-white">{t("calc.title")}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-brand-black">{t("calc.title")}</h1>
           </div>
           <p className="text-xl text-muted-foreground max-w-2xl">{t("calc.sub")}</p>
         </motion.div>
@@ -303,7 +303,7 @@ export default function Calculator() {
               {step === 1 && (
                 <motion.div key="step1" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s1Title")}</h3>
+                  <h3 className="text-xl font-bold text-brand-black border-b border-border/50 pb-4">{t("calc.s1Title")}</h3>
 
                   <div>
                     <label className="block text-sm font-medium text-muted-foreground mb-2">{t("calc.vehiclePrice")}</label>
@@ -313,7 +313,7 @@ export default function Calculator() {
                         type="number"
                         value={form.vehiclePrice}
                         onChange={(e) => update("vehiclePrice", Number(e.target.value) || 0)}
-                        className="w-full bg-input border border-border rounded pl-8 pr-4 py-4 text-white focus:outline-none focus:border-primary transition-colors text-2xl font-medium"
+                        className="w-full bg-white border border-border rounded pl-8 pr-4 py-4 text-brand-black focus:outline-none focus:border-primary transition-colors text-2xl font-medium"
                       />
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">{t("calc.priceHint")}</p>
@@ -325,7 +325,7 @@ export default function Calculator() {
                       {SOURCE_COUNTRIES.map((c) => (
                         <button key={c.code} onClick={() => update("sourceCountry", c.code)}
                           className={`p-3 rounded-lg border-2 flex flex-col items-center gap-1 transition-all
-                            ${form.sourceCountry === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                            ${form.sourceCountry === c.code ? "border-primary bg-primary/10 text-brand-black" : "border-border/50 hover:border-border text-muted-foreground hover:text-brand-black"}`}>
                           <span className="text-xl">{c.flag}</span>
                           <span className="text-xs font-medium leading-tight text-center">{t(`calc.src.${c.code}`)}</span>
                           <span className="text-xs opacity-60">{c.region === "western" ? "€800" : c.region === "eastern" ? "€600" : "€600–800"}</span>
@@ -348,7 +348,7 @@ export default function Calculator() {
               {step === 2 && (
                 <motion.div key="step2" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s2Title")}</h3>
+                  <h3 className="text-xl font-bold text-brand-black border-b border-border/50 pb-4">{t("calc.s2Title")}</h3>
 
                   <div className="grid grid-cols-2 gap-3">
                     {COUNTRIES.map((c) => {
@@ -357,7 +357,7 @@ export default function Calculator() {
                       const subtitle = c.region === "belarus" ? t("calc.bySubtitle") : `VAT ${getSettingValue(settings, vatKey[c.code] ?? "", fallbacks[c.code] ?? 21)}%`;
                       return (
                         <button key={c.code} onClick={() => update("countryCode", c.code)}
-                          className={`p-4 rounded-lg border-2 flex items-center gap-3 transition-all text-left ${form.countryCode === c.code ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                          className={`p-4 rounded-lg border-2 flex items-center gap-3 transition-all text-left ${form.countryCode === c.code ? "border-primary bg-primary/10 text-brand-black" : "border-border/50 hover:border-border text-muted-foreground hover:text-brand-black"}`}>
                           <span className="text-2xl">{c.flag}</span>
                           <div>
                             <div className="font-semibold text-sm">{t(`calc.dest.${c.code}`)}</div>
@@ -369,7 +369,7 @@ export default function Calculator() {
                   </div>
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(1)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(1)} className="flex-1 py-4 border border-border/50 text-brand-black font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> {t("calc.back")}
                     </button>
                     <button onClick={() => { update("byPersonType", ""); setStep(3); }} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all">
@@ -383,7 +383,7 @@ export default function Calculator() {
               {step === 3 && (
                 <motion.div key="step3-type" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s3Title")}</h3>
+                  <h3 className="text-xl font-bold text-brand-black border-b border-border/50 pb-4">{t("calc.s3Title")}</h3>
                   <p className="text-sm text-muted-foreground -mt-2">{t("calc.s3Hint")}</p>
 
                   <div className="grid grid-cols-1 gap-4">
@@ -397,11 +397,11 @@ export default function Calculator() {
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white text-base">{t("calc.catalogTitle")}</span>
+                          <span className="font-bold text-brand-black text-base">{t("calc.catalogTitle")}</span>
                           {form.vehicleType === "catalog" && <span className="text-green-400 text-lg leading-none">✓</span>}
                         </div>
                         <div className="text-sm text-muted-foreground leading-relaxed mt-1">{t("calc.catalogDesc")}</div>
-                        <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold border border-green-500/30">
+                        <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-green-50 text-green-800 text-xs font-semibold border border-green-200">
                           {t("calc.catalogBadge")}
                         </div>
                       </div>
@@ -412,16 +412,16 @@ export default function Calculator() {
                       className={`p-6 rounded-xl border-2 flex items-start gap-5 transition-all text-left group
                         ${form.vehicleType === "sourcing" ? "border-primary bg-primary/10" : "border-border/50 hover:border-primary/50 hover:bg-primary/5"}`}>
                       <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-all
-                        ${form.vehicleType === "sourcing" ? "bg-blue-500/30 border-2 border-primary" : "bg-blue-500/20 border border-blue-500/30"}`}>
+                        ${form.vehicleType === "sourcing" ? "bg-brand-red/10 border-2 border-primary" : "bg-brand-red/5 border border-brand-red/20"}`}>
                         <Search className="text-blue-400" size={22} />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-bold text-white text-base">{t("calc.sourcingTitle")}</span>
+                          <span className="font-bold text-brand-black text-base">{t("calc.sourcingTitle")}</span>
                           {form.vehicleType === "sourcing" && <span className="text-primary text-lg leading-none">✓</span>}
                         </div>
                         <div className="text-sm text-muted-foreground leading-relaxed mt-1">{t("calc.sourcingDesc")}</div>
-                        <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold border border-blue-500/30">
+                        <div className="mt-3 inline-block px-2.5 py-1 rounded-full bg-red-50 text-brand-burgundy text-xs font-semibold border border-red-100">
                           {t("calc.sourcingBadge")}
                         </div>
                       </div>
@@ -434,11 +434,11 @@ export default function Calculator() {
                     className={`w-full py-4 font-bold rounded flex items-center justify-center gap-2 transition-all
                       ${form.vehicleType
                         ? "bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
-                        : "bg-white/5 text-white/30 border border-border/30 cursor-not-allowed"}`}>
+                        : "bg-brand-soft text-slate-500 border border-border/30 cursor-not-allowed"}`}>
                     {form.vehicleType ? <><ChevronRight size={18} /> {t("calc.continue")}</> : <>{t("calc.selectFirst")}</>}
                   </button>
 
-                  <button onClick={() => setStep(2)} className="w-full py-3 border border-border/50 text-muted-foreground font-medium rounded flex items-center justify-center gap-2 hover:bg-card hover:text-white transition-all">
+                  <button onClick={() => setStep(2)} className="w-full py-3 border border-border/50 text-muted-foreground font-medium rounded flex items-center justify-center gap-2 hover:bg-card hover:text-brand-black transition-all">
                     <ChevronLeft size={18} /> {t("calc.back")}
                   </button>
                 </motion.div>
@@ -448,12 +448,12 @@ export default function Calculator() {
               {step === 4 && !isBelarus && standardResult && (
                 <motion.div key="step3-std" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s4Title")}</h3>
+                  <h3 className="text-xl font-bold text-brand-black border-b border-border/50 pb-4">{t("calc.s4Title")}</h3>
 
                   <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/20 border border-border/30">
                     <span className="text-3xl">{selectedCountry?.flag}</span>
                     <div>
-                      <div className="text-white font-semibold">{t("calc.destination")} {t(`calc.dest.${form.countryCode}`)}</div>
+                      <div className="text-brand-black font-semibold">{t("calc.destination")} {t(`calc.dest.${form.countryCode}`)}</div>
                       <div className="text-muted-foreground text-sm">
                         {selectedCountry?.region === "western" ? t("calc.westEurope") : t("calc.eastEurope")}
                       </div>
@@ -473,8 +473,8 @@ export default function Calculator() {
                       standardResult.serviceFee > 0 ? { label: t("calc.serviceFeeRow"), value: fmt(standardResult.serviceFee) } : null,
                     ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
-                        <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
-                        <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
+                        <span className={row.accent ? "text-amber-800" : "text-muted-foreground"}>{row.label}</span>
+                        <span className={row.accent ? "text-amber-800 font-medium" : "text-brand-black font-medium"}>{row.value}</span>
                       </div>
                     ))}
                   </div>
@@ -491,10 +491,10 @@ export default function Calculator() {
                   <NoticeBlock footerKey="calc.noticeFooter" />
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-brand-black font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> {t("calc.back")}
                     </button>
-                    <button onClick={() => setStep(5)} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+                    <button onClick={() => setStep(5)} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(209,39,50,0.24)]">
                       {t("calc.getQuote")} <ChevronRight size={18} />
                     </button>
                   </div>
@@ -507,12 +507,12 @@ export default function Calculator() {
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
                   <div className="flex items-center gap-3">
                     <span className="text-3xl">🇧🇾</span>
-                    <h3 className="text-xl font-bold text-white">{t("calc.byTitle")}</h3>
+                    <h3 className="text-xl font-bold text-brand-black">{t("calc.byTitle")}</h3>
                   </div>
 
                   {/* Vehicle details */}
                   <div className="space-y-4 p-4 rounded-lg bg-secondary/20 border border-border/30">
-                    <p className="text-sm font-medium text-white">{t("calc.byVehicleData")}</p>
+                    <p className="text-sm font-medium text-brand-black">{t("calc.byVehicleData")}</p>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-medium text-muted-foreground mb-2">{t("calc.byYear")}</label>
@@ -537,7 +537,7 @@ export default function Calculator() {
                         { key: "company"    as ByPersonType, labelKey: "calc.byCompany" },
                       ]).map((opt) => (
                         <button key={opt.key} onClick={() => update("byPersonType", opt.key)}
-                          className={`py-3 px-2 rounded-lg border-2 text-sm font-medium transition-all text-center ${form.byPersonType === opt.key ? "border-primary bg-primary/15 text-white" : "border-border/50 hover:border-border text-muted-foreground hover:text-white"}`}>
+                          className={`py-3 px-2 rounded-lg border-2 text-sm font-medium transition-all text-center ${form.byPersonType === opt.key ? "border-primary bg-primary/10 text-brand-black" : "border-border/50 hover:border-border text-muted-foreground hover:text-brand-black"}`}>
                           {t(opt.labelKey)}
                         </button>
                       ))}
@@ -554,13 +554,13 @@ export default function Calculator() {
                   {/* Delivery to Belarus toggle */}
                   <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/20 border border-border/30">
                     <div>
-                      <p className="text-sm font-medium text-white">{t("calc.byDeliveryLabel")}</p>
+                      <p className="text-sm font-medium text-brand-black">{t("calc.byDeliveryLabel")}</p>
                       <p className="text-xs text-muted-foreground mt-0.5">{fmt(belarusConfig.delivery_to_belarus)} — {t("calc.byDeliveryInclude")}</p>
                     </div>
                     <div className="flex gap-2">
                       {[{ v: true, lKey: "calc.byYes" }, { v: false, lKey: "calc.byNo" }].map(({ v, lKey }) => (
                         <button key={lKey} onClick={() => update("byDelivery", v)}
-                          className={`px-4 py-2 rounded border-2 text-sm font-medium transition-all ${form.byDelivery === v ? "border-primary bg-primary/15 text-white" : "border-border/50 text-muted-foreground hover:text-white"}`}>
+                          className={`px-4 py-2 rounded border-2 text-sm font-medium transition-all ${form.byDelivery === v ? "border-primary bg-primary/10 text-brand-black" : "border-border/50 text-muted-foreground hover:text-brand-black"}`}>
                           {t(lKey)}
                         </button>
                       ))}
@@ -582,13 +582,13 @@ export default function Calculator() {
                         byResult.delivery > 0 ? { label: t("calc.byDeliveryRow"), value: fmt(byResult.delivery) } : null,
                       ].filter(Boolean).map((row) => row && (
                         <div key={row.label} className="flex justify-between py-2 border-b border-border/30">
-                          <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
-                          <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
+                          <span className={row.accent ? "text-amber-800" : "text-muted-foreground"}>{row.label}</span>
+                          <span className={row.accent ? "text-amber-800 font-medium" : "text-brand-black font-medium"}>{row.value}</span>
                         </div>
                       ))}
                       <div className="pt-3 flex justify-between items-center border-t border-border/30">
                         <span className="text-sm text-muted-foreground">{t("calc.byCustomsTotal")}</span>
-                        <span className="text-lg font-semibold text-amber-200">{fmt(byResult.customsTotal + byResult.delivery)}</span>
+                        <span className="text-lg font-semibold text-brand-red">{fmt(byResult.customsTotal + byResult.delivery)}</span>
                       </div>
                       {/* Total from us */}
                       <div className="rounded-xl border border-primary/30 bg-primary/5 p-5">
@@ -604,11 +604,11 @@ export default function Calculator() {
                   )}
 
                   <div className="flex gap-3">
-                    <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                    <button onClick={() => setStep(3)} className="flex-1 py-4 border border-border/50 text-brand-black font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                       <ChevronLeft size={18} /> {t("calc.back")}
                     </button>
                     <button onClick={() => setStep(5)} disabled={!form.byPersonType}
-                      className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] disabled:opacity-40 disabled:cursor-not-allowed">
+                      className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(209,39,50,0.24)] disabled:opacity-40 disabled:cursor-not-allowed">
                       {t("calc.getQuote")} <ChevronRight size={18} />
                     </button>
                   </div>
@@ -619,7 +619,7 @@ export default function Calculator() {
               {step === 5 && !submitted && (
                 <motion.div key="step4" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}
                   className="p-8 rounded-xl bg-card border border-border/50 space-y-6">
-                  <h3 className="text-xl font-bold text-white border-b border-border/50 pb-4">{t("calc.s5Title")}</h3>
+                  <h3 className="text-xl font-bold text-brand-black border-b border-border/50 pb-4">{t("calc.s5Title")}</h3>
                   <p className="text-muted-foreground text-sm">{t("calc.s5Sub")}</p>
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -637,10 +637,10 @@ export default function Calculator() {
                     <LanguageSelector value={prefLang} onChange={setPrefLang} />
                     <ConsentCheckbox checked={consent} onChange={setConsent} />
                     <div className="flex gap-3 pt-2">
-                      <button type="button" onClick={() => setStep(4)} className="flex-1 py-4 border border-border/50 text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
+                      <button type="button" onClick={() => setStep(4)} className="flex-1 py-4 border border-border/50 text-brand-black font-bold rounded flex items-center justify-center gap-2 hover:bg-card transition-all">
                         <ChevronLeft size={18} /> {t("calc.back")}
                       </button>
-                      <button type="submit" disabled={!consent} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] disabled:opacity-60 disabled:cursor-not-allowed">
+                      <button type="submit" disabled={!consent} className="flex-[2] py-4 bg-primary text-white font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/90 transition-all shadow-[0_0_15px_rgba(209,39,50,0.24)] disabled:opacity-60 disabled:cursor-not-allowed">
                         <Send size={18} /> {t("calc.s5Submit")}
                       </button>
                     </div>
@@ -655,7 +655,7 @@ export default function Calculator() {
                   <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
                     <CheckCircle className="text-green-400" size={32} />
                   </div>
-                  <h3 className="text-2xl font-bold text-white">{t("calc.successTitle")}</h3>
+                  <h3 className="text-2xl font-bold text-brand-black">{t("calc.successTitle")}</h3>
                   <p className="text-muted-foreground">{t("calc.successBody").replace("{name}", form.name)}</p>
                   <button onClick={() => { setStep(1); setSubmitted(false); setForm(DEFAULT_FORM); }}
                     className="mt-4 px-6 py-3 bg-primary text-white rounded font-semibold hover:bg-primary/90 transition-all">
@@ -669,10 +669,10 @@ export default function Calculator() {
 
           {/* Right — Live Summary */}
           <div className="lg:col-span-5">
-            <div className="sticky top-28 p-7 rounded-xl bg-secondary/30 border border-primary/30 shadow-[0_0_30px_rgba(59,130,246,0.1)]">
+            <div className="sticky top-28 p-7 rounded-xl bg-secondary/30 border border-primary/30 shadow-[0_0_30px_rgba(209,39,50,0.08)]">
               <div className="flex items-center gap-2 mb-5">
                 <span className="text-2xl">{selectedCountry?.flag ?? "🚗"}</span>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-brand-black">
                   {isBelarus ? t("calc.sidebarBy") : t("calc.sidebarStd")}
                 </h3>
               </div>
@@ -687,14 +687,14 @@ export default function Calculator() {
                       standardResult.serviceFee > 0 ? { label: t("calc.sidebarService"), value: fmt(standardResult.serviceFee) } : null,
                     ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between">
-                        <span className={row.accent ? "text-amber-300" : "text-muted-foreground"}>{row.label}</span>
-                        <span className={row.accent ? "text-amber-200 font-medium" : "text-white font-medium"}>{row.value}</span>
+                        <span className={row.accent ? "text-amber-800" : "text-muted-foreground"}>{row.label}</span>
+                        <span className={row.accent ? "text-amber-800 font-medium" : "text-brand-black font-medium"}>{row.value}</span>
                       </div>
                     ))}
                   </div>
                   <div className="border-t border-border/50 pt-4">
                     <div className="flex justify-between items-end">
-                      <span className="text-base font-bold text-white">{t("calc.sidebarTotal")}</span>
+                      <span className="text-base font-bold text-brand-black">{t("calc.sidebarTotal")}</span>
                       <span className="text-3xl font-bold text-primary">{fmt(standardResult.total)}</span>
                     </div>
                   </div>
@@ -706,51 +706,51 @@ export default function Calculator() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("calc.sidebarVehicle")}</span>
-                    <span className="text-white font-medium">{fmt(form.vehiclePrice)}</span>
+                    <span className="text-brand-black font-medium">{fmt(form.vehiclePrice)}</span>
                   </div>
                   {byResult && form.byPersonType ? (
                     <>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">{t("calc.sidebarYearVol")}</span>
-                        <span className="text-white font-medium">{form.year} / {form.engineVolume} cm³</span>
+                        <span className="text-brand-black font-medium">{form.year} / {form.engineVolume} cm³</span>
                       </div>
                       <div className="border-t border-border/30 pt-3 space-y-2">
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">{t("calc.sidebarDuty")}</span>
-                          <span className="text-amber-200 font-medium">{fmt(byResult.discountedDuty)}</span>
+                          <span className="text-amber-800 font-medium">{fmt(byResult.discountedDuty)}</span>
                         </div>
                         {byResult.vat > 0 && (
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">{t("calc.sidebarVat")}</span>
-                            <span className="text-white font-medium">{fmt(byResult.vat)}</span>
+                            <span className="text-brand-black font-medium">{fmt(byResult.vat)}</span>
                           </div>
                         )}
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">{t("calc.sidebarUtil")}</span>
-                          <span className="text-white font-medium">{fmt(byResult.utilizationFee)}</span>
+                          <span className="text-brand-black font-medium">{fmt(byResult.utilizationFee)}</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">{t("calc.sidebarProcess")}</span>
-                          <span className="text-white font-medium">{fmt(byResult.processingFee)}</span>
+                          <span className="text-brand-black font-medium">{fmt(byResult.processingFee)}</span>
                         </div>
                         {byResult.delivery > 0 && (
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">{t("calc.sidebarDelivBy")}</span>
-                            <span className="text-white font-medium">{fmt(byResult.delivery)}</span>
+                            <span className="text-brand-black font-medium">{fmt(byResult.delivery)}</span>
                           </div>
                         )}
                       </div>
                       <div className="border-t border-border/50 pt-2 flex justify-between items-end">
-                        <span className="text-base font-bold text-white">{t("calc.sidebarFullCost")}</span>
+                        <span className="text-base font-bold text-brand-black">{t("calc.sidebarFullCost")}</span>
                         <span className="text-3xl font-bold text-primary">{fmt(byResult.total)}</span>
                       </div>
                     </>
                   ) : (
                     <p className="text-xs text-muted-foreground pt-1">{t("calc.sidebarFillData")}</p>
                   )}
-                  <div className="mt-3 flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
-                    <AlertTriangle size={14} className="text-amber-400 mt-0.5 shrink-0" />
-                    <p className="text-xs text-amber-300 leading-relaxed">
+                  <div className="mt-3 flex items-start gap-2 p-3 rounded-lg bg-amber-50 border border-amber-200">
+                    <AlertTriangle size={14} className="text-amber-700 mt-0.5 shrink-0" />
+                    <p className="text-xs text-amber-800 leading-relaxed">
                       {t("calc.sidebarByNote")}
                     </p>
                   </div>

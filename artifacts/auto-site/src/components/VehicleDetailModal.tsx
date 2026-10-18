@@ -58,8 +58,8 @@ const METHOD_COLORS: Record<ContactMethod, string> = {
   WhatsApp: "border-[#25D366]/50 bg-[#25D366]/10 text-[#25D366]",
   Telegram: "border-[#0088cc]/50 bg-[#0088cc]/10 text-[#0088cc]",
   Viber:    "border-[#7360F2]/50 bg-[#7360F2]/10 text-[#7360F2]",
-  Phone:    "border-blue-500/50 bg-blue-500/10 text-blue-400",
-  Email:    "border-slate-500/50 bg-slate-500/10 text-slate-300",
+  Phone:    "border-brand-red/30 bg-brand-red/5 text-brand-red",
+  Email:    "border-slate-300 bg-slate-100 text-slate-700",
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -67,7 +67,7 @@ const STATUS_COLORS: Record<string, string> = {
   reserved:  "bg-amber-500/20 text-amber-400 border border-amber-500/40",
   auction:   "bg-purple-500/20 text-purple-400 border border-purple-500/40",
   sold:      "bg-red-500/20 text-red-400 border border-red-500/40",
-  popular:   "bg-blue-500/20 text-blue-400 border border-blue-500/40",
+  popular:   "bg-brand-red/10 text-brand-red border border-brand-red/30",
 };
 
 function Gallery({ images, vehicleName }: { images: string[]; vehicleName: string }) {
@@ -150,7 +150,7 @@ function Gallery({ images, vehicleName }: { images: string[]; vehicleName: strin
               key={i}
               onClick={() => go(i)}
               className={`shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
-                i === idx ? "border-blue-500 opacity-100" : "border-transparent opacity-50 hover:opacity-80"
+                i === idx ? "border-brand-red opacity-100" : "border-transparent opacity-50 hover:opacity-80"
               }`}
             >
               <img src={img} alt="" className="w-full h-full object-cover" />
@@ -217,7 +217,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
         <div className="w-14 h-14 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
           <CheckCircle className="text-green-400" size={28} />
         </div>
-        <h4 className="text-xl font-bold text-white">{t("form.thankYou")}</h4>
+        <h4 className="text-xl font-bold text-brand-black">{t("form.thankYou")}</h4>
         <p className="text-muted-foreground text-sm max-w-sm mx-auto">
           {t("form.successSub")}
         </p>
@@ -247,7 +247,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
             value={name}
             onChange={e => setName(e.target.value)}
             placeholder="Your name"
-            className="w-full bg-secondary/50 border border-border rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary transition-colors"
+            className="w-full bg-white border border-border rounded-lg px-3 py-2.5 text-brand-black text-sm focus:outline-none focus:border-primary transition-colors"
           />
         </div>
         <div>
@@ -257,7 +257,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
             value={contact}
             onChange={e => setContact(e.target.value)}
             placeholder="+XX XXX XXX XXX"
-            className="w-full bg-secondary/50 border border-border rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary transition-colors"
+            className="w-full bg-white border border-border rounded-lg px-3 py-2.5 text-brand-black text-sm focus:outline-none focus:border-primary transition-colors"
           />
         </div>
       </div>
@@ -271,7 +271,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
               type="button"
               onClick={() => setMethod(m)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                method === m ? METHOD_COLORS[m] : "border-border/40 text-muted-foreground hover:text-white"
+                method === m ? METHOD_COLORS[m] : "border-border/60 text-muted-foreground hover:text-brand-black"
               }`}
             >
               {m}
@@ -287,7 +287,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
           onChange={e => setMessage(e.target.value)}
           rows={2}
           placeholder="Any specific questions or requirements…"
-          className="w-full bg-secondary/50 border border-border rounded-lg px-3 py-2.5 text-white text-sm focus:outline-none focus:border-primary transition-colors resize-none"
+          className="w-full bg-white border border-border rounded-lg px-3 py-2.5 text-brand-black text-sm focus:outline-none focus:border-primary transition-colors resize-none"
         />
       </div>
 
@@ -296,7 +296,7 @@ function ContactForm({ vehicle, formName }: { vehicle: ModalVehicle; formName: s
       <button
         type="submit"
         disabled={loading || !consent}
-        className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.25)] disabled:opacity-50 text-sm tracking-wide flex items-center justify-center gap-2"
+        className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(209,39,50,0.18)] disabled:opacity-50 text-sm tracking-wide flex items-center justify-center gap-2"
       >
         {loading ? (
           <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -391,16 +391,16 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
             onClick={e => e.stopPropagation()}
           >
             <div className="min-h-full flex items-start justify-center py-6 px-4">
-              <div className="w-full max-w-6xl bg-[#0d1829] rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+              <div className="w-full max-w-6xl bg-white rounded-2xl border border-brand-gray shadow-2xl overflow-hidden">
 
                 {/* Top bar */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-brand-gray">
                   <div className="flex items-center gap-3">
                     <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${STATUS_COLORS[statusKey]}`}>
                       {statusText}
                     </span>
                     {vehicle.badge && (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/70 border border-white/10">
+                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-brand-soft text-slate-700 border border-brand-gray">
                         {vehicle.badge}
                       </span>
                     )}
@@ -408,15 +408,15 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => toggle(favKey)}
-                      className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                      className="w-9 h-9 rounded-full bg-brand-soft flex items-center justify-center hover:bg-red-50 transition-colors"
                     >
-                      <Heart size={16} className={isFavorited(favKey) ? "text-red-500 fill-red-500" : "text-white/60"} />
+                      <Heart size={16} className={isFavorited(favKey) ? "text-brand-red fill-brand-red" : "text-slate-500"} />
                     </button>
                     <button
                       onClick={onClose}
-                      className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                      className="w-9 h-9 rounded-full bg-brand-soft flex items-center justify-center hover:bg-red-50 transition-colors"
                     >
-                      <X size={18} className="text-white" />
+                      <X size={18} className="text-brand-black" />
                     </button>
                   </div>
                 </div>
@@ -425,7 +425,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
 
                   {/* LEFT: image / gallery */}
-                  <div className="p-6 border-b lg:border-b-0 lg:border-r border-white/10">
+                  <div className="p-6 border-b lg:border-b-0 lg:border-r border-brand-gray">
                     {isAvailable && vehicle.images.length > 0 ? (
                       <Gallery images={vehicle.images} vehicleName={vehicleLabel} />
                     ) : (
@@ -451,19 +451,19 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
 
                     {/* Route section */}
                     {(vehicle.location || vehicle.purchaseCountry || vehicle.estimatedDelivery) && (
-                      <div className="mt-5 p-4 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                      <div className="mt-5 p-4 rounded-xl bg-brand-soft border border-brand-gray space-y-3">
                         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                           <Truck size={12} /> {isSold ? t("modal.vehicleRoute") : t("modal.currentLocation")}
                         </p>
                         <div className="flex items-center gap-3 text-sm">
                           {(vehicle.location || vehicle.purchaseCountry) && (
                             <>
-                              <div className="flex items-center gap-1.5 text-white/80">
+                              <div className="flex items-center gap-1.5 text-slate-700">
                                 <MapPin size={13} className="text-primary shrink-0" />
                                 <span>{vehicle.location || vehicle.purchaseCountry}</span>
                               </div>
                               <ArrowRight size={14} className="text-muted-foreground shrink-0" />
-                              <div className="flex items-center gap-1.5 text-white/80">
+                              <div className="flex items-center gap-1.5 text-slate-700">
                                 <MapPin size={13} className="text-green-400 shrink-0" />
                                 <span>{vehicle.deliveredTo || t("modal.yourLocation")}</span>
                               </div>
@@ -487,12 +487,12 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                       {vehicle.year && (
                         <p className="text-sm text-primary font-semibold mb-1">{vehicle.year}</p>
                       )}
-                      <h2 className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                      <h2 className="text-2xl md:text-3xl font-bold text-brand-black leading-tight">
                         {vehicle.make} <span className="font-light">{vehicle.model}</span>
                       </h2>
                       {vehicle.price != null && (
-                        <p className="text-3xl font-bold text-white mt-2">
-                          <span className="text-lg font-normal text-white/60 mr-1">{t("modal.priceFrom")}</span>€{vehicle.price.toLocaleString()}
+                        <p className="text-3xl font-bold text-brand-black mt-2">
+                          <span className="text-lg font-normal text-slate-500 mr-1">{t("modal.priceFrom")}</span>€{vehicle.price.toLocaleString()}
                         </p>
                       )}
                       {vehicle.priceRange && (
@@ -516,9 +516,9 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                     {specsRows.length > 0 && (
                       <div className="grid grid-cols-2 gap-2">
                         {specsRows.map(row => (
-                          <div key={row.label} className="bg-white/5 border border-white/10 rounded-lg px-3 py-2.5">
+                          <div key={row.label} className="bg-brand-soft border border-brand-gray rounded-lg px-3 py-2.5">
                             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-0.5">{row.label}</p>
-                            <p className="text-sm font-semibold text-white">{row.value}</p>
+                            <p className="text-sm font-semibold text-brand-black">{row.value}</p>
                           </div>
                         ))}
                       </div>
@@ -526,60 +526,60 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
 
                     {/* Auction info block */}
                     {isAuction && (
-                      <div className="rounded-xl border border-purple-500/40 bg-purple-500/10 p-5 space-y-4">
+                      <div className="rounded-xl border border-purple-200 bg-purple-50 p-5 space-y-4">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-600 text-white text-xs font-bold uppercase tracking-wider shadow-[0_0_12px_rgba(147,51,234,0.5)]">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-700 text-white text-xs font-bold uppercase tracking-wider">
                             <span className="w-1.5 h-1.5 rounded-full bg-white/90 inline-block" />
                             {t("auction.badge")}
                           </span>
                         </div>
-                        <p className="text-sm text-white/90 leading-relaxed">
+                        <p className="text-sm text-brand-black leading-relaxed">
                           {t("auction.notice")}
                         </p>
-                        <p className="text-xs text-white/60 leading-relaxed">
+                        <p className="text-xs text-slate-600 leading-relaxed">
                           {t("auction.noticeDetail")}
                         </p>
                         {(vehicle.auctionStartDate || vehicle.auctionEndDate || vehicle.estimatedWinningPrice || vehicle.auctionPlatform) && (
                           <div className="grid grid-cols-2 gap-2 pt-1">
                             {vehicle.auctionStartDate && (
-                              <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+                              <div className="bg-white border border-brand-gray rounded-lg px-3 py-2">
                                 <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.startsLabel")}</p>
-                                <p className="text-sm font-semibold text-white">{vehicle.auctionStartDate}</p>
+                                <p className="text-sm font-semibold text-brand-black">{vehicle.auctionStartDate}</p>
                               </div>
                             )}
                             {vehicle.auctionEndDate && (
-                              <div className="bg-white/5 border border-purple-500/30 rounded-lg px-3 py-2">
+                              <div className="bg-white border border-purple-200 rounded-lg px-3 py-2">
                                 <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.endsLabel")}</p>
                                 <p className="text-sm font-semibold text-purple-300">{vehicle.auctionEndDate}</p>
                               </div>
                             )}
                             {vehicle.estimatedWinningPrice && (
-                              <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+                              <div className="bg-white border border-brand-gray rounded-lg px-3 py-2">
                                 <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.estimatedPrice")}</p>
-                                <p className="text-sm font-semibold text-white">€{vehicle.estimatedWinningPrice.toLocaleString()}</p>
+                                <p className="text-sm font-semibold text-brand-black">€{vehicle.estimatedWinningPrice.toLocaleString()}</p>
                               </div>
                             )}
                             {vehicle.auctionPlatform && (
-                              <div className="bg-white/5 border border-white/10 rounded-lg px-3 py-2">
+                              <div className="bg-white border border-brand-gray rounded-lg px-3 py-2">
                                 <p className="text-[10px] text-purple-400 uppercase tracking-wider mb-0.5">{t("auction.platform")}</p>
-                                <p className="text-sm font-semibold text-white">{vehicle.auctionPlatform}</p>
+                                <p className="text-sm font-semibold text-brand-black">{vehicle.auctionPlatform}</p>
                               </div>
                             )}
                           </div>
                         )}
                         {vehicle.auctionNotes && (
-                          <p className="text-xs text-white/50 italic border-t border-white/10 pt-3">{vehicle.auctionNotes}</p>
+                          <p className="text-xs text-slate-600 italic border-t border-brand-gray pt-3">{vehicle.auctionNotes}</p>
                         )}
                         <div className="flex flex-col gap-2 pt-1">
                           <button
                             onClick={() => setActiveFormName("Auction Inquiry")}
-                            className="w-full py-3 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition-all shadow-[0_0_20px_rgba(147,51,234,0.4)] flex items-center justify-center gap-2 text-sm"
+                            className="w-full py-3 bg-brand-red text-white font-bold rounded-lg hover:bg-brand-burgundy transition-colors flex items-center justify-center gap-2 text-sm"
                           >
                             <Send size={15} /> {t("auction.ctaContact")}
                           </button>
                           <button
                             onClick={() => setActiveFormName("Get Auction Details")}
-                            className="w-full py-3 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-purple-500/30"
+                            className="w-full py-3 bg-white text-brand-black font-medium rounded-lg hover:bg-brand-soft transition-colors flex items-center justify-center gap-2 text-sm border border-brand-gray"
                           >
                             <MessageCircle size={15} /> {t("auction.ctaDetails")}
                           </button>
@@ -592,7 +592,7 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                       <div className="flex flex-col gap-2.5">
                         <button
                           onClick={() => setActiveFormName("Request This Vehicle")}
-                          className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 text-sm"
+                          className="w-full py-3 bg-brand-red text-white font-bold rounded-lg hover:bg-brand-burgundy transition-colors flex items-center justify-center gap-2 text-sm"
                         >
                           <Send size={15} /> {t("form.requestVehicle")}
                         </button>
@@ -600,14 +600,14 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                     )}
 
                     {isSold && (
-                      <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-3">
-                        <p className="text-sm font-semibold text-white">{t("modal.similarVehicle")}</p>
+                      <div className="rounded-xl border border-brand-gray bg-brand-soft p-4 space-y-3">
+                        <p className="text-sm font-semibold text-brand-black">{t("modal.similarVehicle")}</p>
                         <p className="text-xs text-muted-foreground">
                           {t("modal.similarVehicleSub")}
                         </p>
                         <button
                           onClick={() => setActiveFormName("Similar Vehicle Request")}
-                          className="w-full py-2.5 bg-primary/90 text-white font-semibold rounded-lg hover:bg-primary transition-all flex items-center justify-center gap-2 text-sm"
+                          className="w-full py-2.5 bg-brand-red text-white font-semibold rounded-lg hover:bg-brand-burgundy transition-colors flex items-center justify-center gap-2 text-sm"
                         >
                           <ArrowRight size={14} /> {t("form.findSimilar")}
                         </button>
@@ -618,13 +618,13 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                       <div className="flex flex-col gap-2.5">
                         <button
                           onClick={() => setActiveFormName("Similar Vehicle Request")}
-                          className="w-full py-3 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center justify-center gap-2 text-sm"
+                          className="w-full py-3 bg-brand-red text-white font-bold rounded-lg hover:bg-brand-burgundy transition-colors flex items-center justify-center gap-2 text-sm"
                         >
                           <Send size={15} /> {t("form.requestModel")}
                         </button>
                         <button
                           onClick={() => setActiveFormName("Get More Information")}
-                          className="w-full py-3 bg-white/10 text-white font-medium rounded-lg hover:bg-white/15 transition-all flex items-center justify-center gap-2 text-sm border border-white/10"
+                          className="w-full py-3 bg-brand-soft text-brand-black font-medium rounded-lg hover:bg-slate-200 transition-colors flex items-center justify-center gap-2 text-sm border border-brand-gray"
                         >
                           <MessageCircle size={15} /> {t("form.getMoreInfo")}
                         </button>
@@ -634,19 +634,19 @@ export function VehicleDetailModal({ vehicle, onClose }: Props) {
                 </div>
 
                 {/* Bottom: contact section */}
-                <div className="border-t border-white/10 px-6 py-8">
+                <div className="border-t border-brand-gray px-6 py-8">
                   <div className="max-w-2xl mx-auto">
                     {activeFormName && (
                       <div className="mb-4 flex items-center gap-2">
                         <span className="px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-bold uppercase tracking-wide border border-primary/30">
                           {activeFormName}
                         </span>
-                        <button onClick={() => setActiveFormName(null)} className="text-xs text-muted-foreground hover:text-white ml-auto">
+                        <button onClick={() => setActiveFormName(null)} className="text-xs text-muted-foreground hover:text-brand-black ml-auto">
                           ✕ Clear
                         </button>
                       </div>
                     )}
-                    <h3 className="text-xl font-bold text-white mb-1">
+                    <h3 className="text-xl font-bold text-brand-black mb-1">
                       {activeFormName ? activeFormName : t("modal.wantToBuy")}
                     </h3>
                     <p className="text-sm text-muted-foreground mb-6">
