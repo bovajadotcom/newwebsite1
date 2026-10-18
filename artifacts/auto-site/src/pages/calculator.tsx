@@ -28,6 +28,8 @@ const SOURCE_COUNTRIES = [
   { code: "ES", flag: "🇪🇸", region: "western", delivery: 1200 },
   { code: "DE", flag: "🇩🇪", region: "western", delivery: 700 },
   { code: "BE", flag: "🇧🇪", region: "western", delivery: 700 },
+  { code: "NL", flag: "🇳🇱", region: "western", delivery: 750 },
+  { code: "AT", flag: "🇦🇹", region: "western", delivery: 750 },
   { code: "LV", flag: "🇱🇻", region: "eastern", delivery: 500 },
   { code: "XX", flag: "🤷", region: "unknown", delivery: 800 },
 ];
