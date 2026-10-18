@@ -575,6 +575,7 @@ export default function Calculator() {
                       <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{t("calc.byCarAge")} {t(byResult.ageKey)}</p>
                       {[
                         { label: t("calc.vehicleCost"), value: fmt(form.vehiclePrice) },
+                        { label: t("calc.serviceFeeRow"), value: "900 BYN" },
                         form.byPersonType === "benefit" && byResult.customsDuty !== byResult.discountedDuty
                           ? { label: t("calc.byDutyDiscount").replace("{pct}", String(belarusConfig.discount_percent)), value: fmt(byResult.discountedDuty), accent: true }
                           : { label: t("calc.byDuty"), value: fmt(byResult.discountedDuty), accent: true },
@@ -709,6 +710,10 @@ export default function Calculator() {
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{t("calc.sidebarVehicle")}</span>
                     <span className="text-brand-black font-medium">{fmt(form.vehiclePrice)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">{t("calc.sidebarService")}</span>
+                    <span className="text-brand-black font-medium">900 BYN</span>
                   </div>
                   {byResult && form.byPersonType ? (
                     <>
