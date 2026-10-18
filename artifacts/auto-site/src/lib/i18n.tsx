@@ -13,24 +13,31 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Language>("en");
+  const [lang, setLangState] = useState<Language>("ru");
 
   useEffect(() => {
     const SUPPORTED: Language[] = ["en", "pl", "ru", "lt"];
     const saved = localStorage.getItem("autoimport-lang") as Language;
     if (saved && SUPPORTED.includes(saved)) {
-      // User previously made a manual selection — always honour it
+      // Honour a language the visitor explicitly selected before.
       setLangState(saved);
-    } else {
-      // First visit — detect from browser, do NOT persist (so it stays "auto"
-      // until the user makes an explicit choice via setLang)
-      const nav = navigator.language || "";          // e.g. "pl-PL", "ru", "lt"
-      const code = nav.split("-")[0].toLowerCase();  // take the primary subtag
-      const detected = SUPPORTED.includes(code as Language)
-        ? (code as Language)
-        : "en";
-      setLangState(detected);
+      return;
     }
+
+    // VIN EuroCar's primary domain should open in Russian by default.
+    // Other domains keep the existing browser-language detection.
+    if (window.location.hostname === "vineurocar.com" ||
+        window.location.hostname === "www.vineurocar.com") {
+      setLangState("ru");
+      return;
+    }
+
+    const nav = navigator.language || "";
+    const code = nav.split("-")[0].toLowerCase();
+    const detected = SUPPORTED.includes(code as Language)
+      ? (code as Language)
+      : "en";
+    setLangState(detected);
   }, []);
 
   const setLang = (newLang: Language) => {
