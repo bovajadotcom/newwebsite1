@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import type { SubmitLead } from "@workspace/db";
 
-const TO = "bovaja.auctions@gmail.com";
+const TO = "bovaja.poland@gmail.com";
 
 function createTransport() {
   const user = process.env.GMAIL_USER;
