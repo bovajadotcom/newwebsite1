@@ -7,10 +7,10 @@ import { ConsentCheckbox } from "@/components/ConsentCheckbox";
 const STORAGE_KEY = "bovaja_subscribed";
 const SESSION_FIRST_SHOWN_KEY = "bovaja_notification_first_shown";
 const SESSION_SECOND_SHOWN_KEY = "bovaja_notification_second_shown";
-const SESSION_FIRST_SHOWN_AT_KEY = "bovaja_notification_first_shown_at";
+const SESSION_DISMISSED_AT_KEY = "bovaja_notification_dismissed_at";
 
-const FIRST_DISPLAY_DELAY = 25_000;
-const SECOND_DISPLAY_DELAY = 60_000;
+const FIRST_DISPLAY_DELAY = 30_000;
+const SECOND_DISPLAY_DELAY = 120_000;
 const MODAL_RETRY_DELAY = 5_000;
 
 const CHANNELS = [
@@ -41,15 +41,6 @@ function setStorageFlag(storage: Storage, key: string): void {
     storage.setItem(key, "1");
   } catch {
     // Storage can be unavailable in private browsing; the in-memory refs still protect this session.
-  }
-}
-
-function getFirstShownAt(): number | null {
-  try {
-    const value = Number(sessionStorage.getItem(SESSION_FIRST_SHOWN_AT_KEY));
-    return Number.isFinite(value) && value > 0 ? value : null;
-  } catch {
-    return null;
   }
 }
 
@@ -121,14 +112,8 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
 
       firstShownRef.current = true;
       setStorageFlag(sessionStorage, SESSION_FIRST_SHOWN_KEY);
-      try {
-        sessionStorage.setItem(SESSION_FIRST_SHOWN_AT_KEY, String(Date.now()));
-      } catch {
-        // The in-memory state still prevents duplicate displays in this mounted app.
-      }
       visibleRef.current = true;
       setVisible(true);
-      scheduleSecond(SECOND_DISPLAY_DELAY);
     }, delay);
   }, [clearTimer, isSubscribed, scheduleSecond]);
 
@@ -142,9 +127,16 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
     }
 
     if (firstShownRef.current) {
-      const firstShownAt = getFirstShownAt();
-      const elapsed = firstShownAt ? Date.now() - firstShownAt : SECOND_DISPLAY_DELAY;
-      scheduleSecond(Math.max(0, SECOND_DISPLAY_DELAY - elapsed));
+      let dismissedAt: number | null = null;
+      try {
+        const value = Number(sessionStorage.getItem(SESSION_DISMISSED_AT_KEY));
+        dismissedAt = Number.isFinite(value) && value > 0 ? value : null;
+      } catch {
+        dismissedAt = null;
+      }
+      if (dismissedAt) {
+        scheduleSecond(Math.max(0, SECOND_DISPLAY_DELAY - (Date.now() - dismissedAt)));
+      }
     } else {
       scheduleFirst(FIRST_DISPLAY_DELAY);
     }
@@ -160,7 +152,16 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
     clearTimer(hideTimerRef);
     visibleRef.current = false;
     setVisible(false);
-  }, [clearTimer]);
+
+    if (!isSubscribed() && firstShownRef.current && !secondShownRef.current) {
+      try {
+        sessionStorage.setItem(SESSION_DISMISSED_AT_KEY, String(Date.now()));
+      } catch {
+        // The timer still works for the current page session.
+      }
+      scheduleSecond(SECOND_DISPLAY_DELAY);
+    }
+  }, [clearTimer, isSubscribed, scheduleSecond]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
