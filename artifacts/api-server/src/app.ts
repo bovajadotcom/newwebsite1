@@ -33,7 +33,13 @@ app.use(
 
 app.use(
   cors({
-    origin: ["https://www.bovaja.com", "https://bovaja.com"],
+    origin: [
+      "https://www.bovaja.com",
+      "https://bovaja.com",
+      "https://vineurocar.com",
+      "https://www.vineurocar.com",
+      "https://admin.vineurocar.com",
+    ],
     credentials: true,
   }),
 );
