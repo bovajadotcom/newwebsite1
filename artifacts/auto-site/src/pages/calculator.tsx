@@ -145,7 +145,7 @@ function calculateBelarusResult(form: FormState): ByResult {
 
 function calculateStandardResult(form: FormState, settings: { key: string; value: string }[], lang: "en" | "pl" | "ru" | "lt"): StandardResult {
   // Service commission is shown in the visitor's language/currency.
-  const serviceFee = form.vehicleType === "catalog" ? 0 : (lang === "ru" ? 900 : 300);
+  const serviceFee = form.vehicleType === "catalog" ? 0 : 300;
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
   const source = SOURCE_COUNTRIES.find((c) => c.code === form.sourceCountry);
@@ -158,7 +158,7 @@ function calculateStandardResult(form: FormState, settings: { key: string; value
 }
 
 const fmt = (n: number) => `€${n.toLocaleString("en-EU")}`;
-const fmtServiceFee = (n: number, lang: "en" | "pl" | "ru" | "lt") => lang === "ru" ? `${n.toLocaleString("ru-RU")} BYN` : `€${n.toLocaleString("en-EU")}`;
+const fmtServiceFee = (n: number, lang: "en" | "pl" | "ru" | "lt") => lang === "ru" ? "900 BYN" : `€${n.toLocaleString("en-EU")}`;
 const INPUT_CLS = "w-full bg-white border border-border rounded px-4 py-3 text-brand-black focus:outline-none focus:border-primary transition-colors";
 const SELECT_CLS = "w-full bg-white border border-border rounded px-4 py-3 text-brand-black focus:outline-none focus:border-primary transition-colors";
 
