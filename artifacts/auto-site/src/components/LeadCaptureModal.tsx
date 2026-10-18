@@ -136,6 +136,8 @@ export function LeadCaptureModal({ source = "home" }: LeadCaptureModalProps) {
       }
       if (dismissedAt) {
         scheduleSecond(Math.max(0, SECOND_DISPLAY_DELAY - (Date.now() - dismissedAt)));
+      } else {
+        scheduleSecond(SECOND_DISPLAY_DELAY);
       }
     } else {
       scheduleFirst(FIRST_DISPLAY_DELAY);
