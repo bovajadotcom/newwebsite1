@@ -228,7 +228,7 @@ export default function Inventory() {
       <section className="relative h-[40vh] flex items-center justify-center overflow-hidden bg-card">
         <div className="absolute inset-0 z-0">
           <img 
-            src={`${import.meta.env.BASE_URL}hero-bgvin.eurocar.png`} 
+            src={`${import.meta.env.BASE_URL}kartinka.png`} 
             alt="Inventory" 
             className="w-full h-full object-cover object-center"
             style={{ filter: "brightness(0.4) saturate(0.85)" }}
@@ -600,7 +600,7 @@ export default function Inventory() {
       <section className="relative py-16 overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src={`${import.meta.env.BASE_URL}hero-bgvin.eurocar.png`}
+            src={`${import.meta.env.BASE_URL}kartinka.png`}
             alt="Cars"
             className="w-full h-full object-cover object-center"
             style={{ filter: "brightness(0.25) saturate(0.8)" }}
