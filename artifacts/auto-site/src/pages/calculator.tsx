@@ -23,15 +23,15 @@ const COUNTRIES = [
 ];
 
 const SOURCE_COUNTRIES = [
-  { code: "FR", flag: "🇫🇷", region: "western" },
-  { code: "IT", flag: "🇮🇹", region: "western" },
-  { code: "DE", flag: "🇩🇪", region: "western" },
-  { code: "BE", flag: "🇧🇪", region: "western" },
-  { code: "ES", flag: "🇪🇸", region: "western" },
-  { code: "PL", flag: "🇵🇱", region: "eastern" },
-  { code: "LV", flag: "🇱🇻", region: "eastern" },
-  { code: "LT", flag: "🇱🇹", region: "eastern" },
-  { code: "XX", flag: "🤷", region: "unknown" },
+  { code: "FR", flag: "🇫🇷", region: "western", delivery: 850 },
+  { code: "IT", flag: "🇮🇹", region: "western", delivery: 1000 },
+  { code: "DE", flag: "🇩🇪", region: "western", delivery: 700 },
+  { code: "BE", flag: "🇧🇪", region: "western", delivery: 700 },
+  { code: "ES", flag: "🇪🇸", region: "western", delivery: 1200 },
+  { code: "PL", flag: "🇵🇱", region: "eastern", delivery: 600 },
+  { code: "LV", flag: "🇱🇻", region: "eastern", delivery: 500 },
+  { code: "LT", flag: "🇱🇹", region: "eastern", delivery: 600 },
+  { code: "XX", flag: "🤷", region: "unknown", delivery: 800 },
 ];
 
 const FUEL_TYPES = ["Petrol", "Diesel", "Hybrid", "Electric"];
@@ -149,7 +149,7 @@ function calculateStandardResult(form: FormState, settings: { key: string; value
   const westernDelivery = getSettingValue(settings, "calculator.delivery.western_europe", 800);
   const easternDelivery = getSettingValue(settings, "calculator.delivery.eastern_europe", 600);
   const source = SOURCE_COUNTRIES.find((c) => c.code === form.sourceCountry);
-  const delivery = source?.region === "western" ? westernDelivery : source?.region === "eastern" ? easternDelivery : Math.round((westernDelivery + easternDelivery) / 2);
+  const delivery = source?.delivery ?? (source?.region === "western" ? westernDelivery : source?.region === "eastern" ? easternDelivery : Math.round((westernDelivery + easternDelivery) / 2));
   const vatKey: Record<string, string> = { PL: "calculator.vat.poland", LT: "calculator.vat.lithuania", LV: "calculator.vat.latvia", EE: "calculator.vat.estonia", DE: "calculator.vat.germany", CZ: "calculator.vat.czech_republic" };
   const fallbacks: Record<string, number> = { PL: 23, LT: 21, LV: 21, EE: 24, DE: 19, CZ: 21 };
   const vatRate = getSettingValue(settings, vatKey[form.countryCode] ?? "", fallbacks[form.countryCode] ?? 21);
@@ -330,7 +330,7 @@ export default function Calculator() {
                             ${form.sourceCountry === c.code ? "border-primary bg-primary/10 text-brand-black" : "border-border/50 hover:border-border text-muted-foreground hover:text-brand-black"}`}>
                           <span className="text-xl">{c.flag}</span>
                           <span className="text-xs font-medium leading-tight text-center">{t(`calc.src.${c.code}`)}</span>
-                          <span className="text-xs opacity-60">{c.region === "western" ? "€800" : c.region === "eastern" ? "€600" : "€600–800"}</span>
+                          <span className="text-xs opacity-60">{c.code === "XX" ? "€700–900" : fmt(c.delivery)}</span>
                         </button>
                       ))}
                     </div>
@@ -470,7 +470,7 @@ export default function Calculator() {
                         label: form.sourceCountry === "XX"
                           ? t("calc.deliveryUnknown")
                           : selectedCountry?.region === "western" ? t("calc.deliveryWest") : t("calc.deliveryEast"),
-                        value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery),
+                        value: form.sourceCountry === "XX" ? "€700–€900" : fmt(standardResult.delivery),
                       },
                       standardResult.serviceFee > 0 ? { label: t("calc.serviceFeeRow"), value: fmtServiceFee(standardResult.serviceFee, lang) } : null,
                     ].filter(Boolean).map((row) => row && (
@@ -686,7 +686,7 @@ export default function Calculator() {
                     {[
                       { label: t("calc.sidebarVehicle"),   value: fmt(standardResult.vehiclePrice) },
                       { label: standardResult.vatOrCustomsLabel, value: fmt(standardResult.vatOrCustoms), accent: true },
-                      { label: t("calc.sidebarDelivery"),  value: form.sourceCountry === "XX" ? "€600–€800" : fmt(standardResult.delivery) },
+                      { label: t("calc.sidebarDelivery"),  value: form.sourceCountry === "XX" ? "€700–€900" : fmt(standardResult.delivery) },
                       standardResult.serviceFee > 0 ? { label: t("calc.sidebarService"), value: fmt(standardResult.serviceFee) } : null,
                     ].filter(Boolean).map((row) => row && (
                       <div key={row.label} className="flex justify-between">
