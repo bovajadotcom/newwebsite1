@@ -238,7 +238,7 @@ export default function Inventory() {
         <div className="container mx-auto px-4 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{t("inventory.title")}</h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] font-medium max-w-2xl mx-auto">
               {t("home.hero.sub")}
             </p>
           </motion.div>
